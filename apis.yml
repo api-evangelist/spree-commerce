@@ -1,0 +1,480 @@
+aid: spree-commerce
+url: https://raw.githubusercontent.com/api-evangelist/spree-commerce/refs/heads/main/apis.yml
+name: Spree Commerce
+kind: opensource
+description: >-
+  Spree Commerce is an open-source headless eCommerce platform originally
+  released in 2007 and built on Ruby on Rails. The Spree server exposes a
+  modern Store API (v3), an Admin API (v3), a Platform API (v2) used by
+  internal/back-office integrations, and a Storefront API (v2) based on the
+  JSON:API spec - all described with OpenAPI 3 - plus an OAuth 2.0 token
+  endpoint for authentication. Developer surface includes the TypeScript Store
+  and Admin SDKs (@spree/sdk and @spree/admin-sdk), the @spree/cli for managing
+  Spree projects, the create-spree-app scaffolder, the open-source Next.js
+  storefront, the spree-starter application template, the spree_extension
+  generator for building Rails extensions, the deface view-customization
+  plugin, official payments integrations (Stripe, Adyen, PayPal), marketing
+  integrations (Klaviyo, Google Analytics), an Avalara/AvaTax extension, the
+  spree_multi_vendor marketplace extension, and a Webhook event system for
+  reacting to store events.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Commerce
+  - Headless
+  - eCommerce
+  - Open Source
+  - Ruby on Rails
+  - Ruby
+  - TypeScript
+created: '2026-05-25'
+modified: '2026-05-25'
+specificationVersion: '0.19'
+apis:
+  - aid: spree-commerce:store-api
+    name: Spree Store API
+    description: >-
+      Public Spree Store API v3 - the modern customer-facing REST API used by
+      headless storefronts, mobile apps, and integrations. Covers products,
+      variants, collections, taxonomies, cart and order flows, checkout,
+      payments, account, and search. Described with OpenAPI 3.
+    humanURL: https://dev-docs.spreecommerce.org/api-reference/store-api/introduction
+    baseURL: https://demo.spreecommerce.org
+    tags:
+      - REST
+      - Storefront
+      - Carts
+      - Orders
+      - Products
+    properties:
+      - type: Documentation
+        url: https://dev-docs.spreecommerce.org/api-reference/store-api/introduction
+      - type: OpenAPI
+        url: openapi/spree-commerce-store-api-openapi.yml
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/store.yaml
+  - aid: spree-commerce:admin-api
+    name: Spree Admin API
+    description: >-
+      Spree Admin API v3 - administrative REST API for managing products,
+      orders, customers, payments, shipping, and store configuration.
+      Authenticated via a secret API key passed in the x-spree-api-key header
+      and used by the Spree Admin dashboard and back-office automation.
+    humanURL: https://dev-docs.spreecommerce.org/api-reference/admin-api/introduction
+    baseURL: https://demo.spreecommerce.org
+    tags:
+      - REST
+      - Admin
+      - Back-Office
+      - Orders
+      - Products
+    properties:
+      - type: Documentation
+        url: https://dev-docs.spreecommerce.org/api-reference/admin-api/introduction
+      - type: OpenAPI
+        url: openapi/spree-commerce-admin-api-openapi.yml
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/admin.yaml
+  - aid: spree-commerce:platform-api
+    name: Spree Platform API
+    description: >-
+      Spree Platform API v2 - the broad REST API that backs the legacy admin
+      and platform-level integrations. Provides full CRUD coverage of the Spree
+      data model including addresses, taxons, classifications, line items,
+      payments, refunds, shipments, stock items, and platform configuration.
+      Authenticated with OAuth 2.0 bearer tokens.
+    humanURL: https://dev-docs.spreecommerce.org/api-reference/platform-api/introduction
+    baseURL: https://demo.spreecommerce.org
+    tags:
+      - REST
+      - Platform
+      - Admin
+    properties:
+      - type: Documentation
+        url: https://dev-docs.spreecommerce.org/api-reference/platform-api/introduction
+      - type: OpenAPI
+        url: openapi/spree-commerce-platform-api-openapi.yml
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/platform.yaml
+  - aid: spree-commerce:storefront-api
+    name: Spree Storefront API (JSON:API)
+    description: >-
+      Spree Storefront API v2 - the JSON:API-compliant REST API used by Spree's
+      reference Next.js and Rails storefronts. Includes account, addresses,
+      cart, checkout, products, taxons, orders, payments, store credits, and
+      gift cards. Distributed as an OpenAPI 3 specification.
+    humanURL: https://dev-docs.spreecommerce.org/api-reference/storefront-api/introduction
+    baseURL: https://demo.spreecommerce.org
+    tags:
+      - REST
+      - JSON API
+      - Storefront
+      - Checkout
+    properties:
+      - type: Documentation
+        url: https://dev-docs.spreecommerce.org/api-reference/storefront-api/introduction
+      - type: OpenAPI
+        url: openapi/spree-commerce-storefront-api-openapi.yml
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml
+  - aid: spree-commerce:oauth-api
+    name: Spree OAuth API
+    description: >-
+      OAuth 2.0 token endpoint used to create and refresh short-lived bearer
+      tokens for the Spree Storefront, Platform, and Admin APIs. Supports
+      password, client_credentials, and refresh_token grants on the
+      /spree_oauth/token path.
+    humanURL: https://dev-docs.spreecommerce.org/api-reference/authentication
+    baseURL: https://demo.spreecommerce.org
+    tags:
+      - OAuth
+      - Authentication
+      - Tokens
+    properties:
+      - type: Documentation
+        url: https://dev-docs.spreecommerce.org/api-reference/authentication
+      - type: OpenAPI
+        url: openapi/spree-commerce-oauth-api-openapi.yml
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/oauth.yml
+  - aid: spree-commerce:webhooks
+    name: Spree Webhooks
+    description: >-
+      Outbound webhook event system - the Spree server emits signed JSON
+      payloads for order, product, customer, payment, and shipment lifecycle
+      events. The webhook envelope carries an id, event name, created_at,
+      data, and metadata block, with payloads sharing the Store API v3
+      serializers.
+    humanURL: https://dev-docs.spreecommerce.org/api-reference/webhooks-events
+    baseURL: https://dev-docs.spreecommerce.org/api-reference/webhooks-events
+    tags:
+      - Webhooks
+      - Events
+      - Notifications
+    properties:
+      - type: Documentation
+        url: https://dev-docs.spreecommerce.org/api-reference/webhooks-events
+      - type: Documentation
+        url: https://dev-docs.spreecommerce.org/developer/core-concepts/webhooks
+  - aid: spree-commerce:sdk
+    name: '@spree/sdk (TypeScript Store API SDK)'
+    description: >-
+      Official TypeScript SDK for the Spree Store API - typed clients, auth
+      helpers, and resource methods. Distributed via npm as @spree/sdk and
+      consumed by the Next.js storefront, custom storefronts, and server-side
+      integrations.
+    humanURL: https://www.npmjs.com/package/@spree/sdk
+    baseURL: https://github.com/spree/spree/tree/main/packages/sdk
+    tags:
+      - SDK
+      - TypeScript
+      - JavaScript
+      - Storefront
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree/tree/main/packages/sdk
+      - type: Package
+        url: https://www.npmjs.com/package/@spree/sdk
+  - aid: spree-commerce:admin-sdk
+    name: '@spree/admin-sdk (TypeScript Admin API SDK)'
+    description: >-
+      Official TypeScript SDK for the Spree Admin API. Provides a typed client
+      for managing products, orders, customers, and store configuration from
+      Node.js services and admin tools.
+    humanURL: https://www.npmjs.com/package/@spree/admin-sdk
+    baseURL: https://github.com/spree/spree/tree/main/packages/admin-sdk
+    tags:
+      - SDK
+      - TypeScript
+      - Admin
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree/tree/main/packages/admin-sdk
+      - type: Package
+        url: https://www.npmjs.com/package/@spree/admin-sdk
+  - aid: spree-commerce:cli
+    name: '@spree/cli'
+    description: >-
+      Command-line tool for managing Spree Commerce projects - scaffolding new
+      apps, running the dev server, managing Docker, and orchestrating common
+      project tasks. Installed via npm and exposed as the spree binary.
+    humanURL: https://www.npmjs.com/package/@spree/cli
+    baseURL: https://github.com/spree/spree/tree/main/packages/cli
+    tags:
+      - CLI
+      - Tooling
+      - Developer Experience
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree/tree/main/packages/cli
+      - type: Package
+        url: https://www.npmjs.com/package/@spree/cli
+  - aid: spree-commerce:create-spree-app
+    name: create-spree-app
+    description: >-
+      One-line project generator for new Spree Commerce installations -
+      mirrors create-next-app and create-medusa-app patterns. Bootstraps a
+      working Rails-based Spree project from the spree-starter template.
+    humanURL: https://www.npmjs.com/package/create-spree-app
+    baseURL: https://github.com/spree/spree/tree/main/packages/create-spree-app
+    tags:
+      - CLI
+      - Scaffolding
+      - Starter
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree/tree/main/packages/create-spree-app
+      - type: Package
+        url: https://www.npmjs.com/package/create-spree-app
+  - aid: spree-commerce:nextjs-storefront
+    name: Spree Next.js Storefront
+    description: >-
+      Open-source Next.js storefront talking to the Spree Storefront API -
+      cart, checkout, account, multi-region, one-page checkout, and Stripe,
+      Adyen, and PayPal payments. MIT licensed.
+    humanURL: https://github.com/spree/storefront
+    baseURL: https://github.com/spree/storefront
+    tags:
+      - Storefront
+      - Next.js
+      - Starter
+      - TypeScript
+    properties:
+      - type: Repository
+        url: https://github.com/spree/storefront
+  - aid: spree-commerce:rails-storefront
+    name: Spree Rails Storefront
+    description: >-
+      Spree 5 storefront built with Ruby on Rails and a visual page builder.
+      Reference implementation for teams that want a Rails-monolith
+      storefront on top of Spree rather than a separate JavaScript runtime.
+    humanURL: https://github.com/spree/spree-rails-storefront
+    baseURL: https://github.com/spree/spree-rails-storefront
+    tags:
+      - Storefront
+      - Rails
+      - Page Builder
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree-rails-storefront
+  - aid: spree-commerce:starter
+    name: spree-starter (Application Template)
+    description: >-
+      Reference Spree application template used to bootstrap new Spree
+      installations - includes Docker Compose, the recommended gem set, and a
+      sensible default configuration for self-hosted deployments.
+    humanURL: https://github.com/spree/spree-starter
+    baseURL: https://github.com/spree/spree-starter
+    tags:
+      - Starter
+      - Application
+      - Docker
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree-starter
+  - aid: spree-commerce:multi-vendor
+    name: Spree Multi-Vendor Marketplace Extension
+    description: >-
+      Open-source marketplace extension that turns a Spree store into a
+      multi-vendor marketplace - vendor accounts, vendor-specific catalogs,
+      orders, payouts, and admin scoping.
+    humanURL: https://github.com/spree/spree_multi_vendor
+    baseURL: https://github.com/spree/spree_multi_vendor
+    tags:
+      - Marketplace
+      - Multi Vendor
+      - Extension
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_multi_vendor
+  - aid: spree-commerce:multi-store
+    name: spree-multi-store
+    description: >-
+      Extension for running and administering multiple stores from a single
+      Spree installation - per-store products, taxonomies, domains, and
+      configuration.
+    humanURL: https://github.com/spree/spree-multi-store
+    baseURL: https://github.com/spree/spree-multi-store
+    tags:
+      - Multi Store
+      - Extension
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree-multi-store
+  - aid: spree-commerce:stripe
+    name: Spree Stripe Integration
+    description: >-
+      Official Stripe payments integration for Spree, including support for
+      Stripe Connect. Wires Spree's payment lifecycle to Stripe Payment
+      Intents and Webhooks.
+    humanURL: https://github.com/spree/spree_stripe
+    baseURL: https://github.com/spree/spree_stripe
+    tags:
+      - Payments
+      - Stripe
+      - Integration
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_stripe
+  - aid: spree-commerce:adyen
+    name: Spree Adyen Integration
+    description: >-
+      Official Adyen payments platform integration for Spree Commerce -
+      payment methods, capture, refund, and webhook handling against the
+      Adyen API.
+    humanURL: https://github.com/spree/spree_adyen
+    baseURL: https://github.com/spree/spree_adyen
+    tags:
+      - Payments
+      - Adyen
+      - Integration
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_adyen
+  - aid: spree-commerce:paypal-checkout
+    name: Spree PayPal Checkout Integration
+    description: >-
+      Official PayPal Checkout integration extension for Spree - PayPal
+      buttons, order flow, capture, and refund.
+    humanURL: https://github.com/spree/spree_paypal_checkout
+    baseURL: https://github.com/spree/spree_paypal_checkout
+    tags:
+      - Payments
+      - PayPal
+      - Integration
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_paypal_checkout
+  - aid: spree-commerce:avatax
+    name: Spree Avalara AvaTax Integration
+    description: >-
+      Officially certified Avalara AvaTax tax-calculation integration for
+      Spree - real-time tax calculation, address validation, and document
+      filing against AvaTax.
+    humanURL: https://github.com/spree/spree_avatax_official
+    baseURL: https://github.com/spree/spree_avatax_official
+    tags:
+      - Tax
+      - Avalara
+      - AvaTax
+      - Integration
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_avatax_official
+  - aid: spree-commerce:klaviyo
+    name: Spree Klaviyo Integration
+    description: >-
+      Official Klaviyo marketing-platform integration for Spree - syncs
+      customers, orders, and product events to Klaviyo for email and SMS
+      lifecycle marketing.
+    humanURL: https://github.com/spree/spree_klaviyo
+    baseURL: https://github.com/spree/spree_klaviyo
+    tags:
+      - Marketing
+      - Klaviyo
+      - Email
+      - Integration
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_klaviyo
+  - aid: spree-commerce:google-analytics
+    name: Spree Google Analytics 4 Integration
+    description: >-
+      Official Google Analytics 4 integration for Spree - ecommerce event
+      tracking and measurement on top of the Spree storefronts.
+    humanURL: https://github.com/spree/spree_google_analytics
+    baseURL: https://github.com/spree/spree_google_analytics
+    tags:
+      - Analytics
+      - Google Analytics
+      - Integration
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_google_analytics
+  - aid: spree-commerce:extension
+    name: spree_extension (Extension Generator CLI)
+    description: >-
+      CLI tool for generating and managing Spree Commerce extensions -
+      scaffolds the gemspec, engine, migrations, and conventions used by the
+      Spree extension ecosystem.
+    humanURL: https://github.com/spree/spree_extension
+    baseURL: https://github.com/spree/spree_extension
+    tags:
+      - CLI
+      - Extension
+      - Tooling
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_extension
+  - aid: spree-commerce:dev-tools
+    name: Spree Dev Tools
+    description: >-
+      Internal developer tooling for working on Spree itself - debuggers,
+      profilers, dummy data generators, and helpers used by Spree's core
+      contributors and extension authors.
+    humanURL: https://github.com/spree/spree_dev_tools
+    baseURL: https://github.com/spree/spree_dev_tools
+    tags:
+      - Developer Tools
+      - Tooling
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree_dev_tools
+  - aid: spree-commerce:deface
+    name: deface (Rails View Customization)
+    description: >-
+      Rails plugin maintained under the Spree organization that lets Spree
+      stores customize ERB views without forking the underlying templates.
+      Core extension primitive in the Spree ecosystem.
+    humanURL: https://github.com/spree/deface
+    baseURL: https://github.com/spree/deface
+    tags:
+      - Rails
+      - Views
+      - Customization
+      - Plugin
+    properties:
+      - type: Repository
+        url: https://github.com/spree/deface
+  - aid: spree-commerce:core-repo
+    name: Spree Core Repository (spree/spree)
+    description: >-
+      Monorepo with the Spree Rails engine, Admin, Store/Admin/Platform/
+      Storefront APIs, OpenAPI specs, TypeScript SDKs, CLI, and Next.js
+      storefront. Released since 2007; latest stable release v5.4.3.
+    humanURL: https://github.com/spree/spree
+    baseURL: https://github.com/spree/spree
+    tags:
+      - Open Source
+      - Repository
+      - Monorepo
+      - Rails
+      - Ruby
+    properties:
+      - type: Repository
+        url: https://github.com/spree/spree
+common:
+  - type: Website
+    url: https://spreecommerce.org/
+  - type: Documentation
+    url: https://dev-docs.spreecommerce.org/
+  - type: API Reference
+    url: https://dev-docs.spreecommerce.org/api-reference/introduction
+  - type: GitHub
+    url: https://github.com/spree
+  - type: Pricing
+    url: https://spreecommerce.org/pricing/
+  - type: Demo
+    url: https://demo.spreecommerce.org/
+  - type: Releases
+    url: https://github.com/spree/spree/releases
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/spree-commerce/
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+x-references:
+  - name: Anthropic
+    url: https://www.anthropic.com/
+    description: >-
+      Profiled with assistance from Anthropic's Claude under the API Evangelist
+      research pipeline.

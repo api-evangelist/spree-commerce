@@ -1,0 +1,68 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Spree Commerce
+providerId: spree-commerce
+created: '2026-05-25'
+modified: '2026-05-25'
+tags:
+- Commerce
+- Headless
+- eCommerce
+- Open Source
+- Ruby on Rails
+- Ruby
+- TypeScript
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Rate limit definitions for the Spree Commerce API surface. Self-hosted Spree
+  has no provider-enforced rate limit by default; operators typically apply
+  Rack::Attack or upstream gateway throttling. The scaffolded tiers below
+  capture the structure Spree Enterprise / Spree Cloud customers should fill in
+  from their commercial contract.
+headers:
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+  reset: X-RateLimit-Reset
+  retryAfter: Retry-After
+  policy: RateLimit-Policy
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+  serviceUnavailable: 503
+limits:
+- tier: community
+  name: Community (Self-Hosted)
+  scope: operator-configured
+  metric: requests_per_minute
+  limit: 0
+  burst: 0
+  timeFrame: minute
+  applies:
+  - https://dev-docs.spreecommerce.org/api-reference/introduction
+  description: >-
+    No provider-enforced rate limit in the open-source Spree distribution.
+    Operators normally configure Rack::Attack, an API gateway, or CDN-level
+    throttling against their own SLOs.
+- tier: enterprise
+  name: Enterprise / Spree Cloud
+  scope: api-key
+  metric: requests_per_minute
+  limit: 0
+  burst: 0
+  timeFrame: minute
+  applies:
+  - https://dev-docs.spreecommerce.org/api-reference/introduction
+  description: >-
+    Custom rate envelope governed by the customer's Spree Enterprise / Spree
+    Cloud contract. Replace zeros with contractual limits.
+recoveryStrategies:
+- name: Exponential Backoff
+  description: Wait Retry-After seconds (or back off exponentially up to 60s) before retrying.
+- name: Queue and Retry
+  description: Submit bulk admin work in batches under the operator's configured burst envelope.
+notes:
+- Spree Commerce ships no default per-route rate limit; document operator-side throttling instead.
+- Reconcile Enterprise / Cloud values with the provider's contract.

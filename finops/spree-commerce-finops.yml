@@ -1,0 +1,94 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+provider: Spree Commerce
+providerId: spree-commerce
+publisherName: Spree Commerce
+serviceCategory: API
+created: '2026-05-25'
+modified: '2026-05-25'
+tags:
+- Commerce
+- Headless
+- eCommerce
+- Open Source
+- Ruby on Rails
+- Ruby
+- TypeScript
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps framework alignment for the Spree Commerce API surface. Self-hosted
+  Spree has no per-API charge from the project; cost lives in the operator's
+  own infrastructure (compute, DB, queue, CDN). Spree Enterprise / Spree Cloud
+  customers reconcile this scaffold against their commercial invoice.
+principles:
+- name: Visibility
+  description: Make Spree infrastructure and Enterprise / Cloud costs visible to engineering, product, and finance teams.
+- name: Allocation
+  description: Tag each Spree store, environment, and consuming team so cost can be allocated across multi-tenant deployments.
+- name: Optimization
+  description: Continuously evaluate caching (Russian-doll caching, HTTP cache headers on Store API), background-job concurrency, and DB sizing to reduce cost per order.
+- name: Accountability
+  description: Establish budget owners per store / brand / market on the Spree platform.
+domains:
+- name: Hosting Infrastructure (Community)
+  description: Self-hosted Spree compute, database, queue, and CDN costs paid to the operator's underlying cloud provider.
+  costDrivers:
+  - compute_hours
+  - database_size
+  - bandwidth_egress
+  - background_job_concurrency
+  focusMapping:
+    ChargeCategory: Usage
+    ChargeClass: Consumption
+    ServiceCategory: Compute
+    ServiceSubcategory: Infrastructure
+- name: Spree Enterprise / Spree Cloud
+  description: Commercial Spree Enterprise / Spree Cloud subscription, support, and any consumption-based components.
+  costDrivers:
+  - subscription_tier
+  - included_orders
+  - additional_environments
+  - support_tier
+  focusMapping:
+    ChargeCategory: Purchase
+    ChargeClass: Subscription
+    ServiceCategory: API
+    ServiceSubcategory: Provider API
+focusFields:
+  required:
+  - BillingPeriodStart
+  - BillingPeriodEnd
+  - ChargeCategory
+  - ChargePeriodStart
+  - ChargePeriodEnd
+  - ProviderName
+  - PublisherName
+  - InvoiceIssuerName
+  - ServiceName
+  - ServiceCategory
+  - BilledCost
+  - EffectiveCost
+  - ListCost
+  - ContractedCost
+  - PricingCategory
+  - PricingUnit
+  - PricingQuantity
+  recommended:
+  - SubAccountId
+  - SubAccountName
+  - ResourceId
+  - ResourceName
+  - ResourceType
+  - Region
+  - Tags
+notes:
+- Self-hosted Spree has no per-API charge; map costs through the underlying cloud provider's FOCUS data.
+- Spree Enterprise / Spree Cloud invoices should be reconciled against the FOCUS mapping above.
