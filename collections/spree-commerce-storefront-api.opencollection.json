@@ -1,0 +1,2521 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Storefront API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account",
+            "params": [
+              {
+                "name": "include",
+                "value": "default_billing_address,default_shipping_address",
+                "type": "query",
+                "description": "Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information"
+              },
+              {
+                "name": "fields[user]",
+                "value": "email,completed_orders",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the current user details."
+        },
+        {
+          "info": {
+            "name": "Create an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new account"
+        },
+        {
+          "info": {
+            "name": "Update an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the users account details"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Account / Address",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/addresses",
+            "params": [
+              {
+                "name": "fields[address]",
+                "value": "firstname,lastname,country_name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "filter[exclude_quick_checkout]",
+                "value": "true",
+                "type": "query",
+                "description": "Exclude addresses that were created during quick checkout"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of addresses for the current user."
+        },
+        {
+          "info": {
+            "name": "Create an Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/addresses",
+            "params": [
+              {
+                "name": "fields[address]",
+                "value": "firstname,lastname,country_name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new address for the current user."
+        },
+        {
+          "info": {
+            "name": "Update an Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/addresses/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the specified `address`."
+              },
+              {
+                "name": "fields[address]",
+                "value": "firstname,lastname,country_name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the specified address for the current user."
+        },
+        {
+          "info": {
+            "name": "Remove an Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/addresses/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the specified `address`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint removes the specified address for the current user. It uses a soft delete to retain address information for pre-existing orders."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Account / Credit Cards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Credit Cards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/credit_cards",
+            "params": [
+              {
+                "name": "filter[payment_method_id]",
+                "value": "2",
+                "type": "query",
+                "description": "Filter based on payment method ID"
+              },
+              {
+                "name": "include",
+                "value": "payment_method",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[credit_card]",
+                "value": "cc_type,last_digits,month,year,name,default",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of credit cards for the current user."
+        },
+        {
+          "info": {
+            "name": "Remove a Credit Card",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/credit_cards/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the `credit_card` you wish to remove."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes a specified credit card for the current user with a soft delete to retain payment information for any pre-existing orders."
+        },
+        {
+          "info": {
+            "name": "Retrieve the default Credit Card",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/credit_cards/default",
+            "params": [
+              {
+                "name": "include",
+                "value": "payment_method",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[credit_card]",
+                "value": "cc_type,last_digits,month,year,name,default",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the current user's default credit card."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Account / Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/orders",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all completed orders placed by the current user in the current store."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/account/orders/:order_number",
+            "params": [
+              {
+                "name": "order_number",
+                "value": "R653163382",
+                "type": "path",
+                "description": "The required **{order_number}** value can be found in the cart response body, identified as the `number` attribute."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a completed order for the current user within the scope of the current store."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Order Status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve an Order Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/order_status/:order_number",
+            "params": [
+              {
+                "name": "order_number",
+                "value": "R653163382",
+                "type": "path",
+                "description": "The required **{order_number}** value can be found in the cart response body, identified as the `number` attribute."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns completed order information.\n\nThis endpoint is useful when fetching orders placed by a guest user, allowing customers without an account to check the status of their order: (shipment/payment/processing) etc.\n\nPass the cart `token` value as the `X-Spree-Order-Token` for authorization, and the corresponding cart `number` in the URI **{order_number}** to successfully retrieve an order."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cart",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "currency",
+                "value": "USD",
+                "type": "query",
+                "description": "Must be specified when is different than current store default currency."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the cart for the current user."
+        },
+        {
+          "info": {
+            "name": "Create a Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cart.\n\n**Please be aware**; The `token` value found in the response body is used to authorize all future operations on this cart through the Auth API Key `X-Spree-Order-Token`."
+        },
+        {
+          "info": {
+            "name": "Delete a Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart",
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a specified cart.\n\nWhen this endpoint is successfully executed, all shipments are cancelled, payments are voided, then line items, shipments & payments are all deleted."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cart / Line Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add an Item to Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/add_item",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds a variant to the current cart by creating a line item. Each line item represents a specified variant and the desired quantity."
+        },
+        {
+          "info": {
+            "name": "Set Line Item Quantity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/set_quantity",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Sets the quantity of a specified line item."
+        },
+        {
+          "info": {
+            "name": "Remove a Line Item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/remove_line_item/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the `line_item` you wish to remove."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a line item from the cart by deleting the line item.\n\nAfter deleting the line item, the system will re-calculate taxes, promotions, shipments etc."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cart / Other",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Empty the Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/empty",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint removed all line items from the cart. Inventory that was previously taken by this order will be re-stocked."
+        },
+        {
+          "info": {
+            "name": "List Estimated Shipping Rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/estimate_shipping_rates",
+            "params": [
+              {
+                "name": "country_iso",
+                "value": "USA",
+                "type": "query",
+                "description": "Pass country ISO or ISO3 symbol to get estimations for this destination. If no code is passed we'll try to use Cart shipping address country or the default Country for the current Store."
+              },
+              {
+                "name": "fields[shipping_rate]",
+                "value": "name,selected,final_price,display_final_price,cost,display_cost,tax_amount,display_tax_amount,shipping_method_id",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a list of shipping rates for the current cart. The rates given are only estimates and can vary from the final shipping rates."
+        },
+        {
+          "info": {
+            "name": "Associate a Cart with a User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/associate",
+            "params": [
+              {
+                "name": "guest_order_token",
+                "value": "",
+                "type": "query",
+                "description": "Token of the guest cart to be associated with user."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Associates a guest cart with the currently signed in user."
+        },
+        {
+          "info": {
+            "name": "Change Cart Currency",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/change_currency",
+            "params": [
+              {
+                "name": "new_currency",
+                "value": "",
+                "type": "query",
+                "description": "The currency to change the cart to."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Changes the cart currency and recalculates the cart values."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cart / Coupons",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Apply a Coupon Code / Gift Card",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/apply_coupon_code",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Applies a coupon code or gift card code to the current cart."
+        },
+        {
+          "info": {
+            "name": "Remove a Coupon / Gift Card",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/remove_coupon_code/:coupon_code",
+            "params": [
+              {
+                "name": "coupon_code",
+                "value": "DISCOUNT10",
+                "type": "path",
+                "description": "Specify the coupon code or gift card code for removal."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a specified coupon code or gift card code from the current cart."
+        },
+        {
+          "info": {
+            "name": "Remove all Coupons",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/cart/remove_coupon_code",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes all coupons that have been applied to the current cart."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Checkout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update Checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Update Checkout endpoint allows you to manage the typical stages of an e-commerce checkout system."
+        },
+        {
+          "info": {
+            "name": "Validate order payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/validate_order_for_payment",
+            "params": [
+              {
+                "name": "skip_state",
+                "value": "",
+                "type": "query",
+                "description": "Set to `true` if the check for cart changes should be skipped"
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Validate an order before placing it. It will respond with an error when:\n- cart was changed\n- any order item is out of stock\n- any order item is discontinued"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Checkout / State",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Next Checkout Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/next",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Goes to the next checkout step."
+        },
+        {
+          "info": {
+            "name": "Advance Checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/advance",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Advances the checkout to the furthest checkout step validation allows, up until the **completed** step."
+        },
+        {
+          "info": {
+            "name": "Complete Checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/complete",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Completes the checkout by marking the order as complete.\n\n**Please be aware**; Once a checkout is marked as `complete` it is considered a completed order, the Cart and Checkout endpoints will no longer access a completed order, and a new cart will need to be created.\n\nIf you want to access a completed order you will need to use the **Account / Orders** or **Order Status** endpoints."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Checkout / Shipments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Selects shipping method for shipment(s)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/select_shipping_method",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Selects shipping method for Shipment(s).\n\nTo generate shipments you first need to fetch shipping rates via\n\n[Get Shipping Rates](/api-reference/storefront/checkout-shipments/list-shipping-rates) endpoint"
+        },
+        {
+          "info": {
+            "name": "List Shipping Rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/shipping_rates",
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a list of available shipping rates for the checkout.\n\nShipping rates are grouped against shipments. Each checkout can have multiple shipments. Some products are in stock and will be shipped immediately, while others might be back-ordered and sent later."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Checkout / Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create new Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/create_payment",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates new Payment for the current checkout.\n\nYou can either create new payment source (eg. a Credit Card) or use an existing (for signed in users only).\n\nNewly created payment source will be associated to the current signed in user.\n\nSystem will automatically invalidate previous (non-finalized) payments (excluding store credit / gift card payments).\n\n[More details on payment system](/developer/core-concepts/payments)"
+        },
+        {
+          "info": {
+            "name": "List Payment Methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/payment_methods",
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a list of available payment methods for this checkout."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Checkout / Store Credit",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Store Credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/add_store_credit",
+            "params": [
+              {
+                "name": "amount",
+                "value": "100",
+                "type": "query",
+                "description": "Amount of Store Credit to use. As much as possible Store Credit will be applied if no amount is passed."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Add Store Credit endpoint takes the users existing store credit from their account and adds a set amount of this store credit to the current cart.\n\nIn essence, by adding the user's store credit to a cart, the user's store credit is being spent."
+        },
+        {
+          "info": {
+            "name": "Remove Store Credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/checkout/remove_store_credit",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes store credit from the cart if any had previously been applied."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Products",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/products",
+            "params": [
+              {
+                "name": "filter[ids]",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "Fetch only resources with corresponding IDs"
+              },
+              {
+                "name": "filter[skus]",
+                "value": "SKU-123,SKU-345",
+                "type": "query",
+                "description": "Fetch only resources with corresponding SKUs"
+              },
+              {
+                "name": "filter[price]",
+                "value": "10,100",
+                "type": "query",
+                "description": "Filter Products based on price (minimum, maximum range)"
+              },
+              {
+                "name": "filter[taxons]",
+                "value": "1,2,3,4,5,6,7,8,9,10,11",
+                "type": "query",
+                "description": "Filter Products based on taxons (IDs of categories, brands, etc)"
+              },
+              {
+                "name": "filter[vendor_ids]",
+                "value": "bb492c7d-c174-4e6b-ba0b-fe98d5c17307,51c35adb-7ab3-4880-8887-35bdc4f6c29f",
+                "type": "query",
+                "description": "Fetch products from specified Vendors (Sellers) - only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+              },
+              {
+                "name": "filter[name]",
+                "value": "rails",
+                "type": "query",
+                "description": "Find Products with matching name (supports wild-card, partial-word match search)"
+              },
+              {
+                "name": "filter[options][tshirt-color]",
+                "value": "Red",
+                "type": "query",
+                "description": "Find Products with Variants that have the specified option (eg. color, size) and value (eg. red, XS)"
+              },
+              {
+                "name": "filter[properties][brand-name]",
+                "value": "alpha",
+                "type": "query",
+                "description": "Find Products with Property Brand Name with value Alpha"
+              },
+              {
+                "name": "filter[show_deleted]",
+                "value": "true",
+                "type": "query",
+                "description": "Returns also deleted products"
+              },
+              {
+                "name": "filter[show_discontinued]",
+                "value": "true",
+                "type": "query",
+                "description": "Returns also discontinued products"
+              },
+              {
+                "name": "filter[in_stock]",
+                "value": "true",
+                "type": "query",
+                "description": "Returns only in stock products"
+              },
+              {
+                "name": "filter[backorderable]",
+                "value": "true",
+                "type": "query",
+                "description": "Returns only backorderable products"
+              },
+              {
+                "name": "filter[purchasable]",
+                "value": "true",
+                "type": "query",
+                "description": "Returns only in stock or backorderable products"
+              },
+              {
+                "name": "sort",
+                "value": "-updated_at,price,-name,created_at,-available_on,sku",
+                "type": "query",
+                "description": "Sort products based on: <ul>\n  <li>name (ascending/descending)</li>\n  <li>price (ascending/descending)</li>\n  <li>available_on (ascending/descending)</li>\n  <li>created_at (ascending/descending)</li>\n  <li>updated_at (ascending/descending)</li>\n  <li>sku (ascending/descending)</li>\n</ul> Use <q>-</q> sign to set descending sort, eg. <q>-updated_at</q>"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "include",
+                "value": "default_variant,variants,option_types,product_properties,taxons,images,primary_variant",
+                "type": "query",
+                "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\ndefault_variant,variants,option_types,product_properties,taxons,images,primary_variant\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+              },
+              {
+                "name": "fields[product]",
+                "value": "price,description,name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "image_transformation[size]",
+                "value": "100x50",
+                "type": "query",
+                "description": "Specifies dimensions for included images at transformed_url attribute."
+              },
+              {
+                "name": "image_transformation[quality]",
+                "value": "70",
+                "type": "query",
+                "description": "Specifies quality for included images at transformed_url attribute"
+              }
+            ]
+          },
+          "docs": "Returns a list of products for the current Store."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/products/:product_slug",
+            "params": [
+              {
+                "name": "product_slug",
+                "value": "knitted-high-neck-sweater",
+                "type": "path",
+                "description": "Product Slug"
+              },
+              {
+                "name": "include",
+                "value": "default_variant,variants,option_types,product_properties,taxons,images,primary_variant",
+                "type": "query",
+                "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\ndefault_variant,variants,option_types,product_properties,taxons,images,primary_variant\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+              },
+              {
+                "name": "fields[product]",
+                "value": "price,description,name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "image_transformation[size]",
+                "value": "100x50",
+                "type": "query",
+                "description": "Specifies dimensions for included images at transformed_url attribute."
+              },
+              {
+                "name": "image_transformation[quality]",
+                "value": "70",
+                "type": "query",
+                "description": "Specifies quality for included images at transformed_url attribute"
+              }
+            ]
+          },
+          "docs": "Returns Product details. You can use product permalink:\n\n```\nGET /api/v2/storefront/products/knitted-high-neck-sweater\n```\n\nOr Product ID:\n\n```\nGET /api/v2/storefront/products/21\n```\n\n**Note** API will attempt a permalink lookup before an ID lookup."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Variants",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Product Variants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/products/:product_slug/variants",
+            "params": [
+              {
+                "name": "product_slug",
+                "value": "knitted-high-neck-sweater",
+                "type": "path",
+                "description": "Product Slug"
+              },
+              {
+                "name": "filter[options][color]",
+                "value": "red",
+                "type": "query",
+                "description": "Find Variants that have the specified option (eg. color, size) and value (eg. red, XS)"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "include",
+                "value": "product,option_values,images,filter_values",
+                "type": "query",
+                "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\nproduct,option_values,images,filter_values\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+              },
+              {
+                "name": "fields[variant]",
+                "value": "price,currency,options,options_text",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a list of product variants. You can use product permalink:\n\n```\nGET /api/v2/storefront/products/knitted-high-neck-sweater/variants\n```\n\nOr Product ID:\n\n```\nGET /api/v2/storefront/products/21/variants\n```\n\n**Note** API will attempt a permalink lookup before an ID lookup."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Stores",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return the current Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/store",
+            "params": [
+              {
+                "name": "include",
+                "value": "default_country",
+                "type": "query",
+                "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\ndefault_country\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+              },
+              {
+                "name": "fields[store]",
+                "value": "name,url,supported_locales",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the current Store. [Read more about Stores](/developer/core-concepts/stores)"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Store Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/policies"
+          },
+          "docs": "Returns a list of Store Policies. This endpoint is only available in Spree 5.2 or later."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/policies/:policy_slug"
+          },
+          "docs": "Returns the details of a specified Policy. This endpoint is only available in Spree 5.2 or later."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Posts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Posts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/posts",
+            "params": [
+              {
+                "name": "filter[ids]",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "Fetch only resources with corresponding IDs"
+              },
+              {
+                "name": "filter[title]",
+                "value": "Hello World",
+                "type": "query",
+                "description": "Filter Posts by title"
+              },
+              {
+                "name": "filter[post_category_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Filter Posts by Post Category ID"
+              },
+              {
+                "name": "filter[post_category_slug]",
+                "value": "news",
+                "type": "query",
+                "description": "Filter Posts by Post Category slug"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "sort",
+                "value": "-published_at",
+                "type": "query",
+                "description": "Sort posts by attribute. Prefix with \"-\" for descending order. Available options: id, title, published_at, created_at, updated_at"
+              },
+              {
+                "name": "include",
+                "value": "post_category",
+                "type": "query",
+                "description": "Include related resources (available: post_category)"
+              }
+            ]
+          },
+          "docs": "Returns a list of published Posts. This endpoint is only available in Spree 5.2 or later."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Post",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/posts/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello-world",
+                "type": "path",
+                "description": "Post slug or ID"
+              },
+              {
+                "name": "include",
+                "value": "post_category",
+                "type": "query",
+                "description": "Include related resources (available: post_category)"
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified Post. You can use either the post slug or ID. This endpoint is only available in Spree 5.2 or later."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Post Categories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Post Categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/post_categories",
+            "params": [
+              {
+                "name": "filter[ids]",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "Fetch only resources with corresponding IDs"
+              },
+              {
+                "name": "filter[title]",
+                "value": "News",
+                "type": "query",
+                "description": "Filter Post Categories by title"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "sort",
+                "value": "title",
+                "type": "query",
+                "description": "Sort post categories by attribute. Prefix with \"-\" for descending order. Available options: id, title, created_at, updated_at"
+              }
+            ]
+          },
+          "docs": "Returns a list of Post Categories. This endpoint is only available in Spree 5.2 or later."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Post Category",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/post_categories/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "news",
+                "type": "path",
+                "description": "Post Category slug or ID"
+              },
+              {
+                "name": "include",
+                "value": "posts",
+                "type": "query",
+                "description": "Include related resources (available: posts)"
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified Post Category, including related posts. You can use either the category slug or ID. This endpoint is only available in Spree 5.2 or later."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Taxons",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Taxons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/taxons",
+            "params": [
+              {
+                "name": "filter[ids]",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "Fetch only resources with corresponding IDs"
+              },
+              {
+                "name": "filter[name]",
+                "value": "rails",
+                "type": "query",
+                "description": "Find resources with matching name (supports wild-card, partial-word match search)"
+              },
+              {
+                "name": "filter[parent_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Fetch children nodes of specified Taxon"
+              },
+              {
+                "name": "filter[parent_permalink]",
+                "value": "clothes",
+                "type": "query",
+                "description": "Fetch children nodes of specified Taxon permalink"
+              },
+              {
+                "name": "filter[taxonomy_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Fetch Taxons in a specified Taxonomy"
+              },
+              {
+                "name": "filter[roots]",
+                "value": "false",
+                "type": "query",
+                "description": "Fetch only root Taxons (Taxonomies)"
+              },
+              {
+                "name": "filter[vendor_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Fetch only Taxons that have products of a selected Vendor"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "include",
+                "value": "parent,taxonomy,children,image,products",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[taxon]",
+                "value": "name,pretty_name,permalink",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a list of Taxons. [Read more about Taxons](/developer/core-concepts/products#taxons-and-taxonomies)"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Taxon",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/taxons/:taxon_permalink",
+            "params": [
+              {
+                "name": "taxon_permalink",
+                "value": "categories/women",
+                "type": "path",
+                "description": "Specify the taxon using the permalink or taxon ID."
+              },
+              {
+                "name": "include",
+                "value": "parent,taxonomy,children,image,products",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[taxon]",
+                "value": "name,pretty_name,permalink",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified taxon."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Countries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Countries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/countries"
+          },
+          "docs": "Returns a list of all countries."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/countries/:iso",
+            "params": [
+              {
+                "name": "iso",
+                "value": "",
+                "type": "path",
+                "description": "Provide a Country ISO `US` or ISO3 `USA` code."
+              },
+              {
+                "name": "include",
+                "value": "states",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[country]",
+                "value": "iso_name,name,states_required",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specific country."
+        },
+        {
+          "info": {
+            "name": "Get Default Country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/countries/default",
+            "params": [
+              {
+                "name": "include",
+                "value": "states",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[country]",
+                "value": "iso_name,name,states_required",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the default country for the current store. By default this will be the US."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Stripe",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Stripe Payment Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/stripe/payment_intents",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a Stripe Payment Intent using provided payment method. It creates a Stripe customer if not exists."
+        },
+        {
+          "info": {
+            "name": "Return a Stripe Payment Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/stripe/payment_intents/:id",
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the Payment Intent information"
+        },
+        {
+          "info": {
+            "name": "Updates Stripe Payment Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/stripe/payment_intents/:id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the payment intent with new `amount` and `stripe_payment_method_id`"
+        },
+        {
+          "info": {
+            "name": "Mark the payment intent as confirmed, and move the order to the complete state",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/stripe/payment_intents/:id/confirm",
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint is used to complete the order with succeeded payment intent. First it will check if the payment intent has `status` `succeeded`, if yes, then it will move the order to the complete state."
+        },
+        {
+          "info": {
+            "name": "Create a Stripe Setup Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/stripe/setup_intents"
+          },
+          "docs": "First, this endpoint creates a customer in Stripe (if it doesn't already exist), then it creates an Ephemeral Key for the customer, and finally, it creates a Setup Intent for the customer."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Adyen",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an Adyen Payment Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/adyen/payment_sessions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new Adyen payment session with the specified amount. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access."
+        },
+        {
+          "info": {
+            "name": "Complete an Adyen payment session and order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/adyen/payment_sessions/:id/complete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Complete an Adyen payment session and order. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access."
+        },
+        {
+          "info": {
+            "name": "Get Adyen Payment Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/adyen/payment_sessions/:id",
+            "auth": {
+              "type": "apikey",
+              "key": "X-Spree-Order-Token",
+              "value": "{{X-Spree-Order-Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve An Adyen payment session information. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Vendors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Vendors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/vendors",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "fields[vendor]",
+                "value": "name,slug,about_us,facebook",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a list of Vendors. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/vendors/:vendor_slug",
+            "params": [
+              {
+                "name": "vendor_slug",
+                "value": "acme-co",
+                "type": "path",
+                "description": "Look for Vendor by ID or their slug"
+              },
+              {
+                "name": "fields[vendor]",
+                "value": "name,slug,about_us,facebook",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Wishlists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Wishlists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists",
+            "params": [
+              {
+                "name": "include",
+                "value": "wished_items.variant",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "is_variant_included",
+                "value": "150",
+                "type": "query",
+                "description": "Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all wishlists available to the current user, in the current store."
+        },
+        {
+          "info": {
+            "name": "Create a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists",
+            "params": [
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new wishlist for the current user in the current store."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              },
+              {
+                "name": "include",
+                "value": "wished_items.variant",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "is_variant_included",
+                "value": "150",
+                "type": "query",
+                "description": "Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`"
+              }
+            ]
+          },
+          "docs": "Retrieves a wishlist using the wishlist token.\n\nIf the wishlist is publicly viewable, the endpoint will return the requested wishlist regardless of the user. If the wishlist is private, only the wishlist owner can access the wishlist."
+        },
+        {
+          "info": {
+            "name": "Update a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the specific Wishlist by setting the values passed in the request body. Any parameters not provided will be left unchanged."
+        },
+        {
+          "info": {
+            "name": "Delete a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This operation deletes the wishlist identified in the URI `token`."
+        },
+        {
+          "info": {
+            "name": "Retrieve the default Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/default",
+            "params": [
+              {
+                "name": "include",
+                "value": "wished_items.variant",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "is_variant_included",
+                "value": "150",
+                "type": "query",
+                "description": "Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the default wishlist for the current user, in the current store. If the user does not have a default wishlist in the current store one will be created."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Wishlists / Wished Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Item to Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token/add_item",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The Add Item to Wishlist endpoint adds a variant to an existing wishlist by creating a new `wished_item`. A wished item in a wishlist is comparable to a line item in a cart.\n\nEach wished item references a single variant, holds the desired quantity and returns price information determined by the variant price in current currency, and desired quantity."
+        },
+        {
+          "info": {
+            "name": "Add Items to Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token/add_items",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The Add Items to Wishlist endpoint adds variants to an existing wishlist by creating a new `wished_item` objects. A wished item in a wishlist is comparable to a line item in a cart.\n\nEach wished item references a single variant, holds the desired quantity and returns price information determined by the variant price in current currency, and desired quantity."
+        },
+        {
+          "info": {
+            "name": "Set Wished Item Quantity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token/set_item_quantity/:item_id",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              },
+              {
+                "name": "item_id",
+                "value": "3",
+                "type": "path",
+                "description": "The wished item id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint sets the wished item quantity."
+        },
+        {
+          "info": {
+            "name": "Delete Item from Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token/remove_item/:item_id",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "item_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes a wished item from a wishlist."
+        },
+        {
+          "info": {
+            "name": "Delete Items from Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/wishlists/:token/remove_items",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes wished items from a wishlist."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Digital Downloads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download a Digital Asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://demo.spreecommerce.org/api/v2/storefront/digitals/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "Use the token from the digital link."
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to download a digital item using the unique digital_link token.\n\nThe digital_link token value can be found by including `line_items.digital_links` in a completed order lookup.\n\nUse the **Retrieve an Order Status** endpoint found under the Order Status tab, or the **Retrieve an Order** endpoint found under the Account / Orders tab to perform a completed order lookup.\n\nDepending on the store that the item was purchased in, downloads may be restricted to a set number of day"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
