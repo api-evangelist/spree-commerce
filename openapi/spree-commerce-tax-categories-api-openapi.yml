@@ -1,0 +1,522 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Tax Categories API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Tax Categories
+paths:
+  /api/v2/platform/tax_categories:
+    get:
+      summary: Return a list of Tax Categories
+      tags:
+      - Tax Categories
+      security:
+      - bearer_auth: []
+      description: Returns a list of Tax Categories
+      operationId: tax-categories-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: tax_rates
+        schema:
+          type: string
+      - name: filter[name_eq]
+        in: query
+        description: ''
+        example: Clothing
+        schema:
+          type: string
+      - name: filter[is_default_true]
+        in: query
+        description: ''
+        example: '1'
+        schema:
+          type: string
+      - name: filter[tax_code_eq]
+        in: query
+        description: ''
+        example: 1257L
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '153'
+                      type: tax_category
+                      attributes:
+                        name: TaxCategory - 54232
+                        description: Velit qui dignissimos excepturi eum corrupti.
+                        is_default: false
+                        deleted_at: null
+                        created_at: '2022-11-08T19:35:41.496Z'
+                        updated_at: '2022-11-08T19:35:41.496Z'
+                        tax_code: null
+                      relationships:
+                        tax_rates:
+                          data: []
+                    - id: '154'
+                      type: tax_category
+                      attributes:
+                        name: TaxCategory - 100586
+                        description: Placeat nihil quaerat nostrum cumque ipsa eius perferendis.
+                        is_default: false
+                        deleted_at: null
+                        created_at: '2022-11-08T19:35:41.497Z'
+                        updated_at: '2022-11-08T19:35:41.497Z'
+                        tax_code: null
+                      relationships:
+                        tax_rates:
+                          data: []
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/tax_categories?page=1&per_page=&include=&filter[name_eq]=&filter[is_default_true]=&filter[tax_code_eq]=
+                      next: http://www.example.com/api/v2/platform/tax_categories?filter%5Bis_default_true%5D=&filter%5Bname_eq%5D=&filter%5Btax_code_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/tax_categories?filter%5Bis_default_true%5D=&filter%5Bname_eq%5D=&filter%5Btax_code_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/tax_categories?filter%5Bis_default_true%5D=&filter%5Bname_eq%5D=&filter%5Btax_code_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/tax_categories?filter%5Bis_default_true%5D=&filter%5Bname_eq%5D=&filter%5Btax_code_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Tax Category
+      tags:
+      - Tax Categories
+      security:
+      - bearer_auth: []
+      description: Creates a Tax Category
+      operationId: create-tax-category
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: tax_rates
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '157'
+                      type: tax_category
+                      attributes:
+                        name: TaxCategory - 646810
+                        description: Facilis quis quos unde reiciendis.
+                        is_default: false
+                        deleted_at: null
+                        created_at: '2022-11-08T19:35:42.001Z'
+                        updated_at: '2022-11-08T19:35:42.001Z'
+                        tax_code: null
+                      relationships:
+                        tax_rates:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_tax_category_params'
+  /api/v2/platform/tax_categories/{id}:
+    get:
+      summary: Return a Tax Category
+      tags:
+      - Tax Categories
+      security:
+      - bearer_auth: []
+      description: Returns a Tax Category
+      operationId: show-tax-category
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: tax_rates
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '158'
+                      type: tax_category
+                      attributes:
+                        name: TaxCategory - 71294
+                        description: Sunt ut autem corrupti explicabo quibusdam nam voluptas.
+                        is_default: false
+                        deleted_at: null
+                        created_at: '2022-11-08T19:35:42.273Z'
+                        updated_at: '2022-11-08T19:35:42.273Z'
+                        tax_code: null
+                      relationships:
+                        tax_rates:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Tax Category
+      tags:
+      - Tax Categories
+      security:
+      - bearer_auth: []
+      description: Updates a Tax Category
+      operationId: update-tax-category
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: tax_rates
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '160'
+                      type: tax_category
+                      attributes:
+                        name: Clothing
+                        description: Men's, women's and children's clothing
+                        is_default: true
+                        deleted_at: null
+                        created_at: '2022-11-08T19:35:42.789Z'
+                        updated_at: '2022-11-08T19:35:43.019Z'
+                        tax_code: 1233K
+                      relationships:
+                        tax_rates:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_tax_category_params'
+    delete:
+      summary: Delete a Tax Category
+      tags:
+      - Tax Categories
+      security:
+      - bearer_auth: []
+      description: Deletes a Tax Category
+      operationId: delete-tax-category
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    update_tax_category_params:
+      type: object
+      properties:
+        tax_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Clothing
+            is_default:
+              type: boolean
+              example: true
+            tax_code:
+              type: string
+              example: 1257L
+            description:
+              type: string
+              example: Men's, women's and children's branded clothing
+      required:
+      - tax_category
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_tax_category_params:
+      type: object
+      properties:
+        tax_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Clothing
+            is_default:
+              type: boolean
+              example: true
+            tax_code:
+              type: string
+              example: 1257L
+            description:
+              type: string
+              example: Men's, women's and children's branded clothing
+      required:
+      - tax_category
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

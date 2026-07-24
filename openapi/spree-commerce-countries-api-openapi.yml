@@ -1,0 +1,3757 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Countries API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Countries
+paths:
+  /api/v2/platform/countries:
+    get:
+      summary: Returns a list of Countries
+      tags:
+      - Countries
+      security:
+      - bearer_auth: []
+      operationId: countries-list
+      description: Returns a list of Countries
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '72'
+                      type: country
+                      attributes:
+                        iso_name: UNITED STATES
+                        iso: US
+                        iso3: USA
+                        name: United States of America
+                        numcode: 840
+                        states_required: true
+                        updated_at: '2022-11-08T19:34:06.932Z'
+                        zipcode_required: true
+                        created_at: '2022-11-08T19:34:06.932Z'
+                      relationships:
+                        states:
+                          data: []
+                    - id: '73'
+                      type: country
+                      attributes:
+                        iso_name: ISO_NAME_2
+                        iso: I2
+                        iso3: IS2
+                        name: NAME_2
+                        numcode: 840
+                        states_required: false
+                        updated_at: '2022-11-08T19:34:06.937Z'
+                        zipcode_required: true
+                        created_at: '2022-11-08T19:34:06.937Z'
+                      relationships:
+                        states:
+                          data: []
+                    - id: '74'
+                      type: country
+                      attributes:
+                        iso_name: ISO_NAME_3
+                        iso: I3
+                        iso3: IS3
+                        name: NAME_3
+                        numcode: 840
+                        states_required: false
+                        updated_at: '2022-11-08T19:34:06.939Z'
+                        zipcode_required: true
+                        created_at: '2022-11-08T19:34:06.939Z'
+                      relationships:
+                        states:
+                          data: []
+                    meta:
+                      count: 3
+                      total_count: 3
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/countries
+                      next: http://www.example.com/api/v2/platform/countries?page=1
+                      prev: http://www.example.com/api/v2/platform/countries?page=1
+                      last: http://www.example.com/api/v2/platform/countries?page=1
+                      first: http://www.example.com/api/v2/platform/countries?page=1
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/platform/countries/{id}:
+    get:
+      summary: Returns a Country
+      tags:
+      - Countries
+      security:
+      - bearer_auth: []
+      operationId: show-country
+      description: Returns a Country
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '79'
+                      type: country
+                      attributes:
+                        iso_name: ISO_NAME_6
+                        iso: I6
+                        iso3: IS6
+                        name: NAME_6
+                        numcode: 840
+                        states_required: false
+                        updated_at: '2022-11-08T19:34:07.232Z'
+                        zipcode_required: true
+                        created_at: '2022-11-08T19:34:07.232Z'
+                      relationships:
+                        states:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/storefront/countries:
+    get:
+      description: Returns a list of all countries.
+      tags:
+      - Countries
+      operationId: countries-list
+      responses:
+        '200':
+          $ref: '#/components/responses/CountryList'
+      summary: List all Countries
+  /api/v2/storefront/countries/{iso}:
+    get:
+      description: Returns the details of a specific country.
+      tags:
+      - Countries
+      operationId: show-country
+      parameters:
+      - $ref: '#/components/parameters/IsoOrIso3'
+      - $ref: '#/components/parameters/CountryIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsCountry'
+      responses:
+        '200':
+          $ref: '#/components/responses/Country'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+      summary: Retrieve a Country
+  /api/v2/storefront/countries/default:
+    get:
+      description: Returns the default country for the current store. By default this will be the US.
+      tags:
+      - Countries
+      operationId: default-country
+      parameters:
+      - $ref: '#/components/parameters/CountryIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsCountry'
+      responses:
+        '200':
+          $ref: '#/components/responses/Country'
+      summary: Get Default Country
+components:
+  responses:
+    CountryList:
+      description: 200 Success - Returns an array of `country` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountryIncludes'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
+          examples:
+            All Countries:
+              value:
+                data:
+                - id: '1'
+                  type: country
+                  attributes:
+                    iso: AD
+                    iso3: AND
+                    iso_name: ANDORRA
+                    name: Andorra
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '3'
+                  type: country
+                  attributes:
+                    iso: AF
+                    iso3: AFG
+                    iso_name: AFGHANISTAN
+                    name: Afghanistan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '5'
+                  type: country
+                  attributes:
+                    iso: AI
+                    iso3: AIA
+                    iso_name: ANGUILLA
+                    name: Anguilla
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '6'
+                  type: country
+                  attributes:
+                    iso: AL
+                    iso3: ALB
+                    iso_name: ALBANIA
+                    name: Albania
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '7'
+                  type: country
+                  attributes:
+                    iso: AM
+                    iso3: ARM
+                    iso_name: ARMENIA
+                    name: Armenia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '9'
+                  type: country
+                  attributes:
+                    iso: AR
+                    iso3: ARG
+                    iso_name: ARGENTINA
+                    name: Argentina
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '10'
+                  type: country
+                  attributes:
+                    iso: AS
+                    iso3: ASM
+                    iso_name: AMERICAN SAMOA
+                    name: American Samoa
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '11'
+                  type: country
+                  attributes:
+                    iso: AT
+                    iso3: AUT
+                    iso_name: AUSTRIA
+                    name: Austria
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '14'
+                  type: country
+                  attributes:
+                    iso: AZ
+                    iso3: AZE
+                    iso_name: AZERBAIJAN
+                    name: Azerbaijan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '15'
+                  type: country
+                  attributes:
+                    iso: BA
+                    iso3: BIH
+                    iso_name: BOSNIA AND HERZEGOVINA
+                    name: Bosnia and Herzegovina
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '16'
+                  type: country
+                  attributes:
+                    iso: BB
+                    iso3: BRB
+                    iso_name: BARBADOS
+                    name: Barbados
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '17'
+                  type: country
+                  attributes:
+                    iso: BD
+                    iso3: BGD
+                    iso_name: BANGLADESH
+                    name: Bangladesh
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '18'
+                  type: country
+                  attributes:
+                    iso: BE
+                    iso3: BEL
+                    iso_name: BELGIUM
+                    name: Belgium
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '20'
+                  type: country
+                  attributes:
+                    iso: BG
+                    iso3: BGR
+                    iso_name: BULGARIA
+                    name: Bulgaria
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '21'
+                  type: country
+                  attributes:
+                    iso: BH
+                    iso3: BHR
+                    iso_name: BAHRAIN
+                    name: Bahrain
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '24'
+                  type: country
+                  attributes:
+                    iso: BL
+                    iso3: BLM
+                    iso_name: SAINT BARTHÉLEMY
+                    name: Saint Barthélemy
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '26'
+                  type: country
+                  attributes:
+                    iso: BN
+                    iso3: BRN
+                    iso_name: BRUNEI DARUSSALAM
+                    name: Brunei Darussalam
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '28'
+                  type: country
+                  attributes:
+                    iso: BQ
+                    iso3: BES
+                    iso_name: BONAIRE, SINT EUSTATIUS AND SABA
+                    name: Bonaire, Sint Eustatius and Saba
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '31'
+                  type: country
+                  attributes:
+                    iso: BT
+                    iso3: BTN
+                    iso_name: BHUTAN
+                    name: Bhutan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '33'
+                  type: country
+                  attributes:
+                    iso: BY
+                    iso3: BLR
+                    iso_name: BELARUS
+                    name: Belarus
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '36'
+                  type: country
+                  attributes:
+                    iso: CC
+                    iso3: CCK
+                    iso_name: COCOS (KEELING) ISLANDS
+                    name: Cocos (Keeling) Islands
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '40'
+                  type: country
+                  attributes:
+                    iso: CH
+                    iso3: CHE
+                    iso_name: SWITZERLAND
+                    name: Switzerland
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '43'
+                  type: country
+                  attributes:
+                    iso: CL
+                    iso3: CHL
+                    iso_name: CHILE
+                    name: Chile
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '46'
+                  type: country
+                  attributes:
+                    iso: CO
+                    iso3: COL
+                    iso_name: COLOMBIA
+                    name: Colombia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '47'
+                  type: country
+                  attributes:
+                    iso: CR
+                    iso3: CRI
+                    iso_name: COSTA RICA
+                    name: Costa Rica
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '48'
+                  type: country
+                  attributes:
+                    iso: CU
+                    iso3: CUB
+                    iso_name: CUBA
+                    name: Cuba
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '49'
+                  type: country
+                  attributes:
+                    iso: CV
+                    iso3: CPV
+                    iso_name: CABO VERDE
+                    name: Cabo Verde
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '50'
+                  type: country
+                  attributes:
+                    iso: CW
+                    iso3: CUW
+                    iso_name: CURAÇAO
+                    name: Curaçao
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '51'
+                  type: country
+                  attributes:
+                    iso: CX
+                    iso3: CXR
+                    iso_name: CHRISTMAS ISLAND
+                    name: Christmas Island
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '52'
+                  type: country
+                  attributes:
+                    iso: CY
+                    iso3: CYP
+                    iso_name: CYPRUS
+                    name: Cyprus
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '53'
+                  type: country
+                  attributes:
+                    iso: CZ
+                    iso3: CZE
+                    iso_name: CZECHIA
+                    name: Czechia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '54'
+                  type: country
+                  attributes:
+                    iso: DE
+                    iso3: DEU
+                    iso_name: GERMANY
+                    name: Germany
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '56'
+                  type: country
+                  attributes:
+                    iso: DK
+                    iso3: DNK
+                    iso_name: DENMARK
+                    name: Denmark
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '58'
+                  type: country
+                  attributes:
+                    iso: DO
+                    iso3: DOM
+                    iso_name: DOMINICAN REPUBLIC
+                    name: Dominican Republic
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '59'
+                  type: country
+                  attributes:
+                    iso: DZ
+                    iso3: DZA
+                    iso_name: ALGERIA
+                    name: Algeria
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '60'
+                  type: country
+                  attributes:
+                    iso: EC
+                    iso3: ECU
+                    iso_name: ECUADOR
+                    name: Ecuador
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '61'
+                  type: country
+                  attributes:
+                    iso: EE
+                    iso3: EST
+                    iso_name: ESTONIA
+                    name: Estonia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '62'
+                  type: country
+                  attributes:
+                    iso: EG
+                    iso3: EGY
+                    iso_name: EGYPT
+                    name: Egypt
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '65'
+                  type: country
+                  attributes:
+                    iso: ET
+                    iso3: ETH
+                    iso_name: ETHIOPIA
+                    name: Ethiopia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '66'
+                  type: country
+                  attributes:
+                    iso: FI
+                    iso3: FIN
+                    iso_name: FINLAND
+                    name: Finland
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '68'
+                  type: country
+                  attributes:
+                    iso: FK
+                    iso3: FLK
+                    iso_name: FALKLAND ISLANDS (MALVINAS)
+                    name: Falkland Islands (Malvinas)
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '69'
+                  type: country
+                  attributes:
+                    iso: FM
+                    iso3: FSM
+                    iso_name: MICRONESIA, FEDERATED STATES OF
+                    name: Micronesia, Federated States of
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '70'
+                  type: country
+                  attributes:
+                    iso: FO
+                    iso3: FRO
+                    iso_name: FAROE ISLANDS
+                    name: Faroe Islands
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '71'
+                  type: country
+                  attributes:
+                    iso: FR
+                    iso3: FRA
+                    iso_name: FRANCE
+                    name: France
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '72'
+                  type: country
+                  attributes:
+                    iso: GA
+                    iso3: GAB
+                    iso_name: GABON
+                    name: Gabon
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '73'
+                  type: country
+                  attributes:
+                    iso: GB
+                    iso3: GBR
+                    iso_name: UNITED KINGDOM
+                    name: United Kingdom
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '75'
+                  type: country
+                  attributes:
+                    iso: GE
+                    iso3: GEO
+                    iso_name: GEORGIA
+                    name: Georgia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '76'
+                  type: country
+                  attributes:
+                    iso: GF
+                    iso3: GUF
+                    iso_name: FRENCH GUIANA
+                    name: French Guiana
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '77'
+                  type: country
+                  attributes:
+                    iso: GG
+                    iso3: GGY
+                    iso_name: GUERNSEY
+                    name: Guernsey
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '79'
+                  type: country
+                  attributes:
+                    iso: GI
+                    iso3: GIB
+                    iso_name: GIBRALTAR
+                    name: Gibraltar
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '80'
+                  type: country
+                  attributes:
+                    iso: GL
+                    iso3: GRL
+                    iso_name: GREENLAND
+                    name: Greenland
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '83'
+                  type: country
+                  attributes:
+                    iso: GP
+                    iso3: GLP
+                    iso_name: GUADELOUPE
+                    name: Guadeloupe
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '85'
+                  type: country
+                  attributes:
+                    iso: GR
+                    iso3: GRC
+                    iso_name: GREECE
+                    name: Greece
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '86'
+                  type: country
+                  attributes:
+                    iso: GT
+                    iso3: GTM
+                    iso_name: GUATEMALA
+                    name: Guatemala
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '87'
+                  type: country
+                  attributes:
+                    iso: GU
+                    iso3: GUM
+                    iso_name: GUAM
+                    name: Guam
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '88'
+                  type: country
+                  attributes:
+                    iso: GW
+                    iso3: GNB
+                    iso_name: GUINEA-BISSAU
+                    name: Guinea-Bissau
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '91'
+                  type: country
+                  attributes:
+                    iso: HN
+                    iso3: HND
+                    iso_name: HONDURAS
+                    name: Honduras
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '92'
+                  type: country
+                  attributes:
+                    iso: HR
+                    iso3: HRV
+                    iso_name: CROATIA
+                    name: Croatia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '93'
+                  type: country
+                  attributes:
+                    iso: HT
+                    iso3: HTI
+                    iso_name: HAITI
+                    name: Haiti
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '94'
+                  type: country
+                  attributes:
+                    iso: HU
+                    iso3: HUN
+                    iso_name: HUNGARY
+                    name: Hungary
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '95'
+                  type: country
+                  attributes:
+                    iso: ID
+                    iso3: IDN
+                    iso_name: INDONESIA
+                    name: Indonesia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '97'
+                  type: country
+                  attributes:
+                    iso: IL
+                    iso3: ISR
+                    iso_name: ISRAEL
+                    name: Israel
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '98'
+                  type: country
+                  attributes:
+                    iso: IM
+                    iso3: IMN
+                    iso_name: ISLE OF MAN
+                    name: Isle of Man
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '100'
+                  type: country
+                  attributes:
+                    iso: IQ
+                    iso3: IRQ
+                    iso_name: IRAQ
+                    name: Iraq
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '101'
+                  type: country
+                  attributes:
+                    iso: IR
+                    iso3: IRN
+                    iso_name: IRAN, ISLAMIC REPUBLIC OF
+                    name: Iran, Islamic Republic of
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '102'
+                  type: country
+                  attributes:
+                    iso: IS
+                    iso3: ISL
+                    iso_name: ICELAND
+                    name: Iceland
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '104'
+                  type: country
+                  attributes:
+                    iso: JE
+                    iso3: JEY
+                    iso_name: JERSEY
+                    name: Jersey
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '105'
+                  type: country
+                  attributes:
+                    iso: JM
+                    iso3: JAM
+                    iso_name: JAMAICA
+                    name: Jamaica
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '106'
+                  type: country
+                  attributes:
+                    iso: JO
+                    iso3: JOR
+                    iso_name: JORDAN
+                    name: Jordan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '107'
+                  type: country
+                  attributes:
+                    iso: JP
+                    iso3: JPN
+                    iso_name: JAPAN
+                    name: Japan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '108'
+                  type: country
+                  attributes:
+                    iso: KE
+                    iso3: KEN
+                    iso_name: KENYA
+                    name: Kenya
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '109'
+                  type: country
+                  attributes:
+                    iso: KG
+                    iso3: KGZ
+                    iso_name: KYRGYZSTAN
+                    name: Kyrgyzstan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '110'
+                  type: country
+                  attributes:
+                    iso: KH
+                    iso3: KHM
+                    iso_name: CAMBODIA
+                    name: Cambodia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '115'
+                  type: country
+                  attributes:
+                    iso: KR
+                    iso3: KOR
+                    iso_name: KOREA, REPUBLIC OF
+                    name: Korea, Republic of
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '116'
+                  type: country
+                  attributes:
+                    iso: KW
+                    iso3: KWT
+                    iso_name: KUWAIT
+                    name: Kuwait
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '117'
+                  type: country
+                  attributes:
+                    iso: KY
+                    iso3: CYM
+                    iso_name: CAYMAN ISLANDS
+                    name: Cayman Islands
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '118'
+                  type: country
+                  attributes:
+                    iso: KZ
+                    iso3: KAZ
+                    iso_name: KAZAKHSTAN
+                    name: Kazakhstan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '119'
+                  type: country
+                  attributes:
+                    iso: LA
+                    iso3: LAO
+                    iso_name: LAO PEOPLE'S DEMOCRATIC REPUBLIC
+                    name: Lao People's Democratic Republic
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '120'
+                  type: country
+                  attributes:
+                    iso: LB
+                    iso3: LBN
+                    iso_name: LEBANON
+                    name: Lebanon
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '122'
+                  type: country
+                  attributes:
+                    iso: LI
+                    iso3: LIE
+                    iso_name: LIECHTENSTEIN
+                    name: Liechtenstein
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '123'
+                  type: country
+                  attributes:
+                    iso: LK
+                    iso3: LKA
+                    iso_name: SRI LANKA
+                    name: Sri Lanka
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '124'
+                  type: country
+                  attributes:
+                    iso: LR
+                    iso3: LBR
+                    iso_name: LIBERIA
+                    name: Liberia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '125'
+                  type: country
+                  attributes:
+                    iso: LS
+                    iso3: LSO
+                    iso_name: LESOTHO
+                    name: Lesotho
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '126'
+                  type: country
+                  attributes:
+                    iso: LT
+                    iso3: LTU
+                    iso_name: LITHUANIA
+                    name: Lithuania
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '127'
+                  type: country
+                  attributes:
+                    iso: LU
+                    iso3: LUX
+                    iso_name: LUXEMBOURG
+                    name: Luxembourg
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '128'
+                  type: country
+                  attributes:
+                    iso: LV
+                    iso3: LVA
+                    iso_name: LATVIA
+                    name: Latvia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '130'
+                  type: country
+                  attributes:
+                    iso: MA
+                    iso3: MAR
+                    iso_name: MOROCCO
+                    name: Morocco
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '131'
+                  type: country
+                  attributes:
+                    iso: MC
+                    iso3: MCO
+                    iso_name: MONACO
+                    name: Monaco
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '132'
+                  type: country
+                  attributes:
+                    iso: MD
+                    iso3: MDA
+                    iso_name: MOLDOVA, REPUBLIC OF
+                    name: Moldova, Republic of
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '133'
+                  type: country
+                  attributes:
+                    iso: ME
+                    iso3: MNE
+                    iso_name: MONTENEGRO
+                    name: Montenegro
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '134'
+                  type: country
+                  attributes:
+                    iso: MF
+                    iso3: MAF
+                    iso_name: SAINT MARTIN (FRENCH PART)
+                    name: Saint Martin (French part)
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '135'
+                  type: country
+                  attributes:
+                    iso: MG
+                    iso3: MDG
+                    iso_name: MADAGASCAR
+                    name: Madagascar
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '136'
+                  type: country
+                  attributes:
+                    iso: MH
+                    iso3: MHL
+                    iso_name: MARSHALL ISLANDS
+                    name: Marshall Islands
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '137'
+                  type: country
+                  attributes:
+                    iso: MK
+                    iso3: MKD
+                    iso_name: NORTH MACEDONIA
+                    name: North Macedonia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '139'
+                  type: country
+                  attributes:
+                    iso: MM
+                    iso3: MMR
+                    iso_name: MYANMAR
+                    name: Myanmar
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '140'
+                  type: country
+                  attributes:
+                    iso: MN
+                    iso3: MNG
+                    iso_name: MONGOLIA
+                    name: Mongolia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '142'
+                  type: country
+                  attributes:
+                    iso: MP
+                    iso3: MNP
+                    iso_name: NORTHERN MARIANA ISLANDS
+                    name: Northern Mariana Islands
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '143'
+                  type: country
+                  attributes:
+                    iso: MQ
+                    iso3: MTQ
+                    iso_name: MARTINIQUE
+                    name: Martinique
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '145'
+                  type: country
+                  attributes:
+                    iso: MS
+                    iso3: MSR
+                    iso_name: MONTSERRAT
+                    name: Montserrat
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '146'
+                  type: country
+                  attributes:
+                    iso: MT
+                    iso3: MLT
+                    iso_name: MALTA
+                    name: Malta
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '147'
+                  type: country
+                  attributes:
+                    iso: MU
+                    iso3: MUS
+                    iso_name: MAURITIUS
+                    name: Mauritius
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '148'
+                  type: country
+                  attributes:
+                    iso: MV
+                    iso3: MDV
+                    iso_name: MALDIVES
+                    name: Maldives
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '152'
+                  type: country
+                  attributes:
+                    iso: MZ
+                    iso3: MOZ
+                    iso_name: MOZAMBIQUE
+                    name: Mozambique
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '153'
+                  type: country
+                  attributes:
+                    iso: NA
+                    iso3: NAM
+                    iso_name: NAMIBIA
+                    name: Namibia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '154'
+                  type: country
+                  attributes:
+                    iso: NC
+                    iso3: NCL
+                    iso_name: NEW CALEDONIA
+                    name: New Caledonia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '155'
+                  type: country
+                  attributes:
+                    iso: NE
+                    iso3: NER
+                    iso_name: NIGER
+                    name: Niger
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '156'
+                  type: country
+                  attributes:
+                    iso: NF
+                    iso3: NFK
+                    iso_name: NORFOLK ISLAND
+                    name: Norfolk Island
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '157'
+                  type: country
+                  attributes:
+                    iso: NG
+                    iso3: NGA
+                    iso_name: NIGERIA
+                    name: Nigeria
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '158'
+                  type: country
+                  attributes:
+                    iso: NI
+                    iso3: NIC
+                    iso_name: NICARAGUA
+                    name: Nicaragua
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '159'
+                  type: country
+                  attributes:
+                    iso: NL
+                    iso3: NLD
+                    iso_name: NETHERLANDS
+                    name: Netherlands
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '160'
+                  type: country
+                  attributes:
+                    iso: 'NO'
+                    iso3: NOR
+                    iso_name: NORWAY
+                    name: Norway
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '161'
+                  type: country
+                  attributes:
+                    iso: NP
+                    iso3: NPL
+                    iso_name: NEPAL
+                    name: Nepal
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '165'
+                  type: country
+                  attributes:
+                    iso: OM
+                    iso3: OMN
+                    iso_name: OMAN
+                    name: Oman
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '167'
+                  type: country
+                  attributes:
+                    iso: PE
+                    iso3: PER
+                    iso_name: PERU
+                    name: Peru
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '168'
+                  type: country
+                  attributes:
+                    iso: PF
+                    iso3: PYF
+                    iso_name: FRENCH POLYNESIA
+                    name: French Polynesia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '169'
+                  type: country
+                  attributes:
+                    iso: PG
+                    iso3: PNG
+                    iso_name: PAPUA NEW GUINEA
+                    name: Papua New Guinea
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '170'
+                  type: country
+                  attributes:
+                    iso: PH
+                    iso3: PHL
+                    iso_name: PHILIPPINES
+                    name: Philippines
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '171'
+                  type: country
+                  attributes:
+                    iso: PK
+                    iso3: PAK
+                    iso_name: PAKISTAN
+                    name: Pakistan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '172'
+                  type: country
+                  attributes:
+                    iso: PL
+                    iso3: POL
+                    iso_name: POLAND
+                    name: Poland
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '173'
+                  type: country
+                  attributes:
+                    iso: PM
+                    iso3: SPM
+                    iso_name: SAINT PIERRE AND MIQUELON
+                    name: Saint Pierre and Miquelon
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '174'
+                  type: country
+                  attributes:
+                    iso: PN
+                    iso3: PCN
+                    iso_name: PITCAIRN
+                    name: Pitcairn
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '175'
+                  type: country
+                  attributes:
+                    iso: PR
+                    iso3: PRI
+                    iso_name: PUERTO RICO
+                    name: Puerto Rico
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '176'
+                  type: country
+                  attributes:
+                    iso: PS
+                    iso3: PSE
+                    iso_name: PALESTINE, STATE OF
+                    name: Palestine, State of
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '178'
+                  type: country
+                  attributes:
+                    iso: PW
+                    iso3: PLW
+                    iso_name: PALAU
+                    name: Palau
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '179'
+                  type: country
+                  attributes:
+                    iso: PY
+                    iso3: PRY
+                    iso_name: PARAGUAY
+                    name: Paraguay
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '181'
+                  type: country
+                  attributes:
+                    iso: RE
+                    iso3: REU
+                    iso_name: RÉUNION
+                    name: Réunion
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '183'
+                  type: country
+                  attributes:
+                    iso: RS
+                    iso3: SRB
+                    iso_name: SERBIA
+                    name: Serbia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '184'
+                  type: country
+                  attributes:
+                    iso: RU
+                    iso3: RUS
+                    iso_name: RUSSIA
+                    name: Russia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '186'
+                  type: country
+                  attributes:
+                    iso: SA
+                    iso3: SAU
+                    iso_name: SAUDI ARABIA
+                    name: Saudi Arabia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '189'
+                  type: country
+                  attributes:
+                    iso: SD
+                    iso3: SDN
+                    iso_name: SUDAN
+                    name: Sudan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '190'
+                  type: country
+                  attributes:
+                    iso: SE
+                    iso3: SWE
+                    iso_name: SWEDEN
+                    name: Sweden
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '191'
+                  type: country
+                  attributes:
+                    iso: SG
+                    iso3: SGP
+                    iso_name: SINGAPORE
+                    name: Singapore
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '111'
+                  type: country
+                  attributes:
+                    iso: KI
+                    iso3: KIR
+                    iso_name: KIRIBATI
+                    name: Kiribati
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '192'
+                  type: country
+                  attributes:
+                    iso: SH
+                    iso3: SHN
+                    iso_name: SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA
+                    name: Saint Helena, Ascension and Tristan da Cunha
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '193'
+                  type: country
+                  attributes:
+                    iso: SI
+                    iso3: SVN
+                    iso_name: SLOVENIA
+                    name: Slovenia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '194'
+                  type: country
+                  attributes:
+                    iso: SJ
+                    iso3: SJM
+                    iso_name: SVALBARD AND JAN MAYEN
+                    name: Svalbard and Jan Mayen
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '195'
+                  type: country
+                  attributes:
+                    iso: SK
+                    iso3: SVK
+                    iso_name: SLOVAKIA
+                    name: Slovakia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '197'
+                  type: country
+                  attributes:
+                    iso: SM
+                    iso3: SMR
+                    iso_name: SAN MARINO
+                    name: San Marino
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '198'
+                  type: country
+                  attributes:
+                    iso: SN
+                    iso3: SEN
+                    iso_name: SENEGAL
+                    name: Senegal
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '201'
+                  type: country
+                  attributes:
+                    iso: SS
+                    iso3: SSD
+                    iso_name: SOUTH SUDAN
+                    name: South Sudan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '203'
+                  type: country
+                  attributes:
+                    iso: SV
+                    iso3: SLV
+                    iso_name: EL SALVADOR
+                    name: El Salvador
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '204'
+                  type: country
+                  attributes:
+                    iso: SX
+                    iso3: SXM
+                    iso_name: SINT MAARTEN (DUTCH PART)
+                    name: Sint Maarten (Dutch part)
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '206'
+                  type: country
+                  attributes:
+                    iso: SZ
+                    iso3: SWZ
+                    iso_name: ESWATINI
+                    name: Eswatini
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '207'
+                  type: country
+                  attributes:
+                    iso: TC
+                    iso3: TCA
+                    iso_name: TURKS AND CAICOS ISLANDS
+                    name: Turks and Caicos Islands
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '208'
+                  type: country
+                  attributes:
+                    iso: TD
+                    iso3: TCD
+                    iso_name: CHAD
+                    name: Chad
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '211'
+                  type: country
+                  attributes:
+                    iso: TJ
+                    iso3: TJK
+                    iso_name: TAJIKISTAN
+                    name: Tajikistan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '214'
+                  type: country
+                  attributes:
+                    iso: TM
+                    iso3: TKM
+                    iso_name: TURKMENISTAN
+                    name: Turkmenistan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '215'
+                  type: country
+                  attributes:
+                    iso: TN
+                    iso3: TUN
+                    iso_name: TUNISIA
+                    name: Tunisia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '217'
+                  type: country
+                  attributes:
+                    iso: TR
+                    iso3: TUR
+                    iso_name: TURKEY
+                    name: Turkey
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '218'
+                  type: country
+                  attributes:
+                    iso: TT
+                    iso3: TTO
+                    iso_name: TRINIDAD AND TOBAGO
+                    name: Trinidad and Tobago
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '220'
+                  type: country
+                  attributes:
+                    iso: TW
+                    iso3: TWN
+                    iso_name: TAIWAN
+                    name: Taiwan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '222'
+                  type: country
+                  attributes:
+                    iso: UA
+                    iso3: UKR
+                    iso_name: UKRAINE
+                    name: Ukraine
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '225'
+                  type: country
+                  attributes:
+                    iso: UY
+                    iso3: URY
+                    iso_name: URUGUAY
+                    name: Uruguay
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '226'
+                  type: country
+                  attributes:
+                    iso: UZ
+                    iso3: UZB
+                    iso_name: UZBEKISTAN
+                    name: Uzbekistan
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '227'
+                  type: country
+                  attributes:
+                    iso: VA
+                    iso3: VAT
+                    iso_name: HOLY SEE (VATICAN CITY STATE)
+                    name: Holy See (Vatican City State)
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '228'
+                  type: country
+                  attributes:
+                    iso: VC
+                    iso3: VCT
+                    iso_name: SAINT VINCENT AND THE GRENADINES
+                    name: Saint Vincent and the Grenadines
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '229'
+                  type: country
+                  attributes:
+                    iso: VE
+                    iso3: VEN
+                    iso_name: VENEZUELA, BOLIVARIAN REPUBLIC OF
+                    name: Venezuela, Bolivarian Republic of
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '230'
+                  type: country
+                  attributes:
+                    iso: VG
+                    iso3: VGB
+                    iso_name: VIRGIN ISLANDS, BRITISH
+                    name: Virgin Islands, British
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '231'
+                  type: country
+                  attributes:
+                    iso: VI
+                    iso3: VIR
+                    iso_name: VIRGIN ISLANDS, U.S.
+                    name: Virgin Islands, U.S.
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '232'
+                  type: country
+                  attributes:
+                    iso: VN
+                    iso3: VNM
+                    iso_name: VIETNAM
+                    name: Vietnam
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '234'
+                  type: country
+                  attributes:
+                    iso: WF
+                    iso3: WLF
+                    iso_name: WALLIS AND FUTUNA
+                    name: Wallis and Futuna
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '235'
+                  type: country
+                  attributes:
+                    iso: WS
+                    iso3: WSM
+                    iso_name: SAMOA
+                    name: Samoa
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '237'
+                  type: country
+                  attributes:
+                    iso: YT
+                    iso3: MYT
+                    iso_name: MAYOTTE
+                    name: Mayotte
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '239'
+                  type: country
+                  attributes:
+                    iso: ZM
+                    iso3: ZMB
+                    iso_name: ZAMBIA
+                    name: Zambia
+                    states_required: false
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '4'
+                  type: country
+                  attributes:
+                    iso: AG
+                    iso3: ATG
+                    iso_name: ANTIGUA AND BARBUDA
+                    name: Antigua and Barbuda
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '8'
+                  type: country
+                  attributes:
+                    iso: AO
+                    iso3: AGO
+                    iso_name: ANGOLA
+                    name: Angola
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '13'
+                  type: country
+                  attributes:
+                    iso: AW
+                    iso3: ABW
+                    iso_name: ARUBA
+                    name: Aruba
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '19'
+                  type: country
+                  attributes:
+                    iso: BF
+                    iso3: BFA
+                    iso_name: BURKINA FASO
+                    name: Burkina Faso
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '22'
+                  type: country
+                  attributes:
+                    iso: BI
+                    iso3: BDI
+                    iso_name: BURUNDI
+                    name: Burundi
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '23'
+                  type: country
+                  attributes:
+                    iso: BJ
+                    iso3: BEN
+                    iso_name: BENIN
+                    name: Benin
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '25'
+                  type: country
+                  attributes:
+                    iso: BM
+                    iso3: BMU
+                    iso_name: BERMUDA
+                    name: Bermuda
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '27'
+                  type: country
+                  attributes:
+                    iso: BO
+                    iso3: BOL
+                    iso_name: BOLIVIA, PLURINATIONAL STATE OF
+                    name: Bolivia, Plurinational State of
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '30'
+                  type: country
+                  attributes:
+                    iso: BS
+                    iso3: BHS
+                    iso_name: BAHAMAS
+                    name: Bahamas
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '32'
+                  type: country
+                  attributes:
+                    iso: BW
+                    iso3: BWA
+                    iso_name: BOTSWANA
+                    name: Botswana
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '34'
+                  type: country
+                  attributes:
+                    iso: BZ
+                    iso3: BLZ
+                    iso_name: BELIZE
+                    name: Belize
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '37'
+                  type: country
+                  attributes:
+                    iso: CD
+                    iso3: COD
+                    iso_name: CONGO, THE DEMOCRATIC REPUBLIC OF THE
+                    name: Congo, The Democratic Republic of the
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '38'
+                  type: country
+                  attributes:
+                    iso: CF
+                    iso3: CAF
+                    iso_name: CENTRAL AFRICAN REPUBLIC
+                    name: Central African Republic
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '39'
+                  type: country
+                  attributes:
+                    iso: CG
+                    iso3: COG
+                    iso_name: CONGO
+                    name: Congo
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '41'
+                  type: country
+                  attributes:
+                    iso: CI
+                    iso3: CIV
+                    iso_name: CÔTE D'IVOIRE
+                    name: Côte d'Ivoire
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '42'
+                  type: country
+                  attributes:
+                    iso: CK
+                    iso3: COK
+                    iso_name: COOK ISLANDS
+                    name: Cook Islands
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '44'
+                  type: country
+                  attributes:
+                    iso: CM
+                    iso3: CMR
+                    iso_name: CAMEROON
+                    name: Cameroon
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '55'
+                  type: country
+                  attributes:
+                    iso: DJ
+                    iso3: DJI
+                    iso_name: DJIBOUTI
+                    name: Djibouti
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '57'
+                  type: country
+                  attributes:
+                    iso: DM
+                    iso3: DMA
+                    iso_name: DOMINICA
+                    name: Dominica
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '63'
+                  type: country
+                  attributes:
+                    iso: ER
+                    iso3: ERI
+                    iso_name: ERITREA
+                    name: Eritrea
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '67'
+                  type: country
+                  attributes:
+                    iso: FJ
+                    iso3: FJI
+                    iso_name: FIJI
+                    name: Fiji
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '74'
+                  type: country
+                  attributes:
+                    iso: GD
+                    iso3: GRD
+                    iso_name: GRENADA
+                    name: Grenada
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '78'
+                  type: country
+                  attributes:
+                    iso: GH
+                    iso3: GHA
+                    iso_name: GHANA
+                    name: Ghana
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '81'
+                  type: country
+                  attributes:
+                    iso: GM
+                    iso3: GMB
+                    iso_name: GAMBIA
+                    name: Gambia
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '82'
+                  type: country
+                  attributes:
+                    iso: GN
+                    iso3: GIN
+                    iso_name: GUINEA
+                    name: Guinea
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '84'
+                  type: country
+                  attributes:
+                    iso: GQ
+                    iso3: GNQ
+                    iso_name: EQUATORIAL GUINEA
+                    name: Equatorial Guinea
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '89'
+                  type: country
+                  attributes:
+                    iso: GY
+                    iso3: GUY
+                    iso_name: GUYANA
+                    name: Guyana
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '112'
+                  type: country
+                  attributes:
+                    iso: KM
+                    iso3: COM
+                    iso_name: COMOROS
+                    name: Comoros
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '113'
+                  type: country
+                  attributes:
+                    iso: KN
+                    iso3: KNA
+                    iso_name: SAINT KITTS AND NEVIS
+                    name: Saint Kitts and Nevis
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '114'
+                  type: country
+                  attributes:
+                    iso: KP
+                    iso3: PRK
+                    iso_name: KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF
+                    name: Korea, Democratic People's Republic of
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '121'
+                  type: country
+                  attributes:
+                    iso: LC
+                    iso3: LCA
+                    iso_name: SAINT LUCIA
+                    name: Saint Lucia
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '129'
+                  type: country
+                  attributes:
+                    iso: LY
+                    iso3: LBY
+                    iso_name: LIBYA
+                    name: Libya
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '138'
+                  type: country
+                  attributes:
+                    iso: ML
+                    iso3: MLI
+                    iso_name: MALI
+                    name: Mali
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '141'
+                  type: country
+                  attributes:
+                    iso: MO
+                    iso3: MAC
+                    iso_name: MACAO
+                    name: Macao
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '144'
+                  type: country
+                  attributes:
+                    iso: MR
+                    iso3: MRT
+                    iso_name: MAURITANIA
+                    name: Mauritania
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '149'
+                  type: country
+                  attributes:
+                    iso: MW
+                    iso3: MWI
+                    iso_name: MALAWI
+                    name: Malawi
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '162'
+                  type: country
+                  attributes:
+                    iso: NR
+                    iso3: NRU
+                    iso_name: NAURU
+                    name: Nauru
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '163'
+                  type: country
+                  attributes:
+                    iso: NU
+                    iso3: NIU
+                    iso_name: NIUE
+                    name: Niue
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '166'
+                  type: country
+                  attributes:
+                    iso: PA
+                    iso3: PAN
+                    iso_name: PANAMA
+                    name: Panama
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '180'
+                  type: country
+                  attributes:
+                    iso: QA
+                    iso3: QAT
+                    iso_name: QATAR
+                    name: Qatar
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '185'
+                  type: country
+                  attributes:
+                    iso: RW
+                    iso3: RWA
+                    iso_name: RWANDA
+                    name: Rwanda
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '187'
+                  type: country
+                  attributes:
+                    iso: SB
+                    iso3: SLB
+                    iso_name: SOLOMON ISLANDS
+                    name: Solomon Islands
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '188'
+                  type: country
+                  attributes:
+                    iso: SC
+                    iso3: SYC
+                    iso_name: SEYCHELLES
+                    name: Seychelles
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '196'
+                  type: country
+                  attributes:
+                    iso: SL
+                    iso3: SLE
+                    iso_name: SIERRA LEONE
+                    name: Sierra Leone
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '199'
+                  type: country
+                  attributes:
+                    iso: SO
+                    iso3: SOM
+                    iso_name: SOMALIA
+                    name: Somalia
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '200'
+                  type: country
+                  attributes:
+                    iso: SR
+                    iso3: SUR
+                    iso_name: SURINAME
+                    name: Suriname
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '202'
+                  type: country
+                  attributes:
+                    iso: ST
+                    iso3: STP
+                    iso_name: SAO TOME AND PRINCIPE
+                    name: Sao Tome and Principe
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '205'
+                  type: country
+                  attributes:
+                    iso: SY
+                    iso3: SYR
+                    iso_name: SYRIAN ARAB REPUBLIC
+                    name: Syrian Arab Republic
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '209'
+                  type: country
+                  attributes:
+                    iso: TG
+                    iso3: TGO
+                    iso_name: TOGO
+                    name: Togo
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '212'
+                  type: country
+                  attributes:
+                    iso: TK
+                    iso3: TKL
+                    iso_name: TOKELAU
+                    name: Tokelau
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '213'
+                  type: country
+                  attributes:
+                    iso: TL
+                    iso3: TLS
+                    iso_name: TIMOR-LESTE
+                    name: Timor-Leste
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '216'
+                  type: country
+                  attributes:
+                    iso: TO
+                    iso3: TON
+                    iso_name: TONGA
+                    name: Tonga
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '219'
+                  type: country
+                  attributes:
+                    iso: TV
+                    iso3: TUV
+                    iso_name: TUVALU
+                    name: Tuvalu
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '221'
+                  type: country
+                  attributes:
+                    iso: TZ
+                    iso3: TZA
+                    iso_name: TANZANIA, UNITED REPUBLIC OF
+                    name: Tanzania, United Republic of
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '223'
+                  type: country
+                  attributes:
+                    iso: UG
+                    iso3: UGA
+                    iso_name: UGANDA
+                    name: Uganda
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '233'
+                  type: country
+                  attributes:
+                    iso: VU
+                    iso3: VUT
+                    iso_name: VANUATU
+                    name: Vanuatu
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '236'
+                  type: country
+                  attributes:
+                    iso: YE
+                    iso3: YEM
+                    iso_name: YEMEN
+                    name: Yemen
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '240'
+                  type: country
+                  attributes:
+                    iso: ZW
+                    iso3: ZWE
+                    iso_name: ZIMBABWE
+                    name: Zimbabwe
+                    states_required: false
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '12'
+                  type: country
+                  attributes:
+                    iso: AU
+                    iso3: AUS
+                    iso_name: AUSTRALIA
+                    name: Australia
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '29'
+                  type: country
+                  attributes:
+                    iso: BR
+                    iso3: BRA
+                    iso_name: BRAZIL
+                    name: Brazil
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '35'
+                  type: country
+                  attributes:
+                    iso: CA
+                    iso3: CAN
+                    iso_name: CANADA
+                    name: Canada
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data:
+                      - id: '36'
+                        type: state
+                      - id: '37'
+                        type: state
+                      - id: '38'
+                        type: state
+                      - id: '39'
+                        type: state
+                      - id: '40'
+                        type: state
+                      - id: '42'
+                        type: state
+                      - id: '41'
+                        type: state
+                      - id: '43'
+                        type: state
+                      - id: '44'
+                        type: state
+                      - id: '45'
+                        type: state
+                      - id: '46'
+                        type: state
+                      - id: '47'
+                        type: state
+                      - id: '48'
+                        type: state
+                - id: '45'
+                  type: country
+                  attributes:
+                    iso: CN
+                    iso3: CHN
+                    iso_name: CHINA
+                    name: China
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '64'
+                  type: country
+                  attributes:
+                    iso: ES
+                    iso3: ESP
+                    iso_name: SPAIN
+                    name: Spain
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '99'
+                  type: country
+                  attributes:
+                    iso: IN
+                    iso3: IND
+                    iso_name: INDIA
+                    name: India
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '103'
+                  type: country
+                  attributes:
+                    iso: IT
+                    iso3: ITA
+                    iso_name: ITALY
+                    name: Italy
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '150'
+                  type: country
+                  attributes:
+                    iso: MX
+                    iso3: MEX
+                    iso_name: MEXICO
+                    name: Mexico
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '151'
+                  type: country
+                  attributes:
+                    iso: MY
+                    iso3: MYS
+                    iso_name: MALAYSIA
+                    name: Malaysia
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '164'
+                  type: country
+                  attributes:
+                    iso: NZ
+                    iso3: NZL
+                    iso_name: NEW ZEALAND
+                    name: New Zealand
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '177'
+                  type: country
+                  attributes:
+                    iso: PT
+                    iso3: PRT
+                    iso_name: PORTUGAL
+                    name: Portugal
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '182'
+                  type: country
+                  attributes:
+                    iso: RO
+                    iso3: ROU
+                    iso_name: ROMANIA
+                    name: Romania
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '210'
+                  type: country
+                  attributes:
+                    iso: TH
+                    iso3: THA
+                    iso_name: THAILAND
+                    name: Thailand
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '224'
+                  type: country
+                  attributes:
+                    iso: US
+                    iso3: USA
+                    iso_name: UNITED STATES
+                    name: United States
+                    states_required: true
+                    zipcode_required: true
+                    default: true
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data:
+                      - id: '483'
+                        type: state
+                      - id: '482'
+                        type: state
+                      - id: '485'
+                        type: state
+                      - id: '484'
+                        type: state
+                      - id: '534'
+                        type: state
+                      - id: '533'
+                        type: state
+                      - id: '535'
+                        type: state
+                      - id: '486'
+                        type: state
+                      - id: '487'
+                        type: state
+                      - id: '488'
+                        type: state
+                      - id: '490'
+                        type: state
+                      - id: '489'
+                        type: state
+                      - id: '491'
+                        type: state
+                      - id: '492'
+                        type: state
+                      - id: '493'
+                        type: state
+                      - id: '495'
+                        type: state
+                      - id: '496'
+                        type: state
+                      - id: '497'
+                        type: state
+                      - id: '494'
+                        type: state
+                      - id: '498'
+                        type: state
+                      - id: '499'
+                        type: state
+                      - id: '500'
+                        type: state
+                      - id: '503'
+                        type: state
+                      - id: '502'
+                        type: state
+                      - id: '501'
+                        type: state
+                      - id: '504'
+                        type: state
+                      - id: '505'
+                        type: state
+                      - id: '507'
+                        type: state
+                      - id: '506'
+                        type: state
+                      - id: '508'
+                        type: state
+                      - id: '511'
+                        type: state
+                      - id: '515'
+                        type: state
+                      - id: '512'
+                        type: state
+                      - id: '513'
+                        type: state
+                      - id: '514'
+                        type: state
+                      - id: '516'
+                        type: state
+                      - id: '509'
+                        type: state
+                      - id: '510'
+                        type: state
+                      - id: '517'
+                        type: state
+                      - id: '518'
+                        type: state
+                      - id: '519'
+                        type: state
+                      - id: '520'
+                        type: state
+                      - id: '521'
+                        type: state
+                      - id: '522'
+                        type: state
+                      - id: '523'
+                        type: state
+                      - id: '524'
+                        type: state
+                      - id: '525'
+                        type: state
+                      - id: '526'
+                        type: state
+                      - id: '528'
+                        type: state
+                      - id: '527'
+                        type: state
+                      - id: '529'
+                        type: state
+                      - id: '531'
+                        type: state
+                      - id: '530'
+                        type: state
+                      - id: '532'
+                        type: state
+                - id: '238'
+                  type: country
+                  attributes:
+                    iso: ZA
+                    iso3: ZAF
+                    iso_name: SOUTH AFRICA
+                    name: South Africa
+                    states_required: true
+                    zipcode_required: true
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '2'
+                  type: country
+                  attributes:
+                    iso: AE
+                    iso3: ARE
+                    iso_name: UNITED ARAB EMIRATES
+                    name: United Arab Emirates
+                    states_required: true
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '90'
+                  type: country
+                  attributes:
+                    iso: HK
+                    iso3: HKG
+                    iso_name: HONG KONG
+                    name: Hong Kong
+                    states_required: true
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                - id: '96'
+                  type: country
+                  attributes:
+                    iso: IE
+                    iso3: IRL
+                    iso_name: IRELAND
+                    name: Ireland
+                    states_required: true
+                    zipcode_required: false
+                    default: false
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+                meta:
+                  count: 240
+                  total_count: 240
+                  total_pages: 1
+                links:
+                  self: http://localhost:3000/api/v2/storefront/countries
+                  next: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
+                  prev: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
+                  last: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
+                  first: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    Country:
+      description: 200 Success - Returns the `country` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Country'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountryIncludes'
+            required:
+            - data
+  schemas:
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    Country:
+      title: Country
+      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: country
+        attributes:
+          type: object
+          properties:
+            iso:
+              type: string
+              example: US
+            iso3:
+              type: string
+              example: USA
+            iso_name:
+              type: string
+              example: UNITED STATES
+            name:
+              type: string
+              example: United States
+            states_required:
+              type: boolean
+            zipcode_required:
+              type: boolean
+            default:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            states:
+              type: object
+              description: States associated with this Country
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/State'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    State:
+      type: object
+      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
+      title: State
+      properties:
+        abbr:
+          type: string
+          example: NY
+          description: State abbreviation
+        name:
+          type: string
+          example: New York
+          description: State name
+      x-internal: false
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    CountryIncludes:
+      x-internal: false
+      title: Country Includes
+      oneOf:
+      - $ref: '#/components/schemas/State'
+  parameters:
+    IsoOrIso3:
+      name: iso
+      in: path
+      required: true
+      description: Provide a Country ISO `US` or ISO3 `USA` code.
+      schema:
+        type: string
+        example: GB
+    SparseFieldsCountry:
+      name: fields[country]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: iso_name,name,states_required
+    CountryIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: states
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

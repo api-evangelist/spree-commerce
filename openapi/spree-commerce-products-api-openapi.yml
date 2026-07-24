@@ -1,0 +1,4119 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Products API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Products
+paths:
+  /api/v3/admin/products/{product_id}/custom_fields:
+    get:
+      summary: List product custom fields
+      tags:
+      - Products
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the product''s custom field values.
+
+
+        **Required scope:** `read_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: customFields } = await client.products.customFields.list('prod_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., custom_field_definition). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., key,value,namespace). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: custom fields found
+          content:
+            application/json:
+              example:
+                data:
+                - id: cf_UkLWZg9DAJ
+                  label: Title
+                  type: Spree::Metafields::ShortText
+                  field_type: short_text
+                  key: custom.title
+                  value: wool
+                  created_at: '2026-05-24T17:37:32.172Z'
+                  updated_at: '2026-05-24T17:37:32.172Z'
+                  storefront_visible: true
+                  custom_field_definition_id: cfdef_UkLWZg9DAJ
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+    post:
+      summary: Create a product custom field
+      tags:
+      - Products
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Sets a custom field value on the product. Requires an existing CustomFieldDefinition; pass its prefixed `cfdef_…` id.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst customField = await client.products.customFields.create('prod_UkLWZg9DAJ', {\n  custom_field_definition_id: 'cfdef_AbC123XyZ',\n  value: 'wool',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: custom field created
+          content:
+            application/json:
+              example:
+                id: cf_gbHJdmfrXB
+                label: Description
+                type: Spree::Metafields::LongText
+                field_type: long_text
+                key: custom.description
+                value: A longer description
+                created_at: '2026-05-24T17:37:32.769Z'
+                updated_at: '2026-05-24T17:37:32.769Z'
+                storefront_visible: true
+                custom_field_definition_id: cfdef_gbHJdmfrXB
+        '422':
+          description: duplicate definition for the same product
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Metafield definition has already been taken
+                  details:
+                    metafield_definition_id:
+                    - has already been taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - custom_field_definition_id
+              - value
+              properties:
+                custom_field_definition_id:
+                  type: string
+                  description: Prefixed `cfdef_…` id
+                value:
+                  description: Value matching the definition's `field_type`
+  /api/v3/admin/products/{product_id}/custom_fields/{id}:
+    get:
+      summary: Show a product custom field
+      tags:
+      - Products
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `read_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., custom_field_definition). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., key,value,namespace). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: custom field found
+          content:
+            application/json:
+              example:
+                id: cf_UkLWZg9DAJ
+                label: Title
+                type: Spree::Metafields::ShortText
+                field_type: short_text
+                key: custom.title
+                value: wool
+                created_at: '2026-05-24T17:37:33.120Z'
+                updated_at: '2026-05-24T17:37:33.120Z'
+                storefront_visible: true
+                custom_field_definition_id: cfdef_UkLWZg9DAJ
+    patch:
+      summary: Update a product custom field
+      tags:
+      - Products
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates the custom field''s `value`. The linked definition cannot be changed — delete and recreate to switch.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: custom field updated
+          content:
+            application/json:
+              example:
+                id: cf_UkLWZg9DAJ
+                label: Title
+                type: Spree::Metafields::ShortText
+                field_type: short_text
+                key: custom.title
+                value: cotton
+                created_at: '2026-05-24T17:37:33.439Z'
+                updated_at: '2026-05-24T17:37:33.726Z'
+                storefront_visible: true
+                custom_field_definition_id: cfdef_UkLWZg9DAJ
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - value
+              properties:
+                value:
+                  description: New value
+    delete:
+      summary: Delete a product custom field
+      tags:
+      - Products
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: custom field deleted
+  /api/v2/platform/products:
+    get:
+      summary: Return a list of Products
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      description: Returns a list of Products
+      operationId: products-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: prices
+        schema:
+          type: string
+      - name: filter[name_eq]
+        in: query
+        description: ''
+        example: Green Toy Boat
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '164'
+                      type: product
+                      attributes:
+                        name: Product 1648238
+                        description: 'Expedita a doloribus dolorum possimus architecto eligendi sunt quod. Officiis rerum nostrum incidunt delectus sint reiciendis doloribus ut. Atque voluptate nostrum voluptas unde repellendus.
+
+                          Cum natus a id amet eos eligendi laborum. Minus itaque culpa aliquid repudiandae est odio reiciendis temporibus. Nesciunt cum voluptas veniam excepturi ducimus explicabo recusandae. Error quos voluptate reiciendis numquam dicta.'
+                        available_on: '2021-11-08T19:34:52.496Z'
+                        deleted_at: null
+                        slug: product-1648238
+                        meta_description: null
+                        meta_keywords: null
+                        created_at: '2022-11-08T19:34:52.514Z'
+                        updated_at: '2022-11-08T19:34:52.520Z'
+                        promotionable: true
+                        meta_title: null
+                        discontinue_on: null
+                        public_metadata: {}
+                        private_metadata: {}
+                        status: active
+                        make_active_at: '2021-11-08T19:34:52.496Z'
+                        display_compare_at_price: null
+                        display_price: $19.99
+                        purchasable: true
+                        in_stock: false
+                        backorderable: true
+                        available: true
+                        currency: USD
+                        price: '19.99'
+                        compare_at_price: null
+                      relationships:
+                        tax_category:
+                          data:
+                            id: '108'
+                            type: tax_category
+                        primary_variant:
+                          data:
+                            id: '231'
+                            type: variant
+                        default_variant:
+                          data:
+                            id: '231'
+                            type: variant
+                        variants:
+                          data: []
+                        option_types:
+                          data: []
+                        product_properties:
+                          data: []
+                        taxons:
+                          data: []
+                        images:
+                          data: []
+                    - id: '165'
+                      type: product
+                      attributes:
+                        name: Product 1653934
+                        description: 'Blanditiis deleniti tempora provident culpa id doloremque. Quibusdam commodi minus magni asperiores nemo odio. Laborum mollitia alias quisquam exercitationem aliquam ex occaecati doloremque. Quos optio voluptatum suscipit soluta assumenda quaerat maxime fugit. In saepe quaerat exercitationem earum sequi.
+
+                          Quidem nesciunt provident dicta explicabo autem nemo sunt. Iusto in provident officiis sed. Eveniet quam distinctio ipsam optio sint. Et autem ducimus vel voluptas facere.
+
+                          Earum inventore ut eum eos numquam. Omnis nam provident atque temporibus. Natus illo voluptas enim ex optio eveniet ullam. Labore repudiandae laudantium non suscipit est quae. Odio provident a ad fuga accusamus distinctio vitae.
+
+                          Doloremque quod similique ipsa quas perferendis rerum earum excepturi. Minus explicabo autem quod incidunt. Earum magnam voluptatem expedita eveniet reiciendis dolores atque et.
+
+                          Inventore odio voluptate dicta dolore natus aut occaecati molestiae. Aut eum consequatur soluta voluptatum animi delectus accusantium asperiores. Facere exercitationem consequuntur adipisci nulla similique perferendis ullam. Illo ad aliquid maiores non ea.'
+                        available_on: '2021-11-08T19:34:52.538Z'
+                        deleted_at: null
+                        slug: product-1653934
+                        meta_description: null
+                        meta_keywords: null
+                        created_at: '2022-11-08T19:34:52.549Z'
+                        updated_at: '2022-11-08T19:34:52.555Z'
+                        promotionable: true
+                        meta_title: null
+                        discontinue_on: null
+                        public_metadata: {}
+                        private_metadata: {}
+                        status: active
+                        make_active_at: '2021-11-08T19:34:52.538Z'
+                        display_compare_at_price: null
+                        display_price: $19.99
+                        purchasable: true
+                        in_stock: false
+                        backorderable: true
+                        available: true
+                        currency: USD
+                        price: '19.99'
+                        compare_at_price: null
+                      relationships:
+                        tax_category:
+                          data:
+                            id: '108'
+                            type: tax_category
+                        primary_variant:
+                          data:
+                            id: '232'
+                            type: variant
+                        default_variant:
+                          data:
+                            id: '232'
+                            type: variant
+                        variants:
+                          data: []
+                        option_types:
+                          data: []
+                        product_properties:
+                          data: []
+                        taxons:
+                          data: []
+                        images:
+                          data: []
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/products?page=1&per_page=&include=&filter[name_eq]=
+                      next: http://www.example.com/api/v2/platform/products?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/products?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/products?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/products?filter%5Bname_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Product
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      description: Creates a Product
+      operationId: create-product
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: prices
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '168'
+                      type: product
+                      attributes:
+                        name: Spinning Top
+                        description: null
+                        available_on: null
+                        deleted_at: null
+                        slug: spinning-top
+                        meta_description: null
+                        meta_keywords: null
+                        created_at: '2022-11-08T19:34:53.239Z'
+                        updated_at: '2022-11-08T19:34:53.243Z'
+                        promotionable: true
+                        meta_title: null
+                        discontinue_on: null
+                        public_metadata: {}
+                        private_metadata: {}
+                        status: draft
+                        make_active_at: null
+                        display_compare_at_price: null
+                        display_price: $87.43
+                        purchasable: false
+                        in_stock: false
+                        backorderable: false
+                        available: false
+                        currency: USD
+                        price: '87.43'
+                        compare_at_price: null
+                      relationships:
+                        tax_category:
+                          data: null
+                        primary_variant:
+                          data:
+                            id: '235'
+                            type: variant
+                        default_variant:
+                          data:
+                            id: '235'
+                            type: variant
+                        variants:
+                          data: []
+                        option_types:
+                          data: []
+                        product_properties:
+                          data: []
+                        taxons:
+                          data: []
+                        images:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank, Shipping Category can't be blank, and Price can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+                      shipping_category:
+                      - can't be blank
+                      price:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_product_params'
+  /api/v2/platform/products/{id}:
+    get:
+      summary: Return a Product
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      description: Returns a Product
+      operationId: show-product
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: prices
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '169'
+                      type: product
+                      attributes:
+                        name: Product 1682525
+                        description: 'Enim quibusdam et quis in iste. Eius labore corporis tempora suscipit molestiae sunt. Omnis vero numquam nostrum totam illum consectetur similique corporis.
+
+                          Iusto neque beatae consequatur consequuntur soluta pariatur at. Magnam numquam nisi voluptatem ipsa blanditiis ullam iste mollitia. Incidunt totam earum perferendis eveniet iusto ea. Sapiente est quam corporis veniam eveniet itaque.
+
+                          Repudiandae autem cumque hic nisi perferendis cum quod nostrum. Voluptatem ipsam esse provident itaque similique quia. Nobis quod blanditiis atque cupiditate eaque perspiciatis ullam in. Sequi aspernatur eaque reiciendis error illo dolorum pariatur.
+
+                          Sit recusandae reiciendis magni ipsam repudiandae est dolor quae. Veritatis possimus eveniet iusto dignissimos quasi consequatur temporibus. Magni asperiores officiis occaecati provident velit quos a voluptate.'
+                        available_on: '2021-11-08T19:34:53.563Z'
+                        deleted_at: null
+                        slug: product-1682525
+                        meta_description: null
+                        meta_keywords: null
+                        created_at: '2022-11-08T19:34:53.582Z'
+                        updated_at: '2022-11-08T19:34:53.588Z'
+                        promotionable: true
+                        meta_title: null
+                        discontinue_on: null
+                        public_metadata: {}
+                        private_metadata: {}
+                        status: active
+                        make_active_at: '2021-11-08T19:34:53.563Z'
+                        display_compare_at_price: null
+                        display_price: $19.99
+                        purchasable: true
+                        in_stock: false
+                        backorderable: true
+                        available: true
+                        currency: USD
+                        price: '19.99'
+                        compare_at_price: null
+                      relationships:
+                        tax_category:
+                          data:
+                            id: '110'
+                            type: tax_category
+                        primary_variant:
+                          data:
+                            id: '236'
+                            type: variant
+                        default_variant:
+                          data:
+                            id: '236'
+                            type: variant
+                        variants:
+                          data: []
+                        option_types:
+                          data: []
+                        product_properties:
+                          data: []
+                        taxons:
+                          data: []
+                        images:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Product
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      description: Updates a Product
+      operationId: update-product
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: prices
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '171'
+                      type: product
+                      attributes:
+                        name: Twirling Bottom
+                        description: 'Ut quod iusto optio quos labore. Blanditiis in sunt sequi dolores eveniet reprehenderit maxime. Iusto consequuntur itaque nostrum placeat.
+
+                          Laboriosam labore vero voluptatibus suscipit consectetur possimus qui. Ullam commodi corporis cumque voluptatem neque non explicabo. Quaerat atque error nesciunt recusandae rem unde qui quas. Labore perspiciatis consectetur quisquam voluptatibus similique officiis ipsam enim. Labore neque reprehenderit et tempore.
+
+                          Ea minus nostrum placeat quibusdam laudantium. Illo voluptates in suscipit consequatur harum. Omnis tempora facilis distinctio quos repudiandae ex sapiente. Amet optio temporibus voluptas doloribus.
+
+                          Odio at porro commodi repudiandae quia quas. Ut sequi atque accusamus voluptatum consequatur delectus explicabo. Nobis laboriosam facere molestias consectetur saepe totam eos ea. Possimus atque adipisci sequi dolorum excepturi quo. Ad esse dolorum accusantium fugiat quaerat.
+
+                          Voluptas libero magnam earum reprehenderit ullam at veritatis. Magni culpa id quidem hic ad. Quidem ipsum est vero ut eaque veniam. Corrupti sint ratione maxime aspernatur itaque quo nostrum. Qui architecto ducimus quisquam iste saepe ullam.'
+                        available_on: '2021-11-08T19:34:54.192Z'
+                        deleted_at: null
+                        slug: product-1706992
+                        meta_description: null
+                        meta_keywords: null
+                        created_at: '2022-11-08T19:34:54.210Z'
+                        updated_at: '2022-11-08T19:34:54.468Z'
+                        promotionable: true
+                        meta_title: null
+                        discontinue_on: null
+                        public_metadata: {}
+                        private_metadata: {}
+                        status: active
+                        make_active_at: '2021-11-08T19:34:54.192Z'
+                        display_compare_at_price: null
+                        display_price: $33.21
+                        purchasable: true
+                        in_stock: false
+                        backorderable: true
+                        available: true
+                        currency: USD
+                        price: '33.21'
+                        compare_at_price: null
+                      relationships:
+                        tax_category:
+                          data:
+                            id: '112'
+                            type: tax_category
+                        primary_variant:
+                          data:
+                            id: '238'
+                            type: variant
+                        default_variant:
+                          data:
+                            id: '238'
+                            type: variant
+                        variants:
+                          data: []
+                        option_types:
+                          data: []
+                        product_properties:
+                          data: []
+                        taxons:
+                          data: []
+                        images:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_product_params'
+    delete:
+      summary: Delete a Product
+      tags:
+      - Products
+      security:
+      - bearer_auth: []
+      description: Deletes a Product
+      operationId: delete-product
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/storefront/products:
+    get:
+      description: Returns a list of products for the current Store.
+      tags:
+      - Products
+      operationId: products-list
+      parameters:
+      - $ref: '#/components/parameters/FilterByIds'
+      - $ref: '#/components/parameters/FilterBySKUs'
+      - in: query
+        name: filter[price]
+        schema:
+          type: string
+        example: 10,100
+        description: Filter Products based on price (minimum, maximum range)
+      - in: query
+        name: filter[taxons]
+        schema:
+          type: string
+        example: 1,2,3,4,5,6,7,8,9,10,11
+        description: Filter Products based on taxons (IDs of categories, brands, etc)
+      - in: query
+        name: filter[vendor_ids]
+        schema:
+          type: string
+        example: bb492c7d-c174-4e6b-ba0b-fe98d5c17307,51c35adb-7ab3-4880-8887-35bdc4f6c29f
+        description: Fetch products from specified Vendors (Sellers) - only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      - in: query
+        name: filter[name]
+        schema:
+          type: string
+        example: rails
+        description: Find Products with matching name (supports wild-card, partial-word match search)
+      - in: query
+        name: filter[options][tshirt-color]
+        schema:
+          type: string
+        example: Red
+        description: Find Products with Variants that have the specified option (eg. color, size) and value (eg. red, XS)
+      - in: query
+        name: filter[properties][brand-name]
+        schema:
+          type: string
+        example: alpha
+        description: Find Products with Property Brand Name with value Alpha
+      - in: query
+        name: filter[show_deleted]
+        schema:
+          type: boolean
+        example: true
+        description: Returns also deleted products
+      - in: query
+        name: filter[show_discontinued]
+        schema:
+          type: boolean
+        example: true
+        description: Returns also discontinued products
+      - in: query
+        name: filter[in_stock]
+        schema:
+          type: boolean
+        example: true
+        description: Returns only in stock products
+      - in: query
+        name: filter[backorderable]
+        schema:
+          type: boolean
+        example: true
+        description: Returns only backorderable products
+      - in: query
+        name: filter[purchasable]
+        schema:
+          type: boolean
+        example: true
+        description: Returns only in stock or backorderable products
+      - in: query
+        name: sort
+        schema:
+          type: string
+        example: -updated_at,price,-name,created_at,-available_on,sku
+        description: "Sort products based on: <ul>\n  <li>name (ascending/descending)</li>\n  <li>price (ascending/descending)</li>\n  <li>available_on (ascending/descending)</li>\n  <li>created_at (ascending/descending)</li>\n  <li>updated_at (ascending/descending)</li>\n  <li>sku (ascending/descending)</li>\n</ul> Use <q>-</q> sign to set descending sort, eg. <q>-updated_at</q>"
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/ProductIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsProduct'
+      - $ref: '#/components/parameters/ProductImageTransformationSizeParam'
+      - $ref: '#/components/parameters/ProductImageTransformationQualityParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductList'
+      summary: List all Products
+  /api/v2/storefront/products/{product_slug}:
+    get:
+      description: 'Returns Product details. You can use product permalink:
+
+
+        ```
+
+        GET /api/v2/storefront/products/knitted-high-neck-sweater
+
+        ```
+
+
+        Or Product ID:
+
+
+        ```
+
+        GET /api/v2/storefront/products/21
+
+        ```
+
+
+        **Note** API will attempt a permalink lookup before an ID lookup.'
+      tags:
+      - Products
+      operationId: show-product
+      parameters:
+      - $ref: '#/components/parameters/ProductSlug'
+      - $ref: '#/components/parameters/ProductIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsProduct'
+      - $ref: '#/components/parameters/ProductImageTransformationSizeParam'
+      - $ref: '#/components/parameters/ProductImageTransformationQualityParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/Product'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+      summary: Retrieve a Product
+components:
+  parameters:
+    ProductImageTransformationQualityParam:
+      in: query
+      name: image_transformation[quality]
+      schema:
+        type: string
+      example: '70'
+      description: Specifies quality for included images at transformed_url attribute
+    ProductIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: 'Specify what related resources (relationships) you would like to receive in the response body. Eg.
+
+
+        ```
+
+        default_variant,variants,option_types,product_properties,taxons,images,primary_variant
+
+        ```
+
+
+        [More information](https://jsonapi.org/format/#fetching-includes)'
+      example: default_variant,variants,option_types,product_properties,taxons,images,primary_variant
+    ProductSlug:
+      name: product_slug
+      in: path
+      required: true
+      description: Product Slug
+      schema:
+        type: string
+      example: knitted-high-neck-sweater
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    ProductImageTransformationSizeParam:
+      in: query
+      name: image_transformation[size]
+      schema:
+        type: string
+      example: 100x50
+      description: Specifies dimensions for included images at transformed_url attribute.
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+    FilterBySKUs:
+      in: query
+      name: filter[skus]
+      schema:
+        type: string
+      example: SKU-123,SKU-345
+      description: Fetch only resources with corresponding SKUs
+    SparseFieldsProduct:
+      name: fields[product]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: price,description,name
+    FilterByIds:
+      in: query
+      name: filter[ids]
+      schema:
+        type: string
+      example: 1,2,3
+      description: Fetch only resources with corresponding IDs
+  schemas:
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    ImageStyle:
+      x-internal: false
+      title: Image Style
+      type: object
+      properties:
+        url:
+          type: string
+          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
+          description: Absolute URL of the uploaded image in selected style (width/height)
+        width:
+          type: integer
+          example: 1920
+          description: Actual width of image
+        height:
+          type: integer
+          example: 1080
+          description: Actual height of image
+    Taxon:
+      title: Taxon
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: taxon
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: T-shirts
+            pretty_name:
+              type: string
+              example: Clothes > T-shirts
+            permalink:
+              type: string
+              example: t-shirts
+            seo_title:
+              type: string
+              example: Clothes - T-shirts
+            meta_title:
+              type: string
+              example: T-shirts
+              nullable: true
+            meta_description:
+              type: string
+              example: 'A list of cool t-shirts '
+              nullable: true
+            meta_keywords:
+              type: string
+              example: t-shirts, cool
+              nullable: true
+            left:
+              type: integer
+              example: 1
+            right:
+              type: integer
+              example: 2
+            position:
+              type: integer
+              example: 0
+            depth:
+              type: integer
+              example: 1
+              nullable: true
+            is_root:
+              type: boolean
+              example: true
+              description: Indicates if the Taxon is the root node of this Taxonomy tree
+            is_child:
+              type: boolean
+              example: true
+              description: Returns true is this is a child node of this Taxonomy tree
+            is_leaf:
+              type: boolean
+              example: false
+              description: Returns true if this is the end of a branch of this Taxonomy tree
+            updated_at:
+              type: string
+              example: '2018-06-18T10:57:29.704Z'
+            localized_slugs:
+              type: object
+              description: Provides taxon's slugs in other locales
+        relationships:
+          type: object
+          properties:
+            parent:
+              type: object
+              description: Parent node
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            children:
+              type: object
+              description: List of child nodes
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            taxonomy:
+              type: object
+              description: Taxonomy associated with this Taxon
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            image:
+              type: object
+              description: Image associated with Taxon
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            products:
+              type: object
+              description: List of active and available Products associated with this Taxon
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    ProductProperty:
+      title: Product Property
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: product_property
+        attributes:
+          type: object
+          properties:
+            value:
+              type: string
+              example: Wilson
+            filter_param:
+              type: string
+              example: wilson
+            name:
+              type: string
+              example: manufacturer
+            description:
+              type: string
+              example: Manufacturer
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    ProductIncludes:
+      x-internal: false
+      title: Product Includes
+      anyOf:
+      - $ref: '#/components/schemas/OptionType'
+      - $ref: '#/components/schemas/ProductProperty'
+      - $ref: '#/components/schemas/Variant'
+      - $ref: '#/components/schemas/Image'
+      - $ref: '#/components/schemas/Taxon'
+    Product:
+      type: object
+      title: Product
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: product
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Example product
+            description:
+              type: string
+              example: Example description
+              nullable: true
+            available_on:
+              type: string
+              example: '2012-10-17T03:43:57Z'
+              nullable: true
+            slug:
+              type: string
+              example: example-product
+            price:
+              type: string
+              example: '15.99'
+              nullable: true
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+              nullable: true
+            purchasable:
+              type: boolean
+              description: Indicates if any of Variants are in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if any of Variants are in stock
+            backorderable:
+              type: boolean
+              description: Indicates if any of Variants are backeorderable
+            meta_description:
+              type: string
+              example: Example product
+              nullable: true
+            meta_keywords:
+              type: string
+              example: example, product
+              nullable: true
+            updated_at:
+              $ref: '#/components/schemas/Timestamp'
+            sku:
+              type: string
+              example: 9238-WS
+            available:
+              type: boolean
+            compare_at_price:
+              type: string
+              example: '49.99'
+              nullable: true
+            display_compare_at_price:
+              type: string
+              example: $49.99
+              nullable: true
+            localized_slugs:
+              type: object
+              description: Provides product's slugs in other locales
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the product
+            labels:
+              type: array
+              items:
+                type: string
+              description: List of labels associated with the product
+        relationships:
+          type: object
+          properties:
+            variants:
+              type: object
+              description: List of Product Variants, excluding Master Variant
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_types:
+              type: object
+              description: List of Product Option Types
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            product_properties:
+              type: object
+              description: List of Product Properties
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            taxons:
+              type: object
+              description: List of Taxons associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              description: List of Images associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            default_variant:
+              type: object
+              description: The default Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            primary_variant:
+              type: object
+              description: The Primary Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    update_product_params:
+      type: object
+      properties:
+        product:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            available_on:
+              type: string
+            discontinue_on:
+              type: string
+            permalink:
+              type: string
+            meta_description:
+              type: string
+            meta_keywords:
+              type: string
+            price:
+              type: string
+            sku:
+              type: string
+            deleted_at:
+              type: string
+            prototype_id:
+              type: string
+            option_values_hash:
+              type: string
+            weight:
+              type: string
+            height:
+              type: string
+            width:
+              type: string
+            depth:
+              type: string
+            shipping_category_id:
+              type: string
+            tax_category_id:
+              type: string
+            cost_currency:
+              type: string
+            cost_price:
+              type: string
+            compare_at_price:
+              type: string
+            option_type_ids:
+              type: string
+            taxon_ids:
+              type: string
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - product
+      x-internal: false
+    create_product_params:
+      type: object
+      properties:
+        product:
+          type: object
+          required:
+          - name
+          - price
+          - shipping_category_id
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            available_on:
+              type: string
+            discontinue_on:
+              type: string
+            permalink:
+              type: string
+            meta_description:
+              type: string
+            meta_keywords:
+              type: string
+            price:
+              type: string
+            sku:
+              type: string
+            deleted_at:
+              type: string
+            prototype_id:
+              type: string
+            option_values_hash:
+              type: string
+            weight:
+              type: string
+            height:
+              type: string
+            width:
+              type: string
+            depth:
+              type: string
+            shipping_category_id:
+              type: string
+            tax_category_id:
+              type: string
+            cost_currency:
+              type: string
+            cost_price:
+              type: string
+            compare_at_price:
+              type: string
+            option_type_ids:
+              type: string
+            taxon_ids:
+              type: string
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - product
+      x-internal: false
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: image
+        attributes:
+          type: object
+          properties:
+            position:
+              type: integer
+              description: Sort order of images set in the Admin Panel
+              example: 0
+              minimum: 0
+            styles:
+              type: array
+              description: An array of pre-scaled image styles
+              items:
+                $ref: '#/components/schemas/ImageStyle'
+      required:
+      - id
+      - type
+      - attributes
+      title: Image
+      x-internal: false
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    PaymentMethod:
+      title: Payment Method
+      description: ''
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: payment_method
+        attributes:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Gateway::StripeGateway
+            name:
+              type: string
+              example: Stripe
+            description:
+              type: string
+              example: Stripe Payments
+              nullable: true
+            preferences:
+              type: object
+      required:
+      - id
+      - type
+      - attributes
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+    CreditCardIncludes:
+      x-internal: false
+      title: Credit Card Includes
+      allOf:
+      - $ref: '#/components/schemas/PaymentMethod'
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: variant
+        attributes:
+          type: object
+          properties:
+            sku:
+              type: string
+              example: SKU-1001
+            price:
+              type: string
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type: string
+              example: '10'
+              nullable: true
+            height:
+              type: string
+              example: '10'
+              nullable: true
+            width:
+              type: string
+              example: '10'
+              nullable: true
+            depth:
+              type: string
+              example: '10'
+              nullable: true
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    OptionType:
+      title: Option Type
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: option_type
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: color
+            presentation:
+              type: string
+              example: Color
+            position:
+              type: integer
+              example: 1
+      required:
+      - id
+      - type
+      - attributes
+  responses:
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    Product:
+      description: 200 Success - Returns the `product` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Product'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductIncludes'
+            required:
+            - data
+          examples:
+            Single Product:
+              value:
+                data:
+                  id: '96'
+                  type: product
+                  attributes:
+                    name: Bomber Jacket
+                    description: Dolorem nulla odit nostrum placeat soluta non vitae praesentium. Neque asperiores quos necessitatibus sint placeat. Voluptas aliquid atque veniam iste assumenda blanditiis. Excepturi odit recusandae laboriosam sunt temporibus corrupti. Tempore necessitatibus recusandae eligendi occaecati nesciunt sed illum similique.
+                    available_on: '2021-10-02T11:02:29.288Z'
+                    slug: bomber-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.681Z'
+                    sku: JacketsandCoats_bomberjacket_38.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '38.99'
+                    display_price: $38.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                    localized_slugs:
+                      en: bomber-jacket
+                      de: bomberjacke
+                      fr: blouson
+                    tags:
+                    - bomber
+                    - jacket
+                    - winter
+                    labels:
+                    - new
+                    - sale
+                  relationships:
+                    variants:
+                      data:
+                      - id: '212'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '639'
+                        type: product_property
+                      - id: '640'
+                        type: product_property
+                      - id: '641'
+                        type: product_property
+                      - id: '642'
+                        type: product_property
+                      - id: '643'
+                        type: product_property
+                      - id: '644'
+                        type: product_property
+                      - id: '645'
+                        type: product_property
+                      - id: '646'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '212'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '96'
+                        type: variant
+            Product with Includes:
+              value:
+                data:
+                  id: '96'
+                  type: product
+                  attributes:
+                    name: Bomber Jacket
+                    description: Dolorem nulla odit nostrum placeat soluta non vitae praesentium. Neque asperiores quos necessitatibus sint placeat. Voluptas aliquid atque veniam iste assumenda blanditiis. Excepturi odit recusandae laboriosam sunt temporibus corrupti. Tempore necessitatibus recusandae eligendi occaecati nesciunt sed illum similique.
+                    available_on: '2021-10-02T11:02:29.288Z'
+                    slug: bomber-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.681Z'
+                    sku: JacketsandCoats_bomberjacket_38.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '38.99'
+                    display_price: $38.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '212'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '639'
+                        type: product_property
+                      - id: '640'
+                        type: product_property
+                      - id: '641'
+                        type: product_property
+                      - id: '642'
+                        type: product_property
+                      - id: '643'
+                        type: product_property
+                      - id: '644'
+                        type: product_property
+                      - id: '645'
+                        type: product_property
+                      - id: '646'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '212'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '96'
+                        type: variant
+                included:
+                - id: '212'
+                  type: variant
+                  attributes:
+                    sku: JacketsandCoats_bomberjacket_38.99_khaki_xs
+                    weight: '0.0'
+                    height: null
+                    width: null
+                    depth: null
+                    is_master: false
+                    options_text: 'Color: khaki, Size: XS'
+                    options:
+                    - name: color
+                      value: khaki
+                      presentation: Khaki
+                    - name: size
+                      value: XS
+                      presentation: XS
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    currency: USD
+                    price: '38.99'
+                    display_price: $38.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    product:
+                      data:
+                        id: '96'
+                        type: product
+                    images:
+                      data: []
+                    option_values:
+                      data:
+                      - id: '14'
+                        type: option_value
+                      - id: '23'
+                        type: option_value
+                - id: '19'
+                  type: taxon
+                  attributes:
+                    name: Bestsellers
+                    pretty_name: Categories -> Bestsellers
+                    permalink: categories/bestsellers
+                    seo_title: Bestsellers
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 36
+                    right: 37
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.082Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '14'
+                  type: taxon
+                  attributes:
+                    name: Jackets and Coats
+                    pretty_name: Categories -> Women -> Jackets and Coats
+                    permalink: categories/women/jackets-and-coats
+                    seo_title: Jackets and Coats
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 23
+                    right: 24
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.688Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '24'
+                  type: taxon
+                  attributes:
+                    name: Summer 2021
+                    pretty_name: Categories -> New Collection -> Summer 2021
+                    permalink: categories/new-collection/summer-2021
+                    seo_title: Summer 2021
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 45
+                    right: 46
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.001Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '23'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '3'
+                  type: taxon
+                  attributes:
+                    name: Women
+                    pretty_name: Categories -> Women
+                    permalink: categories/women
+                    seo_title: Women
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 12
+                    right: 25
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:14.688Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '9'
+                        type: taxon
+                      - id: '10'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '12'
+                        type: taxon
+                      - id: '13'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                    image:
+                      data: null
+    ProductList:
+      description: 200 Success - Returns an array of `product` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditCardIncludes'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
+          examples:
+            List of Products:
+              value:
+                data:
+                - id: '96'
+                  type: product
+                  attributes:
+                    name: Bomber Jacket
+                    description: Dolorem nulla odit nostrum placeat soluta non vitae praesentium. Neque asperiores quos necessitatibus sint placeat. Voluptas aliquid atque veniam iste assumenda blanditiis. Excepturi odit recusandae laboriosam sunt temporibus corrupti. Tempore necessitatibus recusandae eligendi occaecati nesciunt sed illum similique.
+                    available_on: '2021-10-02T11:02:29.288Z'
+                    slug: bomber-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.681Z'
+                    sku: JacketsandCoats_bomberjacket_38.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '38.99'
+                    display_price: $38.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '212'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '639'
+                        type: product_property
+                      - id: '640'
+                        type: product_property
+                      - id: '641'
+                        type: product_property
+                      - id: '642'
+                        type: product_property
+                      - id: '643'
+                        type: product_property
+                      - id: '644'
+                        type: product_property
+                      - id: '645'
+                        type: product_property
+                      - id: '646'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '212'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '96'
+                        type: variant
+                - id: '97'
+                  type: product
+                  attributes:
+                    name: Sports Bra Low Support
+                    description: Consequuntur deserunt ex asperiores maiores repudiandae tenetur. Recusandae labore cupiditate aliquid voluptatibus at. Culpa repellendus veritatis ad aliquam eligendi reprehenderit corporis.
+                    available_on: '2021-10-02T11:02:29.414Z'
+                    slug: sports-bra-low-support
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.710Z'
+                    sku: Tops_sportsbralowsupport_61.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '61.99'
+                    display_price: $61.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '213'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '647'
+                        type: product_property
+                      - id: '648'
+                        type: product_property
+                      - id: '649'
+                        type: product_property
+                      - id: '650'
+                        type: product_property
+                      - id: '651'
+                        type: product_property
+                      - id: '652'
+                        type: product_property
+                      - id: '653'
+                        type: product_property
+                      - id: '654'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '15'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '213'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '97'
+                        type: variant
+                - id: '48'
+                  type: product
+                  attributes:
+                    name: Flared Dress
+                    description: Ut ullam aspernatur facere dicta explicabo sed. Molestiae nihil atque sed voluptatibus officiis. Aspernatur vitae nesciunt non doloremque. Officiis velit et magnam molestias repellat. Asperiores modi totam labore iure aperiam sequi.
+                    available_on: '2021-10-02T11:02:23.076Z'
+                    slug: flared-dress
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.159Z'
+                    sku: Dresses_flareddress_21.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '21.99'
+                    display_price: $21.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '164'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '2'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '387'
+                        type: product_property
+                      - id: '388'
+                        type: product_property
+                      - id: '389'
+                        type: product_property
+                      - id: '390'
+                        type: product_property
+                      - id: '391'
+                        type: product_property
+                      - id: '392'
+                        type: product_property
+                      - id: '393'
+                        type: product_property
+                      - id: '394'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '10'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '164'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '48'
+                        type: variant
+                - id: '115'
+                  type: product
+                  attributes:
+                    name: High Waist Pants With Pockets
+                    description: Doloribus ipsam beatae porro aspernatur officiis aperiam. Sapiente quos commodi vitae incidunt. Architecto ducimus iste sed laudantium.
+                    available_on: '2021-10-02T11:02:31.782Z'
+                    slug: high-waist-pants-with-pockets
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.537Z'
+                    sku: Pants_highwaistpantswithpockets_69.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '69.99'
+                    display_price: $69.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '231'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '775'
+                        type: product_property
+                      - id: '776'
+                        type: product_property
+                      - id: '777'
+                        type: product_property
+                      - id: '778'
+                        type: product_property
+                      - id: '779'
+                        type: product_property
+                      - id: '780'
+                        type: product_property
+                      - id: '781'
+                        type: product_property
+                      - id: '782'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '17'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '231'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '115'
+                        type: variant
+                - id: '94'
+                  type: product
+                  attributes:
+                    name: Wool Blend Coat With Belt
+                    description: Aspernatur aperiam est id odio rerum eveniet optio. Aspernatur odio quisquam soluta explicabo. Numquam ipsam sint magni ducimus eum. Voluptas excepturi tenetur optio culpa asperiores facilis sapiente.
+                    available_on: '2021-10-02T11:02:29.039Z'
+                    slug: wool-blend-coat-with-belt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.622Z'
+                    sku: JacketsandCoats_wool-blendcoatwithbelt_30.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '30.99'
+                    display_price: $30.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '210'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '623'
+                        type: product_property
+                      - id: '624'
+                        type: product_property
+                      - id: '625'
+                        type: product_property
+                      - id: '626'
+                        type: product_property
+                      - id: '627'
+                        type: product_property
+                      - id: '628'
+                        type: product_property
+                      - id: '629'
+                        type: product_property
+                      - id: '630'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '210'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '94'
+                        type: variant
+                - id: '4'
+                  type: product
+                  attributes:
+                    name: Slim Fit Shirt
+                    description: Quidem accusamus similique blanditiis dolores corrupti. Laborum sed facere a expedita porro. Aperiam sint aspernatur eos dolore quod suscipit. Repudiandae tempore dolorum itaque repellat rerum doloremque cupiditate.
+                    available_on: '2021-10-02T11:02:17.586Z'
+                    slug: slim-fit-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.806Z'
+                    sku: Shirts_slimfitshirt_62.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '62.99'
+                    display_price: $62.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '120'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '153'
+                        type: product_property
+                      - id: '154'
+                        type: product_property
+                      - id: '155'
+                        type: product_property
+                      - id: '156'
+                        type: product_property
+                      - id: '157'
+                        type: product_property
+                      - id: '158'
+                        type: product_property
+                      - id: '159'
+                        type: product_property
+                      - id: '160'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '5'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '120'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '4'
+                        type: variant
+                - id: '106'
+                  type: product
+                  attributes:
+                    name: Lightweight Running Jacket
+                    description: Ipsum dolorum quo fugit reiciendis quae cupiditate. Quas incidunt adipisci iure quasi quaerat in laborum animi. Quo molestiae aperiam officiis provident voluptates a nesciunt.
+                    available_on: '2021-10-02T11:02:30.674Z'
+                    slug: Lightweight-running-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.967Z'
+                    sku: Sweatshirts_Lightweightrunningjacket_10.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '10.99'
+                    display_price: $10.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '222'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '703'
+                        type: product_property
+                      - id: '704'
+                        type: product_property
+                      - id: '705'
+                        type: product_property
+                      - id: '706'
+                        type: product_property
+                      - id: '707'
+                        type: product_property
+                      - id: '708'
+                        type: product_property
+                      - id: '709'
+                        type: product_property
+                      - id: '710'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '16'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '222'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '106'
+                        type: variant
+                - id: '21'
+                  type: product
+                  attributes:
+                    name: Stripped Jumper
+                    description: Placeat nemo vel molestiae sequi totam optio. Eaque distinctio incidunt blanditiis saepe voluptate. Ullam officia est nobis dolor. Facilis quam voluptas provident vero dolores. Nam consequuntur velit dolores recusandae excepturi veniam.
+                    available_on: '2021-10-02T11:02:19.687Z'
+                    slug: stripped-jumper
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.299Z'
+                    sku: Sweaters_strippedjumper_84.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '84.99'
+                    display_price: $84.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '137'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '211'
+                        type: product_property
+                      - id: '212'
+                        type: product_property
+                      - id: '213'
+                        type: product_property
+                      - id: '214'
+                        type: product_property
+                      - id: '215'
+                        type: product_property
+                      - id: '216'
+                        type: product_property
+                      - id: '217'
+                        type: product_property
+                      - id: '218'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '7'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '137'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '21'
+                        type: variant
+                - id: '25'
+                  type: product
+                  attributes:
+                    name: Hoodie
+                    description: Harum iusto atque consequuntur rem. Dolor incidunt quae eveniet sequi tempore illo unde quia. Quos aperiam incidunt doloribus eum amet animi. Saepe rerum dolorum molestias eos.
+                    available_on: '2021-10-02T11:02:20.175Z'
+                    slug: hoodie
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.418Z'
+                    sku: Sweaters_hoodie_17.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '17.99'
+                    display_price: $17.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '141'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '243'
+                        type: product_property
+                      - id: '244'
+                        type: product_property
+                      - id: '245'
+                        type: product_property
+                      - id: '246'
+                        type: product_property
+                      - id: '247'
+                        type: product_property
+                      - id: '248'
+                        type: product_property
+                      - id: '249'
+                        type: product_property
+                      - id: '250'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '2'
+                        type: taxon
+                      - id: '7'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '141'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '25'
+                        type: variant
+                - id: '66'
+                  type: product
+                  attributes:
+                    name: Floral Shirt
+                    description: Veritatis alias dolores accusamus quaerat ipsa. Ab quibusdam provident necessitatibus deserunt rerum. Eaque laborum ducimus labore earum aspernatur sit nisi. Soluta amet earum provident blanditiis ut quibusdam facilis labore. Nihil commodi eaque assumenda quibusdam debitis autem laborum.
+                    available_on: '2021-10-02T11:02:25.553Z'
+                    slug: floral-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.668Z'
+                    sku: ShirtsandBlouses_floralshirt_41.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '41.99'
+                    display_price: $41.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '182'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '499'
+                        type: product_property
+                      - id: '500'
+                        type: product_property
+                      - id: '501'
+                        type: product_property
+                      - id: '502'
+                        type: product_property
+                      - id: '503'
+                        type: product_property
+                      - id: '504'
+                        type: product_property
+                      - id: '505'
+                        type: product_property
+                      - id: '506'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '182'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '66'
+                        type: variant
+                - id: '74'
+                  type: product
+                  attributes:
+                    name: Knitted V Neck Sweater
+                    description: Eum aperiam qui modi molestiae nesciunt iusto. Vero qui reprehenderit iure aut voluptates. In fugiat non sequi neque excepturi.
+                    available_on: '2021-10-02T11:02:26.556Z'
+                    slug: knitted-v-neck-sweater
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.911Z'
+                    sku: Sweaters_knittedv-necksweater_30.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '30.99'
+                    display_price: $30.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '190'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '555'
+                        type: product_property
+                      - id: '556'
+                        type: product_property
+                      - id: '557'
+                        type: product_property
+                      - id: '558'
+                        type: product_property
+                      - id: '559'
+                        type: product_property
+                      - id: '560'
+                        type: product_property
+                      - id: '561'
+                        type: product_property
+                      - id: '562'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '12'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '190'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '74'
+                        type: variant
+                - id: '19'
+                  type: product
+                  attributes:
+                    name: Basic T Shirt
+                    description: Architecto illum dolorum porro aut hic sint aliquid odit. Nisi suscipit vero non eaque sunt. Dicta neque voluptatem sequi explicabo unde occaecati eius. Ad optio eaque consectetur iusto consequatur consequuntur. Molestiae dolor occaecati pariatur perspiciatis.
+                    available_on: '2021-10-02T11:02:19.439Z'
+                    slug: basic-t-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.234Z'
+                    sku: T-shirts_basict-shirt_56.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '56.99'
+                    display_price: $56.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '135'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '57'
+                        type: product_property
+                      - id: '58'
+                        type: product_property
+                      - id: '59'
+                        type: product_property
+                      - id: '60'
+                        type: product_property
+                      - id: '61'
+                        type: product_property
+                      - id: '62'
+                        type: product_property
+                      - id: '63'
+                        type: product_property
+                      - id: '64'
+                        type: product_property
+                      - id: '209'
+                        type: product_property
+                      - id: '210'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '6'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '135'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '19'
+                        type: variant
+                - id: '52'
+                  type: product
+                  attributes:
+                    name: Printed Dress
+                    description: Inventore perferendis assumenda quia libero dolore error quam occaecati. Eaque distinctio magnam ut aut voluptas facere. Perferendis qui adipisci dolor praesentium harum. Saepe unde voluptates nemo occaecati voluptas assumenda tempore. Adipisci voluptates at corporis ab sed sequi.
+                    available_on: '2021-10-02T11:02:23.730Z'
+                    slug: printed-dress
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.274Z'
+                    sku: Dresses_printeddress_86.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '86.99'
+                    display_price: $86.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '168'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '2'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '411'
+                        type: product_property
+                      - id: '412'
+                        type: product_property
+                      - id: '413'
+                        type: product_property
+                      - id: '414'
+                        type: product_property
+                      - id: '415'
+                        type: product_property
+                      - id: '416'
+                        type: product_property
+                      - id: '417'
+                        type: product_property
+                      - id: '418'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '10'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '168'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '52'
+                        type: variant
+                - id: '102'
+                  type: product
+                  attributes:
+                    name: Sports Bra Medium Support
+                    description: Architecto dolores ullam sed labore. Omnis excepturi occaecati ipsa ullam facere voluptatum quis. Saepe dignissimos quia facere repudiandae minus distinctio. Quo blanditiis eveniet accusamus rem maiores dolore cum.
+                    available_on: '2021-10-02T11:02:30.172Z'
+                    slug: sports-bra-medium-support
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.852Z'
+                    sku: Tops_sportsbramediumsupport_90.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '90.99'
+                    display_price: $90.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '218'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '679'
+                        type: product_property
+                      - id: '680'
+                        type: product_property
+                      - id: '681'
+                        type: product_property
+                      - id: '682'
+                        type: product_property
+                      - id: '683'
+                        type: product_property
+                      - id: '684'
+                        type: product_property
+                      - id: '685'
+                        type: product_property
+                      - id: '686'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '15'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '218'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '102'
+                        type: variant
+                - id: '71'
+                  type: product
+                  attributes:
+                    name: Oversized Knitted Sweater
+                    description: Fuga nam provident beatae odio. Est vitae cum fuga corrupti delectus. Officiis harum nulla debitis ut.
+                    available_on: '2021-10-02T11:02:26.186Z'
+                    slug: oversized-knitted-sweater
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.821Z'
+                    sku: Sweaters_oversizedknittedsweater_10.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '10.99'
+                    display_price: $10.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '187'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '531'
+                        type: product_property
+                      - id: '532'
+                        type: product_property
+                      - id: '533'
+                        type: product_property
+                      - id: '534'
+                        type: product_property
+                      - id: '535'
+                        type: product_property
+                      - id: '536'
+                        type: product_property
+                      - id: '537'
+                        type: product_property
+                      - id: '538'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '12'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '187'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '71'
+                        type: variant
+                - id: '107'
+                  type: product
+                  attributes:
+                    name: Oversize Sweatshirt
+                    description: Corporis amet dolore aspernatur molestiae. Animi amet quia sit quam unde sed. Similique natus ab veritatis reprehenderit vel vero maiores voluptatibus. Ut cum tempore velit in consectetur. Temporibus itaque quam architecto excepturi rerum.
+                    available_on: '2021-10-02T11:02:30.806Z'
+                    slug: oversize-sweatshirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.994Z'
+                    sku: Sweatshirts_oversizesweatshirt_93.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '93.99'
+                    display_price: $93.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '223'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '711'
+                        type: product_property
+                      - id: '712'
+                        type: product_property
+                      - id: '713'
+                        type: product_property
+                      - id: '714'
+                        type: product_property
+                      - id: '715'
+                        type: product_property
+                      - id: '716'
+                        type: product_property
+                      - id: '717'
+                        type: product_property
+                      - id: '718'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '16'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '223'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '107'
+                        type: variant
+                - id: '111'
+                  type: product
+                  attributes:
+                    name: Short Pants
+                    description: Voluptatem est rem rerum autem quaerat eligendi quas non. Expedita quod veritatis dolorum excepturi ad error accusantium. Distinctio similique expedita nemo ducimus. Cumque natus consequatur cum repellat dicta esse enim. Expedita ducimus sit tenetur at unde eius porro.
+                    available_on: '2021-10-02T11:02:31.294Z'
+                    slug: short-pants
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:15.110Z'
+                    sku: Pants_shortpants_15.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '15.99'
+                    display_price: $15.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '227'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '743'
+                        type: product_property
+                      - id: '744'
+                        type: product_property
+                      - id: '745'
+                        type: product_property
+                      - id: '746'
+                        type: product_property
+                      - id: '747'
+                        type: product_property
+                      - id: '748'
+                        type: product_property
+                      - id: '749'
+                        type: product_property
+                      - id: '750'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '17'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '227'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '111'
+                        type: variant
+                - id: '15'
+                  type: product
+                  attributes:
+                    name: T Shirt With Holes
+                    description: Voluptatem ut facere eveniet corrupti impedit expedita quas voluptate. Officia exercitationem inventore in deleniti aliquam voluptatem fugit quibusdam. Ex quod minus nisi adipisci provident et. Eos excepturi quis eius natus porro numquam assumenda. Rem error molestiae quisquam doloremque ipsam dolor maiores.
+                    available_on: '2021-10-02T11:02:18.944Z'
+                    slug: t-shirt-with-holes
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.115Z'
+                    sku: T-shirts_t-shirtwithholes_27.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '27.99'
+                    display_price: $27.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '131'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '25'
+                        type: product_property
+                      - id: '26'
+                        type: product_property
+                      - id: '27'
+                        type: product_property
+                      - id: '28'
+                        type: product_property
+                      - id: '29'
+                        type: product_property
+                      - id: '30'
+                        type: product_property
+                      - id: '31'
+                        type: product_property
+                      - id: '32'
+                        type: product_property
+                      - id: '203'
+                        type: product_property
+                      - id: '204'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '6'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '131'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '15'
+                        type: variant
+                - id: '64'
+                  type: product
+                  attributes:
+                    name: Blouse With Wide Flounced Sleeve
+                    description: Corrupti rem ab nihil in laborum corporis. Laborum itaque illo perferendis cum alias possimus. Minima perferendis vitae quae culpa debitis. Fugit debitis iure qui possimus praesentium incidunt dignissimos omnis. Harum omnis quidem magni alias nam odio.
+                    available_on: '2021-10-02T11:02:25.227Z'
+                    slug: blouse-with-wide-flounced-sleeve
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.608Z'
+                    sku: ShirtsandBlouses_blousewithwideflouncedsleeve_42.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '42.99'
+                    display_price: $42.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '180'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '809'
+                        type: product_property
+                      - id: '810'
+                        type: product_property
+                      - id: '811'
+                        type: product_property
+                      - id: '812'
+                        type: product_property
+                      - id: '813'
+                        type: product_property
+                      - id: '814'
+                        type: product_property
+                      - id: '815'
+                        type: product_property
+                      - id: '816'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '180'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '64'
+                        type: variant
+                - id: '95'
+                  type: product
+                  attributes:
+                    name: Denim Hooded Jacket
+                    description: Harum expedita quibusdam consequatur soluta cum dolore id ratione. Quam ex nemo asperiores aspernatur doloremque odit. Ullam sunt labore sit nostrum.
+                    available_on: '2021-10-02T11:02:29.164Z'
+                    slug: denim-hooded-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.650Z'
+                    sku: JacketsandCoats_denimhoodedjacket_15.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '15.99'
+                    display_price: $15.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '211'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '631'
+                        type: product_property
+                      - id: '632'
+                        type: product_property
+                      - id: '633'
+                        type: product_property
+                      - id: '634'
+                        type: product_property
+                      - id: '635'
+                        type: product_property
+                      - id: '636'
+                        type: product_property
+                      - id: '637'
+                        type: product_property
+                      - id: '638'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '211'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '95'
+                        type: variant
+                - id: '5'
+                  type: product
+                  attributes:
+                    name: Short Sleeve Shirt
+                    description: Facilis necessitatibus tempora nesciunt porro distinctio. Nihil culpa hic necessitatibus perspiciatis. Exercitationem consequatur magnam harum vitae ipsa amet delectus. Libero nobis unde illo mollitia.
+                    available_on: '2021-10-02T11:02:17.712Z'
+                    slug: short-sleeve-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.840Z'
+                    sku: Shirts_shortsleeveshirt_16.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '16.99'
+                    display_price: $16.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '121'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '161'
+                        type: product_property
+                      - id: '162'
+                        type: product_property
+                      - id: '163'
+                        type: product_property
+                      - id: '164'
+                        type: product_property
+                      - id: '165'
+                        type: product_property
+                      - id: '166'
+                        type: product_property
+                      - id: '167'
+                        type: product_property
+                      - id: '168'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '5'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '121'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '5'
+                        type: variant
+                - id: '30'
+                  type: product
+                  attributes:
+                    name: Anorak With Hood
+                    description: Quidem qui ad nulla facere. Maxime vitae at doloribus non tenetur ut ipsam. Ad maxime architecto molestias quidem maiores iusto optio.
+                    available_on: '2021-10-02T11:02:20.789Z'
+                    slug: anorak-with-hood
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.573Z'
+                    sku: JacketsandCoats_anorakwithhood_43.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '43.99'
+                    display_price: $43.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '146'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '259'
+                        type: product_property
+                      - id: '260'
+                        type: product_property
+                      - id: '261'
+                        type: product_property
+                      - id: '262'
+                        type: product_property
+                      - id: '263'
+                        type: product_property
+                      - id: '264'
+                        type: product_property
+                      - id: '265'
+                        type: product_property
+                      - id: '266'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '2'
+                        type: taxon
+                      - id: '8'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '146'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '30'
+                        type: variant
+                - id: '7'
+                  type: product
+                  attributes:
+                    name: Regular Shirt
+                    description: Incidunt quis assumenda debitis aliquam repellendus eveniet officiis recusandae. Debitis facere rerum natus cumque aliquam in. Ducimus voluptate cupiditate fugit quisquam.
+                    available_on: '2021-10-02T11:02:17.952Z'
+                    slug: regular-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.901Z'
+                    sku: Shirts_regularshirt_74.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '74.99'
+                    display_price: $74.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '123'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '177'
+                        type: product_property
+                      - id: '178'
+                        type: product_property
+                      - id: '179'
+                        type: product_property
+                      - id: '180'
+                        type: product_property
+                      - id: '181'
+                        type: product_property
+                      - id: '182'
+                        type: product_property
+                      - id: '183'
+                        type: product_property
+                      - id: '184'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '5'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '123'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '7'
+                        type: variant
+                - id: '60'
+                  type: product
+                  attributes:
+                    name: V Neck Wide Shirt
+                    description: Similique ratione architecto quaerat dolores quas. Labore deleniti quidem temporibus eaque iste odio. Reiciendis laboriosam neque soluta debitis quae recusandae.
+                    available_on: '2021-10-02T11:02:24.745Z'
+                    slug: v-neck-wide-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.521Z'
+                    sku: ShirtsandBlouses_v-neckwideshirt_50.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '50.99'
+                    display_price: $50.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '176'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '467'
+                        type: product_property
+                      - id: '468'
+                        type: product_property
+                      - id: '469'
+                        type: product_property
+                      - id: '470'
+                        type: product_property
+                      - id: '471'
+                        type: product_property
+                      - id: '472'
+                        type: product_property
+                      - id: '473'
+                        type: product_property
+                      - id: '474'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '11'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '176'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '60'
+                        type: variant
+                - id: '110'
+                  type: product
+                  attributes:
+                    name: Shined Pants
+                    description: Suscipit accusamus placeat cum incidunt. Distinctio ducimus occaecati ut mollitia. Laboriosam aliquam quos natus accusantium eligendi aliquid. Nemo officiis dignissimos veniam reiciendis dolores. Ad itaque aspernatur laborum ullam.
+                    available_on: '2021-10-02T11:02:31.172Z'
+                    slug: shined-pants
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:15.075Z'
+                    sku: Pants_shinedpants_44.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '44.99'
+                    display_price: $44.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '226'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '735'
+                        type: product_property
+                      - id: '736'
+                        type: product_property
+                      - id: '737'
+                        type: product_property
+                      - id: '738'
+                        type: product_property
+                      - id: '739'
+                        type: product_property
+                      - id: '740'
+                        type: product_property
+                      - id: '741'
+                        type: product_property
+                      - id: '742'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '17'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '226'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '110'
+                        type: variant
+                meta:
+                  count: 25
+                  total_count: 116
+                  total_pages: 5
+                  filters:
+                    option_types:
+                    - id: 1
+                      name: color
+                      presentation: Color
+                      option_values:
+                      - id: 4
+                        name: black
+                        presentation: Black
+                        position: 4
+                      - id: 11
+                        name: mint
+                        presentation: Mint
+                        position: 11
+                      - id: 6
+                        name: green
+                        presentation: Green
+                        position: 6
+                      - id: 2
+                        name: purple
+                        presentation: Purple
+                        position: 2
+                      - id: 10
+                        name: beige
+                        presentation: Beige
+                        position: 10
+                      - id: 17
+                        name: pink
+                        presentation: Pink
+                        position: 17
+                      - id: 7
+                        name: grey
+                        presentation: Grey
+                        position: 7
+                      - id: 8
+                        name: orange
+                        presentation: Orange
+                        position: 8
+                      - id: 15
+                        name: yellow
+                        presentation: Yellow
+                        position: 15
+                      - id: 1
+                        name: white
+                        presentation: White
+                        position: 1
+                      - id: 13
+                        name: dark-blue
+                        presentation: Dark Blue
+                        position: 13
+                      - id: 19
+                        name: ecru
+                        presentation: Ecru
+                        position: 19
+                      - id: 3
+                        name: red
+                        presentation: Red
+                        position: 3
+                      - id: 12
+                        name: blue
+                        presentation: Blue
+                        position: 12
+                      - id: 16
+                        name: light-blue
+                        presentation: Light Blue
+                        position: 16
+                      - id: 9
+                        name: burgundy
+                        presentation: Burgundy
+                        position: 9
+                      - id: 14
+                        name: khaki
+                        presentation: Khaki
+                        position: 14
+                      - id: 5
+                        name: brown
+                        presentation: Brown
+                        position: 5
+                    - id: 2
+                      name: length
+                      presentation: Length
+                      option_values:
+                      - id: 20
+                        name: mini
+                        presentation: Mini
+                        position: 1
+                    - id: 3
+                      name: size
+                      presentation: Size
+                      option_values:
+                      - id: 23
+                        name: xs
+                        presentation: XS
+                        position: 1
+                    product_properties:
+                    - id: 1
+                      name: manufacturer
+                      presentation: Manufacturer
+                      values:
+                      - value: Conditioned
+                        filter_param: conditioned
+                      - value: Jerseys
+                        filter_param: jerseys
+                      - value: Resiliance
+                        filter_param: resiliance
+                      - value: Wannabe
+                        filter_param: wannabe
+                      - value: Wilson
+                        filter_param: wilson
+                    - id: 2
+                      name: brand
+                      presentation: Brand
+                      values:
+                      - value: Alpha
+                        filter_param: alpha
+                      - value: Beta
+                        filter_param: beta
+                      - value: Delta
+                        filter_param: delta
+                      - value: Epsilon
+                        filter_param: epsilon
+                      - value: Gamma
+                        filter_param: gamma
+                      - value: Theta
+                        filter_param: theta
+                      - value: Zeta
+                        filter_param: zeta
+                links:
+                  self: http://localhost:3000/api/v2/storefront/products
+                  next: http://localhost:3000/api/v2/storefront/products?page=2
+                  prev: http://localhost:3000/api/v2/storefront/products?page=1
+                  last: http://localhost:3000/api/v2/storefront/products?page=5
+                  first: http://localhost:3000/api/v2/storefront/products?page=1
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

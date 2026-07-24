@@ -1,0 +1,653 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Wishlists / Wished Items API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Wishlists / Wished Items
+paths:
+  /api/v2/storefront/wishlists/{token}/add_item:
+    parameters:
+    - schema:
+        type: string
+      name: token
+      in: path
+      required: true
+    post:
+      summary: Add Item to Wishlist
+      description: 'The Add Item to Wishlist endpoint adds a variant to an existing wishlist by creating a new `wished_item`. A wished item in a wishlist is comparable to a line item in a cart.
+
+
+        Each wished item references a single variant, holds the desired quantity and returns price information determined by the variant price in current currency, and desired quantity.'
+      operationId: add-item-to-wishlist
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                variant_id:
+                  type: string
+                  description: The variant ID that is to be added to the wishlist.
+                quantity:
+                  type: number
+                  description: Set a quantity greater than 0, or omit the quantity param if your wishlist does not support quantities.
+              required:
+              - variant_id
+            examples:
+              Add a variant:
+                value:
+                  variant_id: '149'
+                  quantity: 3
+        description: 'Passing a quantity value is optional for those wishlist systems that do not support quantities. In this scenario, the returned quantity value will always be `1`, allowing the add-to-cart and pricing to reflect the single representation of the wished item accurately.
+
+
+          If the wishlist system you are building allows for setting quantity, add the quantity attribute to the request body with an integer value greater than zero.'
+      responses:
+        '200':
+          $ref: '#/components/responses/WishedItem'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+      security:
+      - bearerAuth: []
+      tags:
+      - Wishlists / Wished Items
+  /api/v2/storefront/wishlists/{token}/add_items:
+    post:
+      summary: Add Items to Wishlist
+      description: 'The Add Items to Wishlist endpoint adds variants to an existing wishlist by creating a new `wished_item` objects. A wished item in a wishlist is comparable to a line item in a cart.
+
+
+        Each wished item references a single variant, holds the desired quantity and returns price information determined by the variant price in current currency, and desired quantity.'
+      operationId: add-items-to-wishlist
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                wished_items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      variant_id:
+                        type: string
+                        example: '1'
+                        description: The variant ID that is to be added to the wishlist.
+                      quantity:
+                        type: number
+                        example: 10
+                        description: Set a quantity greater than 0, or omit the quantity param if your wishlist does not support quantities. If omitted, quantity will be set to 1.
+                    required:
+                    - variant_id
+            examples:
+              Add a variant:
+                value:
+                  wished_items:
+                  - variant_id: '1'
+                    quantity: 10
+                  - variant_id: '2'
+                    quantity: 5
+        description: 'Passing a quantity value is optional for those wishlist systems that do not support quantities. In this scenario, the returned quantity value will always be `1`, allowing the add-to-cart and pricing to reflect the single representation of the wished item accurately.
+
+
+          If the wishlist system you are building allows for setting quantity, add the quantity attribute to the request body with an integer value greater than zero.'
+      responses:
+        '200':
+          $ref: '#/components/responses/Wishlist'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+      security:
+      - bearerAuth: []
+      tags:
+      - Wishlists / Wished Items
+  /api/v2/storefront/wishlists/{token}/set_item_quantity/{item_id}:
+    patch:
+      description: This endpoint sets the wished item quantity.
+      summary: Set Wished Item Quantity
+      operationId: update-wished-variant-quantity
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      - $ref: '#/components/parameters/ItemId'
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Set the quantity value to an integer greater than 0
+              required:
+              - quantity
+            examples:
+              Add a variant:
+                value:
+                  quantity: 7
+        description: ''
+      responses:
+        '200':
+          $ref: '#/components/responses/WishedItem'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+      security:
+      - bearerAuth: []
+      tags:
+      - Wishlists / Wished Items
+  /api/v2/storefront/wishlists/{token}/remove_item/{item_id}:
+    parameters:
+    - schema:
+        type: string
+      name: token
+      in: path
+      required: true
+    - schema:
+        type: string
+      name: item_id
+      in: path
+      required: true
+    delete:
+      description: Removes a wished item from a wishlist.
+      summary: Delete Item from Wishlist
+      operationId: delete-wished-variant-from-wishlist
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      - $ref: '#/components/parameters/ItemId'
+      responses:
+        '200':
+          $ref: '#/components/responses/WishedItem'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+      tags:
+      - Wishlists / Wished Items
+  /api/v2/storefront/wishlists/{token}/remove_items:
+    delete:
+      description: Removes wished items from a wishlist.
+      summary: Delete Items from Wishlist
+      operationId: delete-wished-variants-from-wishlist
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                wished_items_ids:
+                  type: array
+                  items:
+                    type: string
+                    example: '1'
+                    description: The Wished Item ID that is to be removed from wishlist.
+            examples:
+              Remove wished items:
+                value:
+                  wished_items_ids:
+                  - '1'
+                  - '2'
+      responses:
+        '200':
+          $ref: '#/components/responses/Wishlist'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+      security:
+      - bearerAuth: []
+      tags:
+      - Wishlists / Wished Items
+components:
+  responses:
+    WishedItem:
+      description: 200 Success - Returns an array of `wished_item` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/WishedItem'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishedItemIncludes'
+            required:
+            - data
+          examples:
+            Wished Item:
+              value:
+                data:
+                  id: '1'
+                  type: wished_item
+                  attributes:
+                    quantity: 3
+                    price: '55.99'
+                    total: '167.97'
+                    display_price: $55.99
+                    display_total: $167.97
+                  relationships:
+                    variant:
+                      data:
+                        id: '149'
+                        type: variant
+            Wished Item including Variant:
+              value:
+                data:
+                  id: '2'
+                  type: wished_item
+                  attributes:
+                    quantity: 3
+                    price: '52.99'
+                    total: '158.97'
+                    display_price: $52.99
+                    display_total: $158.97
+                  relationships:
+                    variant:
+                      data:
+                        id: '150'
+                        type: variant
+                included:
+                - id: '150'
+                  type: variant
+                  attributes:
+                    sku: JacketsandCoats_wool-blendcoat_52.99_beige_xs
+                    weight: '0.0'
+                    height: null
+                    width: null
+                    depth: null
+                    is_master: false
+                    options_text: 'Color: beige, Size: XS'
+                    options:
+                    - name: Color
+                      value: beige
+                      presentation: Beige
+                    - name: Size
+                      value: XS
+                      presentation: XS
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    currency: USD
+                    price: '52.99'
+                    display_price: $52.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    product:
+                      data:
+                        id: '34'
+                        type: product
+                    images:
+                      data: []
+                    option_values:
+                      data:
+                      - id: '10'
+                        type: option_value
+                      - id: '23'
+                        type: option_value
+    Wishlist:
+      description: 200 Success - Returns the `wishlist` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Wishlist'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishlistIncludes'
+            required:
+            - data
+          examples:
+            Wishlist:
+              value:
+                data:
+                  id: '28'
+                  type: wishlist
+                  attributes:
+                    token: 1inBHcJnxBrVEMAZb9esRqZP
+                    name: My Wishlist
+                    is_private: false
+                    is_default: true
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '14'
+                        type: wished_item
+            Wishlist including Wished Items:
+              value:
+                data:
+                  id: '28'
+                  type: wishlist
+                  attributes:
+                    token: 1inBHcJnxBrVEMAZb9esRqZP
+                    name: My Wishlist
+                    is_private: false
+                    is_default: true
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '14'
+                        type: wished_item
+                included:
+                - id: '14'
+                  type: wished_item
+                  attributes:
+                    quantity: 7
+                    price: '26.99'
+                    total: '188.93'
+                    display_price: $26.99
+                    display_total: $188.93
+                  relationships:
+                    variant:
+                      data:
+                        id: '149'
+                        type: variant
+                    wishlist:
+                      data:
+                        id: '28'
+                        type: wishlist
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+  schemas:
+    WishedItemIncludes:
+      x-internal: false
+      title: Wished Item Includes
+      allOf:
+      - $ref: '#/components/schemas/Variant'
+    Wishlist:
+      description: ''
+      type: object
+      title: Wishlist
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: wishlist
+        attributes:
+          type: object
+          properties:
+            token:
+              type: string
+            name:
+              type: string
+            is_private:
+              type: boolean
+            is_default:
+              type: boolean
+            variant_included:
+              type: boolean
+              description: Returns `true` or `false` depending on the variant ID passed in through the `is_variant_included` query param.
+        relationships:
+          type: object
+          properties:
+            wished_items:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    allOf:
+                    - $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    WishedItem:
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: wished_item
+        attributes:
+          type: object
+          properties:
+            quantity:
+              type: integer
+            price:
+              type: string
+            total:
+              type: string
+            display_price:
+              type: string
+            display_total:
+              type: string
+        relationships:
+          type: object
+          properties:
+            variant:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    WishlistIncludes:
+      x-internal: false
+      title: Wishlist Includes
+      allOf:
+      - $ref: '#/components/schemas/WishedItem'
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: variant
+        attributes:
+          type: object
+          properties:
+            sku:
+              type: string
+              example: SKU-1001
+            price:
+              type: string
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type: string
+              example: '10'
+              nullable: true
+            height:
+              type: string
+              example: '10'
+              nullable: true
+            width:
+              type: string
+              example: '10'
+              nullable: true
+            depth:
+              type: string
+              example: '10'
+              nullable: true
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+  parameters:
+    Token:
+      name: token
+      in: path
+      required: true
+      description: The token is a unique string used to identify the target resource.
+      schema:
+        type: string
+      example: vmJtMiMozBdFtn1VkdJ8dYen
+    ItemId:
+      name: item_id
+      in: path
+      required: true
+      description: The wished item id
+      schema:
+        type: string
+      example: '3'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

@@ -1,0 +1,370 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Stores API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Stores
+paths:
+  /api/v2/storefront/store:
+    get:
+      summary: Return the current Store
+      description: Returns the current Store. [Read more about Stores](/developer/core-concepts/stores)
+      tags:
+      - Stores
+      operationId: show-current-store
+      parameters:
+      - $ref: '#/components/parameters/StoreIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsStore'
+      responses:
+        '200':
+          $ref: '#/components/responses/Store'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+components:
+  schemas:
+    Country:
+      title: Country
+      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: country
+        attributes:
+          type: object
+          properties:
+            iso:
+              type: string
+              example: US
+            iso3:
+              type: string
+              example: USA
+            iso_name:
+              type: string
+              example: UNITED STATES
+            name:
+              type: string
+              example: United States
+            states_required:
+              type: boolean
+            zipcode_required:
+              type: boolean
+            default:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            states:
+              type: object
+              description: States associated with this Country
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/State'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    State:
+      type: object
+      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
+      title: State
+      properties:
+        abbr:
+          type: string
+          example: NY
+          description: State abbreviation
+        name:
+          type: string
+          example: New York
+          description: State name
+      x-internal: false
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    Store:
+      type: object
+      description: Stores are the center of the Spree ecosystem. Each Spree installation can have multiple Stores. Each Store operates on a different domain or subdomain.
+      title: Store
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: store
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Spree Demo
+              description: Name of the Store
+            url:
+              type: string
+              example: spree-demo.com
+              description: Store Url
+            meta_description:
+              type: string
+              example: Luxury clothing store for men and women.
+              description: Meta description for SEO
+            meta_keywords:
+              type: string
+              example: luxury clothing men women
+              description: Meta keywords for SEO
+            seo_title:
+              type: string
+              example: Buy Luxury Clothing With Ease
+              description: The title for SEO
+            default_currency:
+              type: string
+              example: EUR
+              description: Default currency of the store
+            default:
+              type: boolean
+              example: true
+              description: Indicates if the Store is the default one
+            supported_currencies:
+              type: string
+              example: EUR,USD,GBP
+              description: All currencies supported by store
+            facebook:
+              type: string
+              example: https://www.facebook.com/mystorename
+              description: URL of Facebook page
+            twitter:
+              type: string
+              example: https://twitter.com/mystorename
+              description: URL of Twitter page
+            instagram:
+              type: string
+              example: https://instagram.com/mystorename
+              description: URL of Instagram page
+            default_locale:
+              type: string
+              example: en
+              description: Default locale of the Store
+            supported_locales:
+              type: string
+              example: en,es,de
+              description: Supported locales of the Store
+            customer_support_email:
+              type: string
+              example: support@mystore.com
+              description: This email is visible to your Store visitors in the Footer section
+            description:
+              type: string
+              example: Mystore has been selling luxury clothing for more than 20 years and has 15 stores currently.
+              description: Description of the Store which is visible in the Footer
+            address:
+              type: string
+              example: 813 Howard Street, Oswego NY 13126, USA
+              description: Address of the Store which is visible in the Footer
+            contact_phone:
+              type: string
+              example: '+123456789'
+              description: Contact phone number of the Store which is visible in the Footer
+            favicon_path:
+              type: string
+              example: /assets/favicon.ico
+        relationships:
+          type: object
+          properties:
+            default_country:
+              type: object
+              description: Default Country of the Store
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    StoreIncludes:
+      x-internal: false
+      title: Store Includes
+      anyOf:
+      - $ref: '#/components/schemas/Country'
+  parameters:
+    SparseFieldsStore:
+      name: fields[store]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,url,supported_locales
+    StoreIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: 'Specify what related resources (relationships) you would like to receive in the response body. Eg.
+
+
+        ```
+
+        default_country
+
+        ```
+
+
+        [More information](https://jsonapi.org/format/#fetching-includes)'
+      example: default_country
+  responses:
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    Store:
+      description: 200 Success - Returns the `store` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Store'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StoreIncludes'
+            required:
+            - data
+          examples:
+            Store without includes:
+              value:
+                data:
+                  id: '3'
+                  type: store
+                  attributes:
+                    name: Mystore
+                    url: spree-demo.com
+                    meta_description: Luxury clothing store for men and women.
+                    meta_keywords: luxury clothing men women
+                    seo_title: ''
+                    default_currency: USD
+                    default: true
+                    supported_currencies: EUR,GBP,USD
+                    facebook: https://www.facebook.com/mystorename
+                    twitter: https://twitter.com/mystorename
+                    instagram: https://instagram.com/mystorename
+                    default_locale: en
+                    customer_support_email: support@mystore.com
+                    description: Mystore has been selling luxury clothing for more than 20 years and has 15 stores currently.
+                    address: 813 Howard Street, Oswego NY 13126, USA
+                    contact_phone: '+123456789'
+                    supported_locales: en
+                    favicon_path: /assets/favicon.ico
+                  relationships:
+                    default_country:
+                      data:
+                        id: '2'
+                        type: country
+            Store with Includes:
+              value:
+                data:
+                  id: '3'
+                  type: store
+                  attributes:
+                    name: Mystore
+                    url: spree-demo.com
+                    meta_description: Luxury clothing store for men and women.
+                    meta_keywords: luxury clothing men women
+                    seo_title: ''
+                    default_currency: USD
+                    default: true
+                    supported_currencies: EUR,GBP,USD
+                    facebook: https://www.facebook.com/mystorename
+                    twitter: https://twitter.com/mystorename
+                    instagram: https://instagram.com/mystorename
+                    default_locale: en
+                    customer_support_email: support@mystore.com
+                    description: Mystore has been selling luxury clothing for more than 20 years and has 15 stores currently.
+                    address: 813 Howard Street, Oswego NY 13126, USA
+                    contact_phone: '+123456789'
+                    supported_locales: en
+                    favicon_path: /assets/favicon.ico
+                  relationships:
+                    default_country:
+                      data:
+                        id: '2'
+                        type: country
+                included:
+                - id: '2'
+                  type: country
+                  attributes:
+                    iso: US
+                    iso3: USA
+                    iso_name: UNITED STATES
+                    name: United States
+                    states_required: true
+                    zipcode_required: true
+                    default: true
+                  relationships:
+                    checkout_zone_applicable_states:
+                      data: []
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

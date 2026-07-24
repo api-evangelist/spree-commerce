@@ -1,0 +1,235 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Newsletter Subscribers API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Newsletter Subscribers
+  description: Guest and customer newsletter subscriptions (double opt-in)
+paths:
+  /api/v3/store/newsletter_subscribers:
+    post:
+      summary: Subscribe to the newsletter
+      tags:
+      - Newsletter Subscribers
+      security:
+      - api_key: []
+      description: "Subscribes an email address to the newsletter for the current store.\n\nBehavior:\n\n- If the email is already verified for this store, the existing subscription is returned unchanged.\n- If the request is unauthenticated (guest), the subscription is created in an unverified state\n  and two events are published: `newsletter_subscriber.subscription_requested` (carrying the\n  `verification_token` and the validated `redirect_url`, intended for headless storefronts that\n  want to send the confirmation email themselves via a webhook handler) and the legacy\n  `newsletter_subscriber.subscribed` lifecycle event (which the bundled `spree_emails` package\n  listens to and uses to send a default confirmation email). The confirmation link should point\n  at `redirect_url?token=<verification_token>` and call `POST /newsletter_subscribers/verify`\n  when the user clicks it.\n- If the request is authenticated via JWT and the customer's email matches the subscribed email,\n  the subscription is auto-verified and no events are fired — the JWT already proves email\n  ownership, so no confirmation email is needed.\n\nThe optional `redirect_url` is where the verification token should land on the storefront. The\nserver does not return a validation error when the URL is outside the store's\n[Allowed Origins](/developer/core-concepts/allowed-origins); instead, the URL is silently\nomitted from the webhook payload (secure-by-default). When no allow-list is configured on the\nstore, the URL is also omitted. Callers therefore receive the same 201 regardless, and the\nwebhook handler should fall back to the store's storefront URL when `redirect_url` is missing\nfrom the payload.\n\nNewsletter consent is preserved across registration: if a guest subscribes and later registers\nwith the same email, the existing subscriber record is reused.\n"
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst subscriber = await client.newsletterSubscribers.create({\n  email: 'subscriber@example.com',\n  // Where the verification token should land. Must be in the store's\n  // allowed origins. The storefront's webhook handler will send the\n  // confirmation email with a link to `<redirect_url>?token=<token>`.\n  redirect_url: 'https://your-store.com/newsletter/confirm',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Optional Bearer JWT — when present, links the subscription to that customer
+        schema:
+          type: string
+      responses:
+        '201':
+          description: auto-verified when JWT matches subscribed email
+          content:
+            application/json:
+              example:
+                id: sub_UkLWZg9DAJ
+                email: eufemia@stoltenbergwalter.ca
+                created_at: '2026-05-21T18:12:32.551Z'
+                updated_at: '2026-05-21T18:12:32.553Z'
+                verified: true
+                verified_at: '2026-05-21T18:12:32Z'
+                customer_id: cus_UkLWZg9DAJ
+              schema:
+                $ref: '#/components/schemas/NewsletterSubscriber'
+        '422':
+          description: invalid email format
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Email is invalid
+                  details:
+                    email:
+                    - is invalid
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: subscriber@example.com
+                redirect_url:
+                  type: string
+                  format: uri
+                  example: https://your-store.com/newsletter/confirm
+                  description: Storefront URL the verification token should be appended to. Silently omitted from the webhook payload when the store has allowed origins configured and this URL does not match one of them, or when no allowed origins are configured at all.
+              required:
+              - email
+  /api/v3/store/newsletter_subscribers/verify:
+    post:
+      summary: Verify a newsletter subscription
+      tags:
+      - Newsletter Subscribers
+      security:
+      - api_key: []
+      description: "Confirms a pending newsletter subscription using the verification token sent by email.\n\nAfter successful verification:\n- The subscriber record is marked verified.\n- If the subscription is associated with a customer, that customer's `accepts_email_marketing`\n  flag is set to `true`.\n"
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst subscriber = await client.newsletterSubscribers.verify({\n  token: 'abc123def456',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: subscription verified
+          content:
+            application/json:
+              example:
+                id: sub_UkLWZg9DAJ
+                email: pending@example.com
+                created_at: '2026-05-21T18:12:32.578Z'
+                updated_at: '2026-05-21T18:12:32.591Z'
+                verified: true
+                verified_at: '2026-05-21T18:12:32Z'
+                customer_id: null
+              schema:
+                $ref: '#/components/schemas/NewsletterSubscriber'
+        '422':
+          description: missing token
+          content:
+            application/json:
+              example:
+                error:
+                  code: parameter_missing
+                  message: token is required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: abc123def456
+                  description: Verification token from the confirmation email
+              required:
+              - token
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type: object
+              description: Field-specific validation errors
+              nullable: true
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
+    NewsletterSubscriber:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        verified:
+          type: boolean
+        verified_at:
+          type: string
+          nullable: true
+        customer_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - email
+      - created_at
+      - updated_at
+      - verified
+      - verified_at
+      - customer_id
+      x-typelizer: true
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

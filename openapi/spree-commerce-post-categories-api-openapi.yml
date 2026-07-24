@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Post Categories API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Post Categories
+paths:
+  /api/v2/storefront/post_categories:
+    get:
+      summary: List all Post Categories
+      description: Returns a list of Post Categories. This endpoint is only available in Spree 5.2 or later.
+      tags:
+      - Post Categories
+      operationId: post-categories-list
+      parameters:
+      - $ref: '#/components/parameters/FilterByIds'
+      - in: query
+        name: filter[title]
+        schema:
+          type: string
+        example: News
+        description: Filter Post Categories by title
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - in: query
+        name: sort
+        schema:
+          type: string
+          enum:
+          - id
+          - -id
+          - title
+          - -title
+          - created_at
+          - -created_at
+          - updated_at
+          - -updated_at
+        example: title
+        description: 'Sort post categories by attribute. Prefix with "-" for descending order. Available options: id, title, created_at, updated_at'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PostCategory'
+                  meta:
+                    $ref: '#/components/schemas/ListMeta'
+                  links:
+                    $ref: '#/components/schemas/ListLinks'
+              examples:
+                success:
+                  value:
+                    data:
+                    - id: '1'
+                      type: post_category
+                      attributes:
+                        title: Resources
+                        slug: resources
+                        created_at: '2025-08-11T20:58:24.354Z'
+                        updated_at: '2025-08-11T20:58:24.354Z'
+                        description: null
+                      relationships: {}
+                    - id: '2'
+                      type: post_category
+                      attributes:
+                        title: Articles
+                        slug: articles
+                        created_at: '2025-08-11T20:58:24.365Z'
+                        updated_at: '2025-08-11T20:58:24.365Z'
+                        description: null
+                      relationships: {}
+                    - id: '3'
+                      type: post_category
+                      attributes:
+                        title: News
+                        slug: news
+                        created_at: '2025-08-11T20:58:24.375Z'
+                        updated_at: '2025-08-11T20:58:24.375Z'
+                        description: null
+                      relationships: {}
+                    meta:
+                      count: 3
+                      total_count: 3
+                      total_pages: 1
+                    links:
+                      self: http://localhost:3000/api/v2/storefront/post_categories
+                      next: http://localhost:3000/api/v2/storefront/post_categories?page=1
+                      prev: http://localhost:3000/api/v2/storefront/post_categories?page=1
+                      last: http://localhost:3000/api/v2/storefront/post_categories?page=1
+                      first: http://localhost:3000/api/v2/storefront/post_categories?page=1
+  /api/v2/storefront/post_categories/{id}:
+    get:
+      summary: Retrieve a Post Category
+      description: Returns the details of a specified Post Category, including related posts. You can use either the category slug or ID. This endpoint is only available in Spree 5.2 or later.
+      tags:
+      - Post Categories
+      operationId: show-post-category
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: news
+        description: Post Category slug or ID
+      - in: query
+        name: include
+        schema:
+          type: string
+        example: posts
+        description: 'Include related resources (available: posts)'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PostCategory'
+              examples:
+                success:
+                  value:
+                    data:
+                      id: '3'
+                      type: post_category
+                      attributes:
+                        title: News
+                        slug: news
+                        created_at: '2025-08-11T20:58:24.375Z'
+                        updated_at: '2025-08-11T20:58:24.375Z'
+                        description: null
+                      relationships:
+                        posts:
+                          data:
+                          - id: '1'
+                            type: post
+        '404':
+          $ref: '#/components/responses/404NotFound'
+components:
+  schemas:
+    PostCategory:
+      type: object
+      title: Post Category
+      description: Post Category represents a category for organizing blog posts or news articles.
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: post_category
+        attributes:
+          type: object
+          properties:
+            title:
+              type: string
+              example: News
+              description: Title of the post category
+            slug:
+              type: string
+              example: news
+              description: URL-friendly identifier for the post category
+            created_at:
+              $ref: '#/components/schemas/Timestamp'
+            updated_at:
+              $ref: '#/components/schemas/Timestamp'
+            description:
+              type: string
+              example: null
+              description: Description of the post category
+              nullable: true
+        relationships:
+          type: object
+          properties:
+            posts:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: '1'
+                      type:
+                        type: string
+                        example: post
+          required:
+          - title
+          - slug
+          - created_at
+          - updated_at
+      required:
+      - id
+      - type
+      - attributes
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+  responses:
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    FilterByIds:
+      in: query
+      name: filter[ids]
+      schema:
+        type: string
+      example: 1,2,3
+      description: Fetch only resources with corresponding IDs
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

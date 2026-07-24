@@ -1,0 +1,452 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Data Feeds API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Data Feeds
+paths:
+  /api/v2/platform/data_feeds:
+    get:
+      summary: Return a list of Data Feeds
+      tags:
+      - Data Feeds
+      security:
+      - bearer_auth: []
+      operationId: data-feeds-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '1'
+                      type: data_feed
+                      attributes:
+                        name: First Data Feed
+                        type: Spree::DataFeed::Google
+                        slug: e593ae1f-630a-4f77-832f-0489da1c921b
+                        active: true
+                    - id: '2'
+                      type: data_feed
+                      attributes:
+                        name: Second Data Feed
+                        type: Spree::DataFeed::Google
+                        slug: 52f060f2-76cf-4983-89a3-714419941463
+                        active: true
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/data_feeds?page=1&per_page=
+                      next: http://www.example.com/api/v2/platform/data_feeds?page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/data_feeds?page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/data_feeds?page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/data_feeds?page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Data Feed
+      tags:
+      - Data Feeds
+      security:
+      - bearer_auth: []
+      description: Creates a Data Feed
+      operationId: create-data-feed
+      parameters: []
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '1'
+                      type: data_feed
+                      attributes:
+                        name: First Data Feed
+                        type: Spree::DataFeed::Google
+                        slug: e593ae1f-630a-4f77-832f-0489da1c921b
+                        active: true
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Data Feed name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+                      type:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_data_feed_params'
+  /api/v2/platform/data_feeds/{id}:
+    get:
+      summary: Return a Data Feed
+      tags:
+      - Data Feeds
+      security:
+      - bearer_auth: []
+      description: Returns a Data Feed
+      operationId: show-data-feed
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '1'
+                      type: data_feed
+                      attributes:
+                        name: First Data Feed
+                        type: Spree::DataFeed::Google
+                        slug: e593ae1f-630a-4f77-832f-0489da1c921b
+                        active: true
+                      relationships:
+                        store:
+                          data:
+                            id: '1'
+                            type: store
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Data Feed
+      tags:
+      - Data Feeds
+      security:
+      - bearer_auth: []
+      description: Updates a Data Feed
+      operationId: update-data-feed
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '1'
+                      type: data_feed
+                      attributes:
+                        name: First Data Feed
+                        type: Spree::DataFeed::Google
+                        slug: e593ae1f-630a-4f77-832f-0489da1c921b
+                        active: true
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name is blank
+                    errors:
+                      name:
+                      - is blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_data_feed_params'
+    delete:
+      summary: Delete a Data Feed
+      tags:
+      - Data Feeds
+      security:
+      - bearer_auth: []
+      description: Deletes a Data Feed
+      operationId: delete-data-feed
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    update_data_feed_params:
+      type: object
+      properties:
+        data_feed:
+          type: object
+          required:
+          - name
+          - type
+          properties:
+            name:
+              type: string
+              example: First data feed
+            slug:
+              type: string
+              example: first-data-feed
+            type:
+              type: string
+              example: Spree::DataFeed::Google
+            active:
+              type: boolean
+      x-internal: false
+    create_data_feed_params:
+      type: object
+      properties:
+        data_feed:
+          type: object
+          required:
+          - name
+          - type
+          properties:
+            name:
+              type: string
+              example: First data feed
+            slug:
+              type: string
+              example: first-data-feed
+            type:
+              type: string
+              example: Spree::DataFeed::Google
+            active:
+              type: boolean
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

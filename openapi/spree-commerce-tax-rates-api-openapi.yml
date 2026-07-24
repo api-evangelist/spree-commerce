@@ -1,0 +1,604 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Tax Rates API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Tax Rates
+paths:
+  /api/v2/platform/tax_rates:
+    get:
+      summary: Return a list of Tax Rates
+      tags:
+      - Tax Rates
+      security:
+      - bearer_auth: []
+      description: Returns a list of Tax Rates
+      operationId: tax-rates-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone,tax_category
+        schema:
+          type: string
+      - name: filter[zone_id_eq]
+        in: query
+        description: ''
+        example: '3'
+        schema:
+          type: string
+      - name: filter[amount_gt]
+        in: query
+        description: ''
+        example: '0.05'
+        schema:
+          type: string
+      - name: filter[tax_category_id_eq]
+        in: query
+        description: ''
+        example: '1'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '12'
+                      type: tax_rate
+                      attributes:
+                        amount: '0.1'
+                        included_in_price: false
+                        created_at: '2022-11-08T19:35:44.070Z'
+                        updated_at: '2022-11-08T19:35:44.070Z'
+                        name: TaxRate - 903896
+                        show_rate_in_label: true
+                        deleted_at: null
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        zone:
+                          data:
+                            id: '99'
+                            type: zone
+                        tax_category:
+                          data:
+                            id: '165'
+                            type: tax_category
+                    - id: '13'
+                      type: tax_rate
+                      attributes:
+                        amount: '0.1'
+                        included_in_price: false
+                        created_at: '2022-11-08T19:35:44.073Z'
+                        updated_at: '2022-11-08T19:35:44.073Z'
+                        name: TaxRate - 477775
+                        show_rate_in_label: true
+                        deleted_at: null
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        zone:
+                          data:
+                            id: '100'
+                            type: zone
+                        tax_category:
+                          data:
+                            id: '165'
+                            type: tax_category
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/tax_rates?page=1&per_page=&include=&filter[zone_id_eq]=&filter[amount_gt]=&filter[tax_category_id_eq]=
+                      next: http://www.example.com/api/v2/platform/tax_rates?filter%5Bamount_gt%5D=&filter%5Btax_category_id_eq%5D=&filter%5Bzone_id_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/tax_rates?filter%5Bamount_gt%5D=&filter%5Btax_category_id_eq%5D=&filter%5Bzone_id_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/tax_rates?filter%5Bamount_gt%5D=&filter%5Btax_category_id_eq%5D=&filter%5Bzone_id_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/tax_rates?filter%5Bamount_gt%5D=&filter%5Btax_category_id_eq%5D=&filter%5Bzone_id_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Tax Rate
+      tags:
+      - Tax Rates
+      security:
+      - bearer_auth: []
+      description: Creates a Tax Rate
+      operationId: create-tax-rate
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone,tax_category
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '16'
+                      type: tax_rate
+                      attributes:
+                        amount: '0.1'
+                        included_in_price: false
+                        created_at: '2022-11-08T19:35:44.601Z'
+                        updated_at: '2022-11-08T19:35:44.601Z'
+                        name: TaxRate - 772641
+                        show_rate_in_label: true
+                        deleted_at: null
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        zone:
+                          data: null
+                        tax_category:
+                          data:
+                            id: '167'
+                            type: tax_category
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Calculator can't be blank, Rate can't be blank, Tax category can't be blank, and Name can't be blank
+                    errors:
+                      calculator:
+                      - can't be blank
+                      amount:
+                      - can't be blank
+                      tax_category:
+                      - can't be blank
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_tax_rate_params'
+  /api/v2/platform/tax_rates/{id}:
+    get:
+      summary: Return a Tax Rate
+      tags:
+      - Tax Rates
+      security:
+      - bearer_auth: []
+      description: Returns a Tax Rate
+      operationId: show-tax-rate
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone,tax_category
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '17'
+                      type: tax_rate
+                      attributes:
+                        amount: '0.1'
+                        included_in_price: false
+                        created_at: '2022-11-08T19:35:44.874Z'
+                        updated_at: '2022-11-08T19:35:44.874Z'
+                        name: TaxRate - 83823
+                        show_rate_in_label: true
+                        deleted_at: null
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        zone:
+                          data:
+                            id: '103'
+                            type: zone
+                        tax_category:
+                          data:
+                            id: '168'
+                            type: tax_category
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Tax Rate
+      tags:
+      - Tax Rates
+      security:
+      - bearer_auth: []
+      description: Updates a Tax Rate
+      operationId: update-tax-rate
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone,tax_category
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '19'
+                      type: tax_rate
+                      attributes:
+                        amount: '25.9'
+                        included_in_price: true
+                        created_at: '2022-11-08T19:35:45.406Z'
+                        updated_at: '2022-11-08T19:35:45.637Z'
+                        name: TaxRate - 33807
+                        show_rate_in_label: true
+                        deleted_at: null
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        zone:
+                          data:
+                            id: '106'
+                            type: zone
+                        tax_category:
+                          data:
+                            id: '170'
+                            type: tax_category
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Rate can't be blank
+                    errors:
+                      amount:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_tax_rate_params'
+    delete:
+      summary: Delete a Tax Rate
+      tags:
+      - Tax Rates
+      security:
+      - bearer_auth: []
+      description: Deletes a Tax Rate
+      operationId: delete-tax-rate
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    update_tax_rate_params:
+      type: object
+      properties:
+        tax_rate:
+          type: object
+          required:
+          - amount
+          - calculator_attributes
+          - tax_category_id
+          properties:
+            amount:
+              type: number
+              example: 0.05
+            zone_id:
+              type: string
+              example: '2'
+            tax_category_id:
+              type: string
+              example: '1'
+            included_in_price:
+              type: boolean
+              example: true
+            name:
+              type: string
+              example: California
+            show_rate_in_label:
+              type: boolean
+              example: false
+            calculator_attributes:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Spree::Calculator::FlatRate
+                preferences:
+                  type: object
+                  example:
+                    amount: 0
+                    currency: USD
+      required:
+      - tax_rate
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    create_tax_rate_params:
+      type: object
+      properties:
+        tax_rate:
+          type: object
+          required:
+          - amount
+          - calculator_attributes
+          - tax_category_id
+          properties:
+            amount:
+              type: number
+              example: 0.05
+            zone_id:
+              type: string
+              example: '2'
+            tax_category_id:
+              type: string
+              example: '1'
+            included_in_price:
+              type: boolean
+              example: true
+            name:
+              type: string
+              example: California
+            show_rate_in_label:
+              type: boolean
+              example: false
+            calculator_attributes:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Spree::Calculator::FlatRate
+                preferences:
+                  type: object
+                  example:
+                    amount: 0
+                    currency: USD
+      required:
+      - tax_rate
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

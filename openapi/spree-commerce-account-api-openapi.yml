@@ -1,0 +1,448 @@
+openapi: 3.0.3
+info:
+  title: Admin / Address Account API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Account
+paths:
+  /api/v2/storefront/account:
+    get:
+      description: Returns the current user details.
+      summary: Retrieve an Account
+      tags:
+      - Account
+      operationId: account-information
+      parameters:
+      - $ref: '#/components/parameters/AccountIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsUser'
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+    post:
+      description: Creates a new account
+      summary: Create an Account
+      tags:
+      - Account
+      operationId: account-creation
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: john@snow.org
+                    first_name:
+                      type: string
+                      example: John
+                    last_name:
+                      type: string
+                      example: Snow
+                    selected_locale:
+                      type: string
+                      example: en
+                    password:
+                      type: string
+                      example: spree123
+                    password_confirmation:
+                      type: string
+                      example: spree123
+                    public_metadata:
+                      type: object
+                      example:
+                        user_segment: supplier
+                      description: The public metadata for this User
+                    private_metadata:
+                      type: object
+                      example:
+                        has_abandoned_cart: false
+                      description: The private metadata for this User
+        description: ''
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+    patch:
+      description: Updates the users account details
+      summary: Update an Account
+      tags:
+      - Account
+      operationId: account-updates
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: john@snow.org
+                    first_name:
+                      type: string
+                      example: John
+                    last_name:
+                      type: string
+                      example: Snow
+                    selected_locale:
+                      type: string
+                      example: fr
+                    bill_address_id:
+                      type: string
+                      example: '1'
+                    ship_address_id:
+                      type: string
+                      example: '1'
+                    password:
+                      type: string
+                      example: spree123
+                    password_confirmation:
+                      type: string
+                      example: spree123
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    User:
+      type: object
+      title: User
+      description: ' '
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: user
+        attributes:
+          type: object
+          properties:
+            email:
+              type: string
+              example: spree@example.com
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            selected_locale:
+              type: string
+              example: fr
+            store_credits:
+              type: number
+              example: 150.75
+            completed_orders:
+              type: number
+              example: 3
+              description: Number of placed Orders by this User
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the user
+            public_metadata:
+              type: object
+              example:
+                user_segment: supplier
+              description: The public metadata for this User
+        relationships:
+          type: object
+          properties:
+            default_billing_address:
+              type: object
+              description: Default billing address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            default_shipping_address:
+              type: object
+              description: Default shipping address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Address:
+      type: object
+      title: Address
+      description: The Address model holds the customer details, such as name, address, and phone number.
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: address
+        attributes:
+          type: object
+          properties:
+            firstname:
+              type: string
+              example: John
+            lastname:
+              type: string
+              example: Doe
+            address1:
+              type: string
+              example: 1600 Amphitheatre Pkwy
+            address2:
+              type: string
+              example: Suite 1
+              nullable: true
+            city:
+              type: string
+              example: Mountain View
+            zipcode:
+              type: string
+              example: '94043'
+            phone:
+              type: string
+              example: (+1) 123 456 789
+              nullable: true
+            state_name:
+              type: string
+              example: California
+            state_code:
+              type: string
+              example: CA
+              description: State abbreviation
+              nullable: true
+            country_name:
+              type: string
+              example: United States of America
+            country_iso3:
+              type: string
+              example: USA
+              description: Country ISO3 code
+            company:
+              type: string
+              example: Google Inc.
+              description: Company name
+              nullable: true
+            label:
+              type: string
+              description: The internal name for this address (Work, Home)
+              example: Home
+              nullable: true
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+  responses:
+    User:
+      description: 200 Success - Returns the `user` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/User'
+              included:
+                type: array
+                items:
+                  allOf:
+                  - $ref: '#/components/schemas/Address'
+            required:
+            - data
+          examples:
+            Standard response:
+              value:
+                data:
+                  id: '1'
+                  type: user
+                  attributes:
+                    email: spree@example.com
+                    first_name: John
+                    last_name: Snow
+                    selected_locale: en
+                    store_credits: 0
+                    completed_orders: 0
+                    tags:
+                    - VIP
+                    - supplier
+                    public_metadata:
+                      user_segment: supplier
+                  relationships:
+                    default_billing_address:
+                      data:
+                        id: '2'
+                        type: address
+                    default_shipping_address:
+                      data:
+                        id: '1'
+                        type: address
+            Including Addresses:
+              value:
+                data:
+                  id: '1'
+                  type: user
+                  attributes:
+                    email: spree@example.com
+                    store_credits: 0
+                    completed_orders: 0
+                  relationships:
+                    default_billing_address:
+                      data:
+                        id: '2'
+                        type: address
+                    default_shipping_address:
+                      data:
+                        id: '1'
+                        type: address
+                included:
+                - id: '2'
+                  type: address
+                  attributes:
+                    firstname: Destiny
+                    lastname: Maggio
+                    address1: 12775 Runolfsdottir Greens
+                    address2: Apt. 704
+                    city: Kochmouth
+                    zipcode: '16804'
+                    phone: 1-257-860-8433
+                    state_name: New York
+                    company: null
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    state_code: NY
+                - id: '1'
+                  type: address
+                  attributes:
+                    firstname: Aimee
+                    lastname: Jast
+                    address1: 56593 Baumbach Meadows
+                    address2: Suite 632
+                    city: Port Michaelafort
+                    zipcode: '16804'
+                    phone: (846)556-4478
+                    state_name: New York
+                    company: null
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    state_code: NY
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
+  parameters:
+    SparseFieldsUser:
+      name: fields[user]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: email,completed_orders
+    AccountIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information
+      example: default_billing_address,default_shipping_address
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

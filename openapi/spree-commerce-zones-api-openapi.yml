@@ -1,0 +1,512 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Zones API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Zones
+paths:
+  /api/v2/platform/zones:
+    get:
+      summary: Return a list of Zones
+      tags:
+      - Zones
+      security:
+      - bearer_auth: []
+      description: Returns a list of Zones
+      operationId: zones-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone_members
+        schema:
+          type: string
+      - name: filter[description_eq]
+        in: query
+        description: ''
+        example: The zone containing all EU countries
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '113'
+                      type: zone
+                      attributes:
+                        name: Laudantium itaque ab suscipit quo fugit delectus perferendis.
+                        description: Cum nisi esse veniam explicabo praesentium quod reprehenderit.
+                        default_tax: false
+                        zone_members_count: 0
+                        created_at: '2022-11-08T19:36:09.411Z'
+                        updated_at: '2022-11-08T19:36:09.411Z'
+                        kind: state
+                      relationships:
+                        zone_members:
+                          data: []
+                    - id: '114'
+                      type: zone
+                      attributes:
+                        name: Enim perferendis consectetur in assumenda dolor deserunt.
+                        description: Incidunt iusto vitae architecto nulla voluptate.
+                        default_tax: false
+                        zone_members_count: 0
+                        created_at: '2022-11-08T19:36:09.412Z'
+                        updated_at: '2022-11-08T19:36:09.412Z'
+                        kind: state
+                      relationships:
+                        zone_members:
+                          data: []
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/zones?page=1&per_page=&include=&filter[description_eq]=
+                      next: http://www.example.com/api/v2/platform/zones?filter%5Bdescription_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/zones?filter%5Bdescription_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/zones?filter%5Bdescription_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/zones?filter%5Bdescription_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Zone
+      tags:
+      - Zones
+      security:
+      - bearer_auth: []
+      description: Creates a Zone
+      operationId: create-zone
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone_members
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '117'
+                      type: zone
+                      attributes:
+                        name: Repellat corrupti laudantium soluta dolorum animi quidem reiciendis.
+                        description: Laudantium tenetur accusamus blanditiis fuga totam.
+                        default_tax: false
+                        zone_members_count: 0
+                        created_at: '2022-11-08T19:36:09.930Z'
+                        updated_at: '2022-11-08T19:36:09.930Z'
+                        kind: state
+                      relationships:
+                        zone_members:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_zone_params'
+  /api/v2/platform/zones/{id}:
+    get:
+      summary: Return a Zone
+      tags:
+      - Zones
+      security:
+      - bearer_auth: []
+      description: Returns a Zone
+      operationId: show-zone
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone_members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '118'
+                      type: zone
+                      attributes:
+                        name: Molestiae esse ab labore ratione nemo.
+                        description: Impedit vitae in modi quaerat qui quod quia.
+                        default_tax: false
+                        zone_members_count: 0
+                        created_at: '2022-11-08T19:36:10.198Z'
+                        updated_at: '2022-11-08T19:36:10.198Z'
+                        kind: state
+                      relationships:
+                        zone_members:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Zone
+      tags:
+      - Zones
+      security:
+      - bearer_auth: []
+      description: Updates a Zone
+      operationId: update-zone
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: zone_members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '120'
+                      type: zone
+                      attributes:
+                        name: EU
+                        description: The zone containing all EU countries
+                        default_tax: false
+                        zone_members_count: 0
+                        created_at: '2022-11-08T19:36:10.716Z'
+                        updated_at: '2022-11-08T19:36:10.945Z'
+                        kind: state
+                      relationships:
+                        zone_members:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_zone_params'
+    delete:
+      summary: Delete a Zone
+      tags:
+      - Zones
+      security:
+      - bearer_auth: []
+      description: Deletes a Zone
+      operationId: delete-zone
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    update_zone_params:
+      type: object
+      properties:
+        address:
+          type: object
+          properties:
+            name:
+              type: string
+              example: EU
+            description:
+              type: string
+              example: All countries in the EU
+            default_tax:
+              type: boolean
+            kind:
+              type: string
+              example: state
+              enum:
+              - state
+              - country
+      required:
+      - zone
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    create_zone_params:
+      type: object
+      properties:
+        zone:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: EU
+            description:
+              type: string
+              example: All countries in the EU
+            default_tax:
+              type: boolean
+            kind:
+              type: string
+              example: state
+              enum:
+              - state
+              - country
+      required:
+      - zone
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

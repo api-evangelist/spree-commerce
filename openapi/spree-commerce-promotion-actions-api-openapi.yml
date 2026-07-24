@@ -1,0 +1,472 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Promotion Actions API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Promotion Actions
+paths:
+  /api/v2/platform/promotion_actions:
+    get:
+      summary: Return a list of Promotion Actions
+      tags:
+      - Promotion Actions
+      security:
+      - bearer_auth: []
+      description: Returns a list of Promotion Actions
+      operationId: promotion-actions-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: calculator
+        schema:
+          type: string
+      - name: filter[type_eq]
+        in: query
+        description: ''
+        example: Spree::Promotion::Actions::CreateAdjustment
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '5'
+                      type: promotion_action
+                      attributes:
+                        position: null
+                        type: null
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:55.838Z'
+                        updated_at: '2022-11-08T19:34:55.838Z'
+                      relationships:
+                        promotion:
+                          data:
+                            id: '5'
+                            type: promotion
+                    - id: '6'
+                      type: promotion_action
+                      attributes:
+                        position: null
+                        type: null
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:55.839Z'
+                        updated_at: '2022-11-08T19:34:55.839Z'
+                      relationships:
+                        promotion:
+                          data:
+                            id: '5'
+                            type: promotion
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/promotion_actions?page=1&per_page=&include=&filter[type_eq]=
+                      next: http://www.example.com/api/v2/platform/promotion_actions?filter%5Btype_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/promotion_actions?filter%5Btype_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/promotion_actions?filter%5Btype_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/promotion_actions?filter%5Btype_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Promotion Action
+      tags:
+      - Promotion Actions
+      security:
+      - bearer_auth: []
+      description: Creates a Promotion Action
+      operationId: create-promotion-action
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: calculator
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '9'
+                      type: promotion_action
+                      attributes:
+                        position: null
+                        type: null
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:56.379Z'
+                        updated_at: '2022-11-08T19:34:56.379Z'
+                      relationships:
+                        promotion:
+                          data:
+                            id: '7'
+                            type: promotion
+              schema:
+                $ref: '#/components/schemas/resource'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_promotion_action_params'
+  /api/v2/platform/promotion_actions/{id}:
+    get:
+      summary: Return a Promotion Action
+      tags:
+      - Promotion Actions
+      security:
+      - bearer_auth: []
+      description: Returns a Promotion Action
+      operationId: show-promotion-action
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: calculator
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '10'
+                      type: promotion_action
+                      attributes:
+                        position: null
+                        type: null
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:56.411Z'
+                        updated_at: '2022-11-08T19:34:56.411Z'
+                      relationships:
+                        promotion:
+                          data:
+                            id: '8'
+                            type: promotion
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Promotion Action
+      tags:
+      - Promotion Actions
+      security:
+      - bearer_auth: []
+      description: Updates a Promotion Action
+      operationId: update-promotion-action
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: calculator
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '12'
+                      type: promotion_action
+                      attributes:
+                        position: null
+                        type: Spree::Promotion::Actions::CreateAdjustment
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:56.948Z'
+                        updated_at: '2022-11-08T19:34:57.178Z'
+                      relationships:
+                        promotion:
+                          data:
+                            id: '10'
+                            type: promotion
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_promotion_action_params'
+    delete:
+      summary: Delete a Promotion Action
+      tags:
+      - Promotion Actions
+      security:
+      - bearer_auth: []
+      description: Deletes a Promotion Action
+      operationId: delete-promotion-action
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    update_promotion_action_params:
+      type: object
+      properties:
+        promotion_action:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Promotion::Actions::CreateAdjustment
+              enum:
+              - Spree::Promotion::Actions::CreateAdjustment
+              - Spree::Promotion::Actions::CreateItemAdjustments
+              - Spree::Promotion::Actions::CreateLineItems
+              - Spree::Promotion::Actions::FreeShipping
+              description: Set the Type of Promotion Action you wish to use.
+      required:
+      - promotion_action
+      title: Create a Promotion Action
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_promotion_action_params:
+      type: object
+      properties:
+        promotion_action:
+          type: object
+          required:
+          - type
+          - promotion_id
+          properties:
+            type:
+              type: string
+              example: Spree::Promotion::Actions::CreateAdjustment
+              enum:
+              - Spree::Promotion::Actions::CreateAdjustment
+              - Spree::Promotion::Actions::CreateItemAdjustments
+              - Spree::Promotion::Actions::CreateLineItems
+              - Spree::Promotion::Actions::FreeShipping
+              description: Set the Type of Promotion Action you wish to use.
+            promotion_id:
+              type: string
+              example: '22'
+              description: Set the ID of the promotion this action belongs to.
+      required:
+      - promotion_action
+      title: Create a Promotion Action
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

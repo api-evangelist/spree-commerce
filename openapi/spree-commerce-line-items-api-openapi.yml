@@ -1,0 +1,684 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Line Items API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Line Items
+paths:
+  /api/v2/platform/line_items:
+    get:
+      summary: Return a list of Line Items
+      tags:
+      - Line Items
+      security:
+      - bearer_auth: []
+      description: Returns a list of Line Items
+      operationId: line-items-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: order,tax_category,variant.product,digital_links
+        schema:
+          type: string
+      - name: filter[order_id_eq]
+        in: query
+        description: ''
+        example: '123'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '23'
+                      type: line_item
+                      attributes:
+                        quantity: 1
+                        price: '10.0'
+                        created_at: '2022-11-08T19:34:19.541Z'
+                        updated_at: '2022-11-08T19:34:19.550Z'
+                        currency: USD
+                        cost_price: '17.0'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '10.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_amount: $10.00
+                        display_amount: $10.00
+                        display_final_amount: $10.00
+                        display_subtotal: $10.00
+                        display_pre_tax_amount: $10.00
+                        display_price: $10.00
+                        display_adjustment_total: $0.00
+                        display_additional_tax_total: $0.00
+                        display_promo_total: $0.00
+                        display_total: $10.00
+                        display_included_tax_total: $0.00
+                      relationships:
+                        order:
+                          data:
+                            id: '29'
+                            type: order
+                        tax_category:
+                          data:
+                            id: '70'
+                            type: tax_category
+                        variant:
+                          data:
+                            id: '183'
+                            type: variant
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data: []
+                        digital_links:
+                          data: []
+                    - id: '24'
+                      type: line_item
+                      attributes:
+                        quantity: 1
+                        price: '10.0'
+                        created_at: '2022-11-08T19:34:19.584Z'
+                        updated_at: '2022-11-08T19:34:19.590Z'
+                        currency: USD
+                        cost_price: '17.0'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '10.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_amount: $10.00
+                        display_amount: $10.00
+                        display_final_amount: $10.00
+                        display_subtotal: $10.00
+                        display_pre_tax_amount: $10.00
+                        display_price: $10.00
+                        display_adjustment_total: $0.00
+                        display_additional_tax_total: $0.00
+                        display_promo_total: $0.00
+                        display_total: $10.00
+                        display_included_tax_total: $0.00
+                      relationships:
+                        order:
+                          data:
+                            id: '29'
+                            type: order
+                        tax_category:
+                          data:
+                            id: '70'
+                            type: tax_category
+                        variant:
+                          data:
+                            id: '184'
+                            type: variant
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data: []
+                        digital_links:
+                          data: []
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/line_items?page=1&per_page=&include=&filter[order_id_eq]=
+                      next: http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Line Item
+      tags:
+      - Line Items
+      security:
+      - bearer_auth: []
+      description: Creates a Line Item
+      operationId: create-line-item
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: order,tax_category,variant.product,digital_links
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '27'
+                      type: line_item
+                      attributes:
+                        quantity: 1
+                        price: '10.0'
+                        created_at: '2022-11-08T19:34:20.312Z'
+                        updated_at: '2022-11-08T19:34:20.352Z'
+                        currency: USD
+                        cost_price: '17.0'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '10.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_amount: $10.00
+                        display_amount: $10.00
+                        display_final_amount: $10.00
+                        display_subtotal: $10.00
+                        display_pre_tax_amount: $10.00
+                        display_price: $10.00
+                        display_adjustment_total: $0.00
+                        display_additional_tax_total: $0.00
+                        display_promo_total: $0.00
+                        display_total: $10.00
+                        display_included_tax_total: $0.00
+                      relationships:
+                        order:
+                          data:
+                            id: '31'
+                            type: order
+                        tax_category:
+                          data:
+                            id: '72'
+                            type: tax_category
+                        variant:
+                          data:
+                            id: '187'
+                            type: variant
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data: []
+                        digital_links:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Variant can't be blank, Price is not a number, Currency Must match order currency
+                    errors:
+                      variant:
+                      - can't be blank
+                      price:
+                      - is not a number
+                      currency:
+                      - Must match order currency
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_line_item_params'
+  /api/v2/platform/line_items/{id}:
+    get:
+      summary: Return a Line Item
+      tags:
+      - Line Items
+      security:
+      - bearer_auth: []
+      description: Returns a Line Item
+      operationId: show-line-item
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: order,tax_category,variant.product,digital_links
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '28'
+                      type: line_item
+                      attributes:
+                        quantity: 1
+                        price: '10.0'
+                        created_at: '2022-11-08T19:34:20.761Z'
+                        updated_at: '2022-11-08T19:34:20.769Z'
+                        currency: USD
+                        cost_price: '17.0'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '10.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_amount: $10.00
+                        display_amount: $10.00
+                        display_final_amount: $10.00
+                        display_subtotal: $10.00
+                        display_pre_tax_amount: $10.00
+                        display_price: $10.00
+                        display_adjustment_total: $0.00
+                        display_additional_tax_total: $0.00
+                        display_promo_total: $0.00
+                        display_total: $10.00
+                        display_included_tax_total: $0.00
+                      relationships:
+                        order:
+                          data:
+                            id: '33'
+                            type: order
+                        tax_category:
+                          data:
+                            id: '73'
+                            type: tax_category
+                        variant:
+                          data:
+                            id: '188'
+                            type: variant
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data: []
+                        digital_links:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Line Item
+      tags:
+      - Line Items
+      security:
+      - bearer_auth: []
+      description: Updates a Line Item
+      operationId: update-line-item
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: order,tax_category,variant.product,digital_links
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '30'
+                      type: line_item
+                      attributes:
+                        quantity: 4
+                        price: '10.0'
+                        created_at: '2022-11-08T19:34:21.508Z'
+                        updated_at: '2022-11-08T19:34:21.772Z'
+                        currency: USD
+                        cost_price: '17.0'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '40.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_amount: $40.00
+                        display_amount: $40.00
+                        display_final_amount: $40.00
+                        display_subtotal: $40.00
+                        display_pre_tax_amount: $40.00
+                        display_price: $10.00
+                        display_adjustment_total: $0.00
+                        display_additional_tax_total: $0.00
+                        display_promo_total: $0.00
+                        display_total: $40.00
+                        display_included_tax_total: $0.00
+                      relationships:
+                        order:
+                          data:
+                            id: '35'
+                            type: order
+                        tax_category:
+                          data:
+                            id: '75'
+                            type: tax_category
+                        variant:
+                          data:
+                            id: '192'
+                            type: variant
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data: []
+                        digital_links:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Quantity selected of "Product 1275645" is not available.
+                    errors:
+                      quantity:
+                      - selected of "Product 1275645" is not available.
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_line_item_params'
+    delete:
+      summary: Delete a Line Item
+      tags:
+      - Line Items
+      security:
+      - bearer_auth: []
+      description: Deletes a Line Item
+      operationId: delete-line-item
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    create_line_item_params:
+      type: object
+      properties:
+        line_item:
+          type: object
+          required:
+          - order_id
+          - variant_id
+          - quantity
+          properties:
+            order_id:
+              type: string
+              example: '1'
+            variant_id:
+              type: string
+              example: '1'
+            quantity:
+              type: integer
+              example: 2
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - line_item
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_line_item_params:
+      type: object
+      properties:
+        line_item:
+          type: object
+          properties:
+            variant_id:
+              type: string
+              example: '1'
+            quantity:
+              type: integer
+              example: 2
+      required:
+      - line_item
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

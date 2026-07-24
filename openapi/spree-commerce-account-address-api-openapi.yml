@@ -1,0 +1,478 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Account / Address
+paths:
+  /api/v2/storefront/account/addresses:
+    get:
+      description: Returns a list of addresses for the current user.
+      summary: List all Addresses
+      operationId: addresses-list
+      responses:
+        '200':
+          $ref: '#/components/responses/AddressList'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/SparseFieldsAddress'
+      - in: query
+        name: filter[exclude_quick_checkout]
+        schema:
+          type: boolean
+        example: true
+        description: Exclude addresses that were created during quick checkout
+      tags:
+      - Account / Address
+    post:
+      description: Creates a new address for the current user.
+      summary: Create an Address
+      tags:
+      - Account / Address
+      operationId: create-address
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/AddressPayload'
+            examples:
+              Create an Address:
+                value:
+                  address:
+                    firstname: Mark
+                    lastname: Winterburn
+                    company: Paper Street Soap Co.
+                    address1: 775 Old Georgetown Road
+                    address2: 3rd Floor
+                    city: Qethesda
+                    phone: '3488545445002'
+                    zipcode: '90210'
+                    state_name: CA
+                    country_iso: US
+                    label: Work
+      responses:
+        '200':
+          $ref: '#/components/responses/Address'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/SparseFieldsAddress'
+  /api/v2/storefront/account/addresses/{id}:
+    parameters:
+    - schema:
+        type: string
+        example: '1'
+      name: id
+      in: path
+      required: true
+      description: The ID of the specified `address`.
+    delete:
+      description: This endpoint removes the specified address for the current user. It uses a soft delete to retain address information for pre-existing orders.
+      operationId: remove-address
+      responses:
+        '204':
+          description: 204 Success No Content Returned - Requested Address has been removed from the User Account
+        '404':
+          $ref: '#/components/responses/404NotFound'
+      security:
+      - bearerAuth: []
+      summary: Remove an Address
+      tags:
+      - Account / Address
+    patch:
+      description: Updates the specified address for the current user.
+      summary: Update an Address
+      operationId: update-address
+      parameters:
+      - $ref: '#/components/parameters/SparseFieldsAddress'
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/AddressPayload'
+            examples:
+              Update an Address:
+                value:
+                  address:
+                    firstname: Stephen
+                    lastname: Smith
+                    company: Woodbank School
+                    address1: 234 Old Georgetown Road
+                    address2: 1st Floor
+                    city: Aethesda
+                    phone: '34885493845002'
+                    zipcode: '90211'
+                    state_name: CA
+                    country_iso: US
+                    label: Office
+      responses:
+        '200':
+          $ref: '#/components/responses/Address'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+      tags:
+      - Account / Address
+components:
+  schemas:
+    AddressPayload:
+      example:
+        firstname: John
+        lastname: Snow
+        address1: 7735 Old Georgetown Road
+        address2: 2nd Floor
+        city: Bethesda
+        phone: '3014445002'
+        zipcode: '20814'
+        state_name: MD
+        country_iso: US
+      type: object
+      x-internal: false
+      title: ''
+      x-examples: {}
+      description: ''
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        address1:
+          type: string
+          description: Street address
+        address2:
+          type: string
+          description: Additional address information, floor no etc
+        city:
+          type: string
+          description: City, town
+        phone:
+          type: string
+        zipcode:
+          type: string
+          description: Valid zipcode, will be validated against the selected Country
+        state_name:
+          type: string
+          description: State/region/province 2 letter abbreviation
+        country_iso:
+          type: string
+          description: Country ISO (2-chars) or ISO3 (3-chars) code. [List of all codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes)
+        company:
+          type: string
+          example: Paper Street Soap Co.
+          description: Company name
+        label:
+          type: string
+          example: Work
+          description: The internal name for this address (Work, Home)
+      required:
+      - firstname
+      - lastname
+      - address1
+      - city
+      - country_iso
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    Address:
+      type: object
+      title: Address
+      description: The Address model holds the customer details, such as name, address, and phone number.
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: address
+        attributes:
+          type: object
+          properties:
+            firstname:
+              type: string
+              example: John
+            lastname:
+              type: string
+              example: Doe
+            address1:
+              type: string
+              example: 1600 Amphitheatre Pkwy
+            address2:
+              type: string
+              example: Suite 1
+              nullable: true
+            city:
+              type: string
+              example: Mountain View
+            zipcode:
+              type: string
+              example: '94043'
+            phone:
+              type: string
+              example: (+1) 123 456 789
+              nullable: true
+            state_name:
+              type: string
+              example: California
+            state_code:
+              type: string
+              example: CA
+              description: State abbreviation
+              nullable: true
+            country_name:
+              type: string
+              example: United States of America
+            country_iso3:
+              type: string
+              example: USA
+              description: Country ISO3 code
+            company:
+              type: string
+              example: Google Inc.
+              description: Company name
+              nullable: true
+            label:
+              type: string
+              description: The internal name for this address (Work, Home)
+              example: Home
+              nullable: true
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+  responses:
+    Address:
+      description: 200 Success - Returns the `address` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Address'
+          examples:
+            Standard response:
+              value:
+                data:
+                  id: '29'
+                  type: address
+                  attributes:
+                    firstname: Mark
+                    lastname: Winterburn
+                    address1: 775645 Old Georgetown Road
+                    address2: 3rd Floor
+                    city: Qethesda
+                    zipcode: '90210'
+                    phone: '3488545445002'
+                    state_name: California
+                    company: Paper Street Soap Co.
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    label: Work
+                    state_code: CA
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    AddressList:
+      description: 200 Success - Returns an array of `address` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
+          examples:
+            Standard response:
+              value:
+                data:
+                - id: '11'
+                  type: address
+                  attributes:
+                    firstname: Tyler
+                    lastname: Durden
+                    address1: 12312 Street
+                    address2: Basment Entrance
+                    city: LA
+                    zipcode: '90210'
+                    phone: 08173762736
+                    state_name: California
+                    company: Paper Street Soap Co
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    label: Home
+                    state_code: CA
+                - id: '28'
+                  type: address
+                  attributes:
+                    firstname: John
+                    lastname: Snow
+                    address1: 7735 Old Georgetown Road
+                    address2: 2nd Floor
+                    city: Bethesda
+                    zipcode: '20814'
+                    phone: '3014445002'
+                    state_name: Maryland
+                    company: null
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    label: null
+                    state_code: MD
+                - id: '29'
+                  type: address
+                  attributes:
+                    firstname: Emma
+                    lastname: Carragher
+                    address1: 775645 Old Georgetown Road
+                    address2: 3rd Floor
+                    city: Qethesda
+                    zipcode: '90210'
+                    phone: '3488545445002'
+                    state_name: California
+                    company: null
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    label: Work
+                    state_code: CA
+                meta:
+                  count: 3
+                  total_count: 3
+                  total_pages: 1
+                links:
+                  self: http://localhost:3000/api/v2/storefront/account/addresses
+                  next: http://localhost:3000/api/v2/storefront/account/addresses?page=1
+                  prev: http://localhost:3000/api/v2/storefront/account/addresses?page=1
+                  last: http://localhost:3000/api/v2/storefront/account/addresses?page=1
+                  first: http://localhost:3000/api/v2/storefront/account/addresses?page=1
+  parameters:
+    SparseFieldsAddress:
+      in: query
+      name: fields[address]
+      example: firstname,lastname,country_name
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

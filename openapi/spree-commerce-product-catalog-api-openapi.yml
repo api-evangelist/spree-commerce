@@ -1,0 +1,4134 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Product Catalog API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Product Catalog
+  description: Products, variants, and option types
+paths:
+  /api/v3/admin/option_types:
+    get:
+      summary: List option types
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a paginated list of option types.
+
+
+        **Required scope:** `read_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: optionTypes } = await client.optionTypes.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        description: Number of records per page
+        schema:
+          type: integer
+      - name: q[name_cont]
+        in: query
+        required: false
+        description: Filter by name (contains)
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., option_values). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,label,position). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: option types found
+          content:
+            application/json:
+              example:
+                data:
+                - id: opt_UkLWZg9DAJ
+                  name: foo-size-1
+                  label: Size
+                  position: 1
+                  kind: dropdown
+                  metadata: {}
+                  filterable: true
+                  created_at: '2026-05-24T17:37:03.133Z'
+                  updated_at: '2026-05-24T17:37:03.133Z'
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OptionType'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                required:
+                - data
+                - meta
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create an option type
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Creates a new option type. Supports nested option values.
+
+
+        Option values can be provided inline and will be created or updated by name.
+
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst optionType = await client.optionTypes.create({\n  name: 'color',\n  presentation: 'Color',\n  option_values: [\n    { name: 'red', presentation: 'Red' },\n    { name: 'navy', presentation: 'Navy' },\n  ],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      responses:
+        '201':
+          description: option type created
+          content:
+            application/json:
+              example:
+                id: opt_gbHJdmfrXB
+                name: material
+                label: Material
+                position: 2
+                kind: dropdown
+                metadata: {}
+                filterable: true
+                created_at: '2026-05-24T17:37:03.722Z'
+                updated_at: '2026-05-24T17:37:03.722Z'
+              schema:
+                $ref: '#/components/schemas/OptionType'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Name can't be blank and Presentation can't be blank
+                  details:
+                    name:
+                    - can't be blank
+                    presentation:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: color
+                label:
+                  type: string
+                  example: Color
+                position:
+                  type: integer
+                  example: 1
+                filterable:
+                  type: boolean
+                  example: true
+                option_values:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: red
+                      label:
+                        type: string
+                        example: Red
+                      position:
+                        type: integer
+              required:
+              - name
+              - label
+  /api/v3/admin/option_types/{id}:
+    get:
+      summary: Get an option type
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a single option type by ID, including its option values.
+
+
+        **Required scope:** `read_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst optionType = await client.optionTypes.get('ot_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Option type ID
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., option_values). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,label,position). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: option type found
+          content:
+            application/json:
+              example:
+                id: opt_UkLWZg9DAJ
+                name: foo-size-5
+                label: Size
+                position: 1
+                kind: dropdown
+                metadata: {}
+                filterable: true
+                created_at: '2026-05-24T17:37:04.014Z'
+                updated_at: '2026-05-24T17:37:04.014Z'
+              schema:
+                $ref: '#/components/schemas/OptionType'
+        '404':
+          description: option type not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Option type not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update an option type
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates an option type. Supports updating nested option values.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst optionType = await client.optionTypes.update('ot_UkLWZg9DAJ', {\n  presentation: 'Updated Presentation',\n  option_values: [\n    { name: 'red', presentation: 'Crimson' },\n  ],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Option type ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: option type updated
+          content:
+            application/json:
+              example:
+                id: opt_UkLWZg9DAJ
+                name: foo-size-7
+                label: Updated Label
+                position: 1
+                kind: dropdown
+                metadata: {}
+                filterable: true
+                created_at: '2026-05-24T17:37:04.617Z'
+                updated_at: '2026-05-24T17:37:04.942Z'
+              schema:
+                $ref: '#/components/schemas/OptionType'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Presentation can't be blank
+                  details:
+                    presentation:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: color
+                label:
+                  type: string
+                  example: Color
+                position:
+                  type: integer
+                  example: 1
+                filterable:
+                  type: boolean
+                  example: true
+                option_values:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Existing option value ID to update
+                      name:
+                        type: string
+                        example: red
+                      label:
+                        type: string
+                        example: Red
+                      position:
+                        type: integer
+    delete:
+      summary: Delete an option type
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Deletes an option type.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.optionTypes.delete('ot_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Option type ID
+        schema:
+          type: string
+      responses:
+        '204':
+          description: option type deleted
+  /api/v3/admin/products:
+    get:
+      summary: List products
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a paginated list of products for the current store.
+
+
+        **Required scope:** `read_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: products } = await client.products.list({\n  name_cont: 'shirt',\n  status_eq: 'active',\n  sort: '-created_at',\n  limit: 25,\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        description: Number of records per page
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: Sort field (e.g., name, -name, price, -price, best_selling)
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., variants, media, option_types, categories). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price,status). id is always included.
+        schema:
+          type: string
+      - name: q[name_cont]
+        in: query
+        required: false
+        description: Filter by name (contains)
+        schema:
+          type: string
+      - name: q[status_eq]
+        in: query
+        required: false
+        description: Filter by status
+        schema:
+          type: string
+      responses:
+        '200':
+          description: products found
+          content:
+            application/json:
+              example:
+                data:
+                - id: prod_UkLWZg9DAJ
+                  name: Product 396394
+                  slug: product-396394
+                  meta_title: null
+                  meta_description: null
+                  meta_keywords: null
+                  variant_count: 0
+                  available_on: '2025-05-24T17:37:34.067Z'
+                  purchasable: true
+                  in_stock: false
+                  backorderable: true
+                  available: true
+                  description: Eaque soluta sit officiis sequi. Deleniti perspiciatis repudiandae ratione quod illum enim. Tenetur tempora similique soluta corporis magni ea itaque dolore. Harum aliquid tempore facilis amet deleniti facere. Nisi ducimus nihil a optio veniam totam. Libero aut deleniti laudantium aliquam reprehenderit. Nam neque assumenda a nisi iusto aliquid perferendis. Quas tenetur non consequatur assumenda. Quos explicabo error culpa aspernatur quod earum cupiditate omnis. Eaque id iste saepe ratione repellendus. Porro cum ducimus eaque occaecati natus cupiditate itaque. Quisquam esse dolore distinctio labore. Minima excepturi fugiat quibusdam voluptatem.
+                  description_html: 'Eaque soluta sit officiis sequi. Deleniti perspiciatis repudiandae ratione quod illum enim. Tenetur tempora similique soluta corporis magni ea itaque dolore. Harum aliquid tempore facilis amet deleniti facere.
+
+                    Nisi ducimus nihil a optio veniam totam. Libero aut deleniti laudantium aliquam reprehenderit. Nam neque assumenda a nisi iusto aliquid perferendis. Quas tenetur non consequatur assumenda. Quos explicabo error culpa aspernatur quod earum cupiditate omnis.
+
+                    Eaque id iste saepe ratione repellendus. Porro cum ducimus eaque occaecati natus cupiditate itaque. Quisquam esse dolore distinctio labore. Minima excepturi fugiat quibusdam voluptatem.'
+                  default_variant_id: variant_UkLWZg9DAJ
+                  thumbnail_url: null
+                  tags: []
+                  price:
+                    id: price_UkLWZg9DAJ
+                    amount: '19.99'
+                    amount_in_cents: 1999
+                    compare_at_amount: null
+                    compare_at_amount_in_cents: null
+                    currency: USD
+                    display_amount: $19.99
+                    display_compare_at_amount: null
+                    price_list_id: null
+                    variant_id: variant_UkLWZg9DAJ
+                    created_at: '2026-05-24T17:37:34.092Z'
+                    updated_at: '2026-05-24T17:37:34.092Z'
+                  original_price: null
+                  status: active
+                  make_active_at: '2025-05-24T17:37:34.067Z'
+                  discontinue_on: null
+                  metadata: {}
+                  deleted_at: null
+                  created_at: '2026-05-24T17:37:34.079Z'
+                  updated_at: '2026-05-24T17:37:34.093Z'
+                  tax_category_id: taxcat_UkLWZg9DAJ
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                required:
+                - data
+                - meta
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a product
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Creates a new product. Supports nested variants with prices and option types.
+
+
+        Option types and values are auto-created if they don''t exist.
+
+        Prices are upserted by currency. Stock items are upserted by stock location.
+
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst product = await client.products.create({\n  name: 'Premium T-Shirt',\n  description: 'Soft, organic cotton.',\n  status: 'active',\n  variants: [\n    {\n      sku: 'TSHIRT-S-NAVY',\n      options: [\n        { name: 'size', value: 'Small' },\n        { name: 'color', value: 'navy' },\n      ],\n      prices: [\n        { currency: 'USD', amount: 29.99 },\n        { currency: 'EUR', amount: 27.99 },\n      ],\n      stock_items: [\n        { stock_location_id: 'sloc_UkLWZg9DAJ', count_on_hand: 50 },\n      ],\n    },\n    {\n      sku: 'TSHIRT-M-NAVY',\n      options: [\n        { name: 'size', value: 'Medium' },\n        { name: 'color', value: 'navy' },\n      ],\n      prices: [{ currency: 'USD', amount: 29.99 }],\n      stock_items: [\n        { stock_location_id: 'sloc_UkLWZg9DAJ', count_on_hand: 30 },\n      ],\n    },\n  ],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      responses:
+        '201':
+          description: product created
+          content:
+            application/json:
+              example:
+                id: prod_gbHJdmfrXB
+                name: New Product
+                slug: new-product
+                meta_title: null
+                meta_description: null
+                meta_keywords: null
+                variant_count: 0
+                available_on: null
+                purchasable: false
+                in_stock: false
+                backorderable: false
+                available: false
+                description: null
+                description_html: null
+                default_variant_id: variant_gbHJdmfrXB
+                thumbnail_url: null
+                tags: []
+                price: null
+                original_price: null
+                status: draft
+                make_active_at: null
+                discontinue_on: null
+                metadata: {}
+                deleted_at: null
+                created_at: '2026-05-24T17:37:34.756Z'
+                updated_at: '2026-05-24T17:37:34.758Z'
+                tax_category_id: null
+              schema:
+                $ref: '#/components/schemas/Product'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Name can't be blank
+                  details:
+                    name:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Premium T-Shirt
+                description:
+                  type: string
+                slug:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - draft
+                  - active
+                  - archived
+                tax_category_id:
+                  type: string
+                  description: Tax category ID
+                category_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of category IDs
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - eco
+                  - sale
+                variants:
+                  type: array
+                  description: Array of variant payloads. Variants can declare multiple option pairs via `options:` and per-currency prices via `prices:`. Stock counts go in `stock_items:` (per stock location).
+                  items:
+                    type: object
+                    properties:
+                      sku:
+                        type: string
+                      options:
+                        type: array
+                        description: One pair per option type the variant participates in (e.g. size + color). Option types and values are auto-created if missing.
+                        items:
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              type: string
+                              example: size
+                            value:
+                              type: string
+                              example: Small
+                      prices:
+                        type: array
+                        description: Per-currency prices. Upserted by currency.
+                        items:
+                          type: object
+                          required:
+                          - currency
+                          - amount
+                          properties:
+                            currency:
+                              type: string
+                              example: USD
+                            amount:
+                              type: number
+                              example: 29.99
+                            compare_at_amount:
+                              type: number
+                              example: 39.99
+                      stock_items:
+                        type: array
+                        description: Per-stock-location inventory. Upserted by stock_location_id.
+                        items:
+                          type: object
+                          required:
+                          - stock_location_id
+                          - count_on_hand
+                          properties:
+                            stock_location_id:
+                              type: string
+                              description: Stock location ID (e.g. sloc_xxx)
+                            count_on_hand:
+                              type: integer
+                              example: 50
+                            backorderable:
+                              type: boolean
+              required:
+              - name
+  /api/v3/admin/products/{id}:
+    get:
+      summary: Get a product
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a single product by ID.
+
+
+        **Required scope:** `read_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst product = await client.products.get('prod_86Rf07xd4z', {\n  expand: ['variants', 'option_types'],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Product ID (e.g., prod_xxx)
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., variants, media, option_types, categories). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price,status). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: product found
+          content:
+            application/json:
+              example:
+                id: prod_UkLWZg9DAJ
+                name: Product 431256
+                slug: product-431256
+                meta_title: null
+                meta_description: null
+                meta_keywords: null
+                variant_count: 0
+                available_on: '2025-05-24T17:37:35.110Z'
+                purchasable: true
+                in_stock: false
+                backorderable: true
+                available: true
+                description: Nemo quam et hic libero natus qui. Saepe repudiandae eaque autem provident omnis at quia. Porro fugiat voluptatibus vero dolore beatae minus id. Molestias est illo unde quis. Velit quis at voluptatem ut quam mollitia saepe nam. Eligendi laudantium quis aspernatur ea incidunt culpa. Cupiditate sequi reiciendis aspernatur maiores. Tempore blanditiis sint libero odit veniam.
+                description_html: 'Nemo quam et hic libero natus qui. Saepe repudiandae eaque autem provident omnis at quia. Porro fugiat voluptatibus vero dolore beatae minus id. Molestias est illo unde quis.
+
+                  Velit quis at voluptatem ut quam mollitia saepe nam. Eligendi laudantium quis aspernatur ea incidunt culpa. Cupiditate sequi reiciendis aspernatur maiores. Tempore blanditiis sint libero odit veniam.'
+                default_variant_id: variant_UkLWZg9DAJ
+                thumbnail_url: null
+                tags: []
+                price:
+                  id: price_UkLWZg9DAJ
+                  amount: '19.99'
+                  amount_in_cents: 1999
+                  compare_at_amount: null
+                  compare_at_amount_in_cents: null
+                  currency: USD
+                  display_amount: $19.99
+                  display_compare_at_amount: null
+                  price_list_id: null
+                  variant_id: variant_UkLWZg9DAJ
+                  created_at: '2026-05-24T17:37:35.137Z'
+                  updated_at: '2026-05-24T17:37:35.137Z'
+                original_price: null
+                status: active
+                make_active_at: '2025-05-24T17:37:35.110Z'
+                discontinue_on: null
+                metadata: {}
+                deleted_at: null
+                created_at: '2026-05-24T17:37:35.121Z'
+                updated_at: '2026-05-24T17:37:35.138Z'
+                tax_category_id: taxcat_UkLWZg9DAJ
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: product not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Product not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a product
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates a product. Only provided fields are updated.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst product = await client.products.update('prod_86Rf07xd4z', {\n  name: 'Updated Name',\n  status: 'active',\n  tags: ['eco', 'sale'],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: product updated
+          content:
+            application/json:
+              example:
+                id: prod_UkLWZg9DAJ
+                name: Updated Name
+                slug: product-458011
+                meta_title: null
+                meta_description: null
+                meta_keywords: null
+                variant_count: 0
+                available_on: '2025-05-24T17:37:35.789Z'
+                purchasable: true
+                in_stock: false
+                backorderable: true
+                available: true
+                description: Non occaecati aut quidem tempore aliquid nisi reprehenderit. Amet culpa hic ullam molestiae cupiditate provident. Nostrum magni soluta velit eius. Itaque sequi iste repudiandae qui esse. Sapiente tenetur doloremque ipsum nesciunt delectus rerum voluptas. Odit voluptatem deleniti sunt veniam. Quidem molestiae possimus illo debitis alias earum quas accusantium. Possimus ea est unde culpa. Alias atque autem ullam voluptatibus iste. Consectetur exercitationem autem natus odit eveniet. Quibusdam similique delectus culpa cumque iure.
+                description_html: 'Non occaecati aut quidem tempore aliquid nisi reprehenderit. Amet culpa hic ullam molestiae cupiditate provident. Nostrum magni soluta velit eius. Itaque sequi iste repudiandae qui esse.
+
+                  Sapiente tenetur doloremque ipsum nesciunt delectus rerum voluptas. Odit voluptatem deleniti sunt veniam. Quidem molestiae possimus illo debitis alias earum quas accusantium.
+
+                  Possimus ea est unde culpa. Alias atque autem ullam voluptatibus iste. Consectetur exercitationem autem natus odit eveniet. Quibusdam similique delectus culpa cumque iure.'
+                default_variant_id: variant_UkLWZg9DAJ
+                thumbnail_url: null
+                tags: []
+                price:
+                  id: price_UkLWZg9DAJ
+                  amount: '19.99'
+                  amount_in_cents: 1999
+                  compare_at_amount: null
+                  compare_at_amount_in_cents: null
+                  currency: USD
+                  display_amount: $19.99
+                  display_compare_at_amount: null
+                  price_list_id: null
+                  variant_id: variant_UkLWZg9DAJ
+                  created_at: '2026-05-24T17:37:35.810Z'
+                  updated_at: '2026-05-24T17:37:35.810Z'
+                original_price: null
+                status: active
+                make_active_at: '2025-05-24T17:37:35.789Z'
+                discontinue_on: null
+                metadata: {}
+                deleted_at: null
+                created_at: '2026-05-24T17:37:35.799Z'
+                updated_at: '2026-05-24T17:37:36.106Z'
+                tax_category_id: taxcat_UkLWZg9DAJ
+              schema:
+                $ref: '#/components/schemas/Product'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Name can't be blank
+                  details:
+                    name:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Premium T-Shirt
+                description:
+                  type: string
+                slug:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - draft
+                  - active
+                  - archived
+                tax_category_id:
+                  type: string
+                  description: Tax category ID
+                category_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of category IDs
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - eco
+                  - sale
+                variants:
+                  type: array
+                  description: Array of variant payloads. Variants can declare multiple option pairs via `options:` and per-currency prices via `prices:`. Stock counts go in `stock_items:` (per stock location).
+                  items:
+                    type: object
+                    properties:
+                      sku:
+                        type: string
+                      options:
+                        type: array
+                        description: One pair per option type the variant participates in (e.g. size + color). Option types and values are auto-created if missing.
+                        items:
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              type: string
+                              example: size
+                            value:
+                              type: string
+                              example: Small
+                      prices:
+                        type: array
+                        description: Per-currency prices. Upserted by currency.
+                        items:
+                          type: object
+                          required:
+                          - currency
+                          - amount
+                          properties:
+                            currency:
+                              type: string
+                              example: USD
+                            amount:
+                              type: number
+                              example: 29.99
+                            compare_at_amount:
+                              type: number
+                              example: 39.99
+                      stock_items:
+                        type: array
+                        description: Per-stock-location inventory. Upserted by stock_location_id.
+                        items:
+                          type: object
+                          required:
+                          - stock_location_id
+                          - count_on_hand
+                          properties:
+                            stock_location_id:
+                              type: string
+                              description: Stock location ID (e.g. sloc_xxx)
+                            count_on_hand:
+                              type: integer
+                              example: 50
+                            backorderable:
+                              type: boolean
+    delete:
+      summary: Delete a product
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Soft-deletes a product.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.products.delete('prod_86Rf07xd4z')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      responses:
+        '204':
+          description: product deleted
+  /api/v3/admin/products/bulk_status_update:
+    post:
+      summary: Bulk-update product status
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Sets `status` on each product in `ids`. Reindexes the affected products
+
+        for search. Cross-store IDs are silently dropped. Returns counts.
+
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cross-store products silently dropped
+          content:
+            application/json:
+              example:
+                product_count: 0
+                status: archived
+              schema:
+                type: object
+                properties:
+                  product_count:
+                    type: integer
+                  status:
+                    type: string
+        '422':
+          description: invalid status
+          content:
+            application/json:
+              example:
+                error:
+                  code: invalid_status
+                  message: Invalid status
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ids
+              - status
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - prod_UkLWZg9DAJ
+                status:
+                  type: string
+                  enum:
+                  - draft
+                  - active
+                  - archived
+                  example: archived
+  /api/v3/admin/products/bulk_add_to_categories:
+    post:
+      summary: Bulk-add products to categories
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Attaches each product in `ids` to every category (taxon) in `category_ids`.
+
+        Categories from sibling stores are silently ignored.
+
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: products added to categories
+          content:
+            application/json:
+              example:
+                product_count: 1
+                category_count: 1
+              schema:
+                type: object
+                properties:
+                  product_count:
+                    type: integer
+                  category_count:
+                    type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ids
+              - category_ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                category_ids:
+                  type: array
+                  items:
+                    type: string
+  /api/v3/admin/products/bulk_remove_from_categories:
+    post:
+      summary: Bulk-remove products from categories
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Detaches each product in `ids` from every category in `category_ids`.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: products removed from categories
+          content:
+            application/json:
+              example:
+                product_count: 1
+                category_count: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ids
+              - category_ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                category_ids:
+                  type: array
+                  items:
+                    type: string
+  /api/v3/admin/products/bulk_add_tags:
+    post:
+      summary: Bulk-add tags to products
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Adds each tag name in `tags` to every product in `ids`. Tags are upserted by name.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: tags added
+          content:
+            application/json:
+              example:
+                product_count: 1
+                tag_count: 2
+              schema:
+                type: object
+                properties:
+                  product_count:
+                    type: integer
+                  tag_count:
+                    type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ids
+              - tags
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - summer
+                  - sale
+  /api/v3/admin/products/bulk_remove_tags:
+    post:
+      summary: Bulk-remove tags from products
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Removes each tag in `tags` from every product in `ids`.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: tags removed
+          content:
+            application/json:
+              example:
+                product_count: 1
+                tag_count: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ids
+              - tags
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+  /api/v3/admin/products/bulk_destroy:
+    delete:
+      summary: Bulk-delete products
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Soft-deletes each product in `ids`. Returns the count actually destroyed.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: products deleted
+          content:
+            application/json:
+              example:
+                product_count: 1
+              schema:
+                type: object
+                properties:
+                  product_count:
+                    type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ids
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+  /api/v3/admin/products/{product_id}/variants:
+    get:
+      summary: List product variants
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a paginated list of variants for a product, including the master variant.
+
+
+        **Required scope:** `read_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: variants } = await client.products.variants.list('prod_86Rf07xd4z', {\n  expand: ['prices', 'stock_items'],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        description: Number of records per page
+        schema:
+          type: integer
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., images, prices, stock_items, option_values). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., sku,price,stock). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: variants found
+          content:
+            application/json:
+              example:
+                data:
+                - id: variant_UkLWZg9DAJ
+                  product_id: prod_UkLWZg9DAJ
+                  sku: SKU-65
+                  options_text: ''
+                  track_inventory: true
+                  media_count: 0
+                  thumbnail_url: null
+                  purchasable: false
+                  in_stock: false
+                  backorderable: false
+                  weight: 0.0
+                  height: null
+                  width: null
+                  depth: null
+                  price:
+                    id: null
+                    amount: null
+                    amount_in_cents: 0
+                    compare_at_amount: null
+                    compare_at_amount_in_cents: null
+                    currency: USD
+                    display_amount: $0.00
+                    display_compare_at_amount: null
+                    price_list_id: null
+                  original_price: null
+                  option_values: []
+                  metadata: {}
+                  position: 1
+                  cost_price: '17.0'
+                  cost_currency: USD
+                  barcode: null
+                  weight_unit: lb
+                  dimensions_unit: null
+                  deleted_at: null
+                  created_at: '2026-05-24T17:37:50.786Z'
+                  updated_at: '2026-05-24T17:37:50.796Z'
+                  tax_category_id: taxcat_UkLWZg9DAJ
+                  available_stock: 0
+                  reserved_quantity: 0
+                  total_on_hand: 0
+                  product_name: Product 596609
+                - id: variant_gbHJdmfrXB
+                  product_id: prod_UkLWZg9DAJ
+                  sku: SKU-66
+                  options_text: 'Size: S'
+                  track_inventory: true
+                  media_count: 0
+                  thumbnail_url: null
+                  purchasable: true
+                  in_stock: false
+                  backorderable: true
+                  weight: 79.4
+                  height: 180.38
+                  width: 28.4
+                  depth: 47.4
+                  price:
+                    id: price_gbHJdmfrXB
+                    amount: '19.99'
+                    amount_in_cents: 1999
+                    compare_at_amount: null
+                    compare_at_amount_in_cents: null
+                    currency: USD
+                    display_amount: $19.99
+                    display_compare_at_amount: null
+                    price_list_id: null
+                  original_price: null
+                  option_values:
+                  - id: optval_UkLWZg9DAJ
+                    option_type_id: opt_UkLWZg9DAJ
+                    name: size-7
+                    label: S
+                    position: 1
+                    color_code: null
+                    option_type_name: foo-size-16
+                    option_type_label: Size
+                    image_url: null
+                    metadata: {}
+                    created_at: '2026-05-24T17:37:50.805Z'
+                    updated_at: '2026-05-24T17:37:50.805Z'
+                  metadata: {}
+                  position: 2
+                  cost_price: '17.0'
+                  cost_currency: USD
+                  barcode: null
+                  weight_unit: lb
+                  dimensions_unit: null
+                  deleted_at: null
+                  created_at: '2026-05-24T17:37:50.803Z'
+                  updated_at: '2026-05-24T17:37:50.816Z'
+                  tax_category_id: taxcat_UkLWZg9DAJ
+                  available_stock: 0
+                  reserved_quantity: 0
+                  total_on_hand: 0
+                  product_name: Product 596609
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 2
+                  pages: 1
+                  from: 1
+                  to: 2
+                  in: 2
+                  previous: null
+                  next: null
+    post:
+      summary: Create a variant
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Creates a new variant for a product. Supports nested prices and stock items.
+
+
+        Option types and values are auto-created if they don''t exist.
+
+        Prices are upserted by currency. Stock items are upserted by stock location.
+
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst variant = await client.products.variants.create('prod_86Rf07xd4z', {\n  sku: 'TSHIRT-L-NAVY',\n  options: [\n    { name: 'size', value: 'Large' },\n    { name: 'color', value: 'navy' },\n  ],\n  prices: [\n    { currency: 'USD', amount: 29.99, compare_at_amount: 34.99 },\n    { currency: 'EUR', amount: 27.99 },\n  ],\n  stock_items: [\n    { stock_location_id: 'sloc_UkLWZg9DAJ', count_on_hand: 25 },\n  ],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      responses:
+        '201':
+          description: variant created
+          content:
+            application/json:
+              example:
+                id: variant_EfhxLZ9ck8
+                product_id: prod_UkLWZg9DAJ
+                sku: NEW-SKU-001
+                options_text: 'Size: XL'
+                track_inventory: true
+                media_count: 0
+                thumbnail_url: null
+                purchasable: false
+                in_stock: false
+                backorderable: false
+                weight: 0.0
+                height: null
+                width: null
+                depth: null
+                price:
+                  id: price_EfhxLZ9ck8
+                  amount: '24.99'
+                  amount_in_cents: 2499
+                  compare_at_amount: null
+                  compare_at_amount_in_cents: null
+                  currency: USD
+                  display_amount: $24.99
+                  display_compare_at_amount: null
+                  price_list_id: null
+                original_price: null
+                option_values:
+                - id: optval_gbHJdmfrXB
+                  option_type_id: opt_gbHJdmfrXB
+                  name: xl
+                  label: XL
+                  position: 1
+                  color_code: null
+                  option_type_name: size
+                  option_type_label: Size
+                  image_url: null
+                  metadata: {}
+                  created_at: '2026-05-24T17:37:51.471Z'
+                  updated_at: '2026-05-24T17:37:51.471Z'
+                metadata: {}
+                position: 3
+                cost_price: null
+                cost_currency: USD
+                barcode: null
+                weight_unit: lb
+                dimensions_unit: null
+                deleted_at: null
+                created_at: '2026-05-24T17:37:51.475Z'
+                updated_at: '2026-05-24T17:37:51.477Z'
+                tax_category_id: taxcat_UkLWZg9DAJ
+                available_stock: 0
+                reserved_quantity: 0
+                total_on_hand: 0
+                product_name: Product 606004
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Option value variants can't be blank
+                  details:
+                    option_value_variants:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  example: SKU-001
+                price:
+                  type: number
+                  example: 29.99
+                compare_at_price:
+                  type: number
+                  example: 39.99
+                cost_price:
+                  type: number
+                  example: 10.0
+                cost_currency:
+                  type: string
+                  example: USD
+                weight:
+                  type: number
+                height:
+                  type: number
+                width:
+                  type: number
+                depth:
+                  type: number
+                weight_unit:
+                  type: string
+                dimensions_unit:
+                  type: string
+                track_inventory:
+                  type: boolean
+                tax_category_id:
+                  type: string
+                options:
+                  type: array
+                  description: One pair per option type the variant participates in (e.g. size + color). Option types and values are auto-created if missing.
+                  items:
+                    type: object
+                    required:
+                    - name
+                    - value
+                    properties:
+                      name:
+                        type: string
+                        example: size
+                      value:
+                        type: string
+                        example: Small
+                position:
+                  type: integer
+                barcode:
+                  type: string
+                prices:
+                  type: array
+                  description: Per-currency prices. Upserted by currency.
+                  items:
+                    type: object
+                    required:
+                    - currency
+                    - amount
+                    properties:
+                      currency:
+                        type: string
+                        example: USD
+                      amount:
+                        type: number
+                        example: 29.99
+                      compare_at_amount:
+                        type: number
+                        example: 39.99
+                stock_items:
+                  type: array
+                  description: Per-stock-location inventory. Upserted by stock_location_id.
+                  items:
+                    type: object
+                    required:
+                    - stock_location_id
+                    - count_on_hand
+                    properties:
+                      stock_location_id:
+                        type: string
+                        description: Stock location ID (e.g. sloc_xxx)
+                      count_on_hand:
+                        type: integer
+                        example: 50
+                      backorderable:
+                        type: boolean
+  /api/v3/admin/products/{product_id}/variants/{id}:
+    get:
+      summary: Get a variant
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a single variant by ID.
+
+
+        **Required scope:** `read_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst variant = await client.products.variants.get('prod_86Rf07xd4z', 'variant_k5nR8xLq', {\n  expand: ['prices', 'stock_items'],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Variant ID
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (e.g., images, prices, stock_items, option_values). Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., sku,price,stock). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: variant found
+          content:
+            application/json:
+              example:
+                id: variant_gbHJdmfrXB
+                product_id: prod_UkLWZg9DAJ
+                sku: SKU-72
+                options_text: 'Size: S'
+                track_inventory: true
+                media_count: 0
+                thumbnail_url: null
+                purchasable: true
+                in_stock: false
+                backorderable: true
+                weight: 181.11
+                height: 171.7
+                width: 181.35
+                depth: 135.86
+                price:
+                  id: price_gbHJdmfrXB
+                  amount: '19.99'
+                  amount_in_cents: 1999
+                  compare_at_amount: null
+                  compare_at_amount_in_cents: null
+                  currency: USD
+                  display_amount: $19.99
+                  display_compare_at_amount: null
+                  price_list_id: null
+                original_price: null
+                option_values:
+                - id: optval_UkLWZg9DAJ
+                  option_type_id: opt_UkLWZg9DAJ
+                  name: size-10
+                  label: S
+                  position: 1
+                  color_code: null
+                  option_type_name: foo-size-19
+                  option_type_label: Size
+                  image_url: null
+                  metadata: {}
+                  created_at: '2026-05-24T17:37:51.868Z'
+                  updated_at: '2026-05-24T17:37:51.868Z'
+                metadata: {}
+                position: 2
+                cost_price: '17.0'
+                cost_currency: USD
+                barcode: null
+                weight_unit: lb
+                dimensions_unit: null
+                deleted_at: null
+                created_at: '2026-05-24T17:37:51.866Z'
+                updated_at: '2026-05-24T17:37:51.881Z'
+                tax_category_id: taxcat_UkLWZg9DAJ
+                available_stock: 0
+                reserved_quantity: 0
+                total_on_hand: 0
+                product_name: Product 624851
+        '404':
+          description: variant not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: variant_not_found
+                  message: Variant not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a variant
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates a variant. Only provided fields are updated.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst variant = await client.products.variants.update('prod_86Rf07xd4z', 'variant_k5nR8xLq', {\n  sku: 'UPDATED-SKU',\n  stock_items: [\n    { stock_location_id: 'sloc_UkLWZg9DAJ', count_on_hand: 75 },\n  ],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Variant ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: variant updated
+          content:
+            application/json:
+              example:
+                id: variant_gbHJdmfrXB
+                product_id: prod_UkLWZg9DAJ
+                sku: UPDATED-SKU
+                options_text: 'Size: S'
+                track_inventory: true
+                media_count: 0
+                thumbnail_url: null
+                purchasable: true
+                in_stock: false
+                backorderable: true
+                weight: 58.48
+                height: 8.7
+                width: 169.3
+                depth: 28.62
+                price:
+                  id: price_gbHJdmfrXB
+                  amount: '19.99'
+                  amount_in_cents: 1999
+                  compare_at_amount: null
+                  compare_at_amount_in_cents: null
+                  currency: USD
+                  display_amount: $19.99
+                  display_compare_at_amount: null
+                  price_list_id: null
+                original_price: null
+                option_values:
+                - id: optval_UkLWZg9DAJ
+                  option_type_id: opt_UkLWZg9DAJ
+                  name: size-12
+                  label: S
+                  position: 1
+                  color_code: null
+                  option_type_name: foo-size-21
+                  option_type_label: Size
+                  image_url: null
+                  metadata: {}
+                  created_at: '2026-05-24T17:37:52.555Z'
+                  updated_at: '2026-05-24T17:37:52.555Z'
+                metadata: {}
+                position: 2
+                cost_price: '17.0'
+                cost_currency: USD
+                barcode: null
+                weight_unit: lb
+                dimensions_unit: null
+                deleted_at: null
+                created_at: '2026-05-24T17:37:52.553Z'
+                updated_at: '2026-05-24T17:37:52.843Z'
+                tax_category_id: taxcat_UkLWZg9DAJ
+                available_stock: 0
+                reserved_quantity: 0
+                total_on_hand: 0
+                product_name: Product 641234
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  example: SKU-001
+                price:
+                  type: number
+                  example: 29.99
+                compare_at_price:
+                  type: number
+                  example: 39.99
+                cost_price:
+                  type: number
+                  example: 10.0
+                cost_currency:
+                  type: string
+                  example: USD
+                weight:
+                  type: number
+                height:
+                  type: number
+                width:
+                  type: number
+                depth:
+                  type: number
+                weight_unit:
+                  type: string
+                dimensions_unit:
+                  type: string
+                track_inventory:
+                  type: boolean
+                tax_category_id:
+                  type: string
+                options:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: Size
+                      value:
+                        type: string
+                        example: Large
+                total_on_hand:
+                  type: integer
+                  example: 100
+                position:
+                  type: integer
+                barcode:
+                  type: string
+                prices:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      currency:
+                        type: string
+                        example: USD
+                      amount:
+                        type: number
+                        example: 29.99
+                      compare_at_amount:
+                        type: number
+                        example: 39.99
+                    required:
+                    - currency
+                    - amount
+                stock_items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      stock_location_id:
+                        type: string
+                      count_on_hand:
+                        type: integer
+                      backorderable:
+                        type: boolean
+    delete:
+      summary: Delete a variant
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Soft-deletes a variant.
+
+
+        **Required scope:** `write_products` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.products.variants.delete('prod_86Rf07xd4z', 'variant_k5nR8xLq')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: product_id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Variant ID
+        schema:
+          type: string
+      responses:
+        '204':
+          description: variant deleted
+  /api/v3/store/categories:
+    get:
+      summary: List categories
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+      description: Returns a paginated list of categories for the current store
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst categories = await client.categories.list({\n  page: 1,\n  limit: 25,\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: q[name_cont]
+        in: query
+        required: false
+        description: Filter by name
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: categories found
+          content:
+            application/json:
+              example:
+                data:
+                - id: ctg_UkLWZg9DAJ
+                  name: taxonomy_1
+                  permalink: taxonomy-1
+                  position: 0
+                  depth: 0
+                  meta_title: null
+                  meta_description: null
+                  meta_keywords: null
+                  children_count: 1
+                  parent_id: null
+                  description: ''
+                  description_html: ''
+                  image_url: null
+                  square_image_url: null
+                  is_root: true
+                  is_child: false
+                  is_leaf: false
+                - id: ctg_gbHJdmfrXB
+                  name: taxon_1
+                  permalink: taxonomy-1/taxon-1
+                  position: 0
+                  depth: 1
+                  meta_title: null
+                  meta_description: null
+                  meta_keywords: null
+                  children_count: 1
+                  parent_id: ctg_UkLWZg9DAJ
+                  description: ''
+                  description_html: ''
+                  image_url: null
+                  square_image_url: null
+                  is_root: false
+                  is_child: true
+                  is_leaf: false
+                - id: ctg_EfhxLZ9ck8
+                  name: taxon_2
+                  permalink: taxonomy-1/taxon-1/taxon-2
+                  position: 0
+                  depth: 2
+                  meta_title: null
+                  meta_description: null
+                  meta_keywords: null
+                  children_count: 0
+                  parent_id: ctg_gbHJdmfrXB
+                  description: ''
+                  description_html: ''
+                  image_url: null
+                  square_image_url: null
+                  is_root: false
+                  is_child: true
+                  is_leaf: true
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 3
+                  pages: 1
+                  from: 1
+                  to: 3
+                  in: 3
+                  previous: null
+                  next: null
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category_2'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: invalid_token
+                  message: Valid API key required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/categories/{id}:
+    get:
+      summary: Get a category
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+      description: Returns a single category by permalink or prefix ID
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst category = await client.categories.get('categories/clothing/shirts', {\n  expand: ['children'],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Category permalink (e.g., clothing/shirts) or prefix ID (e.g., ctg_abc123)
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Expand associations (children, parent, ancestors, custom_fields)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: category found by prefix ID
+          content:
+            application/json:
+              example:
+                id: ctg_gbHJdmfrXB
+                name: taxon_10
+                permalink: taxonomy-7/taxon-10
+                position: 0
+                depth: 1
+                meta_title: null
+                meta_description: null
+                meta_keywords: null
+                children_count: 1
+                parent_id: ctg_UkLWZg9DAJ
+                description: ''
+                description_html: ''
+                image_url: null
+                square_image_url: null
+                is_root: false
+                is_child: true
+                is_leaf: false
+              schema:
+                $ref: '#/components/schemas/Category_2'
+        '404':
+          description: category from other store not accessible
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Category not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: invalid_token
+                  message: Valid API key required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/products:
+    get:
+      summary: List products
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+      description: Returns a paginated list of active products for the current store
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst products = await client.products.list({\n  page: 1,\n  limit: 25,\n  sort: 'price',\n  name_cont: 'shirt',\n  price_gte: 20,\n  price_lte: 100,\n  with_option_value_ids: ['optval_abc', 'optval_def'],\n  expand: ['variants', 'media'],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        description: Publishable API key
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: 'Page number (default: 1)'
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        description: 'Number of items per page (default: 25, max: 100)'
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: 'Sort order. Prefix with - for descending. Values: price, -price, best_selling, name, -name, -available_on, available_on'
+        schema:
+          type: string
+      - name: q[name_cont]
+        in: query
+        required: false
+        description: Filter by name containing string
+        schema:
+          type: string
+      - name: q[in_category]
+        in: query
+        required: false
+        description: Filter by category prefixed ID (includes descendants)
+        schema:
+          type: string
+      - name: q[in_categories][]
+        in: query
+        required: false
+        description: Filter by multiple category prefixed IDs (OR logic, includes descendants)
+        schema:
+          type: string
+      - name: q[price_gte]
+        in: query
+        required: false
+        description: Filter by minimum price
+        schema:
+          type: number
+      - name: q[price_lte]
+        in: query
+        required: false
+        description: Filter by maximum price
+        schema:
+          type: number
+      - name: q[with_option_value_ids][]
+        in: query
+        required: false
+        description: Filter by option value prefix IDs (e.g., optval_abc). Pass multiple values for OR logic.
+        schema:
+          type: string
+      - name: q[in_stock]
+        in: query
+        required: false
+        description: Filter to only in-stock products
+        schema:
+          type: boolean
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (variants, media, categories, option_types)
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: products found
+          content:
+            application/json:
+              example:
+                data:
+                - id: prod_UkLWZg9DAJ
+                  name: Product 117952
+                  slug: product-117952
+                  meta_title: null
+                  meta_description: null
+                  meta_keywords: null
+                  variant_count: 1
+                  available_on: '2025-05-21T18:12:43.946Z'
+                  purchasable: true
+                  in_stock: false
+                  backorderable: true
+                  available: true
+                  description: A comfortable cotton t-shirt.
+                  description_html: <p>A <strong>comfortable</strong> cotton t-shirt.</p>
+                  default_variant_id: variant_gbHJdmfrXB
+                  thumbnail_url: null
+                  tags: []
+                  price:
+                    id: price_gbHJdmfrXB
+                    amount: '19.99'
+                    amount_in_cents: 1999
+                    compare_at_amount: null
+                    compare_at_amount_in_cents: null
+                    currency: USD
+                    display_amount: $19.99
+                    display_compare_at_amount: null
+                    price_list_id: null
+                  original_price: null
+                - id: prod_gbHJdmfrXB
+                  name: Product 1184416
+                  slug: product-1184416
+                  meta_title: null
+                  meta_description: null
+                  meta_keywords: null
+                  variant_count: 0
+                  available_on: '2025-05-21T18:12:44.008Z'
+                  purchasable: true
+                  in_stock: false
+                  backorderable: true
+                  available: true
+                  description: Impedit quam aliquid ducimus magni. Quas nulla placeat totam suscipit doloribus quos inventore earum. Veniam officiis ad ipsum sed optio error perferendis. Doloremque molestias magnam harum consequatur at accusamus tempore sunt. Deleniti voluptatum laborum vero nisi. Sunt delectus soluta amet hic consequuntur occaecati. Molestias illum minima velit ullam. Modi animi temporibus adipisci veritatis voluptatum libero unde. Sunt mollitia tenetur fugit enim. Accusantium minima id culpa laudantium molestias. Rerum saepe necessitatibus repellat tempora quis. Unde saepe laborum iure non quisquam nesciunt sed. Voluptas debitis placeat asperiores dolorem quia facilis rem. Atque quae enim at quis accusamus sequi vel.
+                  description_html: 'Impedit quam aliquid ducimus magni. Quas nulla placeat totam suscipit doloribus quos inventore earum. Veniam officiis ad ipsum sed optio error perferendis.
+
+                    Doloremque molestias magnam harum consequatur at accusamus tempore sunt. Deleniti voluptatum laborum vero nisi. Sunt delectus soluta amet hic consequuntur occaecati.
+
+                    Molestias illum minima velit ullam. Modi animi temporibus adipisci veritatis voluptatum libero unde. Sunt mollitia tenetur fugit enim. Accusantium minima id culpa laudantium molestias.
+
+                    Rerum saepe necessitatibus repellat tempora quis. Unde saepe laborum iure non quisquam nesciunt sed. Voluptas debitis placeat asperiores dolorem quia facilis rem. Atque quae enim at quis accusamus sequi vel.'
+                  default_variant_id: variant_EfhxLZ9ck8
+                  thumbnail_url: null
+                  tags: []
+                  price:
+                    id: price_EfhxLZ9ck8
+                    amount: '19.99'
+                    amount_in_cents: 1999
+                    compare_at_amount: null
+                    compare_at_amount_in_cents: null
+                    currency: USD
+                    display_amount: $19.99
+                    display_compare_at_amount: null
+                    price_list_id: null
+                  original_price: null
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 2
+                  pages: 1
+                  from: 1
+                  to: 2
+                  in: 2
+                  previous: null
+                  next: null
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product_2'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                required:
+                - data
+                - meta
+        '401':
+          description: unauthorized - invalid or missing API key
+          content:
+            application/json:
+              example:
+                error:
+                  code: invalid_token
+                  message: Valid API key required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/products/{id}:
+    get:
+      summary: Get a product
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+      description: Returns a single product by slug or prefix ID
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst product = await client.products.get('spree-tote', {\n  expand: ['variants', 'media'],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        description: Publishable API key
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Product slug (e.g., spree-tote) or prefix ID (e.g., product_abc123)
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: product without prior_price expanded does not include field
+          content:
+            application/json:
+              example:
+                id: prod_UkLWZg9DAJ
+                name: Product 1453321
+                slug: product-1453321
+                meta_title: null
+                meta_description: null
+                meta_keywords: null
+                variant_count: 1
+                available_on: '2025-05-21T18:12:45.816Z'
+                purchasable: true
+                in_stock: false
+                backorderable: true
+                available: true
+                description: A comfortable cotton t-shirt.
+                description_html: <p>A <strong>comfortable</strong> cotton t-shirt.</p>
+                default_variant_id: variant_gbHJdmfrXB
+                thumbnail_url: null
+                tags: []
+                price:
+                  id: price_gbHJdmfrXB
+                  amount: '19.99'
+                  amount_in_cents: 1999
+                  compare_at_amount: null
+                  compare_at_amount_in_cents: null
+                  currency: USD
+                  display_amount: $19.99
+                  display_compare_at_amount: null
+                  price_list_id: null
+                original_price: null
+                prior_price:
+                  id: _AXs1igzRC6
+                  amount: '9.99'
+                  amount_in_cents: 999
+                  currency: USD
+                  display_amount: $9.99
+                  recorded_at: '2026-05-06T18:12:45Z'
+              schema:
+                $ref: '#/components/schemas/Product_2'
+        '404':
+          description: draft product not visible
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Product not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/products/filters:
+    get:
+      summary: Get product filters
+      tags:
+      - Product Catalog
+      security:
+      - api_key: []
+      description: 'Returns available filters for products with their options and counts.
+
+        Use this endpoint to build filter UIs for product listing pages.
+
+
+        The filters are context-aware - when a category_id is provided, only filters
+
+        relevant to products in that category are returned.
+
+        '
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst filters = await client.products.filters({\n  category_id: 'ctg_abc123',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        description: Publishable API key
+        schema:
+          type: string
+      - name: category_id
+        in: query
+        required: false
+        description: Scope filters to products in this category (prefix ID)
+        schema:
+          type: string
+      - name: q[name_cont]
+        in: query
+        required: false
+        description: Filter by name containing string
+        schema:
+          type: string
+      responses:
+        '200':
+          description: filters scoped to category
+          content:
+            application/json:
+              example:
+                filters:
+                - id: price
+                  type: price_range
+                  min: 19.99
+                  max: 19.99
+                  currency: USD
+                - id: availability
+                  type: availability
+                  options:
+                  - id: in_stock
+                    count: 2
+                  - id: out_of_stock
+                    count: 0
+                - id: opt_UkLWZg9DAJ
+                  type: option
+                  name: size
+                  label: Size
+                  kind: dropdown
+                  options:
+                  - id: optval_UkLWZg9DAJ
+                    name: small
+                    label: S
+                    position: 1
+                    color_code: null
+                    image_url: null
+                    count: 1
+                - id: categories
+                  type: category
+                  options:
+                  - id: ctg_EfhxLZ9ck8
+                    name: Shirts
+                    permalink: taxonomy-25/taxon-32/shirts
+                    count: 2
+                sort_options:
+                - id: manual
+                - id: best_selling
+                - id: price
+                - id: -price
+                - id: -available_on
+                - id: available_on
+                - id: name
+                - id: -name
+                default_sort: manual
+                total_count: 2
+              schema:
+                type: object
+                properties:
+                  filters:
+                    type: array
+                    description: Available filters (price_range, availability, option, category)
+                    items:
+                      type: object
+                  sort_options:
+                    type: array
+                    description: Available sort options
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                      required:
+                      - id
+                  default_sort:
+                    type: string
+                    description: Default sort option ID
+                  total_count:
+                    type: integer
+                    description: Total products matching current filters
+                required:
+                - filters
+                - sort_options
+                - default_sort
+                - total_count
+        '401':
+          description: unauthorized - invalid or missing API key
+          content:
+            application/json:
+              example:
+                error:
+                  code: invalid_token
+                  message: Valid API key required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        permalink:
+          type: string
+        position:
+          type: number
+        depth:
+          type: number
+        meta_title:
+          type: string
+          nullable: true
+        meta_description:
+          type: string
+          nullable: true
+        meta_keywords:
+          type: string
+          nullable: true
+        children_count:
+          type: number
+        parent_id:
+          type: string
+          nullable: true
+        description:
+          type: string
+        description_html:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+        square_image_url:
+          type: string
+          nullable: true
+        is_root:
+          type: boolean
+        is_child:
+          type: boolean
+        is_leaf:
+          type: boolean
+        parent:
+          $ref: '#/components/schemas/Category'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        ancestors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        metadata:
+          type: object
+        pretty_name:
+          type: string
+        lft:
+          type: number
+        rgt:
+          type: number
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+      - id
+      - name
+      - permalink
+      - position
+      - depth
+      - meta_title
+      - meta_description
+      - meta_keywords
+      - children_count
+      - parent_id
+      - description
+      - description_html
+      - image_url
+      - square_image_url
+      - is_root
+      - is_child
+      - is_leaf
+      - metadata
+      - pretty_name
+      - lft
+      - rgt
+      - created_at
+      - updated_at
+      x-typelizer: true
+    Price_2:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+          nullable: true
+        amount_in_cents:
+          type: number
+          nullable: true
+        compare_at_amount:
+          type: string
+          nullable: true
+        compare_at_amount_in_cents:
+          type: number
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+        display_amount:
+          type: string
+          nullable: true
+        display_compare_at_amount:
+          type: string
+          nullable: true
+        price_list_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - compare_at_amount
+      - compare_at_amount_in_cents
+      - currency
+      - display_amount
+      - display_compare_at_amount
+      - price_list_id
+      x-typelizer: true
+    Variant_2:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        sku:
+          type: string
+          nullable: true
+        options_text:
+          type: string
+        track_inventory:
+          type: boolean
+        media_count:
+          type: number
+        thumbnail_url:
+          type: string
+          nullable: true
+        purchasable:
+          type: boolean
+        in_stock:
+          type: boolean
+        backorderable:
+          type: boolean
+        weight:
+          type: number
+          nullable: true
+        height:
+          type: number
+          nullable: true
+        width:
+          type: number
+          nullable: true
+        depth:
+          type: number
+          nullable: true
+        price:
+          $ref: '#/components/schemas/Price_2'
+        original_price:
+          allOf:
+          - $ref: '#/components/schemas/Price_2'
+          nullable: true
+        primary_media:
+          $ref: '#/components/schemas/Media_2'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media_2'
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue_2'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField_2'
+        prior_price:
+          allOf:
+          - $ref: '#/components/schemas/PriceHistory_2'
+          nullable: true
+      required:
+      - id
+      - product_id
+      - sku
+      - options_text
+      - track_inventory
+      - media_count
+      - thumbnail_url
+      - purchasable
+      - in_stock
+      - backorderable
+      - weight
+      - height
+      - width
+      - depth
+      - price
+      - original_price
+      - option_values
+      x-typelizer: true
+    CustomField:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+          deprecated: true
+        field_type:
+          type: string
+          enum:
+          - short_text
+          - long_text
+          - rich_text
+          - number
+          - boolean
+          - json
+        key:
+          type: string
+        value:
+          type: object
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        storefront_visible:
+          type: boolean
+        custom_field_definition_id:
+          type: string
+      required:
+      - id
+      - label
+      - type
+      - field_type
+      - key
+      - value
+      - created_at
+      - updated_at
+      - storefront_visible
+      - custom_field_definition_id
+      x-typelizer: true
+    OptionType_2:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        kind:
+          type: string
+      required:
+      - id
+      - name
+      - label
+      - position
+      - kind
+      x-typelizer: true
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        meta_title:
+          type: string
+          nullable: true
+        meta_description:
+          type: string
+          nullable: true
+        meta_keywords:
+          type: string
+          nullable: true
+        variant_count:
+          type: number
+        available_on:
+          type: string
+          nullable: true
+        purchasable:
+          type: boolean
+        in_stock:
+          type: boolean
+        backorderable:
+          type: boolean
+        available:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+        description_html:
+          type: string
+          nullable: true
+        default_variant_id:
+          type: string
+        thumbnail_url:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          nullable: true
+        original_price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          nullable: true
+        primary_media:
+          $ref: '#/components/schemas/Media'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+        default_variant:
+          $ref: '#/components/schemas/Variant'
+        option_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionType'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        prior_price:
+          allOf:
+          - $ref: '#/components/schemas/PriceHistory'
+          nullable: true
+        status:
+          type: string
+        make_active_at:
+          type: string
+          nullable: true
+        discontinue_on:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+        deleted_at:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        tax_category_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - name
+      - slug
+      - meta_title
+      - meta_description
+      - meta_keywords
+      - variant_count
+      - available_on
+      - purchasable
+      - in_stock
+      - backorderable
+      - available
+      - description
+      - description_html
+      - default_variant_id
+      - thumbnail_url
+      - tags
+      - price
+      - original_price
+      - status
+      - make_active_at
+      - discontinue_on
+      - metadata
+      - deleted_at
+      - created_at
+      - updated_at
+      - tax_category_id
+      x-typelizer: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type: object
+              description: Field-specific validation errors
+              nullable: true
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
+    StockItem:
+      type: object
+      properties:
+        id:
+          type: string
+        count_on_hand:
+          type: number
+        backorderable:
+          type: boolean
+        stock_location_id:
+          type: string
+          nullable: true
+        variant_id:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        allocated_count:
+          type: number
+        available_count:
+          type: number
+        stock_location:
+          $ref: '#/components/schemas/StockLocation'
+        variant:
+          $ref: '#/components/schemas/Variant'
+      required:
+      - id
+      - count_on_hand
+      - backorderable
+      - stock_location_id
+      - variant_id
+      - metadata
+      - created_at
+      - updated_at
+      - allocated_count
+      - available_count
+      x-typelizer: true
+    PriceHistory_2:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        amount_in_cents:
+          type: number
+        currency:
+          type: string
+        display_amount:
+          type: string
+        recorded_at:
+          type: string
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - currency
+      - display_amount
+      - recorded_at
+      x-typelizer: true
+    Media_2:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+          nullable: true
+        variant_ids:
+          type: array
+          items:
+            type: string
+        position:
+          type: number
+        alt:
+          type: string
+          nullable: true
+        media_type:
+          type: string
+        focal_point_x:
+          type: number
+          nullable: true
+        focal_point_y:
+          type: number
+          nullable: true
+        external_video_url:
+          type: string
+          nullable: true
+        original_url:
+          type: string
+          nullable: true
+        mini_url:
+          type: string
+          nullable: true
+        small_url:
+          type: string
+          nullable: true
+        medium_url:
+          type: string
+          nullable: true
+        large_url:
+          type: string
+          nullable: true
+        xlarge_url:
+          type: string
+          nullable: true
+        og_image_url:
+          type: string
+          nullable: true
+      required:
+      - id
+      - product_id
+      - variant_ids
+      - position
+      - alt
+      - media_type
+      - focal_point_x
+      - focal_point_y
+      - external_video_url
+      - original_url
+      - mini_url
+      - small_url
+      - medium_url
+      - large_url
+      - xlarge_url
+      - og_image_url
+      x-typelizer: true
+    PriceHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        amount_in_cents:
+          type: number
+        currency:
+          type: string
+        display_amount:
+          type: string
+        recorded_at:
+          type: string
+        variant_id:
+          type: string
+        price_id:
+          type: string
+        compare_at_amount:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - currency
+      - display_amount
+      - recorded_at
+      - variant_id
+      - price_id
+      - compare_at_amount
+      - created_at
+      x-typelizer: true
+    Price:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+          nullable: true
+        amount_in_cents:
+          type: number
+          nullable: true
+        compare_at_amount:
+          type: string
+          nullable: true
+        compare_at_amount_in_cents:
+          type: number
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+        display_amount:
+          type: string
+          nullable: true
+        display_compare_at_amount:
+          type: string
+          nullable: true
+        price_list_id:
+          type: string
+          nullable: true
+        variant_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        variant:
+          $ref: '#/components/schemas/Variant'
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - compare_at_amount
+      - compare_at_amount_in_cents
+      - currency
+      - display_amount
+      - display_compare_at_amount
+      - price_list_id
+      - variant_id
+      - created_at
+      - updated_at
+      x-typelizer: true
+    Product_2:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        meta_title:
+          type: string
+          nullable: true
+        meta_description:
+          type: string
+          nullable: true
+        meta_keywords:
+          type: string
+          nullable: true
+        variant_count:
+          type: number
+        available_on:
+          type: string
+          nullable: true
+        purchasable:
+          type: boolean
+        in_stock:
+          type: boolean
+        backorderable:
+          type: boolean
+        available:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+        description_html:
+          type: string
+          nullable: true
+        default_variant_id:
+          type: string
+        thumbnail_url:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        price:
+          $ref: '#/components/schemas/Price_2'
+        original_price:
+          allOf:
+          - $ref: '#/components/schemas/Price_2'
+          nullable: true
+        primary_media:
+          $ref: '#/components/schemas/Media_2'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media_2'
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant_2'
+        default_variant:
+          $ref: '#/components/schemas/Variant_2'
+        option_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionType_2'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category_2'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField_2'
+        prior_price:
+          allOf:
+          - $ref: '#/components/schemas/PriceHistory_2'
+          nullable: true
+      required:
+      - id
+      - name
+      - slug
+      - meta_title
+      - meta_description
+      - meta_keywords
+      - variant_count
+      - available_on
+      - purchasable
+      - in_stock
+      - backorderable
+      - available
+      - description
+      - description_html
+      - default_variant_id
+      - thumbnail_url
+      - tags
+      - price
+      - original_price
+      x-typelizer: true
+    Category_2:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        permalink:
+          type: string
+        position:
+          type: number
+        depth:
+          type: number
+        meta_title:
+          type: string
+          nullable: true
+        meta_description:
+          type: string
+          nullable: true
+        meta_keywords:
+          type: string
+          nullable: true
+        children_count:
+          type: number
+        parent_id:
+          type: string
+          nullable: true
+        description:
+          type: string
+        description_html:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+        square_image_url:
+          type: string
+          nullable: true
+        is_root:
+          type: boolean
+        is_child:
+          type: boolean
+        is_leaf:
+          type: boolean
+        parent:
+          $ref: '#/components/schemas/Category_2'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category_2'
+        ancestors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category_2'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField_2'
+      required:
+      - id
+      - name
+      - permalink
+      - position
+      - depth
+      - meta_title
+      - meta_description
+      - meta_keywords
+      - children_count
+      - parent_id
+      - description
+      - description_html
+      - image_url
+      - square_image_url
+      - is_root
+      - is_child
+      - is_leaf
+      x-typelizer: true
+    OptionValue:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
+          type: string
+          nullable: true
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        option_type:
+          $ref: '#/components/schemas/OptionType'
+      required:
+      - id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
+      - metadata
+      - created_at
+      - updated_at
+      x-typelizer: true
+    OptionValue_2:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
+          type: string
+          nullable: true
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+      required:
+      - id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
+      x-typelizer: true
+    CustomField_2:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+          deprecated: true
+        field_type:
+          type: string
+          enum:
+          - short_text
+          - long_text
+          - rich_text
+          - number
+          - boolean
+          - json
+        key:
+          type: string
+        value:
+          type: object
+      required:
+      - id
+      - label
+      - type
+      - field_type
+      - key
+      - value
+      x-typelizer: true
+    Media:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+          nullable: true
+        variant_ids:
+          type: array
+          items:
+            type: string
+        position:
+          type: number
+        alt:
+          type: string
+          nullable: true
+        media_type:
+          type: string
+        focal_point_x:
+          type: number
+          nullable: true
+        focal_point_y:
+          type: number
+          nullable: true
+        external_video_url:
+          type: string
+          nullable: true
+        original_url:
+          type: string
+          nullable: true
+        mini_url:
+          type: string
+          nullable: true
+        small_url:
+          type: string
+          nullable: true
+        medium_url:
+          type: string
+          nullable: true
+        large_url:
+          type: string
+          nullable: true
+        xlarge_url:
+          type: string
+          nullable: true
+        og_image_url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        viewable_id:
+          type: string
+        download_url:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+        viewable_type:
+          type: string
+      required:
+      - id
+      - product_id
+      - variant_ids
+      - position
+      - alt
+      - media_type
+      - focal_point_x
+      - focal_point_y
+      - external_video_url
+      - original_url
+      - mini_url
+      - small_url
+      - medium_url
+      - large_url
+      - xlarge_url
+      - og_image_url
+      - created_at
+      - updated_at
+      - viewable_id
+      - download_url
+      - metadata
+      - viewable_type
+      x-typelizer: true
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 25
+        count:
+          type: integer
+          example: 100
+          description: Total number of records
+        pages:
+          type: integer
+          example: 4
+          description: Total number of pages
+        from:
+          type: integer
+          example: 1
+          description: Index of first record on this page
+        to:
+          type: integer
+          example: 25
+          description: Index of last record on this page
+        in:
+          type: integer
+          example: 25
+          description: Number of records on this page
+        previous:
+          type: integer
+          nullable: true
+          example: null
+          description: Previous page number
+        next:
+          type: integer
+          nullable: true
+          example: 2
+          description: Next page number
+      required:
+      - page
+      - limit
+      - count
+      - pages
+      - from
+      - to
+      - in
+    StockLocation:
+      type: object
+      properties:
+        id:
+          type: string
+        state_abbr:
+          type: string
+          nullable: true
+        name:
+          type: string
+        address1:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        zipcode:
+          type: string
+          nullable: true
+        country_iso:
+          type: string
+          nullable: true
+        country_name:
+          type: string
+          nullable: true
+        state_text:
+          type: string
+          nullable: true
+        admin_name:
+          type: string
+          nullable: true
+        address2:
+          type: string
+          nullable: true
+        state_name:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        company:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        default:
+          type: boolean
+        backorderable_default:
+          type: boolean
+        propagate_all_variants:
+          type: boolean
+        kind:
+          type: string
+        pickup_enabled:
+          type: boolean
+        pickup_stock_policy:
+          type: string
+        pickup_ready_in_minutes:
+          type: number
+          nullable: true
+        pickup_instructions:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+      - id
+      - state_abbr
+      - name
+      - address1
+      - city
+      - zipcode
+      - country_iso
+      - country_name
+      - state_text
+      - admin_name
+      - address2
+      - state_name
+      - phone
+      - company
+      - active
+      - default
+      - backorderable_default
+      - propagate_all_variants
+      - kind
+      - pickup_enabled
+      - pickup_stock_policy
+      - pickup_ready_in_minutes
+      - pickup_instructions
+      - created_at
+      - updated_at
+      x-typelizer: true
+    Variant:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        sku:
+          type: string
+          nullable: true
+        options_text:
+          type: string
+        track_inventory:
+          type: boolean
+        media_count:
+          type: number
+        thumbnail_url:
+          type: string
+          nullable: true
+        purchasable:
+          type: boolean
+        in_stock:
+          type: boolean
+        backorderable:
+          type: boolean
+        weight:
+          type: number
+          nullable: true
+        height:
+          type: number
+          nullable: true
+        width:
+          type: number
+          nullable: true
+        depth:
+          type: number
+          nullable: true
+        price:
+          $ref: '#/components/schemas/Price'
+        original_price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          nullable: true
+        primary_media:
+          $ref: '#/components/schemas/Media'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        prior_price:
+          allOf:
+          - $ref: '#/components/schemas/PriceHistory'
+          nullable: true
+        metadata:
+          type: object
+        position:
+          type: number
+        cost_price:
+          type: string
+          nullable: true
+        cost_currency:
+          type: string
+          nullable: true
+        barcode:
+          type: string
+          nullable: true
+        weight_unit:
+          type: string
+          nullable: true
+        dimensions_unit:
+          type: string
+          nullable: true
+        deleted_at:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        tax_category_id:
+          type: string
+          nullable: true
+        available_stock:
+          type: number
+          nullable: true
+        reserved_quantity:
+          type: number
+        total_on_hand:
+          type: number
+          nullable: true
+        product_name:
+          type: string
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Price'
+        stock_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StockItem'
+      required:
+      - id
+      - product_id
+      - sku
+      - options_text
+      - track_inventory
+      - media_count
+      - thumbnail_url
+      - purchasable
+      - in_stock
+      - backorderable
+      - weight
+      - height
+      - width
+      - depth
+      - price
+      - original_price
+      - option_values
+      - metadata
+      - position
+      - cost_price
+      - cost_currency
+      - barcode
+      - weight_unit
+      - dimensions_unit
+      - deleted_at
+      - created_at
+      - updated_at
+      - tax_category_id
+      - available_stock
+      - reserved_quantity
+      - total_on_hand
+      - product_name
+      x-typelizer: true
+    OptionType:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        kind:
+          type: string
+        metadata:
+          type: object
+        filterable:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue'
+      required:
+      - id
+      - name
+      - label
+      - position
+      - kind
+      - metadata
+      - filterable
+      - created_at
+      - updated_at
+      x-typelizer: true
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

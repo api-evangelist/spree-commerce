@@ -1,0 +1,538 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Taxonomies API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Taxonomies
+paths:
+  /api/v2/platform/taxonomies:
+    get:
+      summary: Return a list of Taxonomies
+      tags:
+      - Taxonomies
+      security:
+      - bearer_auth: []
+      description: Returns a list of Taxonomies
+      operationId: taxonomies-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxons,root
+        schema:
+          type: string
+      - name: filter[name_eq]
+        in: query
+        description: ''
+        example: Categories
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '13'
+                      type: taxonomy
+                      attributes:
+                        name: taxonomy_13
+                        created_at: '2022-11-08T19:35:46.789Z'
+                        updated_at: '2022-11-08T19:35:46.801Z'
+                        position: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        taxons:
+                          data:
+                          - id: '25'
+                            type: taxon
+                        root:
+                          data:
+                            id: '25'
+                            type: taxon
+                    - id: '14'
+                      type: taxonomy
+                      attributes:
+                        name: taxonomy_14
+                        created_at: '2022-11-08T19:35:46.804Z'
+                        updated_at: '2022-11-08T19:35:46.814Z'
+                        position: 2
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        taxons:
+                          data:
+                          - id: '26'
+                            type: taxon
+                        root:
+                          data:
+                            id: '26'
+                            type: taxon
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/taxonomies?page=1&per_page=&include=&filter[name_eq]=
+                      next: http://www.example.com/api/v2/platform/taxonomies?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/taxonomies?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/taxonomies?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/taxonomies?filter%5Bname_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Taxonomy
+      tags:
+      - Taxonomies
+      security:
+      - bearer_auth: []
+      description: Creates a Taxonomy
+      operationId: create-taxonomy
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxons,root
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '17'
+                      type: taxonomy
+                      attributes:
+                        name: taxonomy_17
+                        created_at: '2022-11-08T19:35:47.351Z'
+                        updated_at: '2022-11-08T19:35:47.361Z'
+                        position: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        taxons:
+                          data:
+                          - id: '29'
+                            type: taxon
+                        root:
+                          data:
+                            id: '29'
+                            type: taxon
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_taxonomy_params'
+  /api/v2/platform/taxonomies/{id}:
+    get:
+      summary: Return a Taxonomy
+      tags:
+      - Taxonomies
+      security:
+      - bearer_auth: []
+      description: Returns a Taxonomy
+      operationId: show-taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxons,root
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '18'
+                      type: taxonomy
+                      attributes:
+                        name: taxonomy_18
+                        created_at: '2022-11-08T19:35:47.637Z'
+                        updated_at: '2022-11-08T19:35:47.648Z'
+                        position: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        taxons:
+                          data:
+                          - id: '30'
+                            type: taxon
+                        root:
+                          data:
+                            id: '30'
+                            type: taxon
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Taxonomy
+      tags:
+      - Taxonomies
+      security:
+      - bearer_auth: []
+      description: Updates a Taxonomy
+      operationId: update-taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxons,root
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '20'
+                      type: taxonomy
+                      attributes:
+                        name: Categories
+                        created_at: '2022-11-08T19:35:48.183Z'
+                        updated_at: '2022-11-08T19:35:48.430Z'
+                        position: 1
+                        public_metadata:
+                          balanced: true
+                        private_metadata: {}
+                      relationships:
+                        taxons:
+                          data:
+                          - id: '32'
+                            type: taxon
+                        root:
+                          data:
+                            id: '32'
+                            type: taxon
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_taxonomy_params'
+    delete:
+      summary: Delete a Taxonomy
+      tags:
+      - Taxonomies
+      security:
+      - bearer_auth: []
+      description: Deletes a Taxonomy
+      operationId: delete-taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_taxonomy_params:
+      type: object
+      properties:
+        taxonomy:
+          type: object
+          properties:
+            name:
+              type: string
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this Taxonomy to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            public_metadata:
+              type: object
+              example:
+                ability_to_recycle: 90%
+            private_metadata:
+              type: object
+              example:
+                profitability: 2
+      required:
+      - taxonomy
+      x-internal: false
+    create_taxonomy_params:
+      type: object
+      properties:
+        taxonomy:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this Taxonomy to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            public_metadata:
+              type: object
+              example:
+                ability_to_recycle: 90%
+            private_metadata:
+              type: object
+              example:
+                profitability: 2
+      required:
+      - taxonomy
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

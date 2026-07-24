@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Option Types API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Option Types
+paths:
+  /api/v2/platform/option_types:
+    get:
+      summary: Return a list of Option Types
+      tags:
+      - Option Types
+      security:
+      - bearer_auth: []
+      description: Returns a list of Option Types
+      operationId: option-types-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: filter[option_type_id_eq]
+        in: query
+        description: ''
+        example: '1'
+        schema:
+          type: string
+      - name: filter[name_cont]
+        in: query
+        description: ''
+        example: Size
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '68'
+                      type: option_type
+                      attributes:
+                        name: foo-size-68
+                        presentation: Size
+                        position: 1
+                        created_at: '2022-11-08T19:34:31.242Z'
+                        updated_at: '2022-11-08T19:34:31.242Z'
+                        filterable: true
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        option_values:
+                          data: []
+                    - id: '69'
+                      type: option_type
+                      attributes:
+                        name: foo-size-69
+                        presentation: Size
+                        position: 2
+                        created_at: '2022-11-08T19:34:31.244Z'
+                        updated_at: '2022-11-08T19:34:31.244Z'
+                        filterable: true
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        option_values:
+                          data: []
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/option_types?page=1&per_page=&filter[option_type_id_eq]=&filter[name_cont]=
+                      next: http://www.example.com/api/v2/platform/option_types?filter%5Bname_cont%5D=&filter%5Boption_type_id_eq%5D=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/option_types?filter%5Bname_cont%5D=&filter%5Boption_type_id_eq%5D=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/option_types?filter%5Bname_cont%5D=&filter%5Boption_type_id_eq%5D=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/option_types?filter%5Bname_cont%5D=&filter%5Boption_type_id_eq%5D=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create an Option Type
+      tags:
+      - Option Types
+      security:
+      - bearer_auth: []
+      description: Creates an Option Type
+      operationId: create-option-type
+      parameters: []
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '72'
+                      type: option_type
+                      attributes:
+                        name: foo-size-72
+                        presentation: Size
+                        position: 1
+                        created_at: '2022-11-08T19:34:31.761Z'
+                        updated_at: '2022-11-08T19:34:31.761Z'
+                        filterable: true
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        option_values:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank and Presentation can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+                      presentation:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_option_type_params'
+  /api/v2/platform/option_types/{id}:
+    get:
+      summary: Return an Option Type
+      tags:
+      - Option Types
+      security:
+      - bearer_auth: []
+      description: Returns an Option Type
+      operationId: show-option-type
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '73'
+                      type: option_type
+                      attributes:
+                        name: foo-size-73
+                        presentation: Size
+                        position: 1
+                        created_at: '2022-11-08T19:34:32.026Z'
+                        updated_at: '2022-11-08T19:34:32.026Z'
+                        filterable: true
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        option_values:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update an Option Type
+      tags:
+      - Option Types
+      security:
+      - bearer_auth: []
+      description: Updates an Option Type
+      operationId: update-option-type
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '75'
+                      type: option_type
+                      attributes:
+                        name: Size-X
+                        presentation: Size
+                        position: 1
+                        created_at: '2022-11-08T19:34:32.542Z'
+                        updated_at: '2022-11-08T19:34:32.772Z'
+                        filterable: true
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        option_values:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_option_type_params'
+    delete:
+      summary: Delete an Option Type
+      tags:
+      - Option Types
+      security:
+      - bearer_auth: []
+      description: Deletes an Option Type
+      operationId: delete-option-type
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_option_type_params:
+      type: object
+      properties:
+        option_type:
+          type: object
+          required:
+          - name
+          - presentation
+          properties:
+            name:
+              type: string
+              example: color
+            presentation:
+              type: string
+              example: Color
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - option_type
+      x-internal: false
+    update_option_type_params:
+      type: object
+      properties:
+        option_type:
+          type: object
+          properties:
+            name:
+              type: string
+              example: color
+            presentation:
+              type: string
+              example: Color
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - option_type
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

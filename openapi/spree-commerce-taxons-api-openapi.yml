@@ -1,0 +1,4570 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Taxons API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Taxons
+paths:
+  /api/v2/platform/taxons:
+    get:
+      summary: Return a list of Taxons
+      tags:
+      - Taxons
+      security:
+      - bearer_auth: []
+      description: Returns a list of Taxons
+      operationId: taxons-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxonomy,parent,children
+        schema:
+          type: string
+      - name: filter[taxonomy_id_eq]
+        in: query
+        description: ''
+        example: '1'
+        schema:
+          type: string
+      - name: filter[name_cont]
+        in: query
+        description: ''
+        example: Shirts
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '38'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: Shorts
+                        permalink: taxonomy-25/shorts
+                        lft: 2
+                        rgt: 3
+                        description: null
+                        created_at: '2022-11-08T19:35:49.576Z'
+                        updated_at: '2022-11-08T19:35:49.581Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                        pretty_name: taxonomy_25 -> Shorts
+                        seo_title: Shorts
+                        is_root: false
+                        is_child: true
+                        is_leaf: true
+                      relationships:
+                        parent:
+                          data:
+                            id: '37'
+                            type: taxon
+                        taxonomy:
+                          data:
+                            id: '25'
+                            type: taxonomy
+                        children:
+                          data: []
+                        image:
+                          data:
+                            id: '89'
+                            type: taxon_image
+                    - id: '39'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: taxon_13
+                        permalink: taxonomy-25/taxon-13
+                        lft: 4
+                        rgt: 5
+                        description: null
+                        created_at: '2022-11-08T19:35:49.603Z'
+                        updated_at: '2022-11-08T19:35:49.606Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                        pretty_name: taxonomy_25 -> taxon_13
+                        seo_title: taxon_13
+                        is_root: false
+                        is_child: true
+                        is_leaf: true
+                      relationships:
+                        parent:
+                          data:
+                            id: '37'
+                            type: taxon
+                        taxonomy:
+                          data:
+                            id: '25'
+                            type: taxonomy
+                        children:
+                          data: []
+                        image:
+                          data:
+                            id: '90'
+                            type: taxon_image
+                    - id: '40'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: taxon_14
+                        permalink: taxonomy-25/taxon-14
+                        lft: 6
+                        rgt: 7
+                        description: null
+                        created_at: '2022-11-08T19:35:49.625Z'
+                        updated_at: '2022-11-08T19:35:49.628Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                        pretty_name: taxonomy_25 -> taxon_14
+                        seo_title: taxon_14
+                        is_root: false
+                        is_child: true
+                        is_leaf: true
+                      relationships:
+                        parent:
+                          data:
+                            id: '37'
+                            type: taxon
+                        taxonomy:
+                          data:
+                            id: '25'
+                            type: taxonomy
+                        children:
+                          data: []
+                        image:
+                          data:
+                            id: '91'
+                            type: taxon_image
+                    - id: '37'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: taxonomy_25
+                        permalink: taxonomy-25
+                        lft: 1
+                        rgt: 8
+                        description: null
+                        created_at: '2022-11-08T19:35:49.552Z'
+                        updated_at: '2022-11-08T19:35:49.636Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 0
+                        public_metadata: {}
+                        private_metadata: {}
+                        pretty_name: taxonomy_25
+                        seo_title: taxonomy_25
+                        is_root: true
+                        is_child: false
+                        is_leaf: false
+                      relationships:
+                        parent:
+                          data: null
+                        taxonomy:
+                          data:
+                            id: '25'
+                            type: taxonomy
+                        children:
+                          data:
+                          - id: '38'
+                            type: taxon
+                          - id: '39'
+                            type: taxon
+                          - id: '40'
+                            type: taxon
+                        image:
+                          data: null
+                    meta:
+                      count: 4
+                      total_count: 4
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/taxons?page=1&per_page=&include=&filter[taxonomy_id_eq]=&filter[name_cont]=
+                      next: http://www.example.com/api/v2/platform/taxons?filter%5Bname_cont%5D=&filter%5Btaxonomy_id_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/taxons?filter%5Bname_cont%5D=&filter%5Btaxonomy_id_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/taxons?filter%5Bname_cont%5D=&filter%5Btaxonomy_id_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/taxons?filter%5Bname_cont%5D=&filter%5Btaxonomy_id_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Taxon
+      tags:
+      - Taxons
+      security:
+      - bearer_auth: []
+      description: Creates a Taxon
+      operationId: create-taxon
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxonomy,parent,children
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '47'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: taxon_17
+                        permalink: taxonomy-27/taxon-17
+                        lft: 4
+                        rgt: 5
+                        description: null
+                        created_at: '2022-11-08T19:35:50.279Z'
+                        updated_at: '2022-11-08T19:35:50.283Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                        pretty_name: taxonomy_27 -> taxon_17
+                        seo_title: taxon_17
+                        is_root: false
+                        is_child: true
+                        is_leaf: true
+                      relationships:
+                        parent:
+                          data:
+                            id: '45'
+                            type: taxon
+                        taxonomy:
+                          data:
+                            id: '27'
+                            type: taxonomy
+                        children:
+                          data: []
+                        image:
+                          data: null
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank and Taxonomy can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+                      taxonomy:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_taxon_params'
+  /api/v2/platform/taxons/{id}:
+    get:
+      summary: Return a Taxon
+      tags:
+      - Taxons
+      security:
+      - bearer_auth: []
+      description: Returns a Taxon
+      operationId: show-taxon
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxonomy,parent,children
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '52'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: taxon_18
+                        permalink: taxonomy-29/taxon-18
+                        lft: 4
+                        rgt: 5
+                        description: null
+                        created_at: '2022-11-08T19:35:50.654Z'
+                        updated_at: '2022-11-08T19:35:50.657Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 1
+                        public_metadata: {}
+                        private_metadata: {}
+                        pretty_name: taxonomy_29 -> taxon_18
+                        seo_title: taxon_18
+                        is_root: false
+                        is_child: true
+                        is_leaf: true
+                      relationships:
+                        parent:
+                          data:
+                            id: '50'
+                            type: taxon
+                        taxonomy:
+                          data:
+                            id: '29'
+                            type: taxonomy
+                        children:
+                          data: []
+                        products:
+                          data: []
+                        image:
+                          data:
+                            id: '98'
+                            type: taxon_image
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Taxon
+      tags:
+      - Taxons
+      security:
+      - bearer_auth: []
+      description: Updates a Taxon
+      operationId: update-taxon
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: taxonomy,parent,children
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '60'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: T-Shirts
+                        permalink: taxonomy-32/taxon-20
+                        lft: 4
+                        rgt: 5
+                        description: null
+                        created_at: '2022-11-08T19:35:51.420Z'
+                        updated_at: '2022-11-08T19:35:51.665Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 1
+                        public_metadata:
+                          profitability: 3
+                        private_metadata: {}
+                        pretty_name: taxonomy_32 -> T-Shirts
+                        seo_title: T-Shirts
+                        is_root: false
+                        is_child: true
+                        is_leaf: true
+                      relationships:
+                        parent:
+                          data:
+                            id: '58'
+                            type: taxon
+                        taxonomy:
+                          data:
+                            id: '32'
+                            type: taxonomy
+                        children:
+                          data: []
+                        image:
+                          data:
+                            id: '103'
+                            type: taxon_image
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_taxon_params'
+    delete:
+      summary: Delete a Taxon
+      tags:
+      - Taxons
+      security:
+      - bearer_auth: []
+      description: Deletes a Taxon
+      operationId: delete-taxon
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/platform/taxons/{id}/reposition:
+    patch:
+      summary: Reposition a Taxon
+      tags:
+      - Taxons
+      security:
+      - bearer_auth: []
+      operationId: reposition-taxon
+      description: Reposition a Taxon
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '79'
+                      type: taxon
+                      attributes:
+                        position: 0
+                        name: taxon_25
+                        permalink: taxonomy-39/shorts/taxon-25
+                        lft: 3
+                        rgt: 4
+                        description: null
+                        created_at: '2022-11-08T19:35:53.074Z'
+                        updated_at: '2022-11-08T19:35:53.324Z'
+                        meta_title: null
+                        meta_description: null
+                        meta_keywords: null
+                        depth: 2
+                        public_metadata: {}
+                        private_metadata: {}
+                        pretty_name: taxonomy_39 -> Shorts -> taxon_25
+                        seo_title: taxon_25
+                        is_root: false
+                        is_child: true
+                        is_leaf: true
+                      relationships:
+                        parent:
+                          data:
+                            id: '78'
+                            type: taxon
+                        taxonomy:
+                          data:
+                            id: '39'
+                            type: taxonomy
+                        children:
+                          data: []
+                        image:
+                          data:
+                            id: '115'
+                            type: taxon_image
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/taxon_reposition'
+  /api/v2/storefront/taxons:
+    get:
+      description: Returns a list of Taxons. [Read more about Taxons](/developer/core-concepts/products#taxons-and-taxonomies)
+      tags:
+      - Taxons
+      operationId: taxons-list
+      parameters:
+      - $ref: '#/components/parameters/FilterByIds'
+      - $ref: '#/components/parameters/FilterByName'
+      - in: query
+        name: filter[parent_id]
+        schema:
+          type: string
+        example: '1'
+        description: Fetch children nodes of specified Taxon
+      - in: query
+        name: filter[parent_permalink]
+        schema:
+          type: string
+        example: clothes
+        description: Fetch children nodes of specified Taxon permalink
+      - in: query
+        name: filter[taxonomy_id]
+        schema:
+          type: string
+        example: '1'
+        description: Fetch Taxons in a specified Taxonomy
+      - in: query
+        name: filter[roots]
+        schema:
+          type: boolean
+        example: false
+        description: Fetch only root Taxons (Taxonomies)
+      - in: query
+        name: filter[vendor_id]
+        schema:
+          type: string
+        example: '1'
+        description: Fetch only Taxons that have products of a selected Vendor
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/TaxonIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsTaxon'
+      responses:
+        '200':
+          $ref: '#/components/responses/TaxonList'
+      summary: List all Taxons
+  /api/v2/storefront/taxons/{taxon_permalink}:
+    get:
+      description: Returns the details of a specified taxon.
+      tags:
+      - Taxons
+      operationId: show-taxon
+      parameters:
+      - $ref: '#/components/parameters/TaxonPermalink'
+      - $ref: '#/components/parameters/TaxonIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsTaxon'
+      responses:
+        '200':
+          $ref: '#/components/responses/Taxon'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+      summary: Retrieve a Taxon
+components:
+  parameters:
+    TaxonIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: parent,taxonomy,children,image,products
+    SparseFieldsTaxon:
+      in: query
+      name: fields[taxon]
+      example: name,pretty_name,permalink
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+    FilterByName:
+      in: query
+      name: filter[name]
+      schema:
+        type: string
+      example: rails
+      description: Find resources with matching name (supports wild-card, partial-word match search)
+    FilterByIds:
+      in: query
+      name: filter[ids]
+      schema:
+        type: string
+      example: 1,2,3
+      description: Fetch only resources with corresponding IDs
+    TaxonPermalink:
+      name: taxon_permalink
+      in: path
+      required: true
+      description: Specify the taxon using the permalink or taxon ID.
+      schema:
+        type: string
+      example: categories/women
+  schemas:
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    TaxonIncludes:
+      x-internal: false
+      title: Taxon Includes
+      anyOf:
+      - $ref: '#/components/schemas/Product'
+      - $ref: '#/components/schemas/TaxonImage'
+      - $ref: '#/components/schemas/Taxonomy'
+    ImageStyle:
+      x-internal: false
+      title: Image Style
+      type: object
+      properties:
+        url:
+          type: string
+          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
+          description: Absolute URL of the uploaded image in selected style (width/height)
+        width:
+          type: integer
+          example: 1920
+          description: Actual width of image
+        height:
+          type: integer
+          example: 1080
+          description: Actual height of image
+    Taxon:
+      title: Taxon
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: taxon
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: T-shirts
+            pretty_name:
+              type: string
+              example: Clothes > T-shirts
+            permalink:
+              type: string
+              example: t-shirts
+            seo_title:
+              type: string
+              example: Clothes - T-shirts
+            meta_title:
+              type: string
+              example: T-shirts
+              nullable: true
+            meta_description:
+              type: string
+              example: 'A list of cool t-shirts '
+              nullable: true
+            meta_keywords:
+              type: string
+              example: t-shirts, cool
+              nullable: true
+            left:
+              type: integer
+              example: 1
+            right:
+              type: integer
+              example: 2
+            position:
+              type: integer
+              example: 0
+            depth:
+              type: integer
+              example: 1
+              nullable: true
+            is_root:
+              type: boolean
+              example: true
+              description: Indicates if the Taxon is the root node of this Taxonomy tree
+            is_child:
+              type: boolean
+              example: true
+              description: Returns true is this is a child node of this Taxonomy tree
+            is_leaf:
+              type: boolean
+              example: false
+              description: Returns true if this is the end of a branch of this Taxonomy tree
+            updated_at:
+              type: string
+              example: '2018-06-18T10:57:29.704Z'
+            localized_slugs:
+              type: object
+              description: Provides taxon's slugs in other locales
+        relationships:
+          type: object
+          properties:
+            parent:
+              type: object
+              description: Parent node
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            children:
+              type: object
+              description: List of child nodes
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            taxonomy:
+              type: object
+              description: Taxonomy associated with this Taxon
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            image:
+              type: object
+              description: Image associated with Taxon
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            products:
+              type: object
+              description: List of active and available Products associated with this Taxon
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Product:
+      type: object
+      title: Product
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: product
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Example product
+            description:
+              type: string
+              example: Example description
+              nullable: true
+            available_on:
+              type: string
+              example: '2012-10-17T03:43:57Z'
+              nullable: true
+            slug:
+              type: string
+              example: example-product
+            price:
+              type: string
+              example: '15.99'
+              nullable: true
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+              nullable: true
+            purchasable:
+              type: boolean
+              description: Indicates if any of Variants are in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if any of Variants are in stock
+            backorderable:
+              type: boolean
+              description: Indicates if any of Variants are backeorderable
+            meta_description:
+              type: string
+              example: Example product
+              nullable: true
+            meta_keywords:
+              type: string
+              example: example, product
+              nullable: true
+            updated_at:
+              $ref: '#/components/schemas/Timestamp'
+            sku:
+              type: string
+              example: 9238-WS
+            available:
+              type: boolean
+            compare_at_price:
+              type: string
+              example: '49.99'
+              nullable: true
+            display_compare_at_price:
+              type: string
+              example: $49.99
+              nullable: true
+            localized_slugs:
+              type: object
+              description: Provides product's slugs in other locales
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the product
+            labels:
+              type: array
+              items:
+                type: string
+              description: List of labels associated with the product
+        relationships:
+          type: object
+          properties:
+            variants:
+              type: object
+              description: List of Product Variants, excluding Master Variant
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_types:
+              type: object
+              description: List of Product Option Types
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            product_properties:
+              type: object
+              description: List of Product Properties
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            taxons:
+              type: object
+              description: List of Taxons associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              description: List of Images associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            default_variant:
+              type: object
+              description: The default Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            primary_variant:
+              type: object
+              description: The Primary Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Taxonomy:
+      type: object
+      title: Taxonomy
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: taxonomy
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Categories
+            position:
+              type: integer
+              example: 0
+      required:
+      - id
+      - type
+      - attributes
+    taxon_reposition:
+      type: object
+      properties:
+        taxon:
+          type: object
+          required:
+          - new_parent_id
+          - new_position_idx
+          properties:
+            new_parent_id:
+              type: integer
+              example: 1
+              description: The ID of the new target parent Taxon.
+            new_position_idx:
+              type: integer
+              example: 1
+              description: The new index position of the Taxon within the parent Taxon.
+      required:
+      - taxon
+      title: Reposition a Taxon
+      x-internal: false
+    update_taxon_params:
+      type: object
+      properties:
+        taxon:
+          type: object
+          properties:
+            taxonomy_id:
+              type: string
+            parent_id:
+              type: string
+            name:
+              type: string
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - taxon
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    create_taxon_params:
+      type: object
+      properties:
+        taxon:
+          type: object
+          required:
+          - name
+          - taxonomy_id
+          properties:
+            taxonomy_id:
+              type: string
+            parent_id:
+              type: string
+            name:
+              type: string
+            public_metadata:
+              type: object
+              example:
+                ability_to_recycle: 90%
+            private_metadata:
+              type: object
+              example:
+                profitability: 2
+      required:
+      - taxon
+      x-internal: false
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    TaxonImage:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: taxon_image
+        attributes:
+          type: object
+          properties:
+            position:
+              type: integer
+              example: 0
+              description: Sort order of images set in the Admin Panel
+            styles:
+              type: array
+              description: An array of pre-scaled image styles
+              items:
+                $ref: '#/components/schemas/ImageStyle'
+      required:
+      - id
+      - type
+      - attributes
+      title: Taxon Image
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+  responses:
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    Taxon:
+      description: 200 Success - Returns the `taxon` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Taxon'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonIncludes'
+            required:
+            - data
+          examples:
+            Taxon:
+              value:
+                data:
+                  id: '22'
+                  type: taxon
+                  attributes:
+                    name: Summer Sale
+                    pretty_name: Categories -> Summer Sale
+                    permalink: categories/summer-sale
+                    seo_title: Summer Sale
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 42
+                    right: 43
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                    localized_slugs:
+                      en: categories/summer-sale
+                      de: kategorien/sommerschlussverkauf
+                      fr: categories/soldes-dete
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    products:
+                      data:
+                      - id: '76'
+                        type: product
+                      - id: '92'
+                        type: product
+                      - id: '112'
+                        type: product
+                      - id: '15'
+                        type: product
+                      - id: '86'
+                        type: product
+                      - id: '52'
+                        type: product
+                      - id: '78'
+                        type: product
+                      - id: '36'
+                        type: product
+                      - id: '93'
+                        type: product
+                      - id: '73'
+                        type: product
+                      - id: '83'
+                        type: product
+                      - id: '7'
+                        type: product
+                      - id: '95'
+                        type: product
+                      - id: '8'
+                        type: product
+                      - id: '59'
+                        type: product
+                      - id: '28'
+                        type: product
+                      - id: '41'
+                        type: product
+                      - id: '66'
+                        type: product
+                      - id: '10'
+                        type: product
+                      - id: '12'
+                        type: product
+                      - id: '21'
+                        type: product
+                      - id: '111'
+                        type: product
+                      - id: '48'
+                        type: product
+                      - id: '46'
+                        type: product
+                      - id: '5'
+                        type: product
+                      - id: '71'
+                        type: product
+                      - id: '103'
+                        type: product
+                      - id: '20'
+                        type: product
+                      - id: '62'
+                        type: product
+                      - id: '64'
+                        type: product
+                    image:
+                      data: null
+            Taxon Including Products:
+              value:
+                data:
+                  id: '22'
+                  type: taxon
+                  attributes:
+                    name: Summer Sale
+                    pretty_name: Categories -> Summer Sale
+                    permalink: categories/summer-sale
+                    seo_title: Summer Sale
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 42
+                    right: 43
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    products:
+                      data:
+                      - id: '76'
+                        type: product
+                      - id: '92'
+                        type: product
+                      - id: '112'
+                        type: product
+                      - id: '15'
+                        type: product
+                      - id: '86'
+                        type: product
+                      - id: '52'
+                        type: product
+                      - id: '78'
+                        type: product
+                      - id: '36'
+                        type: product
+                      - id: '93'
+                        type: product
+                      - id: '73'
+                        type: product
+                      - id: '83'
+                        type: product
+                      - id: '7'
+                        type: product
+                      - id: '95'
+                        type: product
+                      - id: '8'
+                        type: product
+                      - id: '59'
+                        type: product
+                      - id: '28'
+                        type: product
+                      - id: '41'
+                        type: product
+                      - id: '66'
+                        type: product
+                      - id: '10'
+                        type: product
+                      - id: '12'
+                        type: product
+                      - id: '21'
+                        type: product
+                      - id: '111'
+                        type: product
+                      - id: '48'
+                        type: product
+                      - id: '46'
+                        type: product
+                      - id: '5'
+                        type: product
+                      - id: '71'
+                        type: product
+                      - id: '103'
+                        type: product
+                      - id: '20'
+                        type: product
+                      - id: '62'
+                        type: product
+                      - id: '64'
+                        type: product
+                    image:
+                      data: null
+                included:
+                - id: '76'
+                  type: product
+                  attributes:
+                    name: Crop Top With Tie
+                    description: Expedita unde totam dolorum delectus maiores nostrum. Ratione aut hic nisi similique tempore ipsum eveniet voluptatibus. Accusantium est perspiciatis distinctio vel ipsa. Magni eius fuga non harum esse asperiores error. Vitae sunt maiores ab magnam fuga facere temporibus quisquam.
+                    available_on: '2021-10-02T11:02:26.807Z'
+                    slug: crop-top-with-tie
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.094Z'
+                    sku: TopsandT-shirts_croptopwithtie_61.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '61.99'
+                    display_price: $61.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '192'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '65'
+                        type: product_property
+                      - id: '66'
+                        type: product_property
+                      - id: '67'
+                        type: product_property
+                      - id: '68'
+                        type: product_property
+                      - id: '69'
+                        type: product_property
+                      - id: '70'
+                        type: product_property
+                      - id: '71'
+                        type: product_property
+                      - id: '72'
+                        type: product_property
+                      - id: '571'
+                        type: product_property
+                      - id: '572'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '13'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '192'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '76'
+                        type: variant
+                - id: '92'
+                  type: product
+                  attributes:
+                    name: Double Breasted Jacket
+                    description: Suscipit deserunt minus non ea occaecati rerum optio. Eveniet consequuntur doloribus nam perspiciatis. Voluptatibus nostrum nisi expedita fugit accusamus aliquid quasi ratione. Molestiae dolor voluptatibus dolorem impedit explicabo. Doloribus natus dolore id reprehenderit adipisci accusamus amet.
+                    available_on: '2021-10-02T11:02:28.794Z'
+                    slug: double-breasted-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.547Z'
+                    sku: JacketsandCoats_double-breastedjacket_86.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '86.99'
+                    display_price: $86.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '208'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '889'
+                        type: product_property
+                      - id: '890'
+                        type: product_property
+                      - id: '891'
+                        type: product_property
+                      - id: '892'
+                        type: product_property
+                      - id: '893'
+                        type: product_property
+                      - id: '894'
+                        type: product_property
+                      - id: '895'
+                        type: product_property
+                      - id: '896'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '208'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '92'
+                        type: variant
+                - id: '112'
+                  type: product
+                  attributes:
+                    name: Printed Pants With Holes
+                    description: Sed quia quos voluptate occaecati architecto quidem. Voluptatem ducimus sit explicabo consequuntur hic consectetur at aperiam. Vero quo eius voluptatum animi. Temporibus architecto aliquam vero ut. Quasi velit illo harum delectus dicta.
+                    available_on: '2021-10-02T11:02:31.417Z'
+                    slug: printed-pants-with-holes
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.438Z'
+                    sku: Pants_printedpantswithholes_91.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '91.99'
+                    display_price: $91.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '228'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '751'
+                        type: product_property
+                      - id: '752'
+                        type: product_property
+                      - id: '753'
+                        type: product_property
+                      - id: '754'
+                        type: product_property
+                      - id: '755'
+                        type: product_property
+                      - id: '756'
+                        type: product_property
+                      - id: '757'
+                        type: product_property
+                      - id: '758'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '17'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '228'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '112'
+                        type: variant
+                - id: '15'
+                  type: product
+                  attributes:
+                    name: T Shirt With Holes
+                    description: Voluptatem ut facere eveniet corrupti impedit expedita quas voluptate. Officia exercitationem inventore in deleniti aliquam voluptatem fugit quibusdam. Ex quod minus nisi adipisci provident et. Eos excepturi quis eius natus porro numquam assumenda. Rem error molestiae quisquam doloremque ipsam dolor maiores.
+                    available_on: '2021-10-02T11:02:18.944Z'
+                    slug: t-shirt-with-holes
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.115Z'
+                    sku: T-shirts_t-shirtwithholes_27.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '27.99'
+                    display_price: $27.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '131'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '25'
+                        type: product_property
+                      - id: '26'
+                        type: product_property
+                      - id: '27'
+                        type: product_property
+                      - id: '28'
+                        type: product_property
+                      - id: '29'
+                        type: product_property
+                      - id: '30'
+                        type: product_property
+                      - id: '31'
+                        type: product_property
+                      - id: '32'
+                        type: product_property
+                      - id: '203'
+                        type: product_property
+                      - id: '204'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '6'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '131'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '15'
+                        type: variant
+                - id: '86'
+                  type: product
+                  attributes:
+                    name: Long Wool Blend Coat With Belt
+                    description: Consequatur atque porro quod iure suscipit facere. Itaque maiores velit dolorum tempora quam blanditiis modi ex. Cum at harum aperiam occaecati consequuntur ea. Expedita consequatur fugiat tempora perferendis praesentium ut. Tempore at natus voluptates quisquam quae praesentium explicabo.
+                    available_on: '2021-10-02T11:02:28.040Z'
+                    slug: long-wool-blend-coat-with-belt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.384Z'
+                    sku: JacketsandCoats_longwool-blendcoatwithbelt_11.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '11.99'
+                    display_price: $11.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '202'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '905'
+                        type: product_property
+                      - id: '906'
+                        type: product_property
+                      - id: '907'
+                        type: product_property
+                      - id: '908'
+                        type: product_property
+                      - id: '909'
+                        type: product_property
+                      - id: '910'
+                        type: product_property
+                      - id: '911'
+                        type: product_property
+                      - id: '912'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '202'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '86'
+                        type: variant
+                - id: '52'
+                  type: product
+                  attributes:
+                    name: Printed Dress
+                    description: Inventore perferendis assumenda quia libero dolore error quam occaecati. Eaque distinctio magnam ut aut voluptas facere. Perferendis qui adipisci dolor praesentium harum. Saepe unde voluptates nemo occaecati voluptas assumenda tempore. Adipisci voluptates at corporis ab sed sequi.
+                    available_on: '2021-10-02T11:02:23.730Z'
+                    slug: printed-dress
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.274Z'
+                    sku: Dresses_printeddress_86.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '86.99'
+                    display_price: $86.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '168'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '2'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '411'
+                        type: product_property
+                      - id: '412'
+                        type: product_property
+                      - id: '413'
+                        type: product_property
+                      - id: '414'
+                        type: product_property
+                      - id: '415'
+                        type: product_property
+                      - id: '416'
+                        type: product_property
+                      - id: '417'
+                        type: product_property
+                      - id: '418'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '10'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '168'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '52'
+                        type: variant
+                - id: '78'
+                  type: product
+                  attributes:
+                    name: Scrappy Top
+                    description: Deserunt qui non officiis nostrum. Nam itaque a suscipit aspernatur animi illo beatae laboriosam. Dolores dignissimos soluta quidem minima expedita.
+                    available_on: '2021-10-02T11:02:27.051Z'
+                    slug: scrappy-top
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.156Z'
+                    sku: TopsandT-shirts_scrappytop_31.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '31.99'
+                    display_price: $31.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '194'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '81'
+                        type: product_property
+                      - id: '82'
+                        type: product_property
+                      - id: '83'
+                        type: product_property
+                      - id: '84'
+                        type: product_property
+                      - id: '85'
+                        type: product_property
+                      - id: '86'
+                        type: product_property
+                      - id: '87'
+                        type: product_property
+                      - id: '88'
+                        type: product_property
+                      - id: '573'
+                        type: product_property
+                      - id: '574'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '13'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '194'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '78'
+                        type: variant
+                - id: '36'
+                  type: product
+                  attributes:
+                    name: Flared Midi Skirt
+                    description: Totam vero modi ex in architecto quidem. Quod mollitia accusantium nihil aliquid esse dolore. Atque velit ad eius tenetur molestias. Mollitia soluta impedit repellat quos possimus cumque.
+                    available_on: '2021-10-02T11:02:21.523Z'
+                    slug: flared-midi-skirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.751Z'
+                    sku: Skirts_flaredmidiskirt_93.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '93.99'
+                    display_price: $93.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '152'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '2'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '299'
+                        type: product_property
+                      - id: '300'
+                        type: product_property
+                      - id: '301'
+                        type: product_property
+                      - id: '302'
+                        type: product_property
+                      - id: '303'
+                        type: product_property
+                      - id: '304'
+                        type: product_property
+                      - id: '305'
+                        type: product_property
+                      - id: '306'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '9'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '152'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '36'
+                        type: variant
+                - id: '93'
+                  type: product
+                  attributes:
+                    name: Leather Biker Jacket
+                    description: At tempora ullam saepe earum voluptates. Tempora nisi sunt libero optio provident praesentium. Quas odit quaerat ad numquam. Consectetur consequuntur magnam delectus facere illo unde.
+                    available_on: '2021-10-02T11:02:28.913Z'
+                    slug: leather-biker-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.585Z'
+                    sku: JacketsandCoats_leatherbikerjacket_52.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '52.99'
+                    display_price: $52.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '209'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '615'
+                        type: product_property
+                      - id: '616'
+                        type: product_property
+                      - id: '617'
+                        type: product_property
+                      - id: '618'
+                        type: product_property
+                      - id: '619'
+                        type: product_property
+                      - id: '620'
+                        type: product_property
+                      - id: '621'
+                        type: product_property
+                      - id: '622'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '209'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '93'
+                        type: variant
+                - id: '73'
+                  type: product
+                  attributes:
+                    name: Knitted High Neck Sweater
+                    description: Eveniet adipisci facere nihil repellat accusamus nostrum. Laboriosam eius magnam asperiores facere perspiciatis quo. Eos fugit non mollitia sed incidunt magni dolorem error. Occaecati unde ea sit veritatis sed officia. Aperiam sequi reiciendis sint neque praesentium.
+                    available_on: '2021-10-02T11:02:26.434Z'
+                    slug: knitted-high-neck-sweater
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.879Z'
+                    sku: Sweaters_knittedhighnecksweater_23.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '23.99'
+                    display_price: $23.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '189'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '547'
+                        type: product_property
+                      - id: '548'
+                        type: product_property
+                      - id: '549'
+                        type: product_property
+                      - id: '550'
+                        type: product_property
+                      - id: '551'
+                        type: product_property
+                      - id: '552'
+                        type: product_property
+                      - id: '553'
+                        type: product_property
+                      - id: '554'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '12'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '189'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '73'
+                        type: variant
+                - id: '83'
+                  type: product
+                  attributes:
+                    name: Sleeveless Loose Top
+                    description: Minima expedita porro tempora sit odio. Nulla qui laboriosam dignissimos sit earum numquam omnis. Harum repellendus ex porro voluptatum. Corporis impedit culpa eum maxime voluptates.
+                    available_on: '2021-10-02T11:02:27.671Z'
+                    slug: sleeveless-loose-top
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.304Z'
+                    sku: TopsandT-shirts_sleevelessloosetop_26.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '26.99'
+                    display_price: $26.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '199'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '121'
+                        type: product_property
+                      - id: '122'
+                        type: product_property
+                      - id: '123'
+                        type: product_property
+                      - id: '124'
+                        type: product_property
+                      - id: '125'
+                        type: product_property
+                      - id: '126'
+                        type: product_property
+                      - id: '127'
+                        type: product_property
+                      - id: '128'
+                        type: product_property
+                      - id: '581'
+                        type: product_property
+                      - id: '582'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '13'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '199'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '83'
+                        type: variant
+                - id: '7'
+                  type: product
+                  attributes:
+                    name: Regular Shirt
+                    description: Incidunt quis assumenda debitis aliquam repellendus eveniet officiis recusandae. Debitis facere rerum natus cumque aliquam in. Ducimus voluptate cupiditate fugit quisquam.
+                    available_on: '2021-10-02T11:02:17.952Z'
+                    slug: regular-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.901Z'
+                    sku: Shirts_regularshirt_74.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '74.99'
+                    display_price: $74.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '123'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '177'
+                        type: product_property
+                      - id: '178'
+                        type: product_property
+                      - id: '179'
+                        type: product_property
+                      - id: '180'
+                        type: product_property
+                      - id: '181'
+                        type: product_property
+                      - id: '182'
+                        type: product_property
+                      - id: '183'
+                        type: product_property
+                      - id: '184'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '5'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '123'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '7'
+                        type: variant
+                - id: '95'
+                  type: product
+                  attributes:
+                    name: Denim Hooded Jacket
+                    description: Harum expedita quibusdam consequatur soluta cum dolore id ratione. Quam ex nemo asperiores aspernatur doloremque odit. Ullam sunt labore sit nostrum.
+                    available_on: '2021-10-02T11:02:29.164Z'
+                    slug: denim-hooded-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.650Z'
+                    sku: JacketsandCoats_denimhoodedjacket_15.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '15.99'
+                    display_price: $15.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '211'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '631'
+                        type: product_property
+                      - id: '632'
+                        type: product_property
+                      - id: '633'
+                        type: product_property
+                      - id: '634'
+                        type: product_property
+                      - id: '635'
+                        type: product_property
+                      - id: '636'
+                        type: product_property
+                      - id: '637'
+                        type: product_property
+                      - id: '638'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '211'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '95'
+                        type: variant
+                - id: '8'
+                  type: product
+                  attributes:
+                    name: Checked Slim Fit Shirt
+                    description: Doloremque aspernatur aperiam doloribus laborum ullam. Cupiditate accusantium eaque sit pariatur earum a. Corrupti architecto assumenda sunt veniam.
+                    available_on: '2021-10-02T11:02:18.079Z'
+                    slug: checked-slim-fit-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.931Z'
+                    sku: Shirts_checkedslimfitshirt_37.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '37.99'
+                    display_price: $37.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '124'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '833'
+                        type: product_property
+                      - id: '834'
+                        type: product_property
+                      - id: '835'
+                        type: product_property
+                      - id: '836'
+                        type: product_property
+                      - id: '837'
+                        type: product_property
+                      - id: '838'
+                        type: product_property
+                      - id: '839'
+                        type: product_property
+                      - id: '840'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '5'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '124'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '8'
+                        type: variant
+                - id: '59'
+                  type: product
+                  attributes:
+                    name: Striped Shirt
+                    description: Debitis reprehenderit blanditiis expedita quia suscipit. Quod praesentium velit maxime placeat quam illo consequatur. Qui aut autem vel excepturi magni hic ut maxime.
+                    available_on: '2021-10-02T11:02:24.616Z'
+                    slug: striped-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.488Z'
+                    sku: ShirtsandBlouses_stripedshirt_40.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '40.99'
+                    display_price: $40.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '175'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '459'
+                        type: product_property
+                      - id: '460'
+                        type: product_property
+                      - id: '461'
+                        type: product_property
+                      - id: '462'
+                        type: product_property
+                      - id: '463'
+                        type: product_property
+                      - id: '464'
+                        type: product_property
+                      - id: '465'
+                        type: product_property
+                      - id: '466'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '175'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '59'
+                        type: variant
+                - id: '28'
+                  type: product
+                  attributes:
+                    name: Suede Biker Jacket
+                    description: Explicabo iste maiores commodi itaque mollitia delectus officia dolorum. Aliquam qui rem quae facilis architecto libero officia. Consequatur debitis dolore provident asperiores.
+                    available_on: '2021-10-02T11:02:20.541Z'
+                    slug: suede-biker-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.509Z'
+                    sku: JacketsandCoats_suedebikerjacket_27.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '27.99'
+                    display_price: $27.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '144'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '801'
+                        type: product_property
+                      - id: '802'
+                        type: product_property
+                      - id: '803'
+                        type: product_property
+                      - id: '804'
+                        type: product_property
+                      - id: '805'
+                        type: product_property
+                      - id: '806'
+                        type: product_property
+                      - id: '807'
+                        type: product_property
+                      - id: '808'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '8'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '144'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '28'
+                        type: variant
+                - id: '41'
+                  type: product
+                  attributes:
+                    name: Flared Skirt
+                    description: Sunt modi veniam eum dolore fugit. Et reiciendis dolores impedit tempora laudantium illo ipsa. Cum minus ea nobis illum odit omnis eveniet. Corrupti est qui delectus autem voluptas dicta ad dolore.
+                    available_on: '2021-10-02T11:02:22.172Z'
+                    slug: flared-skirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.951Z'
+                    sku: Skirts_flaredskirt_71.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '71.99'
+                    display_price: $71.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '157'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '2'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '331'
+                        type: product_property
+                      - id: '332'
+                        type: product_property
+                      - id: '333'
+                        type: product_property
+                      - id: '334'
+                        type: product_property
+                      - id: '335'
+                        type: product_property
+                      - id: '336'
+                        type: product_property
+                      - id: '337'
+                        type: product_property
+                      - id: '338'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '9'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '157'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '41'
+                        type: variant
+                - id: '66'
+                  type: product
+                  attributes:
+                    name: Floral Shirt
+                    description: Veritatis alias dolores accusamus quaerat ipsa. Ab quibusdam provident necessitatibus deserunt rerum. Eaque laborum ducimus labore earum aspernatur sit nisi. Soluta amet earum provident blanditiis ut quibusdam facilis labore. Nihil commodi eaque assumenda quibusdam debitis autem laborum.
+                    available_on: '2021-10-02T11:02:25.553Z'
+                    slug: floral-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.668Z'
+                    sku: ShirtsandBlouses_floralshirt_41.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '41.99'
+                    display_price: $41.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '182'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '499'
+                        type: product_property
+                      - id: '500'
+                        type: product_property
+                      - id: '501'
+                        type: product_property
+                      - id: '502'
+                        type: product_property
+                      - id: '503'
+                        type: product_property
+                      - id: '504'
+                        type: product_property
+                      - id: '505'
+                        type: product_property
+                      - id: '506'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '182'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '66'
+                        type: variant
+                - id: '10'
+                  type: product
+                  attributes:
+                    name: Linen Shirt
+                    description: Iure ea aliquam deleniti blanditiis magnam aspernatur. Voluptas aut harum quidem commodi. Ratione perferendis autem magni odio. Inventore sed corporis at explicabo incidunt quam.
+                    available_on: '2021-10-02T11:02:18.324Z'
+                    slug: linen-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.991Z'
+                    sku: Shirts_linenshirt_41.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '41.99'
+                    display_price: $41.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '126'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '193'
+                        type: product_property
+                      - id: '194'
+                        type: product_property
+                      - id: '195'
+                        type: product_property
+                      - id: '196'
+                        type: product_property
+                      - id: '197'
+                        type: product_property
+                      - id: '198'
+                        type: product_property
+                      - id: '199'
+                        type: product_property
+                      - id: '200'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '5'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '126'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '10'
+                        type: variant
+                - id: '12'
+                  type: product
+                  attributes:
+                    name: Polo T Shirt
+                    description: Veniam modi inventore recusandae eos temporibus quam. Doloremque minus nisi ab nihil enim inventore. Vero vitae a sunt provident recusandae iste laudantium. Reprehenderit necessitatibus minus et similique consequatur nam molestiae id.
+                    available_on: '2021-10-02T11:02:18.574Z'
+                    slug: polo-t-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.024Z'
+                    sku: T-shirts_polot-shirt_82.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '82.99'
+                    display_price: $82.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '128'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '1'
+                        type: product_property
+                      - id: '2'
+                        type: product_property
+                      - id: '3'
+                        type: product_property
+                      - id: '4'
+                        type: product_property
+                      - id: '5'
+                        type: product_property
+                      - id: '6'
+                        type: product_property
+                      - id: '7'
+                        type: product_property
+                      - id: '8'
+                        type: product_property
+                      - id: '961'
+                        type: product_property
+                      - id: '962'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '6'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '128'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '12'
+                        type: variant
+                - id: '21'
+                  type: product
+                  attributes:
+                    name: Stripped Jumper
+                    description: Placeat nemo vel molestiae sequi totam optio. Eaque distinctio incidunt blanditiis saepe voluptate. Ullam officia est nobis dolor. Facilis quam voluptas provident vero dolores. Nam consequuntur velit dolores recusandae excepturi veniam.
+                    available_on: '2021-10-02T11:02:19.687Z'
+                    slug: stripped-jumper
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.299Z'
+                    sku: Sweaters_strippedjumper_84.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '84.99'
+                    display_price: $84.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '137'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '211'
+                        type: product_property
+                      - id: '212'
+                        type: product_property
+                      - id: '213'
+                        type: product_property
+                      - id: '214'
+                        type: product_property
+                      - id: '215'
+                        type: product_property
+                      - id: '216'
+                        type: product_property
+                      - id: '217'
+                        type: product_property
+                      - id: '218'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '7'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '137'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '21'
+                        type: variant
+                - id: '111'
+                  type: product
+                  attributes:
+                    name: Short Pants
+                    description: Voluptatem est rem rerum autem quaerat eligendi quas non. Expedita quod veritatis dolorum excepturi ad error accusantium. Distinctio similique expedita nemo ducimus. Cumque natus consequatur cum repellat dicta esse enim. Expedita ducimus sit tenetur at unde eius porro.
+                    available_on: '2021-10-02T11:02:31.294Z'
+                    slug: short-pants
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:15.110Z'
+                    sku: Pants_shortpants_15.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '15.99'
+                    display_price: $15.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '227'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '743'
+                        type: product_property
+                      - id: '744'
+                        type: product_property
+                      - id: '745'
+                        type: product_property
+                      - id: '746'
+                        type: product_property
+                      - id: '747'
+                        type: product_property
+                      - id: '748'
+                        type: product_property
+                      - id: '749'
+                        type: product_property
+                      - id: '750'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '17'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '227'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '111'
+                        type: variant
+                - id: '48'
+                  type: product
+                  attributes:
+                    name: Flared Dress
+                    description: Ut ullam aspernatur facere dicta explicabo sed. Molestiae nihil atque sed voluptatibus officiis. Aspernatur vitae nesciunt non doloremque. Officiis velit et magnam molestias repellat. Asperiores modi totam labore iure aperiam sequi.
+                    available_on: '2021-10-02T11:02:23.076Z'
+                    slug: flared-dress
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.159Z'
+                    sku: Dresses_flareddress_21.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '21.99'
+                    display_price: $21.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '164'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '2'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '387'
+                        type: product_property
+                      - id: '388'
+                        type: product_property
+                      - id: '389'
+                        type: product_property
+                      - id: '390'
+                        type: product_property
+                      - id: '391'
+                        type: product_property
+                      - id: '392'
+                        type: product_property
+                      - id: '393'
+                        type: product_property
+                      - id: '394'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '10'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '164'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '48'
+                        type: variant
+                - id: '46'
+                  type: product
+                  attributes:
+                    name: Floral Wrap Dress
+                    description: Libero quas ipsam earum accusamus voluptas ducimus. Adipisci modi vitae iure libero illo aperiam. Consequatur officia aliquid esse officiis error eligendi in. Est iusto voluptas ea ad reiciendis ratione. Earum a nemo tempora porro.
+                    available_on: '2021-10-02T11:02:22.819Z'
+                    slug: floral-wrap-dress
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.100Z'
+                    sku: Dresses_floralwrapdress_68.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '68.99'
+                    display_price: $68.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '162'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '2'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '371'
+                        type: product_property
+                      - id: '372'
+                        type: product_property
+                      - id: '373'
+                        type: product_property
+                      - id: '374'
+                        type: product_property
+                      - id: '375'
+                        type: product_property
+                      - id: '376'
+                        type: product_property
+                      - id: '377'
+                        type: product_property
+                      - id: '378'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '10'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '162'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '46'
+                        type: variant
+                - id: '5'
+                  type: product
+                  attributes:
+                    name: Short Sleeve Shirt
+                    description: Facilis necessitatibus tempora nesciunt porro distinctio. Nihil culpa hic necessitatibus perspiciatis. Exercitationem consequatur magnam harum vitae ipsa amet delectus. Libero nobis unde illo mollitia.
+                    available_on: '2021-10-02T11:02:17.712Z'
+                    slug: short-sleeve-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.840Z'
+                    sku: Shirts_shortsleeveshirt_16.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '16.99'
+                    display_price: $16.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '121'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '161'
+                        type: product_property
+                      - id: '162'
+                        type: product_property
+                      - id: '163'
+                        type: product_property
+                      - id: '164'
+                        type: product_property
+                      - id: '165'
+                        type: product_property
+                      - id: '166'
+                        type: product_property
+                      - id: '167'
+                        type: product_property
+                      - id: '168'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '5'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '121'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '5'
+                        type: variant
+                - id: '71'
+                  type: product
+                  attributes:
+                    name: Oversized Knitted Sweater
+                    description: Fuga nam provident beatae odio. Est vitae cum fuga corrupti delectus. Officiis harum nulla debitis ut.
+                    available_on: '2021-10-02T11:02:26.186Z'
+                    slug: oversized-knitted-sweater
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.821Z'
+                    sku: Sweaters_oversizedknittedsweater_10.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '10.99'
+                    display_price: $10.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '187'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '531'
+                        type: product_property
+                      - id: '532'
+                        type: product_property
+                      - id: '533'
+                        type: product_property
+                      - id: '534'
+                        type: product_property
+                      - id: '535'
+                        type: product_property
+                      - id: '536'
+                        type: product_property
+                      - id: '537'
+                        type: product_property
+                      - id: '538'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '12'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '187'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '71'
+                        type: variant
+                - id: '103'
+                  type: product
+                  attributes:
+                    name: 'Sports Bra '
+                    description: Commodi exercitationem adipisci beatae consectetur aliquid. Quas at nobis doloremque suscipit fugit. Recusandae et qui ab neque praesentium nulla eos. Totam a voluptas nostrum explicabo similique pariatur.
+                    available_on: '2021-10-02T11:02:30.298Z'
+                    slug: sports-bra
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.882Z'
+                    sku: Tops_sportsbra_61.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '61.99'
+                    display_price: $61.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '219'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '687'
+                        type: product_property
+                      - id: '688'
+                        type: product_property
+                      - id: '689'
+                        type: product_property
+                      - id: '690'
+                        type: product_property
+                      - id: '691'
+                        type: product_property
+                      - id: '692'
+                        type: product_property
+                      - id: '693'
+                        type: product_property
+                      - id: '694'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '15'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '219'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '103'
+                        type: variant
+                - id: '20'
+                  type: product
+                  attributes:
+                    name: High Neck Sweater
+                    description: Consequatur alias doloribus tempore voluptatem voluptates reprehenderit. Sunt dolorum suscipit atque aliquam voluptatibus tempora. Adipisci harum maxime sequi temporibus laboriosam aut exercitationem cupiditate. Id distinctio fugit exercitationem necessitatibus consequuntur ipsa. Adipisci possimus autem numquam reprehenderit doloremque nobis sint nesciunt.
+                    available_on: '2021-10-02T11:02:19.558Z'
+                    slug: high-neck-sweater
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:12.263Z'
+                    sku: Sweaters_highnecksweater_50.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '50.99'
+                    display_price: $50.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '136'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '929'
+                        type: product_property
+                      - id: '930'
+                        type: product_property
+                      - id: '931'
+                        type: product_property
+                      - id: '932'
+                        type: product_property
+                      - id: '933'
+                        type: product_property
+                      - id: '934'
+                        type: product_property
+                      - id: '935'
+                        type: product_property
+                      - id: '936'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '2'
+                        type: taxon
+                      - id: '7'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '136'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '20'
+                        type: variant
+                - id: '62'
+                  type: product
+                  attributes:
+                    name: Pleated Sleeve V Neck Shirt
+                    description: Temporibus voluptates rerum nemo hic. Dolores molestias animi ratione eligendi. Est nulla ipsa dolore mollitia nisi culpa.
+                    available_on: '2021-10-02T11:02:24.983Z'
+                    slug: pleated-sleeve-v-neck-shirt
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:11.269Z'
+                    sku: ShirtsandBlouses_pleatedsleevev-neckshirt_73.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '73.99'
+                    display_price: $73.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '178'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '483'
+                        type: product_property
+                      - id: '484'
+                        type: product_property
+                      - id: '485'
+                        type: product_property
+                      - id: '486'
+                        type: product_property
+                      - id: '487'
+                        type: product_property
+                      - id: '488'
+                        type: product_property
+                      - id: '489'
+                        type: product_property
+                      - id: '490'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '178'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '62'
+                        type: variant
+                - id: '64'
+                  type: product
+                  attributes:
+                    name: Blouse With Wide Flounced Sleeve
+                    description: Corrupti rem ab nihil in laborum corporis. Laborum itaque illo perferendis cum alias possimus. Minima perferendis vitae quae culpa debitis. Fugit debitis iure qui possimus praesentium incidunt dignissimos omnis. Harum omnis quidem magni alias nam odio.
+                    available_on: '2021-10-02T11:02:25.227Z'
+                    slug: blouse-with-wide-flounced-sleeve
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:13.608Z'
+                    sku: ShirtsandBlouses_blousewithwideflouncedsleeve_42.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '42.99'
+                    display_price: $42.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '180'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '809'
+                        type: product_property
+                      - id: '810'
+                        type: product_property
+                      - id: '811'
+                        type: product_property
+                      - id: '812'
+                        type: product_property
+                      - id: '813'
+                        type: product_property
+                      - id: '814'
+                        type: product_property
+                      - id: '815'
+                        type: product_property
+                      - id: '816'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '22'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '26'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '180'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '64'
+                        type: variant
+    TaxonList:
+      description: 200 Success - Returns an array of `taxon` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taxon'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonIncludes'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
+          examples:
+            Standard Response:
+              value:
+                data:
+                - id: '22'
+                  type: taxon
+                  attributes:
+                    name: Summer Sale
+                    pretty_name: Categories -> Summer Sale
+                    permalink: categories/summer-sale
+                    seo_title: Summer Sale
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 42
+                    right: 43
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '17'
+                  type: taxon
+                  attributes:
+                    name: Pants
+                    pretty_name: Categories -> Sportswear -> Pants
+                    permalink: categories/sportswear/pants
+                    seo_title: Pants
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 31
+                    right: 32
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '4'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '19'
+                  type: taxon
+                  attributes:
+                    name: Bestsellers
+                    pretty_name: Categories -> Bestsellers
+                    permalink: categories/bestsellers
+                    seo_title: Bestsellers
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 36
+                    right: 37
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.082Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '16'
+                  type: taxon
+                  attributes:
+                    name: Sweatshirts
+                    pretty_name: Categories -> Sportswear -> Sweatshirts
+                    permalink: categories/sportswear/sweatshirts
+                    seo_title: Sweatshirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 29
+                    right: 30
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.054Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '4'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '6'
+                  type: taxon
+                  attributes:
+                    name: T-shirts
+                    pretty_name: Categories -> Men -> T-shirts
+                    permalink: categories/men/t-shirts
+                    seo_title: T-shirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 5
+                    right: 6
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:12.242Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '4'
+                  type: taxon
+                  attributes:
+                    name: Sportswear
+                    pretty_name: Categories -> Sportswear
+                    permalink: categories/sportswear
+                    seo_title: Sportswear
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 26
+                    right: 33
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '15'
+                        type: taxon
+                      - id: '16'
+                        type: taxon
+                      - id: '17'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '9'
+                  type: taxon
+                  attributes:
+                    name: Skirts
+                    pretty_name: Categories -> Women -> Skirts
+                    permalink: categories/women/skirts
+                    seo_title: Skirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 13
+                    right: 14
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:13.076Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '12'
+                  type: taxon
+                  attributes:
+                    name: Sweaters
+                    pretty_name: Categories -> Women -> Sweaters
+                    permalink: categories/women/sweaters
+                    seo_title: Sweaters
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 19
+                    right: 20
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.071Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '15'
+                  type: taxon
+                  attributes:
+                    name: Tops
+                    pretty_name: Categories -> Sportswear -> Tops
+                    permalink: categories/sportswear/tops
+                    seo_title: Tops
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 27
+                    right: 28
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.916Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '4'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '5'
+                  type: taxon
+                  attributes:
+                    name: Shirts
+                    pretty_name: Categories -> Men -> Shirts
+                    permalink: categories/men/shirts
+                    seo_title: Shirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 3
+                    right: 4
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:11.998Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '20'
+                  type: taxon
+                  attributes:
+                    name: Trending
+                    pretty_name: Categories -> Trending
+                    permalink: categories/trending
+                    seo_title: Trending
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 38
+                    right: 39
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.054Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '18'
+                  type: taxon
+                  attributes:
+                    name: New
+                    pretty_name: Categories -> New
+                    permalink: categories/new
+                    seo_title: New
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 34
+                    right: 35
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.082Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '2'
+                  type: taxon
+                  attributes:
+                    name: Men
+                    pretty_name: Categories -> Men
+                    permalink: categories/men
+                    seo_title: Men
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 2
+                    right: 11
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:12.728Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '5'
+                        type: taxon
+                      - id: '6'
+                        type: taxon
+                      - id: '7'
+                        type: taxon
+                      - id: '8'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '8'
+                  type: taxon
+                  attributes:
+                    name: Jackets and Coats
+                    pretty_name: Categories -> Men -> Jackets and Coats
+                    permalink: categories/men/jackets-and-coats
+                    seo_title: Jackets and Coats
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 9
+                    right: 10
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:12.728Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '7'
+                  type: taxon
+                  attributes:
+                    name: Sweaters
+                    pretty_name: Categories -> Men -> Sweaters
+                    permalink: categories/men/sweaters
+                    seo_title: Sweaters
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 7
+                    right: 8
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:12.486Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '11'
+                  type: taxon
+                  attributes:
+                    name: Shirts and Blouses
+                    pretty_name: Categories -> Women -> Shirts and Blouses
+                    permalink: categories/women/shirts-and-blouses
+                    seo_title: Shirts and Blouses
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 17
+                    right: 18
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:13.767Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '13'
+                  type: taxon
+                  attributes:
+                    name: Tops and T-shirts
+                    pretty_name: Categories -> Women -> Tops and T-shirts
+                    permalink: categories/women/tops-and-t-shirts
+                    seo_title: Tops and T-shirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 21
+                    right: 22
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.340Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '10'
+                  type: taxon
+                  attributes:
+                    name: Dresses
+                    pretty_name: Categories -> Women -> Dresses
+                    permalink: categories/women/dresses
+                    seo_title: Dresses
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 15
+                    right: 16
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:13.434Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '14'
+                  type: taxon
+                  attributes:
+                    name: Jackets and Coats
+                    pretty_name: Categories -> Women -> Jackets and Coats
+                    permalink: categories/women/jackets-and-coats
+                    seo_title: Jackets and Coats
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 23
+                    right: 24
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.688Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '23'
+                  type: taxon
+                  attributes:
+                    name: New Collection
+                    pretty_name: Categories -> New Collection
+                    permalink: categories/new-collection
+                    seo_title: New Collection
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 44
+                    right: 47
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.001Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '24'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '24'
+                  type: taxon
+                  attributes:
+                    name: Summer 2021
+                    pretty_name: Categories -> New Collection -> Summer 2021
+                    permalink: categories/new-collection/summer-2021
+                    seo_title: Summer 2021
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 45
+                    right: 46
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.001Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '23'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '26'
+                  type: taxon
+                  attributes:
+                    name: 30% Off
+                    pretty_name: Categories -> Special Offers -> 30% Off
+                    permalink: categories/special-offers/30-percent-off
+                    seo_title: 30% Off
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 49
+                    right: 50
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '25'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '25'
+                  type: taxon
+                  attributes:
+                    name: Special Offers
+                    pretty_name: Categories -> Special Offers
+                    permalink: categories/special-offers
+                    seo_title: Special Offers
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 48
+                    right: 51
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '26'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '21'
+                  type: taxon
+                  attributes:
+                    name: Streetstyle
+                    pretty_name: Categories -> Streetstyle
+                    permalink: categories/streetstyle
+                    seo_title: Streetstyle
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 40
+                    right: 41
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '1'
+                  type: taxon
+                  attributes:
+                    name: Categories
+                    pretty_name: Categories
+                    permalink: categories
+                    seo_title: Categories
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 1
+                    right: 52
+                    position: 0
+                    depth: 0
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: true
+                    is_child: false
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data: null
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '2'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                      - id: '22'
+                        type: taxon
+                      - id: '23'
+                        type: taxon
+                      - id: '25'
+                        type: taxon
+                    image:
+                      data: null
+                meta:
+                  count: 25
+                  total_count: 26
+                  total_pages: 2
+                links:
+                  self: http://localhost:3000/api/v2/storefront/taxons
+                  next: http://localhost:3000/api/v2/storefront/taxons?page=2
+                  prev: http://localhost:3000/api/v2/storefront/taxons?page=1
+                  last: http://localhost:3000/api/v2/storefront/taxons?page=2
+                  first: http://localhost:3000/api/v2/storefront/taxons?page=1
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

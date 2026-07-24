@@ -1,0 +1,315 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Custom Fields API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Custom Fields
+paths:
+  /api/v3/admin/custom_field_definitions:
+    get:
+      summary: List custom field definitions
+      tags:
+      - Custom Fields
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns all defined custom fields. Filter by `?q[resource_type_eq]=Spree::Product` to narrow to one parent type.
+
+
+        **Required scope:** `read_custom_field_definitions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: definitions } = await client.customFieldDefinitions.list({\n  q: { resource_type_eq: 'Spree::Product' },\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., key,label,field_type). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: definitions returned
+          content:
+            application/json:
+              example:
+                data:
+                - id: cfdef_UkLWZg9DAJ
+                  namespace: specs
+                  key: fabric
+                  label: Title
+                  field_type: short_text
+                  resource_type: Spree::Product
+                  storefront_visible: true
+                  created_at: '2026-05-24T17:36:36.857Z'
+                  updated_at: '2026-05-24T17:36:36.857Z'
+                - id: cfdef_gbHJdmfrXB
+                  namespace: custom
+                  key: order_notes
+                  label: Order Notes
+                  field_type: short_text
+                  resource_type: Spree::Order
+                  storefront_visible: true
+                  created_at: '2026-05-24T17:36:36.857Z'
+                  updated_at: '2026-05-24T17:36:36.857Z'
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 2
+                  pages: 1
+                  from: 1
+                  to: 2
+                  in: 2
+                  previous: null
+                  next: null
+    post:
+      summary: Create a custom field definition
+      tags:
+      - Custom Fields
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_custom_field_definitions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst definition = await client.customFieldDefinitions.create({\n  namespace: 'specs',\n  key: 'origin',\n  label: 'Country of Origin',\n  field_type: 'short_text',\n  resource_type: 'Spree::Product',\n  storefront_visible: true,\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: definition created
+          content:
+            application/json:
+              example:
+                id: cfdef_EfhxLZ9ck8
+                namespace: specs
+                key: origin
+                label: Country of Origin
+                field_type: short_text
+                resource_type: Spree::Product
+                storefront_visible: true
+                created_at: '2026-05-24T17:36:37.407Z'
+                updated_at: '2026-05-24T17:36:37.407Z'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - key
+              - field_type
+              - resource_type
+              properties:
+                namespace:
+                  type: string
+                  description: Defaults to `custom`
+                key:
+                  type: string
+                label:
+                  type: string
+                  description: Human-readable name; defaults to titleized `key`
+                field_type:
+                  type: string
+                  description: Custom field type identifier (one of the registered field-type class names).
+                resource_type:
+                  type: string
+                  description: Owner class, e.g. `Spree::Product`
+                storefront_visible:
+                  type: boolean
+                  description: 'When false, definition is admin-only (was `display_on: back_end`)'
+  /api/v3/admin/custom_field_definitions/{id}:
+    get:
+      summary: Show a custom field definition
+      tags:
+      - Custom Fields
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `read_custom_field_definitions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., key,label,field_type). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: definition found
+          content:
+            application/json:
+              example:
+                id: cfdef_UkLWZg9DAJ
+                namespace: specs
+                key: fabric
+                label: Title
+                field_type: short_text
+                resource_type: Spree::Product
+                storefront_visible: true
+                created_at: '2026-05-24T17:36:37.410Z'
+                updated_at: '2026-05-24T17:36:37.410Z'
+    patch:
+      summary: Update a custom field definition
+      tags:
+      - Custom Fields
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_custom_field_definitions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: definition updated
+          content:
+            application/json:
+              example:
+                id: cfdef_UkLWZg9DAJ
+                namespace: specs
+                key: fabric
+                label: Fabric Composition
+                field_type: short_text
+                resource_type: Spree::Product
+                storefront_visible: false
+                created_at: '2026-05-24T17:36:37.685Z'
+                updated_at: '2026-05-24T17:36:37.959Z'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                storefront_visible:
+                  type: boolean
+    delete:
+      summary: Delete a custom field definition
+      tags:
+      - Custom Fields
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Deletes the definition and cascades to all custom field values referencing it.
+
+
+        **Required scope:** `write_custom_field_definitions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: definition deleted
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

@@ -1,0 +1,2174 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Configuration API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Configuration
+  description: Store configuration — payment methods, tag autocomplete
+paths:
+  /api/v3/admin/admin_users:
+    get:
+      summary: List staff
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns admin users with at least one role assignment on the current store.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: staff } = await client.adminUsers.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: staff found
+          content:
+            application/json:
+              example:
+                data:
+                - id: admin_UkLWZg9DAJ
+                  email: angelic@oconnell.us
+                  first_name: Jamal
+                  last_name: Doyle
+                  full_name: Jamal Doyle
+                  created_at: '2026-05-24T17:36:33.885Z'
+                  updated_at: '2026-05-24T17:36:33.885Z'
+                  roles:
+                  - id: role_UkLWZg9DAJ
+                    name: admin
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+  /api/v3/admin/admin_users/{id}:
+    get:
+      summary: Show a staff member
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst staff = await client.adminUsers.get('admin_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: staff member found
+          content:
+            application/json:
+              example:
+                id: admin_UkLWZg9DAJ
+                email: jess_king@rau.info
+                first_name: Mercedez
+                last_name: Bailey
+                full_name: Mercedez Bailey
+                created_at: '2026-05-24T17:36:34.235Z'
+                updated_at: '2026-05-24T17:36:34.235Z'
+                roles:
+                - id: role_UkLWZg9DAJ
+                  name: admin
+    patch:
+      summary: Update a staff member
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates name fields and reassigns roles for the current store. `role_ids` is a complete replacement — roles not in the array are removed for this store.
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst staff = await client.adminUsers.update('admin_xxx', {\n  first_name: 'Ada',\n  role_ids: ['role_xxx']\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: staff member updated
+          content:
+            application/json:
+              example:
+                id: admin_UkLWZg9DAJ
+                email: joesph@grahammarks.ca
+                first_name: Renamed
+                last_name: Lindgren
+                full_name: Renamed Lindgren
+                created_at: '2026-05-24T17:36:34.526Z'
+                updated_at: '2026-05-24T17:36:34.545Z'
+                roles:
+                - id: role_UkLWZg9DAJ
+                  name: admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: Ada
+                last_name:
+                  type: string
+                  example: Lovelace
+                role_ids:
+                  type: array
+                  items:
+                    type: string
+    delete:
+      summary: Remove a staff member from this store
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Removes the user''s role assignments on the current store. The account is preserved — the user keeps access to any other stores.
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.adminUsers.delete('admin_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: staff removed from store
+  /api/v3/admin/api_keys:
+    get:
+      summary: List API keys
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns publishable and secret API keys for the current store. Secret keys are listed by `token_prefix` only — the plaintext token is delivered exactly once on create.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: keys } = await client.apiKeys.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: API keys found
+          content:
+            application/json:
+              example:
+                data:
+                - id: key_UkLWZg9DAJ
+                  name: Storefront key
+                  key_type: publishable
+                  token_prefix: null
+                  scopes: []
+                  created_at: '2026-05-24T17:36:34.854Z'
+                  updated_at: '2026-05-24T17:36:34.854Z'
+                  revoked_at: null
+                  last_used_at: null
+                  plaintext_token: pk_wqTPmhFDQiJbhbgokeP9tPzK
+                  created_by_email: null
+                - id: key_gbHJdmfrXB
+                  name: Backend integration
+                  key_type: secret
+                  token_prefix: sk_GAnG4mX7L
+                  scopes:
+                  - write_all
+                  created_at: '2026-05-24T17:36:34.855Z'
+                  updated_at: '2026-05-24T17:36:34.855Z'
+                  revoked_at: null
+                  last_used_at: null
+                  plaintext_token: null
+                  created_by_email: null
+                - id: key_EfhxLZ9ck8
+                  name: occaecati
+                  key_type: secret
+                  token_prefix: sk_Zf75n9zm3
+                  scopes:
+                  - write_all
+                  created_at: '2026-05-24T17:36:34.857Z'
+                  updated_at: '2026-05-24T17:36:34.857Z'
+                  revoked_at: null
+                  last_used_at: null
+                  plaintext_token: null
+                  created_by_email: null
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 3
+                  pages: 1
+                  from: 1
+                  to: 3
+                  in: 3
+                  previous: null
+                  next: null
+    post:
+      summary: Create an API key
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Creates a publishable or secret API key. The plaintext token is included in the response **once** for secret keys; publishable keys expose their token on every read since they are intended for client-side use.
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst key = await client.apiKeys.create({\n  name: 'Backend integration',\n  key_type: 'secret',\n  scopes: ['read_orders', 'write_orders']\n})\n// `key.plaintext_token` is available only on this response."
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: secret key created — plaintext token returned once
+          content:
+            application/json:
+              example:
+                id: key_VqXmZF31wY
+                name: CI key
+                key_type: secret
+                token_prefix: sk_ryCceerpp
+                scopes:
+                - read_orders
+                created_at: '2026-05-24T17:36:35.441Z'
+                updated_at: '2026-05-24T17:36:35.441Z'
+                revoked_at: null
+                last_used_at: null
+                plaintext_token: sk_ryCceerpp5vqodztxueeWXmc
+                created_by_email: opal.herzog@cremin.info
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Name can't be blank and Scopes can't be blank
+                  details:
+                    name:
+                    - can't be blank
+                    scopes:
+                    - can't be blank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - key_type
+              properties:
+                name:
+                  type: string
+                  example: Backend integration
+                key_type:
+                  type: string
+                  enum:
+                  - publishable
+                  - secret
+                scopes:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - read_orders
+                  - write_orders
+  /api/v3/admin/api_keys/{id}:
+    get:
+      summary: Show an API key
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst key = await client.apiKeys.get('key_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: API key found
+          content:
+            application/json:
+              example:
+                id: key_UkLWZg9DAJ
+                name: Storefront key
+                key_type: publishable
+                token_prefix: null
+                scopes: []
+                created_at: '2026-05-24T17:36:35.723Z'
+                updated_at: '2026-05-24T17:36:35.723Z'
+                revoked_at: null
+                last_used_at: null
+                plaintext_token: pk_yXJtU7SvnfLbkPvuuiUnKaEo
+                created_by_email: null
+    delete:
+      summary: Delete an API key
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.apiKeys.delete('key_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: API key deleted
+  /api/v3/admin/api_keys/{id}/revoke:
+    patch:
+      summary: Revoke an API key
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Marks the key revoked. Future requests using its token will fail; the row is preserved for audit.
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst key = await client.apiKeys.revoke('key_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: API key revoked
+          content:
+            application/json:
+              example:
+                id: key_gbHJdmfrXB
+                name: Backend integration
+                key_type: secret
+                token_prefix: sk_q6euaWxod
+                scopes:
+                - write_all
+                created_at: '2026-05-24T17:36:36.279Z'
+                updated_at: '2026-05-24T17:36:36.554Z'
+                revoked_at: '2026-05-24T17:36:36.553Z'
+                last_used_at: null
+                plaintext_token: null
+                created_by_email: null
+  /api/v3/admin/invitations:
+    get:
+      summary: List invitations
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns invitations for the current store, including pending and accepted.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: invitations } = await client.invitations.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: invitations found
+          content:
+            application/json:
+              example:
+                data:
+                - id: inv_UkLWZg9DAJ
+                  email: eva@hauckwisozk.info
+                  status: pending
+                  created_at: '2026-05-24T17:37:01.802Z'
+                  updated_at: '2026-05-24T17:37:01.802Z'
+                  expires_at: '2026-06-07T17:37:01.798Z'
+                  role_id: role_UkLWZg9DAJ
+                  role_name: admin
+                  inviter_email: faith@moore.info
+                  acceptance_url: /accept-invitation/inv_UkLWZg9DAJ?token=zySacMBFavnzmtA9ZV4NQdhg
+                  invitee_exists: false
+                  store:
+                    id: store_UkLWZg9DAJ
+                    name: Spree Test Store
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+    post:
+      summary: Create an invitation
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Invites a teammate by email. The invitation is scoped to the current store and carries the chosen role; on accept, a `RoleUser` is created via the invitation''s `after_accept` callback.
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst invitation = await client.invitations.create({\n  email: 'ada@example.com',\n  role_id: 'role_xxx'\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: invitation created
+          content:
+            application/json:
+              example:
+                id: inv_gbHJdmfrXB
+                email: new-staff@example.com
+                status: pending
+                created_at: '2026-05-24T17:37:02.111Z'
+                updated_at: '2026-05-24T17:37:02.111Z'
+                expires_at: '2026-06-07T17:37:02.108Z'
+                role_id: role_UkLWZg9DAJ
+                role_name: admin
+                inviter_email: floy_cummerata@haleyvonrueden.com
+                acceptance_url: /accept-invitation/inv_gbHJdmfrXB?token=EzFbcPeHADJwGwapUkFjCjut
+                invitee_exists: false
+                store:
+                  id: store_UkLWZg9DAJ
+                  name: Spree Test Store
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - role_id
+              properties:
+                email:
+                  type: string
+                  example: ada@example.com
+                role_id:
+                  type: string
+                  example: role_xxx
+  /api/v3/admin/invitations/{id}:
+    delete:
+      summary: Revoke an invitation
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.invitations.delete('inv_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: invitation revoked
+  /api/v3/admin/invitations/{id}/resend:
+    patch:
+      summary: Resend an invitation
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Issues a fresh token and dispatches the invitation email again.
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst invitation = await client.invitations.resend('inv_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: invitation resent
+          content:
+            application/json:
+              example:
+                id: inv_UkLWZg9DAJ
+                email: bao.grant@johnsonwitting.com
+                status: pending
+                created_at: '2026-05-24T17:37:02.736Z'
+                updated_at: '2026-05-24T17:37:02.736Z'
+                expires_at: '2026-06-07T17:37:02.733Z'
+                role_id: role_UkLWZg9DAJ
+                role_name: admin
+                inviter_email: merlene_cormier@hanepredovic.info
+                acceptance_url: /accept-invitation/inv_UkLWZg9DAJ?token=KRTKCjz8LLoWUjxZrWFrAzKU
+                invitee_exists: false
+                store:
+                  id: store_UkLWZg9DAJ
+                  name: Spree Test Store
+  /api/v3/admin/payment_methods:
+    get:
+      summary: List payment methods
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the store''s configured payment methods. Use `source_required: true` to know which methods need a saved source.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: paymentMethods } = await client.paymentMethods.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,type,active). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: payment methods found
+          content:
+            application/json:
+              example:
+                data:
+                - id: pm_UkLWZg9DAJ
+                  name: Check
+                  description: null
+                  type: check
+                  session_required: false
+                  source_required: false
+                  metadata: {}
+                  active: true
+                  auto_capture: null
+                  storefront_visible: true
+                  position: 1
+                  created_at: '2026-05-24T17:37:31.151Z'
+                  updated_at: '2026-05-24T17:37:31.153Z'
+                  preferences: {}
+                  preference_schema: []
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+  /api/v3/admin/payment_methods/types:
+    get:
+      summary: List available payment provider types
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the registered Spree::PaymentMethod subclasses that can be used to create new payment methods. Useful for populating a "Provider" dropdown in admin UIs.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: types } = await client.paymentMethods.types()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: provider types found
+          content:
+            application/json:
+              example:
+                data:
+                - type: bogus
+                  label: Bogus
+                  description: null
+                  preference_schema:
+                  - key: dummy_key
+                    type: string
+                    default: PUBLICKEY123
+                  - key: dummy_secret_key
+                    type: password
+                    default: null
+                - type: custom_payment_source_method
+                  label: Custom Payment Source Method
+                  description: null
+                  preference_schema: []
+  /api/v3/admin/payment_methods/{id}:
+    get:
+      summary: Show a payment method
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a payment method by ID.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst paymentMethod = await client.paymentMethods.get('pm_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,type,active). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: payment method found
+          content:
+            application/json:
+              example:
+                id: pm_UkLWZg9DAJ
+                name: Check
+                description: null
+                type: check
+                session_required: false
+                source_required: false
+                metadata: {}
+                active: true
+                auto_capture: null
+                storefront_visible: true
+                position: 1
+                created_at: '2026-05-24T17:37:31.752Z'
+                updated_at: '2026-05-24T17:37:31.754Z'
+                preferences: {}
+                preference_schema: []
+  /api/v3/admin/roles:
+    get:
+      summary: List roles
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the roles available for staff role pickers. Roles are global, not per-store.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: roles } = await client.roles.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: roles found
+          content:
+            application/json:
+              example:
+                data:
+                - id: role_UkLWZg9DAJ
+                  name: admin
+                  created_at: '2026-05-24T17:37:45.227Z'
+                  updated_at: '2026-05-24T17:37:45.227Z'
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+  /api/v3/admin/stock_locations:
+    get:
+      summary: List stock locations
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the configured stock locations. Stock locations are global
+
+        (shared across stores). Filter with Ransack predicates such as
+
+        `q[active_eq]`, `q[kind_eq]`, `q[pickup_enabled_eq]`, or
+
+        `q[name_cont]`.
+
+
+        Pickup-related attributes (`kind`, `pickup_enabled`,
+
+        `pickup_stock_policy`, `pickup_ready_in_minutes`,
+
+        `pickup_instructions`) drive merchant pickup support at checkout —
+
+        customers can collect orders from any active location with
+
+        `pickup_enabled: true`.
+
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: stockLocations } = await client.stockLocations.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        description: Number of records per page
+        schema:
+          type: integer
+      - name: q[name_cont]
+        in: query
+        required: false
+        description: Filter by name (contains)
+        schema:
+          type: string
+      - name: q[active_eq]
+        in: query
+        required: false
+        description: Filter by active status
+        schema:
+          type: boolean
+      - name: q[kind_eq]
+        in: query
+        required: false
+        description: 'Filter by kind (built-in: ''warehouse'', ''store'', ''fulfillment_center'')'
+        schema:
+          type: string
+      - name: q[pickup_enabled_eq]
+        in: query
+        required: false
+        description: Filter by pickup-enabled flag
+        schema:
+          type: boolean
+      - name: sort
+        in: query
+        required: false
+        description: Sort by field. Prefix with `-` for descending (e.g., `-created_at`).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include. id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: stock locations found
+          content:
+            application/json:
+              example:
+                data:
+                - id: sloc_UkLWZg9DAJ
+                  state_abbr: STATE_ABBR_30
+                  name: Brooklyn warehouse
+                  address1: 1600 Pennsylvania Ave NW
+                  city: Washington
+                  zipcode: '20500'
+                  country_iso: US
+                  country_name: United States of America
+                  state_text: STATE_ABBR_30
+                  admin_name: null
+                  address2: null
+                  state_name: null
+                  phone: (202) 456-1111
+                  company: null
+                  active: true
+                  default: false
+                  backorderable_default: true
+                  propagate_all_variants: false
+                  kind: warehouse
+                  pickup_enabled: false
+                  pickup_stock_policy: local
+                  pickup_ready_in_minutes: null
+                  pickup_instructions: null
+                  created_at: '2026-05-24T17:37:45.507Z'
+                  updated_at: '2026-05-24T17:37:45.507Z'
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StockLocation'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                required:
+                - data
+                - meta
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a stock location
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Creates a new stock location.
+
+
+        Setting `default: true` automatically demotes the previous default
+
+        location.
+
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst stockLocation = await client.stockLocations.create({\n  name: 'Brooklyn warehouse',\n  kind: 'warehouse',\n  country_iso: 'US',\n  state_abbr: 'NY',\n  city: 'Brooklyn',\n  zipcode: '11201',\n  pickup_enabled: true,\n  pickup_stock_policy: 'local',\n  pickup_ready_in_minutes: 60,\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      responses:
+        '201':
+          description: stock location created
+          content:
+            application/json:
+              example:
+                id: sloc_gbHJdmfrXB
+                state_abbr: null
+                name: Manhattan store
+                address1: null
+                city: null
+                zipcode: null
+                country_iso: null
+                country_name: null
+                state_text: null
+                admin_name: null
+                address2: null
+                state_name: null
+                phone: null
+                company: null
+                active: true
+                default: false
+                backorderable_default: false
+                propagate_all_variants: false
+                kind: store
+                pickup_enabled: true
+                pickup_stock_policy: local
+                pickup_ready_in_minutes: 30
+                pickup_instructions: null
+                created_at: '2026-05-24T17:37:46.092Z'
+                updated_at: '2026-05-24T17:37:46.092Z'
+              schema:
+                $ref: '#/components/schemas/StockLocation'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Name can't be blank
+                  details:
+                    name:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Brooklyn warehouse
+                admin_name:
+                  type: string
+                  nullable: true
+                  description: Internal name shown only in the admin
+                active:
+                  type: boolean
+                  example: true
+                default:
+                  type: boolean
+                  description: Setting to true demotes the previous default.
+                kind:
+                  type: string
+                  enum:
+                  - warehouse
+                  - store
+                  - fulfillment_center
+                  description: Categorizes the location.
+                  example: warehouse
+                propagate_all_variants:
+                  type: boolean
+                backorderable_default:
+                  type: boolean
+                address1:
+                  type: string
+                  nullable: true
+                address2:
+                  type: string
+                  nullable: true
+                city:
+                  type: string
+                  nullable: true
+                zipcode:
+                  type: string
+                  nullable: true
+                phone:
+                  type: string
+                  nullable: true
+                company:
+                  type: string
+                  nullable: true
+                country_iso:
+                  type: string
+                  nullable: true
+                  description: ISO-3166 alpha-2 country code (e.g. "US").
+                state_abbr:
+                  type: string
+                  nullable: true
+                  description: State / province abbreviation (e.g. "NY"). Resolved against the selected country.
+                state_name:
+                  type: string
+                  nullable: true
+                  description: Free-text state for countries without a states list.
+                pickup_enabled:
+                  type: boolean
+                pickup_stock_policy:
+                  type: string
+                  enum:
+                  - local
+                  - any
+                  description: '''local'' = items at this location only; ''any'' = transfer-eligible (ship-to-store).'
+                pickup_ready_in_minutes:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                pickup_instructions:
+                  type: string
+                  nullable: true
+              required:
+              - name
+  /api/v3/admin/stock_locations/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      description: Stock location ID
+      schema:
+        type: string
+    get:
+      summary: Get a stock location
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a single stock location by prefixed ID.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst stockLocation = await client.stockLocations.get('sloc_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include. id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: stock location found
+          content:
+            application/json:
+              example:
+                id: sloc_UkLWZg9DAJ
+                state_abbr: STATE_ABBR_34
+                name: Brooklyn warehouse
+                address1: 1600 Pennsylvania Ave NW
+                city: Washington
+                zipcode: '20500'
+                country_iso: US
+                country_name: United States of America
+                state_text: STATE_ABBR_34
+                admin_name: null
+                address2: null
+                state_name: null
+                phone: (202) 456-1111
+                company: null
+                active: true
+                default: false
+                backorderable_default: true
+                propagate_all_variants: false
+                kind: warehouse
+                pickup_enabled: false
+                pickup_stock_policy: local
+                pickup_ready_in_minutes: null
+                pickup_instructions: null
+                created_at: '2026-05-24T17:37:46.381Z'
+                updated_at: '2026-05-24T17:37:46.381Z'
+              schema:
+                $ref: '#/components/schemas/StockLocation'
+        '404':
+          description: stock location not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Stock location not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a stock location
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates an existing stock location. Same address-field conventions as
+
+        the create endpoint.
+
+
+        Setting `default: true` automatically demotes the previous default.
+
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst stockLocation = await client.stockLocations.update('sloc_UkLWZg9DAJ', {\n  pickup_enabled: true,\n  pickup_ready_in_minutes: 45,\n  pickup_instructions: 'Enter through the back door, ring the bell.',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      responses:
+        '200':
+          description: stock location updated
+          content:
+            application/json:
+              example:
+                id: sloc_UkLWZg9DAJ
+                state_abbr: STATE_ABBR_36
+                name: Renamed warehouse
+                address1: 1600 Pennsylvania Ave NW
+                city: Washington
+                zipcode: '20500'
+                country_iso: US
+                country_name: United States of America
+                state_text: STATE_ABBR_36
+                admin_name: null
+                address2: null
+                state_name: null
+                phone: (202) 456-1111
+                company: null
+                active: true
+                default: false
+                backorderable_default: true
+                propagate_all_variants: false
+                kind: warehouse
+                pickup_enabled: true
+                pickup_stock_policy: local
+                pickup_ready_in_minutes: 45
+                pickup_instructions: null
+                created_at: '2026-05-24T17:37:46.959Z'
+                updated_at: '2026-05-24T17:37:47.265Z'
+              schema:
+                $ref: '#/components/schemas/StockLocation'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Pickup stock policy is not included in the list
+                  details:
+                    pickup_stock_policy:
+                    - is not included in the list
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                admin_name:
+                  type: string
+                  nullable: true
+                active:
+                  type: boolean
+                default:
+                  type: boolean
+                kind:
+                  type: string
+                  enum:
+                  - warehouse
+                  - store
+                  - fulfillment_center
+                propagate_all_variants:
+                  type: boolean
+                backorderable_default:
+                  type: boolean
+                address1:
+                  type: string
+                  nullable: true
+                address2:
+                  type: string
+                  nullable: true
+                city:
+                  type: string
+                  nullable: true
+                zipcode:
+                  type: string
+                  nullable: true
+                phone:
+                  type: string
+                  nullable: true
+                company:
+                  type: string
+                  nullable: true
+                country_iso:
+                  type: string
+                  nullable: true
+                state_abbr:
+                  type: string
+                  nullable: true
+                state_name:
+                  type: string
+                  nullable: true
+                pickup_enabled:
+                  type: boolean
+                pickup_stock_policy:
+                  type: string
+                  enum:
+                  - local
+                  - any
+                pickup_ready_in_minutes:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                pickup_instructions:
+                  type: string
+                  nullable: true
+    delete:
+      summary: Delete a stock location
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Soft-deletes the stock location (sets `deleted_at`). Existing
+
+        fulfillments that referenced it keep the historical record via
+
+        `Spree::StockLocation.with_deleted`.
+
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.stockLocations.delete('sloc_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      responses:
+        '204':
+          description: stock location deleted
+  /api/v3/admin/store_credit_categories:
+    get:
+      summary: List store credit categories
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the configured store credit categories. Categories classify
+
+        store credits (e.g., "Goodwill", "Gift Card", "Refund") and surface
+
+        in the admin UI as a dropdown when issuing or editing a store
+
+        credit. Category names matching `Spree::Config[:non_expiring_credit_types]`
+
+        are flagged via `non_expiring: true`.
+
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: categories } = await client.storeCreditCategories.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        description: Number of records per page
+        schema:
+          type: integer
+      - name: q[name_cont]
+        in: query
+        required: false
+        description: Filter by name (contains)
+        schema:
+          type: string
+      - name: sort
+        in: query
+        required: false
+        description: Sort by field. Prefix with `-` for descending (e.g., `-created_at`).
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include. id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: store credit categories found
+          content:
+            application/json:
+              example:
+                data:
+                - id: sccat_UkLWZg9DAJ
+                  name: Goodwill
+                  created_at: '2026-05-24T17:37:47.897Z'
+                  updated_at: '2026-05-24T17:37:47.897Z'
+                  non_expiring: false
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StoreCreditCategory'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+                required:
+                - data
+                - meta
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/admin/store_credit_categories/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      description: Store credit category ID
+      schema:
+        type: string
+    get:
+      summary: Get a store credit category
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a single store credit category by prefixed ID.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst category = await client.storeCreditCategories.get('sccat_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include. id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: store credit category found
+          content:
+            application/json:
+              example:
+                id: sccat_UkLWZg9DAJ
+                name: Goodwill
+                created_at: '2026-05-24T17:37:48.191Z'
+                updated_at: '2026-05-24T17:37:48.191Z'
+                non_expiring: false
+              schema:
+                $ref: '#/components/schemas/StoreCreditCategory'
+        '404':
+          description: store credit category not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Store credit category not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/admin/store:
+    get:
+      summary: Get the current store
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the current store configuration. The store is resolved from the request context (host or admin selection); there is no `id` parameter.
+
+
+        **Required scope:** `read_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst store = await client.store.get()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      responses:
+        '200':
+          description: current store
+          content:
+            application/json:
+              example:
+                id: store_UkLWZg9DAJ
+                metadata: {}
+                name: Spree Test Store
+                default_currency: USD
+                default_locale: en
+                preferred_admin_locale: null
+                preferred_timezone: UTC
+                preferred_weight_unit: lb
+                preferred_unit_system: imperial
+                created_at: '2026-05-24T17:36:33.540Z'
+                updated_at: '2026-05-24T17:37:48.768Z'
+                url: http://www.example.com:3000
+                supported_currencies:
+                - USD
+                supported_locales:
+                - en
+                logo_url: null
+              schema:
+                $ref: '#/components/schemas/Store'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update the current store
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates the current store configuration.
+
+
+        **Required scope:** `write_settings` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst store = await client.store.update({\n  name: 'My Store'\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token for admin authentication
+        schema:
+          type: string
+      responses:
+        '200':
+          description: store updated
+          content:
+            application/json:
+              example:
+                id: store_UkLWZg9DAJ
+                metadata: {}
+                name: Renamed Store
+                default_currency: USD
+                default_locale: en
+                preferred_admin_locale: null
+                preferred_timezone: UTC
+                preferred_weight_unit: lb
+                preferred_unit_system: imperial
+                created_at: '2026-05-24T17:36:33.540Z'
+                updated_at: '2026-05-24T17:37:49.372Z'
+                url: http://www.example.com:3000
+                supported_currencies:
+                - USD
+                supported_locales:
+                - en
+                logo_url: null
+              schema:
+                $ref: '#/components/schemas/Store'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Site Name can't be blank
+                  details:
+                    name:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: My Store
+                preferred_admin_locale:
+                  type: string
+                  example: en
+                preferred_timezone:
+                  type: string
+                  example: UTC
+                preferred_weight_unit:
+                  type: string
+                  example: kg
+                preferred_unit_system:
+                  type: string
+                  example: metric
+  /api/v3/admin/tags:
+    get:
+      summary: List tags
+      tags:
+      - Configuration
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Returns tag names for a given taggable type. Used for autocomplete in tag inputs on products, orders, and customers.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: tags } = await client.tags.list({\n  taggable_type: 'Spree::User',\n  q: 'vip',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: taggable_type
+        in: query
+        required: true
+        description: Taggable type (`Spree::Product`, `Spree::Order`, or `Spree::User`)
+        schema:
+          type: string
+      - name: q
+        in: query
+        required: false
+        description: Optional case-insensitive substring filter
+        schema:
+          type: string
+      responses:
+        '200':
+          description: tags found
+          content:
+            application/json:
+              example:
+                data:
+                - name: vip
+                - name: wholesale
+        '422':
+          description: invalid taggable type
+          content:
+            application/json:
+              example:
+                error:
+                  code: invalid_taggable_type
+                  message: taggable_type must be one of Spree::Product, Spree::Order, Spree::LegacyUser
+components:
+  schemas:
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 25
+        count:
+          type: integer
+          example: 100
+          description: Total number of records
+        pages:
+          type: integer
+          example: 4
+          description: Total number of pages
+        from:
+          type: integer
+          example: 1
+          description: Index of first record on this page
+        to:
+          type: integer
+          example: 25
+          description: Index of last record on this page
+        in:
+          type: integer
+          example: 25
+          description: Number of records on this page
+        previous:
+          type: integer
+          nullable: true
+          example: null
+          description: Previous page number
+        next:
+          type: integer
+          nullable: true
+          example: 2
+          description: Next page number
+      required:
+      - page
+      - limit
+      - count
+      - pages
+      - from
+      - to
+      - in
+    StockLocation:
+      type: object
+      properties:
+        id:
+          type: string
+        state_abbr:
+          type: string
+          nullable: true
+        name:
+          type: string
+        address1:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        zipcode:
+          type: string
+          nullable: true
+        country_iso:
+          type: string
+          nullable: true
+        country_name:
+          type: string
+          nullable: true
+        state_text:
+          type: string
+          nullable: true
+        admin_name:
+          type: string
+          nullable: true
+        address2:
+          type: string
+          nullable: true
+        state_name:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        company:
+          type: string
+          nullable: true
+        active:
+          type: boolean
+        default:
+          type: boolean
+        backorderable_default:
+          type: boolean
+        propagate_all_variants:
+          type: boolean
+        kind:
+          type: string
+        pickup_enabled:
+          type: boolean
+        pickup_stock_policy:
+          type: string
+        pickup_ready_in_minutes:
+          type: number
+          nullable: true
+        pickup_instructions:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+      - id
+      - state_abbr
+      - name
+      - address1
+      - city
+      - zipcode
+      - country_iso
+      - country_name
+      - state_text
+      - admin_name
+      - address2
+      - state_name
+      - phone
+      - company
+      - active
+      - default
+      - backorderable_default
+      - propagate_all_variants
+      - kind
+      - pickup_enabled
+      - pickup_stock_policy
+      - pickup_ready_in_minutes
+      - pickup_instructions
+      - created_at
+      - updated_at
+      x-typelizer: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type: object
+              description: Field-specific validation errors
+              nullable: true
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+        metadata:
+          type: object
+        name:
+          type: string
+        default_currency:
+          type: string
+        default_locale:
+          type: string
+        preferred_admin_locale:
+          type: string
+          nullable: true
+        preferred_timezone:
+          type: string
+        preferred_weight_unit:
+          type: string
+        preferred_unit_system:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        url:
+          type: string
+        supported_currencies:
+          type: array
+          items:
+            type: string
+        supported_locales:
+          type: array
+          items:
+            type: string
+        logo_url:
+          type: string
+          nullable: true
+      required:
+      - id
+      - metadata
+      - name
+      - default_currency
+      - default_locale
+      - preferred_admin_locale
+      - preferred_timezone
+      - preferred_weight_unit
+      - preferred_unit_system
+      - created_at
+      - updated_at
+      - url
+      - supported_currencies
+      - supported_locales
+      - logo_url
+      x-typelizer: true
+    StoreCreditCategory:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        non_expiring:
+          type: boolean
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      - non_expiring
+      x-typelizer: true
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

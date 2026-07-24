@@ -1,0 +1,436 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Store Credit Types API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Store Credit Types
+paths:
+  /api/v2/platform/store_credit_types:
+    get:
+      summary: Return a list of Store Credit Types
+      tags:
+      - Store Credit Types
+      security:
+      - bearer_auth: []
+      description: Returns a list of Store Credit Types
+      operationId: store-credit-types-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '2'
+                      type: store_credit_type
+                      attributes:
+                        name: Expiring
+                        priority: 1
+                        created_at: '2022-11-08T19:35:36.152Z'
+                        updated_at: '2022-11-08T19:35:36.152Z'
+                    - id: '3'
+                      type: store_credit_type
+                      attributes:
+                        name: Expiring
+                        priority: 1
+                        created_at: '2022-11-08T19:35:36.153Z'
+                        updated_at: '2022-11-08T19:35:36.153Z'
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/store_credit_types?page=1&per_page=
+                      next: http://www.example.com/api/v2/platform/store_credit_types?page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/store_credit_types?page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/store_credit_types?page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/store_credit_types?page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Store Credit Type
+      tags:
+      - Store Credit Types
+      security:
+      - bearer_auth: []
+      description: Creates a Store Credit Type
+      operationId: create-store-credit-type
+      parameters: []
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '6'
+                      type: store_credit_type
+                      attributes:
+                        name: Expiring
+                        priority: 1
+                        created_at: '2022-11-08T19:35:36.660Z'
+                        updated_at: '2022-11-08T19:35:36.660Z'
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_store_credit_type_params'
+  /api/v2/platform/store_credit_types/{id}:
+    get:
+      summary: Return a Store Credit Type
+      tags:
+      - Store Credit Types
+      security:
+      - bearer_auth: []
+      description: Returns a Store Credit Type
+      operationId: show-store-credit-type
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '7'
+                      type: store_credit_type
+                      attributes:
+                        name: Expiring
+                        priority: 1
+                        created_at: '2022-11-08T19:35:36.930Z'
+                        updated_at: '2022-11-08T19:35:36.930Z'
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Store Credit Type
+      tags:
+      - Store Credit Types
+      security:
+      - bearer_auth: []
+      description: Updates a Store Credit Type
+      operationId: update-store-credit-type
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '9'
+                      type: store_credit_type
+                      attributes:
+                        name: default
+                        priority: 1
+                        created_at: '2022-11-08T19:35:37.442Z'
+                        updated_at: '2022-11-08T19:35:37.670Z'
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_store_credit_type_params'
+    delete:
+      summary: Delete a Store Credit Type
+      tags:
+      - Store Credit Types
+      security:
+      - bearer_auth: []
+      description: Deletes a Store Credit Type
+      operationId: delete-store-credit-type
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    create_store_credit_type_params:
+      type: object
+      properties:
+        store_credit_type:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: refunded
+            priority:
+              type: integer
+              example: 1
+      required:
+      - store_credit_type
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_store_credit_type_params:
+      type: object
+      properties:
+        store_credit_type:
+          type: object
+          properties:
+            name:
+              type: string
+              example: refunded
+            priority:
+              type: integer
+              example: 1
+      required:
+      - store_credit_type
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

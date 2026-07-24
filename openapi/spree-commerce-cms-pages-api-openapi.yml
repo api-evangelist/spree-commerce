@@ -1,0 +1,788 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address CMS Pages API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: CMS Pages
+paths:
+  /api/v2/platform/cms_pages:
+    get:
+      summary: Return a list of CMS Pages
+      tags:
+      - CMS Pages
+      security:
+      - bearer_auth: []
+      description: Returns a list of CMS Pages
+      operationId: cms-pages-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: cms_sections
+        schema:
+          type: string
+      - name: filter[type_eq]
+        in: query
+        description: ''
+        example: Spree::Cms::Pages::FeaturePage
+        schema:
+          type: string
+      - name: filter[locale_eq]
+        in: query
+        description: ''
+        example: en
+        schema:
+          type: string
+      - name: filter[title_cont]
+        in: query
+        description: ''
+        example: About Us
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '1'
+                      type: cms_page
+                      attributes:
+                        title: Modi soluta tenetur velit odit corporis aut.
+                        meta_title: null
+                        content: null
+                        meta_description: null
+                        visible: true
+                        slug: modi-soluta-tenetur-velit-odit-corporis-aut
+                        type: Spree::Cms::Pages::StandardPage
+                        locale: en
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:00.831Z'
+                        updated_at: '2022-11-08T19:34:00.831Z'
+                      relationships:
+                        cms_sections:
+                          data: []
+                    - id: '2'
+                      type: cms_page
+                      attributes:
+                        title: Distinctio alias numquam porro corrupti enim perferendis fugiat.
+                        meta_title: null
+                        content: null
+                        meta_description: null
+                        visible: true
+                        slug: distinctio-alias-numquam-porro-corrupti-enim-perferendis-fugiat
+                        type: Spree::Cms::Pages::StandardPage
+                        locale: en
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:00.836Z'
+                        updated_at: '2022-11-08T19:34:00.836Z'
+                      relationships:
+                        cms_sections:
+                          data: []
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/cms_pages?page=1&per_page=&include=&filter[type_eq]=&filter[locale_eq]=&filter[title_cont]=
+                      next: http://www.example.com/api/v2/platform/cms_pages?filter%5Blocale_eq%5D=&filter%5Btitle_cont%5D=&filter%5Btype_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/cms_pages?filter%5Blocale_eq%5D=&filter%5Btitle_cont%5D=&filter%5Btype_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/cms_pages?filter%5Blocale_eq%5D=&filter%5Btitle_cont%5D=&filter%5Btype_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/cms_pages?filter%5Blocale_eq%5D=&filter%5Btitle_cont%5D=&filter%5Btype_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a CMS Page
+      tags:
+      - CMS Pages
+      security:
+      - bearer_auth: []
+      description: Creates a CMS Page
+      operationId: create-cms-page
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: cms_sections
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '5'
+                      type: cms_page
+                      attributes:
+                        title: Eligendi recusandae hic magnam at voluptates delectus quis.
+                        meta_title: null
+                        content: null
+                        meta_description: null
+                        visible: true
+                        slug: eligendi-recusandae-hic-magnam-at-voluptates-delectus-quis
+                        type: Spree::Cms::Pages::StandardPage
+                        locale: en
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:01.378Z'
+                        updated_at: '2022-11-08T19:34:01.378Z'
+                      relationships:
+                        cms_sections:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Title can't be blank, Locale can't be blank, and Type can't be blank
+                    errors:
+                      title:
+                      - can't be blank
+                      locale:
+                      - can't be blank
+                      type:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/create_standard_cms_page_params'
+              - $ref: '#/components/schemas/create_homepage_cms_page_params'
+              - $ref: '#/components/schemas/create_feature_cms_page_params'
+  /api/v2/platform/cms_pages/{id}:
+    get:
+      summary: Return a CMS Page
+      tags:
+      - CMS Pages
+      security:
+      - bearer_auth: []
+      description: Returns a CMS Page
+      operationId: show-cms-page
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: cms_sections
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '6'
+                      type: cms_page
+                      attributes:
+                        title: Tempora ut laudantium occaecati sunt magnam quae consequuntur.
+                        meta_title: null
+                        content: null
+                        meta_description: null
+                        visible: true
+                        slug: tempora-ut-laudantium-occaecati-sunt-magnam-quae-consequuntur
+                        type: Spree::Cms::Pages::StandardPage
+                        locale: en
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:01.659Z'
+                        updated_at: '2022-11-08T19:34:01.659Z'
+                      relationships:
+                        cms_sections:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a CMS Page
+      tags:
+      - CMS Pages
+      security:
+      - bearer_auth: []
+      description: Updates a CMS Page
+      operationId: update-cms-page
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: cms_sections
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '8'
+                      type: cms_page
+                      attributes:
+                        title: My Super Page
+                        meta_title: null
+                        content: null
+                        meta_description: null
+                        visible: true
+                        slug: cumque-excepturi-nisi-cupiditate-dolore
+                        type: Spree::Cms::Pages::StandardPage
+                        locale: en
+                        deleted_at: null
+                        created_at: '2022-11-08T19:34:02.188Z'
+                        updated_at: '2022-11-08T19:34:02.420Z'
+                      relationships:
+                        cms_sections:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Title can't be blank
+                    errors:
+                      title:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/update_standard_cms_page_params'
+              - $ref: '#/components/schemas/update_homepage_cms_page_params'
+              - $ref: '#/components/schemas/update_feature_cms_page_params'
+    delete:
+      summary: Delete a CMS Page
+      tags:
+      - CMS Pages
+      security:
+      - bearer_auth: []
+      description: Deletes a CMS Page
+      operationId: delete-cms-page
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    update_feature_cms_page_params:
+      type: object
+      properties:
+        cms_page:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Featured Product
+              description: Update the page title.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Pages::StandardPage
+              - Spree::Cms::Pages::Homepage
+              - Spree::Cms::Pages::FeaturePage
+              description: Change the type of page.
+            meta_title:
+              type: string
+              nullable: true
+              example: Learn More About This Featured Product
+              description: Update the meta title for this page, this appears in the title bar of the browser.
+            meta_description:
+              type: string
+              nullable: true
+              example: Learn more about us this amazing product that we sell right here...
+              description: Update the meta description, used for SEO and displayed in search results.
+            visible:
+              type: boolean
+              enum:
+              - true
+              - false
+              description: This page is publicly visible when set to `true`.
+            slug:
+              type: string
+              nullable: true
+              example: about-us
+              description: Update the slug for this page.
+            locale:
+              type: string
+              example: en-US
+              description: Update the language of this page.
+      required:
+      - cms_page
+      title: Update a Feature Page
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    update_homepage_cms_page_params:
+      type: object
+      properties:
+        cms_page:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Our Flash Homepage
+              description: Update the page title.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Pages::StandardPage
+              - Spree::Cms::Pages::Homepage
+              - Spree::Cms::Pages::FeaturePage
+              description: Change the type of page.
+            meta_title:
+              type: string
+              nullable: true
+              example: Visit Our Store - Great Deals
+              description: Update the meta title for this page, this appears in the title bar of the browser.
+            meta_description:
+              type: string
+              nullable: true
+              example: Discover great new products that we sell in this store...
+              description: Update the meta description, used for SEO and displayed in search results.
+            visible:
+              type: boolean
+              enum:
+              - true
+              - false
+              description: This page is publicly visible when set to `true`.
+            locale:
+              type: string
+              example: en-US
+              description: Update the language of this page.
+      required:
+      - cms_page
+      title: Update a Homepage
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    create_feature_cms_page_params:
+      type: object
+      properties:
+        cms_page:
+          type: object
+          required:
+          - title
+          - locale
+          - type
+          properties:
+            title:
+              type: string
+              example: Featured Product
+              description: Give your page a title.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Pages::FeaturePage
+              description: Set the type of page.
+            meta_title:
+              type: string
+              nullable: true
+              example: Learn More About This Featured Product
+              description: Set the meta title for this page, this appears in the title bar of the browser.
+            meta_description:
+              type: string
+              nullable: true
+              example: Learn more about us this amazing product that we sell right here...
+              description: Set a meta description, used for SEO and displayed in search results.
+            visible:
+              type: boolean
+              enum:
+              - true
+              - false
+              description: This page is publicly visible when set to `true`.
+            slug:
+              type: string
+              nullable: true
+              example: about-us
+              description: Set a slug for this page.
+            locale:
+              type: string
+              example: en-US
+              description: The language this page is written in.
+      required:
+      - cms_page
+      title: Create a Feature Page
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_standard_cms_page_params:
+      type: object
+      properties:
+        cms_page:
+          type: object
+          properties:
+            title:
+              type: string
+              example: About Us
+              description: Update the page title.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Pages::StandardPage
+              - Spree::Cms::Pages::Homepage
+              - Spree::Cms::Pages::FeaturePage
+              description: Change the type of page.
+            meta_title:
+              type: string
+              nullable: true
+              example: Learn More About Super-Shop
+              description: Update the meta title for this page, this appears in the title bar of the browser.
+            content:
+              type: string
+              nullable: true
+              example: Lot's of text..
+              description: Update the text content of a standard page, this can be HTML from a rich text editor.
+            meta_description:
+              type: string
+              nullable: true
+              example: Learn more about us on this page here...
+              description: Update the meta description, used for SEO and displayed in search results.
+            visible:
+              type: boolean
+              enum:
+              - true
+              - false
+              description: This page is publicly visible when set to `true`.
+            slug:
+              type: string
+              nullable: true
+              example: about-us
+              description: Update the slug for this page.
+            locale:
+              type: string
+              example: en-US
+              description: Update the language of this page.
+      required:
+      - cms_page
+      title: Update a Standard Page
+      x-internal: false
+    create_homepage_cms_page_params:
+      type: object
+      properties:
+        cms_page:
+          type: object
+          required:
+          - title
+          - locale
+          - type
+          properties:
+            title:
+              type: string
+              example: Our Flash Homepage
+              description: Give your page a title.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Pages::Homepage
+              description: Set the type of page.
+            meta_title:
+              type: string
+              nullable: true
+              example: Visit Our Store - Great Deals
+              description: Set the meta title for this page, this appears in the title bar of the browser.
+            meta_description:
+              type: string
+              nullable: true
+              example: Discover great new products that we sell in this store...
+              description: Set a meta description, used for SEO and displayed in search results.
+            visible:
+              type: boolean
+              enum:
+              - true
+              - false
+              description: This page is publicly visible when set to `true`.
+            locale:
+              type: string
+              example: en-US
+              description: The language this page is written in.
+      required:
+      - cms_page
+      title: Create a Homepage
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    create_standard_cms_page_params:
+      type: object
+      properties:
+        cms_page:
+          type: object
+          required:
+          - title
+          - locale
+          - type
+          properties:
+            title:
+              type: string
+              example: About Us
+              description: Give your page a title.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Pages::StandardPage
+              description: Set the type of page.
+            meta_title:
+              type: string
+              nullable: true
+              example: Learn More About Super-Shop
+              description: Set the meta title for this page, this appears in the title bar of the browser.
+            content:
+              type: string
+              nullable: true
+              example: Lot's of text..
+              description: The text content of a standard page, this can be HTML from a rich text editor.
+            meta_description:
+              type: string
+              nullable: true
+              example: Learn more about us on this page here...
+              description: Set a meta description, used for SEO and displayed in search results.
+            visible:
+              type: boolean
+              enum:
+              - true
+              - false
+              description: This page is publicly visible when set to `true`.
+            slug:
+              type: string
+              nullable: true
+              example: about-us
+              description: Set a slug for this page.
+            locale:
+              type: string
+              example: en-US
+              description: The language this page is written in.
+      required:
+      - cms_page
+      title: Create a Standard Page
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

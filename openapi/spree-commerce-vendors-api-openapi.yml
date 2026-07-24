@@ -1,0 +1,632 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Vendors API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Vendors
+paths:
+  /api/v2/platform/vendors:
+    get:
+      summary: Return a list of Vendors
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Returns a list of Vendors. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: vendors-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+        '401':
+          description: Authentication Failed
+    post:
+      summary: Create a Vendor
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Creates a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: create-vendor
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+        '422':
+          description: Invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_vendor_params'
+  /api/v2/platform/vendors/{id}:
+    get:
+      summary: Return a Vendor
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Returns a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: show-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+    patch:
+      summary: Update a Vendor
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Updates a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: update-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+        '422':
+          description: Invalid request
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_vendor_params'
+    delete:
+      summary: Delete a Vendor
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Deletes a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: delete-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+  /api/v2/platform/vendors/{id}/invite:
+    patch:
+      summary: Invites Vendor to the platform
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Also triggers an invitation email send out to the vendor's contact person. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: invite-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+  /api/v2/platform/vendors/{id}/start_onboarding:
+    patch:
+      summary: Start onboarding process
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Marks Vendor as onboarding in progress. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: start-onboarding-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+  /api/v2/platform/vendors/{id}/complete_onboarding:
+    patch:
+      summary: Completes onboarding process
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Marks Vendor as onboarding complete. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: complete-onboarding-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+  /api/v2/platform/vendors/{id}/approve:
+    patch:
+      summary: Approves Vendor
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Marks Vendor as approved, and triggers an approval email send out to the vendor's contact person. Also activated Vendor products will become available for purchase. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: approve-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+  /api/v2/platform/vendors/{id}/reject:
+    patch:
+      summary: Rejects Vendor
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Marks Vendor as rejected, and triggers an approval email send out to the vendor's contact person. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: reject-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+  /api/v2/platform/vendors/{id}/suspend:
+    patch:
+      summary: Suspends Vendor
+      tags:
+      - Vendors
+      security:
+      - bearer_auth: []
+      description: Marks Vendor as suspended, and triggers an approval email send out to the vendor's contact person. Also the vendor's products will become unavailable for purchase and will be hidden from the storefront. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      operationId: suspend-vendor
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: members
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+        '404':
+          description: Record not found
+        '401':
+          description: Authentication Failed
+  /api/v2/storefront/vendors:
+    get:
+      summary: List all Vendors
+      description: Returns a list of Vendors. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      tags:
+      - Vendors
+      operationId: vendors-list
+      parameters:
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/SparseFieldsVendor'
+      responses:
+        '200':
+          $ref: '#/components/responses/VendorList'
+  /api/v2/storefront/vendors/{vendor_slug}:
+    get:
+      description: Returns the details of a specified Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      summary: Retrieve a Vendor
+      tags:
+      - Vendors
+      operationId: show-vendor
+      parameters:
+      - $ref: '#/components/parameters/VendorSlug'
+      - $ref: '#/components/parameters/SparseFieldsVendor'
+      responses:
+        '200':
+          $ref: '#/components/responses/Vendor'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+components:
+  schemas:
+    create_vendor_params:
+      type: object
+      properties:
+        name:
+          type: string
+        invitation_message:
+          type: string
+        public_metadata:
+          type: object
+        private_metadata:
+          type: object
+        platform_fee:
+          type: number
+          default: 5
+        state:
+          type: string
+          default: pending
+        contact_person_email:
+          type: string
+        contact_person_name:
+          type: string
+        contact_person_phone:
+          type: string
+      required:
+      - integration
+      - kind
+      - contact_person_email
+      - name
+      x-internal: true
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    update_vendor_params:
+      $ref: '#/components/schemas/create_vendor_params'
+      x-internal: true
+    Vendor:
+      title: Vendor
+      description: Vendors are Sellers in the marketplace.
+      type: object
+      x-internal: true
+      properties:
+        id:
+          type: string
+          example: 980a80d5-f51b-4065-b3a0-622fc5cb6bf6
+        type:
+          type: string
+          default: vendor
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Shoes For Everyone
+            email:
+              type: string
+              example: contact@example.com
+            slug:
+              type: string
+              example: shoes-for-everyone
+            about_us:
+              type: string
+              example: '<p>We are the #1 shoe store for you.</p>\n<p>Located in 20 countries.</p>'
+              description: Information about the Vendor stored as HTML
+            logo_url:
+              type: string
+              example: https://somewebsite.com/our-logo
+              description: URL of the Logo
+            cover_photo_url:
+              type: string
+              example: https://somewebsite.com/our-cover-photo
+              description: URL of the Cover Photo
+        relationships:
+          type: object
+          properties:
+            products:
+              type: object
+              description: List of active and available products from this vendor
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+  responses:
+    VendorList:
+      description: 200 Success - Returns an array of `vendor` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vendor'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
+          examples:
+            List of Vendors:
+              value:
+                data:
+                - id: eb261155-1ddc-47e5-8178-8c3da6e607a8
+                  type: vendor
+                  attributes:
+                    name: Best Shoes
+                    email: contact-1@example.com
+                    slug: best-shoes
+                    about_us: '<p>We are your #1 shoe store.</p>
+
+                      <p>Follow us on social media.</p>'
+                    logo_url: https://assets.com/images/logo_name
+                    cover_photo_url: https://assets.com/images/wide_tree_wzxgak
+                - id: 4f46f04f-fa2c-42d0-b69c-ce2b2997f5fd
+                  type: vendor
+                  attributes:
+                    name: Best Shirts
+                    email: contact-2@example.com
+                    slug: best-shirts
+                    about_us: '<p>We are your #1 shirts store.</p>
+
+                      <p>Follow us on social media.</p>'
+                    logo_url: https://assets.com/images/logo_name34553
+                    cover_photo_url: https://assets.com/images/coverfn5ig
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    Vendor:
+      description: 200 Success - Returns the `vendor` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Vendor'
+            required:
+            - data
+          examples:
+            Single Vendor:
+              value:
+                data:
+                  id: e1171601-a4ce-47d2-a795-c96fbdf20029
+                  type: vendor
+                  attributes:
+                    name: Best Shoes
+                    email: contact@example.com
+                    slug: best-shoes
+                    about_us: '<p>We are your #1 shoe store.</p>
+
+                      <p>Follow us on social media.</p>'
+                    logo_url: https://assets.com/images/logo_name
+                    cover_photo_url: https://assets.com/images/wide_tree_wzxgak
+  parameters:
+    SparseFieldsVendor:
+      name: fields[vendor]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,slug,about_us,facebook
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    VendorSlug:
+      name: vendor_slug
+      in: path
+      required: true
+      description: Look for Vendor by ID or their slug
+      schema:
+        type: string
+      example: acme-co
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

@@ -1,0 +1,311 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Exports API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Exports
+paths:
+  /api/v3/admin/exports:
+    get:
+      summary: List exports
+      tags:
+      - Exports
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns CSV exports queued or completed for the current store. Polled by the admin SPA to detect when an export finishes (`done: true`).
+
+
+        **Required scope:** `read_exports` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: exports } = await client.exports.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: exports found
+          content:
+            application/json:
+              example:
+                data:
+                - id: exp_UkLWZg9DAJ
+                  number: EF797270070
+                  type: Spree::Exports::Products
+                  format: csv
+                  created_at: '2026-05-24T17:36:56.574Z'
+                  updated_at: '2026-05-24T17:36:56.574Z'
+                  user_id: admin_UkLWZg9DAJ
+                  done: false
+                  filename: null
+                  byte_size: null
+                  download_url: null
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+    post:
+      summary: Create an export
+      tags:
+      - Exports
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Queues a CSV export. The `type` selects the dataset; `search_params` is an
+
+        optional Ransack query (same shape used by the `q[...]` params on list endpoints)
+
+        that filters which records are exported. Pass `record_selection: "all"` to
+
+        clear the filter server-side and export everything in scope.
+
+
+        Generation is asynchronous. Poll `GET /admin/exports/{id}` until `done` is `true`,
+
+        then redirect the browser to `download_url` to fetch the file.
+
+
+
+        **Required scope:** `write_exports` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst exp = await client.exports.create({\n  type: 'Spree::Exports::Products',\n  search_params: { name_cont: 'shirt' }\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: export queued
+          content:
+            application/json:
+              example:
+                id: exp_gbHJdmfrXB
+                number: EF700540072
+                type: Spree::Exports::Products
+                format: csv
+                created_at: '2026-05-24T17:36:56.866Z'
+                updated_at: '2026-05-24T17:36:56.866Z'
+                user_id: admin_UkLWZg9DAJ
+                done: false
+                filename: null
+                byte_size: null
+                download_url: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - Spree::Exports::Products
+                  - Spree::Exports::Orders
+                  - Spree::Exports::Customers
+                  - Spree::Exports::ProductTranslations
+                  - Spree::Exports::GiftCards
+                  - Spree::Exports::CouponCodes
+                  - Spree::Exports::NewsletterSubscribers
+                  example: Spree::Exports::Products
+                record_selection:
+                  type: string
+                  enum:
+                  - filtered
+                  - all
+                  description: Set to "all" to ignore search_params and export everything in scope.
+                  example: filtered
+                search_params:
+                  type: object
+                  description: Ransack query hash. Same predicates accepted by the list endpoint.
+                  example:
+                    name_cont: shirt
+                  additionalProperties: true
+  /api/v3/admin/exports/{id}:
+    get:
+      summary: Show an export
+      tags:
+      - Exports
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns export status. While `done` is `false`, the SPA continues polling.
+
+
+        **Required scope:** `read_exports` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst exp = await client.exports.get('exp_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: export found
+          content:
+            application/json:
+              example:
+                id: exp_UkLWZg9DAJ
+                number: EF052905723
+                type: Spree::Exports::Products
+                format: csv
+                created_at: '2026-05-24T17:36:57.139Z'
+                updated_at: '2026-05-24T17:36:57.139Z'
+                user_id: admin_UkLWZg9DAJ
+                done: false
+                filename: null
+                byte_size: null
+                download_url: null
+    delete:
+      summary: Delete an export
+      tags:
+      - Exports
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Removes the export and purges its attachment.
+
+
+        **Required scope:** `write_exports` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nawait client.exports.delete('exp_xxx')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: export deleted
+  /api/v3/admin/exports/{id}/download:
+    get:
+      summary: Download an export
+      tags:
+      - Exports
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Streams the exported CSV with `Content-Disposition: attachment`. Returns 422 with `code: export_not_ready` while `done` is still `false`. The endpoint is JWT/API-key protected, so SPA clients must fetch it (with `Authorization` header) and trigger the browser download via a Blob URL — a top-level navigation cannot carry the JWT.
+
+
+        **Required scope:** `read_exports` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\n// Fetch with the Bearer token, then drive the browser download:\nconst res = await fetch(exp.download_url, {\n  headers: { Authorization: `Bearer ${token}` }\n})\nconst blob = await res.blob()\nconst url = URL.createObjectURL(blob)\nconst a = Object.assign(document.createElement('a'), {\n  href: url,\n  download: exp.filename\n})\na.click()\nURL.revokeObjectURL(url)"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: CSV file
+          content:
+            application/json: {}
+            text/csv:
+              schema:
+                type: string
+                format: binary
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

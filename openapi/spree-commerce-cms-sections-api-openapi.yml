@@ -1,0 +1,1444 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address CMS Sections API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: CMS Sections
+paths:
+  /api/v2/platform/cms_sections:
+    get:
+      summary: Return a list of CMS Sections
+      tags:
+      - CMS Sections
+      security:
+      - bearer_auth: []
+      description: Returns a list of CMS Sections
+      operationId: cms-sections-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product
+        schema:
+          type: string
+      - name: filter[name_eq]
+        in: query
+        description: ''
+        example: Hero
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '1'
+                      type: cms_section
+                      attributes:
+                        name: Culpa natus incidunt nisi itaque quod harum quisquam nesciunt.
+                        content: {}
+                        settings:
+                          gutters: No Gutters
+                        fit: Screen
+                        destination: null
+                        type: Spree::Cms::Sections::HeroImage
+                        position: 1
+                        linked_resource_type: Spree::Taxon
+                        created_at: '2022-11-08T19:34:03.525Z'
+                        updated_at: '2022-11-08T19:34:03.525Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '13'
+                            type: cms_page
+                        linked_resource:
+                          data: null
+                    - id: '2'
+                      type: cms_section
+                      attributes:
+                        name: Aperiam quo deserunt qui quidem unde ratione.
+                        content:
+                          link_type_one: Spree::Taxon
+                          link_type_two: Spree::Taxon
+                          link_type_three: Spree::Taxon
+                        settings:
+                          layout_style: Default
+                        fit: Container
+                        destination: null
+                        type: Spree::Cms::Sections::ImageGallery
+                        position: 2
+                        linked_resource_type: null
+                        created_at: '2022-11-08T19:34:03.529Z'
+                        updated_at: '2022-11-08T19:34:03.529Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '13'
+                            type: cms_page
+                        linked_resource:
+                          data: null
+                    - id: '3'
+                      type: cms_section
+                      attributes:
+                        name: Molestiae quo distinctio enim dignissimos laborum cumque.
+                        content: {}
+                        settings:
+                          gutters: No Gutters
+                        fit: Screen
+                        destination: null
+                        type: Spree::Cms::Sections::FeaturedArticle
+                        position: 3
+                        linked_resource_type: Spree::Taxon
+                        created_at: '2022-11-08T19:34:03.534Z'
+                        updated_at: '2022-11-08T19:34:03.534Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '13'
+                            type: cms_page
+                        linked_resource:
+                          data: null
+                    - id: '4'
+                      type: cms_section
+                      attributes:
+                        name: Quaerat ad enim consequuntur vitae.
+                        content: {}
+                        settings:
+                          gutters: No Gutters
+                        fit: Screen
+                        destination: null
+                        type: Spree::Cms::Sections::HeroImage
+                        position: 4
+                        linked_resource_type: Spree::Product
+                        created_at: '2022-11-08T19:34:03.539Z'
+                        updated_at: '2022-11-08T19:34:03.539Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '13'
+                            type: cms_page
+                        linked_resource:
+                          data:
+                            id: '21'
+                            type: product
+                    - id: '5'
+                      type: cms_section
+                      attributes:
+                        name: Quod saepe occaecati et eaque eum expedita ut.
+                        content: {}
+                        settings:
+                          gutters: No Gutters
+                        fit: Screen
+                        destination: null
+                        type: Spree::Cms::Sections::HeroImage
+                        position: 5
+                        linked_resource_type: Spree::Product
+                        created_at: '2022-11-08T19:34:03.543Z'
+                        updated_at: '2022-11-08T19:34:03.543Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '13'
+                            type: cms_page
+                        linked_resource:
+                          data:
+                            id: '21'
+                            type: product
+                    meta:
+                      count: 5
+                      total_count: 5
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/cms_sections?page=1&per_page=&include=&filter[name_eq]=
+                      next: http://www.example.com/api/v2/platform/cms_sections?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/cms_sections?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/cms_sections?filter%5Bname_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/cms_sections?filter%5Bname_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a CMS Section
+      tags:
+      - CMS Sections
+      security:
+      - bearer_auth: []
+      description: Creates a CMS Section
+      operationId: create-cms-section
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '13'
+                      type: cms_section
+                      attributes:
+                        name: Hic iste cupiditate corrupti esse minima.
+                        content: {}
+                        settings:
+                          gutters: No Gutters
+                        fit: Screen
+                        destination: null
+                        type: Spree::Cms::Sections::HeroImage
+                        position: 3
+                        linked_resource_type: Spree::Product
+                        created_at: '2022-11-08T19:34:04.185Z'
+                        updated_at: '2022-11-08T19:34:04.185Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '15'
+                            type: cms_page
+                        linked_resource:
+                          data:
+                            id: '23'
+                            type: product
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank, Cms page can't be blank, and Type can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+                      cms_page:
+                      - can't be blank
+                      type:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/create_hero_image_cms_section_params'
+              - $ref: '#/components/schemas/create_product_carousel_cms_section_params'
+              - $ref: '#/components/schemas/create_side_by_side_images_cms_section_params'
+              - $ref: '#/components/schemas/create_featured_article_cms_section_params'
+              - $ref: '#/components/schemas/create_image_gallery_cms_section_params'
+              - $ref: '#/components/schemas/create_rich_text_cms_section_params'
+  /api/v2/platform/cms_sections/{id}:
+    get:
+      summary: Return a CMS Section
+      tags:
+      - CMS Sections
+      security:
+      - bearer_auth: []
+      description: Returns a CMS Section
+      operationId: show-cms-section
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '19'
+                      type: cms_section
+                      attributes:
+                        name: Debitis rerum nulla maiores quam ut impedit.
+                        content: {}
+                        settings:
+                          gutters: No Gutters
+                        fit: Screen
+                        destination: null
+                        type: Spree::Cms::Sections::HeroImage
+                        position: 4
+                        linked_resource_type: Spree::Product
+                        created_at: '2022-11-08T19:34:04.573Z'
+                        updated_at: '2022-11-08T19:34:04.573Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '17'
+                            type: cms_page
+                        linked_resource:
+                          data:
+                            id: '25'
+                            type: product
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a CMS Section
+      tags:
+      - CMS Sections
+      security:
+      - bearer_auth: []
+      description: Updates a CMS Section
+      operationId: update-cms-section
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '29'
+                      type: cms_section
+                      attributes:
+                        name: Super Hero
+                        content: {}
+                        settings:
+                          gutters: No Gutters
+                        fit: Screen
+                        destination: null
+                        type: Spree::Cms::Sections::HeroImage
+                        position: 1
+                        linked_resource_type: Spree::Product
+                        created_at: '2022-11-08T19:34:05.290Z'
+                        updated_at: '2022-11-08T19:34:05.525Z'
+                      relationships:
+                        cms_page:
+                          data:
+                            id: '20'
+                            type: cms_page
+                        linked_resource:
+                          data:
+                            id: '28'
+                            type: product
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/update_hero_image_cms_section_params'
+              - $ref: '#/components/schemas/update_product_carousel_cms_section_params'
+              - $ref: '#/components/schemas/update_side_by_side_images_cms_section_params'
+              - $ref: '#/components/schemas/update_featured_article_cms_section_params'
+              - $ref: '#/components/schemas/update_image_gallery_cms_section_params'
+              - $ref: '#/components/schemas/update_rich_text_cms_section_params'
+    delete:
+      summary: Delete a CMS Section
+      tags:
+      - CMS Sections
+      security:
+      - bearer_auth: []
+      description: Deletes a CMS Section
+      operationId: delete-cms-section
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    create_image_gallery_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::ImageGallery
+              example: Spree::Cms::Sections::ImageGallery
+              description: Set the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            link_type_one:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Set the resource type that image one links to.
+            link_type_two:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Set the resource type that image two links to.
+            link_type_three:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Set the resource type that image three links to.
+            link_one:
+              type: string
+              example: men/shirts
+              nullable: true
+              description: Set the slug or path that image two links to.
+            link_two:
+              type: string
+              example: white-shirt
+              nullable: true
+              description: Set the slug or path that image two links to.
+            link_three:
+              type: string
+              example: red-shirt
+              nullable: true
+              description: Set the slug or path that image three links to.
+            title_one:
+              type: string
+              example: Shop Men's Shirts
+              nullable: true
+              description: Set the title used in image one.
+            title_two:
+              type: string
+              example: Buy This Men's Shirt
+              nullable: true
+              description: Set the title used in image two.
+            title_three:
+              type: string
+              example: Buy This Women's Skirt
+              nullable: true
+              description: Set the title used in image three.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            layout_style:
+              type: string
+              example: Default
+              enum:
+              - Default
+              - Reversed
+              description: This value is used by front end developers for styling the order the images appear.
+            display_labels:
+              type: string
+              example: Show
+              enum:
+              - Show
+              - Hide
+              description: This value is used by front end developers for showing and hiding the label on the images.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_two]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_three]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Create an Image Gallery Section
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    create_rich_text_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::RichTextContent
+              description: Set the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            rte_content:
+              type: string
+              example: Lots of text and content goes here.
+              description: Set the content, here, this can be rich text editor content.
+      required:
+      - cms_section
+      title: Create a Rich Text Section
+      x-internal: false
+    update_hero_image_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            linked_resource_type:
+              type: string
+              example: Spree::Taxon
+              nullable: true
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              - Spree::CmsPage
+              description: Update the resource type that this section links to.
+            linked_resource_id:
+              type: string
+              example: '1'
+              nullable: true
+              description: Set the ID of the resource that you would like this section to link to.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            button_text:
+              type: string
+              example: Click Here
+              description: Update the text value of the button used in this section.
+            title:
+              type: string
+              example: Shop Today
+              description: Update the title for this section.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Update a Hero Image Section
+      x-internal: false
+    create_hero_image_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              example: Spree::Cms::Sections::HeroImage
+              description: Set the section type.
+            linked_resource_type:
+              type: string
+              example: Spree::Taxon
+              nullable: true
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              - Spree::CmsPage
+              description: Set the resource type that this section links to.
+            linked_resource_id:
+              type: string
+              example: '1'
+              nullable: true
+              description: Set the ID of the resource that you would like this section to link to.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            button_text:
+              type: string
+              example: Click Here
+              description: Set the text value of the button used in this section.
+            title:
+              type: string
+              example: Shop Today
+              description: Create a title for the Hero Section.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Create a Hero Image Section
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_side_by_side_images_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            link_type_one:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image one links to.
+            link_type_two:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image two links to.
+            link_one:
+              type: string
+              example: men/shirts
+              nullable: true
+              description: Update the slug or path that image two links to.
+            link_two:
+              type: string
+              example: white-shirt
+              nullable: true
+              description: Update the slug or path that image two links to.
+            title_one:
+              type: string
+              example: Shop Men's Shirts
+              nullable: true
+              description: Update the title used in image one.
+            title_two:
+              type: string
+              example: Buy This Men's Shirt
+              nullable: true
+              description: Update the title used in image two.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            subtitle_one:
+              type: string
+              example: Save 50% today
+              nullable: true
+              description: Update the subtitle used in image one.
+            subtitle_two:
+              type: string
+              example: Save 50% today
+              nullable: true
+              description: Update the subtitle used in image two.
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_two]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Update a Side-by-Side Image Section
+      x-internal: false
+    update_product_carousel_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Change this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            linked_resource_id:
+              type: string
+              example: '1'
+              nullable: true
+              description: Update the ID of the Taxon that you would like displayed as a Product Carousel.
+      required:
+      - cms_section
+      title: Update a Product Carousel Section
+      x-internal: false
+    update_rich_text_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            rte_content:
+              type: string
+              example: Lots of text and content goes here.
+              description: Update the content, here, this can be rich text editor content.
+      required:
+      - cms_section
+      title: Update a Rich Text Section
+      x-internal: false
+    update_featured_article_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            linked_resource_type:
+              type: string
+              example: Spree::Taxon
+              nullable: true
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              - Spree::CmsPage
+              description: Set the resource type that this section links to.
+            linked_resource_id:
+              type: string
+              example: '1'
+              nullable: true
+              description: Change the ID of the resource that you would like this section to link to.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            button_text:
+              type: string
+              example: Click Here
+              description: Update the text value of the button used in this section.
+            title:
+              type: string
+              example: Shop Today
+              description: Update the title for the Section.
+            subtitle:
+              type: string
+              example: Save Big!
+              description: Update the subtitle for the Section.
+            rte_content:
+              type: string
+              example: Lots of text and content goes here.
+              description: Update the content here, this can be rich text editor content.
+      required:
+      - cms_section
+      title: Update a Featured Article Section
+      x-internal: false
+    update_image_gallery_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            link_type_one:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image one links to.
+            link_type_two:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image two links to.
+            link_type_three:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image three links to.
+            link_one:
+              type: string
+              example: men/shirts
+              nullable: true
+              description: Update the slug or path that image two links to.
+            link_two:
+              type: string
+              example: white-shirt
+              nullable: true
+              description: Update the slug or path that image two links to.
+            link_three:
+              type: string
+              example: red-shirt
+              nullable: true
+              description: Update the slug or path that image three links to.
+            title_one:
+              type: string
+              example: Shop Men's Shirts
+              nullable: true
+              description: Update the title used in image one.
+            title_two:
+              type: string
+              example: Buy This Men's Shirt
+              nullable: true
+              description: Update the title used in image two.
+            title_three:
+              type: string
+              example: Buy This Women's Skirt
+              nullable: true
+              description: Update the title used in image three.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            layout_style:
+              type: string
+              example: Default
+              enum:
+              - Default
+              - Reversed
+              description: This value is used by front end developers for styling the order the images appear.
+            display_labels:
+              type: string
+              example: Show
+              enum:
+              - Show
+              - Hide
+              description: This value is used by front end developers for showing and hiding the label on the images.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_two]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_three]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Update an Image Gallery Section
+      x-internal: false
+    create_product_carousel_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::ProductCarousel
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Set the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            linked_resource_id:
+              type: string
+              example: '1'
+              nullable: true
+              description: Set the ID of the Taxon that you would like displayed as a Product Carousel.
+      required:
+      - cms_section
+      title: Create a Product Carousel Section
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    create_side_by_side_images_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::SideBySideImages
+              example: Spree::Cms::Sections::SideBySideImages
+              description: Set the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            link_type_one:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Set the resource type that image one links to.
+            link_type_two:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Set the resource type that image two links to.
+            link_one:
+              type: string
+              example: men/shirts
+              nullable: true
+              description: Set the slug or path that image two links to.
+            link_two:
+              type: string
+              example: white-shirt
+              nullable: true
+              description: Set the slug or path that image two links to.
+            title_one:
+              type: string
+              example: Shop Men's Shirts
+              nullable: true
+              description: Set the title used in image one.
+            title_two:
+              type: string
+              example: Buy This Men's Shirt
+              nullable: true
+              description: Set the title used in image two.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            subtitle_one:
+              type: string
+              example: Save 50% today
+              nullable: true
+              description: Set the subtitle used in image one.
+            subtitle_two:
+              type: string
+              example: Save 50% today
+              nullable: true
+              description: Set the subtitle used in image two.
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_two]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Create a Side-by-Side Image Section
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    create_featured_article_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::FeaturedArticle
+              example: Spree::Cms::Sections::FeaturedArticle
+              description: Set the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            linked_resource_type:
+              type: string
+              example: Spree::Taxon
+              nullable: true
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              - Spree::CmsPage
+              description: Set the resource type that this section links to.
+            linked_resource_id:
+              type: string
+              example: '1'
+              nullable: true
+              description: Set the ID of the resource that you would like this section to link to.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            button_text:
+              type: string
+              example: Click Here
+              description: Set the text value of the button used in this section.
+            title:
+              type: string
+              example: Shop Today
+              description: Create a title for the Section.
+            subtitle:
+              type: string
+              example: Save Big!
+              description: Create a subtitle for the Section.
+            rte_content:
+              type: string
+              example: Lots of text and content goes here.
+              description: Set the content, here, this can be rich text editor content.
+      required:
+      - cms_section
+      title: Create a Featured Article Section
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

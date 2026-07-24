@@ -1,0 +1,414 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Account / Credit Cards API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Account / Credit Cards
+paths:
+  /api/v2/storefront/account/credit_cards:
+    get:
+      description: Returns a list of credit cards for the current user.
+      summary: List all Credit Cards
+      operationId: credit-cards-list
+      responses:
+        '200':
+          $ref: '#/components/responses/CreditCardList'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: query
+        name: filter[payment_method_id]
+        schema:
+          type: string
+        example: '2'
+        description: Filter based on payment method ID
+      - $ref: '#/components/parameters/CreditCardIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsCreditCard'
+      tags:
+      - Account / Credit Cards
+  /api/v2/storefront/account/credit_cards/{id}:
+    parameters:
+    - schema:
+        type: string
+        example: '1'
+      name: id
+      in: path
+      required: true
+      description: The ID of the `credit_card` you wish to remove.
+    delete:
+      description: Removes a specified credit card for the current user with a soft delete to retain payment information for any pre-existing orders.
+      operationId: remove-credit-card
+      responses:
+        '204':
+          description: 204 Success No Content Returned - Requested Credit Card has been removed from the User Account
+        '404':
+          $ref: '#/components/responses/404NotFound'
+      security:
+      - bearerAuth: []
+      summary: Remove a Credit Card
+      tags:
+      - Account / Credit Cards
+  /api/v2/storefront/account/credit_cards/default:
+    get:
+      description: Returns the current user's default credit card.
+      summary: Retrieve the default Credit Card
+      operationId: default-credit-card
+      responses:
+        '200':
+          $ref: '#/components/responses/CreditCard'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      parameters:
+      - $ref: '#/components/parameters/CreditCardIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsCreditCard'
+      security:
+      - bearerAuth: []
+      tags:
+      - Account / Credit Cards
+components:
+  responses:
+    CreditCardList:
+      description: 200 Success - Returns an array of `credit_card` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditCard'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditCardIncludes'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
+          examples:
+            List of Credit Cards:
+              value:
+                data:
+                - id: '1'
+                  type: credit_card
+                  attributes:
+                    cc_type: visa
+                    last_digits: '1111'
+                    month: 12
+                    year: 2026
+                    name: John Doe
+                    gateway_payment_profile_id: card_1JqvNB2eZvKYlo2C5OlqLV7S
+                    default: true
+                  relationships:
+                    payment_method:
+                      data:
+                        id: string
+                        type: string
+                - id: '2'
+                  type: credit_card
+                  attributes:
+                    cc_type: mastercard
+                    last_digits: '6695'
+                    month: 12
+                    year: 2030
+                    name: John Doe
+                    default: false
+                  relationships:
+                    payment_method:
+                      data:
+                        id: string
+                        type: string
+                included:
+                - id: '1'
+                  type: payment_method
+                  attributes:
+                    type: Spree::Gateway::StripeGateway
+                    name: Stripe
+                    description: Stripe Payments
+                    preferences: {}
+                meta:
+                  count: 2
+                  total_count: 2
+                  total_pages: 1
+                links:
+                  self: http://localhost:3000/api/v2/storefront/account/credit_cards
+                  next: http://localhost:3000/api/v2/storefront/account/credit_cards?page=0
+                  prev: http://localhost:3000/api/v2/storefront/account/credit_cards?page=1
+                  last: http://localhost:3000/api/v2/storefront/account/credit_cards?page=0
+                  first: http://localhost:3000/api/v2/storefront/account/credit_cards?page=1
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    CreditCard:
+      description: 200 Success - Returns the `credit_card` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/CreditCard'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditCardIncludes'
+            required:
+            - data
+          examples:
+            Credit Card:
+              value:
+                data:
+                  id: '1'
+                  type: credit_card
+                  attributes:
+                    cc_type: visa
+                    last_digits: '4111'
+                    month: 12
+                    year: 2026
+                    name: John Doe
+                    default: true
+                    gateway_payment_profile_id: card_1JqvNB2eZvKYlo2C5OlqLV7S
+                  relationships:
+                    payment_method:
+                      data:
+                        id: '1'
+                        type: payment_method
+                included:
+                - id: '1'
+                  type: payment_method
+                  attributes:
+                    type: Spree::Gateway::StripeGateway
+                    name: Stripe
+                    description: Stripe Payments
+                    preferences: {}
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+  parameters:
+    CreditCardIncludeParam:
+      name: include
+      in: query
+      required: false
+      schema:
+        type: string
+      example: payment_method
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+    SparseFieldsCreditCard:
+      name: fields[credit_card]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: cc_type,last_digits,month,year,name,default
+  schemas:
+    PaymentMethod:
+      title: Payment Method
+      description: ''
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: payment_method
+        attributes:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Gateway::StripeGateway
+            name:
+              type: string
+              example: Stripe
+            description:
+              type: string
+              example: Stripe Payments
+              nullable: true
+            preferences:
+              type: object
+      required:
+      - id
+      - type
+      - attributes
+    CreditCard:
+      title: Credit Card
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          example: credit_card
+          default: credit_card
+        attributes:
+          type: object
+          properties:
+            cc_type:
+              type: string
+              enum:
+              - visa
+              - mastercard
+              - amex
+              example: visa
+            last_digits:
+              type: string
+              example: '1111'
+              description: Last 4 digits of CC number
+            month:
+              type: number
+              description: Expiration date month
+              example: 12
+            year:
+              type: number
+              example: 2026
+              description: Expiration date year
+            name:
+              type: string
+              example: John Doe
+              description: Card holder name
+            gateway_payment_profile_id:
+              type: string
+              example: card_1JqvNB2eZvKYlo2C5OlqLV7S
+              description: ID of a gateway's payment method
+            default:
+              type: boolean
+              example: true
+              description: Defines if this is the default CC for a signed in user
+        relationships:
+          type: object
+          properties:
+            payment_method:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    CreditCardIncludes:
+      x-internal: false
+      title: Credit Card Includes
+      allOf:
+      - $ref: '#/components/schemas/PaymentMethod'
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

@@ -1,0 +1,1476 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Shipments API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Shipments
+paths:
+  /api/v2/platform/shipments:
+    get:
+      summary: Return a list of Shipments
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Returns a list of Shipments
+      operationId: shipments-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      - name: filter[state_eq]
+        in: query
+        description: ''
+        example: complete
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '28'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H74819281258
+                        cost: '100.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:09.196Z'
+                        updated_at: '2022-11-08T19:35:09.199Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $0.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '78'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '106'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data: []
+                        shipping_rates:
+                          data:
+                          - id: '30'
+                            type: shipping_rate
+                        state_changes:
+                          data: []
+                        selected_shipping_rate:
+                          data:
+                            id: '30'
+                            type: shipping_rate
+                    - id: '29'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H45064150244
+                        cost: '100.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:09.230Z'
+                        updated_at: '2022-11-08T19:35:09.233Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $0.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '79'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '107'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data: []
+                        shipping_rates:
+                          data:
+                          - id: '31'
+                            type: shipping_rate
+                        state_changes:
+                          data: []
+                        selected_shipping_rate:
+                          data:
+                            id: '31'
+                            type: shipping_rate
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/shipments?page=1&per_page=&include=&filter[state_eq]=
+                      next: http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Creates a Shipment
+      operationId: create-shipment
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '32'
+                      type: shipment
+                      attributes:
+                        tracking: null
+                        number: H86798855348
+                        cost: '0.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:09.957Z'
+                        updated_at: '2022-11-08T19:35:09.970Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $0.00
+                        display_item_cost: $19.99
+                        display_amount: $0.00
+                        display_final_price: $0.00
+                        display_cost: $0.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '82'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '110'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '28'
+                            type: inventory_unit
+                        shipping_rates:
+                          data: []
+                        state_changes:
+                          data: []
+                        selected_shipping_rate:
+                          data: null
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: order_not_found
+                    errors: {}
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_shipment_params'
+  /api/v2/platform/shipments/{id}:
+    get:
+      summary: Return a Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Returns a Shipment
+      operationId: show-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '34'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H70979559010
+                        cost: '100.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:10.459Z'
+                        updated_at: '2022-11-08T19:35:10.475Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $10.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '83'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '112'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '30'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '37'
+                            type: shipping_rate
+                        state_changes:
+                          data: []
+                        selected_shipping_rate:
+                          data:
+                            id: '37'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Updates a Shipment
+      operationId: update-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '38'
+                      type: shipment
+                      attributes:
+                        tracking: MY-TRACKING-NUMBER-1234
+                        number: H91981279448
+                        cost: '100.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:11.360Z'
+                        updated_at: '2022-11-08T19:35:11.610Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $10.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '85'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '116'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '34'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '45'
+                            type: shipping_rate
+                        state_changes:
+                          data: []
+                        selected_shipping_rate:
+                          data:
+                            id: '45'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Stock location can't be blank
+                    errors:
+                      stock_location:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_shipment_params'
+    delete:
+      summary: Delete a Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Deletes a Shipment
+      operationId: delete-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/platform/shipments/{id}/add_item:
+    patch:
+      summary: Adds item (Variant) to an existing Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: If selected Variant was already added to Order it will increase the quantity of existing Line Item, if not it will create a new Line Item
+      operationId: add-item-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '48'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H80492609966
+                        cost: '0.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:13.675Z'
+                        updated_at: '2022-11-08T19:35:13.998Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $0.00
+                        display_item_cost: $29.99
+                        display_amount: $0.00
+                        display_final_price: $0.00
+                        display_cost: $0.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '90'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '126'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '44'
+                            type: inventory_unit
+                          - id: '45'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '76'
+                            type: shipping_rate
+                          - id: '77'
+                            type: shipping_rate
+                        state_changes:
+                          data: []
+                        selected_shipping_rate:
+                          data:
+                            id: '77'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/add_item_shipment_params'
+  /api/v2/platform/shipments/{id}/remove_item:
+    patch:
+      summary: Removes item (Variant) from Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: If selected Variant is removed completely and Shipment doesn't include any other Line Items, Shipment itself will be deleted
+      operationId: remove-item-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '54'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H51498419568
+                        cost: '0.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:15.496Z'
+                        updated_at: '2022-11-08T19:35:15.944Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $0.00
+                        display_item_cost: $10.00
+                        display_amount: $0.00
+                        display_final_price: $0.00
+                        display_cost: $0.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '93'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '133'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '51'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '100'
+                            type: shipping_rate
+                          - id: '101'
+                            type: shipping_rate
+                        state_changes:
+                          data: []
+                        selected_shipping_rate:
+                          data:
+                            id: '97'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/remove_item_shipment_params'
+  /api/v2/platform/shipments/{id}/ready:
+    patch:
+      summary: Mark Shipment as ready to be shipped
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Marks Shipment as ready to be shipped
+      operationId: ready-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '58'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H47907335950
+                        cost: '100.0'
+                        shipped_at: null
+                        state: ready
+                        created_at: '2022-11-08T19:35:16.670Z'
+                        updated_at: '2022-11-08T19:35:16.922Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $10.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '95'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '137'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '55'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '109'
+                            type: shipping_rate
+                        state_changes:
+                          data:
+                          - id: '25'
+                            type: state_change
+                        selected_shipping_rate:
+                          data:
+                            id: '109'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/platform/shipments/{id}/ship:
+    patch:
+      summary: Mark Shipment as shipped
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Marks Shipment as shipped
+      operationId: ship-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '62'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H98524317894
+                        cost: '100.0'
+                        shipped_at: '2022-11-08T19:35:17.839Z'
+                        state: shipped
+                        created_at: '2022-11-08T19:35:17.583Z'
+                        updated_at: '2022-11-08T19:35:17.839Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $10.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '97'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '141'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '59'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '117'
+                            type: shipping_rate
+                        state_changes:
+                          data:
+                          - id: '27'
+                            type: state_change
+                        selected_shipping_rate:
+                          data:
+                            id: '117'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/platform/shipments/{id}/cancel:
+    patch:
+      summary: Cancels the Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Cancels the Shipment
+      operationId: cancel-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '66'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H87762281833
+                        cost: '100.0'
+                        shipped_at: null
+                        state: canceled
+                        created_at: '2022-11-08T19:35:18.498Z'
+                        updated_at: '2022-11-08T19:35:18.748Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $10.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '99'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '145'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '63'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '125'
+                            type: shipping_rate
+                        state_changes:
+                          data:
+                          - id: '28'
+                            type: state_change
+                        selected_shipping_rate:
+                          data:
+                            id: '125'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/platform/shipments/{id}/resume:
+    patch:
+      summary: Resumes the Shipment
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Resumes previously canceled Shipment
+      operationId: resume-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '70'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H65608010898
+                        cost: '100.0'
+                        shipped_at: null
+                        state: ready
+                        created_at: '2022-11-08T19:35:19.500Z'
+                        updated_at: '2022-11-08T19:35:19.754Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $10.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '101'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '149'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '67'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '133'
+                            type: shipping_rate
+                        state_changes:
+                          data:
+                          - id: '29'
+                            type: state_change
+                        selected_shipping_rate:
+                          data:
+                            id: '133'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v2/platform/shipments/{id}/pend:
+    patch:
+      summary: Moves Shipment back to pending state
+      tags:
+      - Shipments
+      security:
+      - bearer_auth: []
+      description: Moves Shipment back to pending state
+      operationId: pend-shipment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: line_items,variants,product
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '75'
+                      type: shipment
+                      attributes:
+                        tracking: U10000
+                        number: H29346097126
+                        cost: '100.0'
+                        shipped_at: null
+                        state: pending
+                        created_at: '2022-11-08T19:35:20.604Z'
+                        updated_at: '2022-11-08T19:35:20.853Z'
+                        adjustment_total: '0.0'
+                        additional_tax_total: '0.0'
+                        promo_total: '0.0'
+                        included_tax_total: '0.0'
+                        pre_tax_amount: '0.0'
+                        taxable_adjustment_total: '0.0'
+                        non_taxable_adjustment_total: '0.0'
+                        public_metadata: {}
+                        private_metadata: {}
+                        display_discounted_cost: $100.00
+                        display_item_cost: $10.00
+                        display_amount: $100.00
+                        display_final_price: $100.00
+                        display_cost: $100.00
+                        tracking_url: null
+                      relationships:
+                        order:
+                          data:
+                            id: '104'
+                            type: order
+                        address:
+                          data: null
+                        stock_location:
+                          data:
+                            id: '154'
+                            type: stock_location
+                        adjustments:
+                          data: []
+                        inventory_units:
+                          data:
+                          - id: '72'
+                            type: inventory_unit
+                        shipping_rates:
+                          data:
+                          - id: '144'
+                            type: shipping_rate
+                        state_changes:
+                          data:
+                          - id: '30'
+                            type: state_change
+                        selected_shipping_rate:
+                          data:
+                            id: '144'
+                            type: shipping_rate
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    add_item_shipment_params:
+      type: object
+      properties:
+        shipment:
+          type: object
+          required:
+          - variant_id
+          properties:
+            variant_id:
+              type: string
+              example: '101'
+            quantity:
+              type: integer
+              example: 2
+      required:
+      - shipping_category
+      x-internal: false
+    remove_item_shipment_params:
+      type: object
+      properties:
+        shipment:
+          type: object
+          required:
+          - variant_id
+          properties:
+            variant_id:
+              type: string
+              example: '101'
+            quantity:
+              type: integer
+              example: 2
+      required:
+      - shipping_category
+      x-internal: false
+    create_shipment_params:
+      type: object
+      properties:
+        shipment:
+          type: object
+          required:
+          - stock_location_id
+          - order_id
+          - variant_id
+          properties:
+            stock_location_id:
+              type: string
+              example: '101'
+            order_id:
+              type: string
+              example: '101'
+            variant_id:
+              type: string
+              example: '101'
+            quantity:
+              type: integer
+              example: 2
+      required:
+      - shipping_category
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    update_shipment_params:
+      type: object
+      properties:
+        shipment:
+          type: object
+          properties:
+            tracking:
+              type: string
+              example: MY-TRACKING-REF-12324
+      required:
+      - shipping_category
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

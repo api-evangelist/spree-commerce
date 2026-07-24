@@ -1,0 +1,516 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Classifications API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Classifications
+paths:
+  /api/v2/platform/classifications:
+    get:
+      summary: Return a list of Classifications
+      tags:
+      - Classifications
+      security:
+      - bearer_auth: []
+      description: Returns a list of Classifications
+      operationId: classifications-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product,taxon
+        schema:
+          type: string
+      - name: filter[taxon_id_eq]
+        in: query
+        description: ''
+        example: '1'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '1'
+                      type: classification
+                      attributes:
+                        position: 1
+                        created_at: '2022-11-08T19:33:57.238Z'
+                        updated_at: '2022-11-08T19:33:57.238Z'
+                      relationships:
+                        product:
+                          data:
+                            id: '9'
+                            type: product
+                        taxon:
+                          data:
+                            id: '2'
+                            type: taxon
+                    - id: '2'
+                      type: classification
+                      attributes:
+                        position: 1
+                        created_at: '2022-11-08T19:33:57.322Z'
+                        updated_at: '2022-11-08T19:33:57.322Z'
+                      relationships:
+                        product:
+                          data:
+                            id: '10'
+                            type: product
+                        taxon:
+                          data:
+                            id: '4'
+                            type: taxon
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/classifications?page=1&per_page=&include=&filter[taxon_id_eq]=
+                      next: http://www.example.com/api/v2/platform/classifications?filter%5Btaxon_id_eq%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/classifications?filter%5Btaxon_id_eq%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/classifications?filter%5Btaxon_id_eq%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/classifications?filter%5Btaxon_id_eq%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Classification
+      tags:
+      - Classifications
+      security:
+      - bearer_auth: []
+      description: Creates a Classification
+      operationId: create-classification
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product,taxon
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '5'
+                      type: classification
+                      attributes:
+                        position: 1
+                        created_at: '2022-11-08T19:33:58.099Z'
+                        updated_at: '2022-11-08T19:33:58.099Z'
+                      relationships:
+                        product:
+                          data:
+                            id: '13'
+                            type: product
+                        taxon:
+                          data:
+                            id: '10'
+                            type: taxon
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Taxon can't be blank and Product can't be blank
+                    errors:
+                      taxon:
+                      - can't be blank
+                      product:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_classification_params'
+  /api/v2/platform/classifications/{id}:
+    get:
+      summary: Return a Classification
+      tags:
+      - Classifications
+      security:
+      - bearer_auth: []
+      description: Returns a Classification
+      operationId: show-classification
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product,taxon
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '6'
+                      type: classification
+                      attributes:
+                        position: 1
+                        created_at: '2022-11-08T19:33:58.452Z'
+                        updated_at: '2022-11-08T19:33:58.452Z'
+                      relationships:
+                        product:
+                          data:
+                            id: '14'
+                            type: product
+                        taxon:
+                          data:
+                            id: '12'
+                            type: taxon
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Classification
+      tags:
+      - Classifications
+      security:
+      - bearer_auth: []
+      description: Updates a Classification
+      operationId: update-classification
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: product,taxon
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '8'
+                      type: classification
+                      attributes:
+                        position: 1
+                        created_at: '2022-11-08T19:33:59.135Z'
+                        updated_at: '2022-11-08T19:33:59.135Z'
+                      relationships:
+                        product:
+                          data:
+                            id: '16'
+                            type: product
+                        taxon:
+                          data:
+                            id: '16'
+                            type: taxon
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Product can't be blank
+                    errors:
+                      product:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_classification_params'
+    delete:
+      summary: Delete a Classification
+      tags:
+      - Classifications
+      security:
+      - bearer_auth: []
+      description: Deletes a Classification
+      operationId: delete-classification
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    create_classification_params:
+      type: object
+      properties:
+        classification:
+          type: object
+          required:
+          - product_id
+          - taxon_id
+          - position
+          properties:
+            product_id:
+              type: string
+              example: '1'
+            taxon_id:
+              type: string
+              example: '1'
+            position:
+              type: integer
+              example: 1
+      required:
+      - classification
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_classification_params:
+      type: object
+      properties:
+        classification:
+          type: object
+          properties:
+            product_id:
+              type: string
+              example: '1'
+            taxon_id:
+              type: string
+              example: '1'
+            position:
+              type: integer
+              example: 1
+      required:
+      - classification
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

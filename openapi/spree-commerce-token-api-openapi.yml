@@ -1,35 +1,34 @@
 openapi: 3.0.3
-servers:
-  - url: "https://demo.spreecommerce.org"
-    description: demo
-  - url: "http://localhost:3000"
-    description: localhost
 info:
-  version: 1.0.0
-  title: Authentication
-  description: Spree uses oAuth based Authentication via short-lived Bearer tokens. You can either create a new one or refresh existing token.
+  title: Admin Account / Address Token API
   contact:
-    name: Vendo Connect Inc.
-    url: "https://getvendo.com"
-    email: sales@getvendo.com
-  license:
-    url: "https://github.com/spree/spree/blob/main/LICENSE.md"
-    name: BSD-3-Clause
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Token
 paths:
   /spree_oauth/token:
     post:
-      description: |-
-        This endpoint creates a new Bearer Token or refreshes an existing Bearer Token.
+      description: 'This endpoint creates a new Bearer Token or refreshes an existing Bearer Token.
 
-        The `token` found in the response body is required to authorize API calls.
+
+        The `token` found in the response body is required to authorize API calls.'
       operationId: create-or-refresh-token
       responses:
-        "200":
+        '200':
           description: Token was successfully created or refreshed.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Token"
+                $ref: '#/components/schemas/Token'
               examples:
                 Storefront User Token:
                   value:
@@ -59,9 +58,9 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/CreateTokenBody"
-                - $ref: "#/components/schemas/ClientTokenBody"
-                - $ref: "#/components/schemas/RefreshTokenBody"
+              - $ref: '#/components/schemas/CreateTokenBody'
+              - $ref: '#/components/schemas/ClientTokenBody'
+              - $ref: '#/components/schemas/RefreshTokenBody'
             examples:
               Create Storefront API User Token:
                 value:
@@ -90,12 +89,39 @@ paths:
             schema:
               type: object
               properties: {}
-        description: ""
+        description: ''
       summary: Create or Refresh a Token
       tags:
-        - Token
+      - Token
 components:
   schemas:
+    ClientTokenBody:
+      type: object
+      x-examples:
+        example-1:
+          grant_type: refresh_token
+          refresh_token: SqJDIwX00fehqHxS6xmb-kzqAlrYe_0EHgekMexVT8k
+      x-internal: false
+      title: 'Create a new token (grant_type: client_credentials)'
+      description: ''
+      properties:
+        grant_type:
+          type: string
+          example: client_credentials
+          enum:
+          - client_credentials
+        client_id:
+          type: string
+          description: Use the client id
+          example: 27af95fd57a424e5d01aaf5eab
+        client_secret:
+          type: string
+          example: 1324a8d5c0ca57daf384fae39f811a5144330143301'
+          description: Client secret key.
+      required:
+      - grant_type
+      - client_id
+      - client_secret
     Token:
       x-examples:
         create token:
@@ -134,12 +160,34 @@ components:
           type: integer
           example: 1539863418
       required:
-        - access_token
-        - token_type
-        - expires_in
-        - refresh_token
-        - created_at
+      - access_token
+      - token_type
+      - expires_in
+      - refresh_token
+      - created_at
       x-internal: false
+    RefreshTokenBody:
+      type: object
+      x-examples:
+        example-1:
+          grant_type: refresh_token
+          refresh_token: SqJDIwX00fehqHxS6xmb-kzqAlrYe_0EHgekMexVT8k
+      x-internal: false
+      title: 'Refresh an existing token (grant_type: refresh_token)'
+      description: ''
+      properties:
+        grant_type:
+          type: string
+          example: refresh_token
+          enum:
+          - refresh_token
+        refresh_token:
+          type: string
+          description: Refresh token obtained from the create token response
+          example: 27af95fd57a424e5d01aaf5eab1324a8d5c0ca57daf384fae39f811a5144330143301'
+      required:
+      - grant_type
+      - refresh_token
     CreateTokenBody:
       type: object
       x-examples:
@@ -153,15 +201,15 @@ components:
           password: spree123
           scope: admin
       x-internal: false
-      title: "Create a new token (grant_type: password)"
-      description: ""
+      title: 'Create a new token (grant_type: password)'
+      description: ''
       properties:
         grant_type:
           type: string
-          description: ""
+          description: ''
           example: password
           enum:
-            - password
+          - password
         username:
           type: string
           description: User email address
@@ -173,61 +221,37 @@ components:
         scope:
           type: string
           enum:
-            - admin
-          description: "Pass the value `admin` to create a Platform User Token, allowing access to the Platform API."
+          - admin
+          description: Pass the value `admin` to create a Platform User Token, allowing access to the Platform API.
           nullable: true
       required:
-        - grant_type
-        - username
-        - password
-    ClientTokenBody:
-      type: object
-      x-examples:
-        example-1:
-          grant_type: refresh_token
-          refresh_token: SqJDIwX00fehqHxS6xmb-kzqAlrYe_0EHgekMexVT8k
-      x-internal: false
-      title: "Create a new token (grant_type: client_credentials)"
-      description: ""
-      properties:
-        grant_type:
-          type: string
-          example: client_credentials
-          enum:
-            - client_credentials
-        client_id:
-          type: string
-          description: Use the client id
-          example: 27af95fd57a424e5d01aaf5eab
-        client_secret:
-          type: string
-          example: 1324a8d5c0ca57daf384fae39f811a5144330143301'
-          description: Client secret key.
-      required:
-        - grant_type
-        - client_id
-        - client_secret
-    RefreshTokenBody:
-      type: object
-      x-examples:
-        example-1:
-          grant_type: refresh_token
-          refresh_token: SqJDIwX00fehqHxS6xmb-kzqAlrYe_0EHgekMexVT8k
-      x-internal: false
-      title: "Refresh an existing token (grant_type: refresh_token)"
-      description: ""
-      properties:
-        grant_type:
-          type: string
-          example: refresh_token
-          enum:
-            - refresh_token
-        refresh_token:
-          type: string
-          description: Refresh token obtained from the create token response
-          example: 27af95fd57a424e5d01aaf5eab1324a8d5c0ca57daf384fae39f811a5144330143301'
-      required:
-        - grant_type
-        - refresh_token
-tags:
-  - name: Token
+      - grant_type
+      - username
+      - password
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

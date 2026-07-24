@@ -1,0 +1,5396 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Carts API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Carts
+  description: Shopping cart management
+paths:
+  /api/v3/store/carts:
+    get:
+      summary: List active carts
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Returns all active (incomplete) carts for the authenticated user.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst carts = await client.carts.list({\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: 'Page number (default: 1)'
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        description: 'Number of results per page (default: 25, max: 100)'
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: 'Sort order. Prefix with - for descending. Values: created_at, -created_at, updated_at, -updated_at'
+        schema:
+          type: string
+      - name: q[created_at_gt]
+        in: query
+        required: false
+        description: Filter by created after date (ISO 8601)
+        schema:
+          type: string
+      - name: q[updated_at_gt]
+        in: query
+        required: false
+        description: Filter by updated after date (ISO 8601)
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (items, fulfillments, payments, discounts, billing_address, shipping_address, gift_card, payment_methods). Use "none" to skip associations.
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., total,amount_due,item_count). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: carts listed
+          content:
+            application/json:
+              example:
+                data:
+                - id: cart_gbHJdmfrXB
+                  market_id: null
+                  number: R560405209
+                  token: iqxaKurjyPCbwiuDRJwhMTLpUQs2SCohKfM
+                  email: carly@nicolas.com
+                  customer_note: null
+                  currency: USD
+                  locale: en
+                  total_quantity: 1
+                  item_total: '10.0'
+                  display_item_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  total: '110.0'
+                  display_total: $110.00
+                  gift_card_total: '0.0'
+                  display_gift_card_total: $0.00
+                  amount_due: '110.0'
+                  display_amount_due: $110.00
+                  delivery_total: '100.0'
+                  display_delivery_total: $100.00
+                  warnings: []
+                  store_credit_total: '0.0'
+                  display_store_credit_total: $0.00
+                  covered_by_store_credit: false
+                  current_step: address
+                  completed_steps: []
+                  requirements:
+                  - step: payment
+                    field: payment
+                    message: Add a payment method
+                  shipping_eq_billing_address: false
+                  discounts: []
+                  items:
+                  - id: li_gbHJdmfrXB
+                    variant_id: variant_gbHJdmfrXB
+                    quantity: 1
+                    currency: USD
+                    name: Product 584574
+                    slug: product-584574
+                    options_text: ''
+                    price: '10.0'
+                    display_price: $10.00
+                    total: '10.0'
+                    display_total: $10.00
+                    adjustment_total: '0.0'
+                    display_adjustment_total: $0.00
+                    additional_tax_total: '0.0'
+                    display_additional_tax_total: $0.00
+                    included_tax_total: '0.0'
+                    display_included_tax_total: $0.00
+                    discount_total: '0.0'
+                    display_discount_total: $0.00
+                    pre_tax_amount: '10.0'
+                    display_pre_tax_amount: $10.00
+                    discounted_amount: '10.0'
+                    display_discounted_amount: $10.00
+                    display_compare_at_amount: $0.00
+                    compare_at_amount: null
+                    thumbnail_url: null
+                    option_values: []
+                    digital_links: []
+                  fulfillments:
+                  - id: ful_gbHJdmfrXB
+                    number: H60885401848
+                    tracking: U10000
+                    tracking_url: null
+                    cost: '100.0'
+                    display_cost: $100.00
+                    total: '100.0'
+                    display_total: $100.00
+                    discount_total: '0.0'
+                    display_discount_total: $0.00
+                    additional_tax_total: '0.0'
+                    display_additional_tax_total: $0.00
+                    included_tax_total: '0.0'
+                    display_included_tax_total: $0.00
+                    tax_total: '0.0'
+                    display_tax_total: $0.00
+                    status: pending
+                    fulfillment_type: shipping
+                    fulfilled_at: null
+                    items:
+                    - item_id: li_gbHJdmfrXB
+                      variant_id: variant_gbHJdmfrXB
+                      quantity: 1
+                    delivery_method:
+                      id: dm_gbHJdmfrXB
+                      name: UPS Ground
+                      code: UPS_GROUND
+                    stock_location:
+                      id: sloc_UkLWZg9DAJ
+                      state_abbr: NY
+                      name: Milissa Kutch
+                      address1: 1600 Pennsylvania Ave NW
+                      city: Washington
+                      zipcode: '20500'
+                      country_iso: US
+                      country_name: United States of America
+                      state_text: NY
+                    delivery_rates:
+                    - id: dr_gbHJdmfrXB
+                      delivery_method_id: dm_gbHJdmfrXB
+                      name: UPS Ground
+                      selected: true
+                      cost: '100.0'
+                      total: '100.0'
+                      additional_tax_total: '0.0'
+                      included_tax_total: '0.0'
+                      tax_total: '0.0'
+                      display_cost: $100.00
+                      display_total: $100.00
+                      display_additional_tax_total: $0.00
+                      display_included_tax_total: $0.00
+                      display_tax_total: $0.00
+                      delivery_method:
+                        id: dm_gbHJdmfrXB
+                        name: UPS Ground
+                        code: UPS_GROUND
+                  payments: []
+                  billing_address:
+                    id: addr_uw2YK1rnl0
+                    first_name: John
+                    last_name: Doe
+                    full_name: John Doe
+                    address1: 105 Lovely Street
+                    address2: Northwest
+                    postal_code: '10118'
+                    city: New York
+                    phone: 555-555-0199
+                    company: Company
+                    country_name: United States of America
+                    country_iso: US
+                    state_text: NY
+                    state_abbr: NY
+                    quick_checkout: false
+                    is_default_billing: false
+                    is_default_shipping: false
+                    state_name: New York
+                  shipping_address:
+                    id: addr_OIJLhNcSbf
+                    first_name: John
+                    last_name: Doe
+                    full_name: John Doe
+                    address1: 106 Lovely Street
+                    address2: Northwest
+                    postal_code: '10118'
+                    city: New York
+                    phone: 555-555-0199
+                    company: Company
+                    country_name: United States of America
+                    country_iso: US
+                    state_text: NY
+                    state_abbr: NY
+                    quick_checkout: false
+                    is_default_billing: false
+                    is_default_shipping: false
+                    state_name: New York
+                  payment_methods: []
+                  gift_card: null
+                  market: null
+                - id: cart_UkLWZg9DAJ
+                  market_id: null
+                  number: R504946559
+                  token: hC1f3UJxu4NErrgku3ZwU2LT4szVo2mJGUv
+                  email: carly@nicolas.com
+                  customer_note: null
+                  currency: USD
+                  locale: en
+                  total_quantity: 1
+                  item_total: '10.0'
+                  display_item_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  total: '110.0'
+                  display_total: $110.00
+                  gift_card_total: '0.0'
+                  display_gift_card_total: $0.00
+                  amount_due: '110.0'
+                  display_amount_due: $110.00
+                  delivery_total: '100.0'
+                  display_delivery_total: $100.00
+                  warnings: []
+                  store_credit_total: '0'
+                  display_store_credit_total: $0.00
+                  covered_by_store_credit: false
+                  current_step: address
+                  completed_steps: []
+                  requirements:
+                  - step: payment
+                    field: payment
+                    message: Add a payment method
+                  shipping_eq_billing_address: false
+                  discounts: []
+                  items:
+                  - id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                    currency: USD
+                    name: Product 576038
+                    slug: product-576038
+                    options_text: ''
+                    price: '10.0'
+                    display_price: $10.00
+                    total: '10.0'
+                    display_total: $10.00
+                    adjustment_total: '0.0'
+                    display_adjustment_total: $0.00
+                    additional_tax_total: '0.0'
+                    display_additional_tax_total: $0.00
+                    included_tax_total: '0.0'
+                    display_included_tax_total: $0.00
+                    discount_total: '0.0'
+                    display_discount_total: $0.00
+                    pre_tax_amount: '10.0'
+                    display_pre_tax_amount: $10.00
+                    discounted_amount: '10.0'
+                    display_discounted_amount: $10.00
+                    display_compare_at_amount: $0.00
+                    compare_at_amount: null
+                    thumbnail_url: null
+                    option_values: []
+                    digital_links: []
+                  fulfillments:
+                  - id: ful_UkLWZg9DAJ
+                    number: H14566689291
+                    tracking: U10000
+                    tracking_url: null
+                    cost: '100.0'
+                    display_cost: $100.00
+                    total: '100.0'
+                    display_total: $100.00
+                    discount_total: '0.0'
+                    display_discount_total: $0.00
+                    additional_tax_total: '0.0'
+                    display_additional_tax_total: $0.00
+                    included_tax_total: '0.0'
+                    display_included_tax_total: $0.00
+                    tax_total: '0.0'
+                    display_tax_total: $0.00
+                    status: pending
+                    fulfillment_type: shipping
+                    fulfilled_at: null
+                    items:
+                    - item_id: li_UkLWZg9DAJ
+                      variant_id: variant_UkLWZg9DAJ
+                      quantity: 1
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                    stock_location:
+                      id: sloc_UkLWZg9DAJ
+                      state_abbr: NY
+                      name: Milissa Kutch
+                      address1: 1600 Pennsylvania Ave NW
+                      city: Washington
+                      zipcode: '20500'
+                      country_iso: US
+                      country_name: United States of America
+                      state_text: NY
+                    delivery_rates:
+                    - id: dr_UkLWZg9DAJ
+                      delivery_method_id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      selected: true
+                      cost: '100.0'
+                      total: '100.0'
+                      additional_tax_total: '0.0'
+                      included_tax_total: '0.0'
+                      tax_total: '0.0'
+                      display_cost: $100.00
+                      display_total: $100.00
+                      display_additional_tax_total: $0.00
+                      display_included_tax_total: $0.00
+                      display_tax_total: $0.00
+                      delivery_method:
+                        id: dm_UkLWZg9DAJ
+                        name: UPS Ground
+                        code: UPS_GROUND
+                  payments: []
+                  billing_address:
+                    id: addr_EfhxLZ9ck8
+                    first_name: John
+                    last_name: Doe
+                    full_name: John Doe
+                    address1: 103 Lovely Street
+                    address2: Northwest
+                    postal_code: '10118'
+                    city: New York
+                    phone: 555-555-0199
+                    company: Company
+                    country_name: United States of America
+                    country_iso: US
+                    state_text: NY
+                    state_abbr: NY
+                    quick_checkout: false
+                    is_default_billing: false
+                    is_default_shipping: false
+                    state_name: New York
+                  shipping_address:
+                    id: addr_VqXmZF31wY
+                    first_name: John
+                    last_name: Doe
+                    full_name: John Doe
+                    address1: 104 Lovely Street
+                    address2: Northwest
+                    postal_code: '10118'
+                    city: New York
+                    phone: 555-555-0199
+                    company: Company
+                    country_name: United States of America
+                    country_iso: US
+                    state_text: NY
+                    state_abbr: NY
+                    quick_checkout: false
+                    is_default_billing: false
+                    is_default_shipping: false
+                    state_name: New York
+                  payment_methods: []
+                  gift_card: null
+                  market: null
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 2
+                  pages: 1
+                  from: 1
+                  to: 2
+                  in: 2
+                  previous: null
+                  next: null
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a new cart
+      tags:
+      - Carts
+      security:
+      - api_key: []
+      description: 'Creates a new shopping cart. Can be created by guests or authenticated customers.
+
+        Returns a `token` that must be used for guest access to the cart.
+
+        '
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\n// Create an empty cart\nconst cart = await client.carts.create()\n\n// Create a cart with items\nconst cartWithItems = await client.carts.create({\n  items: [\n    { variant_id: 'variant_abc123', quantity: 2 },\n  ],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Bearer JWT token (optional - for authenticated customers)
+        schema:
+          type: string
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Unique key for request idempotency.
+        schema:
+          type: string
+      responses:
+        '201':
+          description: cart created
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R582709141
+                token: sbMgF8VrnBNczXfdVscfNEDYvzNFowJwh2s
+                email: null
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 0
+                item_total: '0.0'
+                display_item_total: $0.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '0.0'
+                display_total: $0.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '0.0'
+                display_amount_due: $0.00
+                delivery_total: '0.0'
+                display_delivery_total: $0.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: cart
+                  field: line_items
+                  message: Add at least one item to your cart
+                - step: address
+                  field: email
+                  message: Email address is required
+                - step: address
+                  field: ship_address
+                  message: Shipping address is required
+                - step: delivery
+                  field: shipping_method
+                  message: Select a shipping method for all shipments
+                shipping_eq_billing_address: true
+                discounts: []
+                items: []
+                fulfillments: []
+                payments: []
+                billing_address: null
+                shipping_address: null
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: object
+                  description: Write-only key-value metadata (Stripe-style).
+                items:
+                  type: array
+                  description: Items to add to the cart on creation
+                  items:
+                    type: object
+                    properties:
+                      variant_id:
+                        type: string
+                        example: variant_abc123
+                        description: Prefixed variant ID
+                      quantity:
+                        type: integer
+                        example: 2
+                        description: Quantity (defaults to 1)
+                      metadata:
+                        type: object
+                        additionalProperties: true
+                    required:
+                    - variant_id
+  /api/v3/store/carts/{id}:
+    get:
+      summary: Get a cart
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns a shopping cart by prefixed ID.
+
+        Authorize via x-spree-token header (guest) or JWT Bearer token (authenticated user).
+
+        '
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.get('cart_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Cart prefixed ID (e.g., cart_abc123)
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Comma-separated associations to expand (items, fulfillments, payments, discounts, billing_address, shipping_address, gift_card, payment_methods). Use "none" to skip associations.
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., total,amount_due,item_count). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cart with out-of-stock item removed (warnings returned)
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R911594733
+                token: A3bGmry4ZwaVKavBsi7VH9dHvdws3WTttaD
+                email: carmine_littel@kshlerin.ca
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 0
+                item_total: '0.0'
+                display_item_total: $0.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '0.0'
+                display_total: $0.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '0.0'
+                display_amount_due: $0.00
+                delivery_total: '0.0'
+                display_delivery_total: $0.00
+                warnings:
+                - code: line_item_removed
+                  message: Product 62216 was removed because it was sold out
+                  line_item_id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: cart
+                  field: line_items
+                  message: Add at least one item to your cart
+                - step: delivery
+                  field: shipping_method
+                  message: Select a shipping method for all shipments
+                shipping_eq_billing_address: false
+                discounts: []
+                items: []
+                fulfillments: []
+                payments: []
+                billing_address:
+                  id: addr_UkLWZg9DAJ
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 113 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_gbHJdmfrXB
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 114 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: cart not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: cart_not_found
+                  message: Cart not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a cart
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Updates cart info (email, addresses, customer note). When addresses change, the order state is reverted to address to ensure shipments are recalculated.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.update('cart_abc123', {\n  email: 'customer@example.com',\n  shipping_address: {\n    first_name: 'John',\n    last_name: 'Doe',\n    address1: '123 Main St',\n    city: 'New York',\n    postal_code: '10001',\n    country_iso: 'US',\n    state_abbr: 'NY',\n  },\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cart updated
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R537545049
+                token: YAfcmRTUDf8ak8FPefKTgpqKXuur3RZrz5S
+                email: viola.dickens@mitchellcollier.com
+                customer_note: Leave at door
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '19.99'
+                display_item_total: $19.99
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '29.99'
+                display_total: $29.99
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '29.99'
+                display_amount_due: $29.99
+                delivery_total: '10.0'
+                display_delivery_total: $10.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: payment
+                completed_steps:
+                - address
+                - delivery
+                requirements:
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 637993
+                  slug: product-637993
+                  options_text: ''
+                  price: '19.99'
+                  display_price: $19.99
+                  total: '19.99'
+                  display_total: $19.99
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '19.99'
+                  display_pre_tax_amount: $19.99
+                  discounted_amount: '19.99'
+                  display_discounted_amount: $19.99
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_gbHJdmfrXB
+                  number: H35255737216
+                  tracking: null
+                  tracking_url: null
+                  cost: '10.0'
+                  display_cost: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Chung O'Keefe
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_gbHJdmfrXB
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '10.0'
+                    total: '10.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $10.00
+                    display_total: $10.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 117 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 118 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: customer@example.com
+                customer_note:
+                  type: string
+                  example: Leave at door
+                metadata:
+                  type: object
+                  additionalProperties: true
+                shipping_address_id:
+                  type: string
+                  description: Existing address ID to use as shipping address
+                  example: addr_abc123
+                billing_address_id:
+                  type: string
+                  description: Existing address ID to use as billing address
+                  example: addr_def456
+                billing_address:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    address1:
+                      type: string
+                    address2:
+                      type: string
+                    city:
+                      type: string
+                    postal_code:
+                      type: string
+                    phone:
+                      type: string
+                    company:
+                      type: string
+                    country_iso:
+                      type: string
+                    state_abbr:
+                      type: string
+                shipping_address:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    address1:
+                      type: string
+                    address2:
+                      type: string
+                    city:
+                      type: string
+                    postal_code:
+                      type: string
+                    phone:
+                      type: string
+                    company:
+                      type: string
+                    country_iso:
+                      type: string
+                    state_abbr:
+                      type: string
+    delete:
+      summary: Delete a cart
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Deletes/abandons the cart.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nawait client.carts.delete('cart_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      responses:
+        '204':
+          description: cart deleted
+  /api/v3/store/carts/{id}/associate:
+    patch:
+      summary: Associate guest cart with authenticated user
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Associates a guest cart with the currently authenticated user.
+
+        Requires JWT authentication. The cart must not belong to another user.
+
+        '
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.associate('cart_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cart associated successfully
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R231347948
+                token: RnHB5VgA21xi2SsJFvCKad7qbWLdo47QGnV
+                email: reinaldo@hesselschimmel.info
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '110.0'
+                display_total: $110.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '110.0'
+                display_amount_due: $110.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 653132
+                  slug: product-653132
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H45239248483
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Dexter Boyer
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments: []
+                billing_address:
+                  id: addr_UkLWZg9DAJ
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 123 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_gbHJdmfrXB
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 124 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '401':
+          description: unauthorized - JWT required
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/carts/{id}/complete:
+    post:
+      summary: Complete cart
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Completes the cart and finalizes the purchase. Returns an Order (not Cart).
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst order = await client.carts.complete('cart_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cart completed
+          content:
+            application/json:
+              example:
+                id: or_UkLWZg9DAJ
+                market_id: null
+                channel_id: ch_UkLWZg9DAJ
+                number: R264397359
+                email: enda@becker.ca
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '19.99'
+                display_item_total: $19.99
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '29.99'
+                display_total: $29.99
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '0.0'
+                display_amount_due: $0.00
+                delivery_total: '10.0'
+                display_delivery_total: $10.00
+                fulfillment_status: backorder
+                payment_status: paid
+                completed_at: '2026-05-21T18:12:04.119Z'
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 679791
+                  slug: product-679791
+                  options_text: ''
+                  price: '19.99'
+                  display_price: $19.99
+                  total: '19.99'
+                  display_total: $19.99
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '19.99'
+                  display_pre_tax_amount: $19.99
+                  discounted_amount: '19.99'
+                  display_discounted_amount: $19.99
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_gbHJdmfrXB
+                  number: H72789993064
+                  tracking: null
+                  tracking_url: null
+                  cost: '10.0'
+                  display_cost: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Gabriela Kemmer
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_gbHJdmfrXB
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '10.0'
+                    total: '10.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $10.00
+                    display_total: $10.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments:
+                - id: py_UkLWZg9DAJ
+                  payment_method_id: pm_UkLWZg9DAJ
+                  response_code: BGS-6d4860421892
+                  number: PDDA4ACI
+                  amount: '29.99'
+                  display_amount: $29.99
+                  status: completed
+                  source_type: credit_card
+                  source_id: card_UkLWZg9DAJ
+                  source:
+                    id: card_UkLWZg9DAJ
+                    brand: visa
+                    last4: '1111'
+                    month: 12
+                    year: 2027
+                    name: Spree Commerce
+                    default: false
+                    gateway_payment_profile_id: null
+                  payment_method:
+                    id: pm_UkLWZg9DAJ
+                    name: Check
+                    description: null
+                    type: check
+                    session_required: false
+                    source_required: false
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 131 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 132 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Order'
+        '422':
+          description: cannot complete
+          content:
+            application/json:
+              example:
+                error:
+                  code: cart_cannot_complete
+                  message: No payment found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/carts/{cart_id}/discount_codes:
+    post:
+      summary: Apply discount code
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Applies a promotion discount code to the cart. The code is matched case-insensitively.
+
+
+        For gift cards, use the dedicated `POST /carts/{cart_id}/gift_cards` endpoint instead.
+
+        '
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.discountCodes.apply('cart_abc123', 'SAVE10', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Bearer token for authenticated customers
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID (e.g., cart_abc123)
+        schema:
+          type: string
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Unique key for request idempotency.
+        schema:
+          type: string
+      responses:
+        '201':
+          description: discount code applied
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R983640452
+                token: FUsN4w2fk57RAyQxK2uwVh1EFUSeoApoNWz
+                email: jamey@weberwalter.ca
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '-10.0'
+                display_adjustment_total: -$10.00
+                discount_total: '-10.0'
+                display_discount_total: -$10.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '100.0'
+                display_total: $100.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '100.0'
+                display_amount_due: $100.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts:
+                - id: discount_UkLWZg9DAJ
+                  promotion_id: promo_UkLWZg9DAJ
+                  name: Promo
+                  description: null
+                  code: save10
+                  amount: '-10.0'
+                  display_amount: -$10.00
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 868984
+                  slug: product-868984
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '0.0'
+                  display_total: $0.00
+                  adjustment_total: '-10.0'
+                  display_adjustment_total: -$10.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '-10.0'
+                  display_discount_total: -$10.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '0.0'
+                  display_discounted_amount: $0.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H01257048332
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Idell Corkery
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 183 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 184 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '422':
+          description: invalid discount code
+          content:
+            application/json:
+              example:
+                error:
+                  code: processing_error
+                  message: The coupon code you entered doesn't exist. Please try again.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: SAVE10
+                  description: Promotion discount code to apply
+              required:
+              - code
+  /api/v3/store/carts/{cart_id}/discount_codes/{id}:
+    delete:
+      summary: Remove discount code
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Removes a previously applied discount code from the cart. The ID is the discount code string itself.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.discountCodes.remove('cart_abc123', 'SAVE10', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Bearer token for authenticated customers
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: The discount code string to remove (e.g., SAVE10)
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      responses:
+        '200':
+          description: discount code removed
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R506477402
+                token: ZbbF51wzUqPGTMG3ngYRzSSDbLK3Ee9wdcW
+                email: norris@wintheiser.us
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '110.0'
+                display_total: $110.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '110.0'
+                display_amount_due: $110.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 883927
+                  slug: product-883927
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H66163861804
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Faye Kertzmann
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 191 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 192 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '422':
+          description: discount code not found on cart
+          content:
+            application/json:
+              example:
+                error:
+                  code: processing_error
+                  message: The coupon code you entered doesn't exist. Please try again.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/carts/{cart_id}/fulfillments/{id}:
+    patch:
+      summary: Select delivery rate for fulfillment
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Selects a delivery rate for a specific fulfillment and auto-advances checkout.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.fulfillments.update('cart_abc123', 'ful_abc123', {\n  selected_delivery_rate_id: 'dr_abc123',\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Fulfillment ID
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      responses:
+        '200':
+          description: delivery rate selected, returns updated cart
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R787693305
+                token: naZG9yps6zPNYyBArZBgKKY6nnqYpGC5rTw
+                email: isabelle.gutmann@batzdaugherty.com
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '110.0'
+                display_total: $110.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '110.0'
+                display_amount_due: $110.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: payment
+                completed_steps:
+                - address
+                - delivery
+                requirements:
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 905832
+                  slug: product-905832
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H48213234073
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Kerri Hahn
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 199 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 200 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: delivery rate not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Shipping rate not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selected_delivery_rate_id:
+                  type: string
+                  example: dr_abc123
+                  description: Delivery rate ID to select
+              required:
+              - selected_delivery_rate_id
+  /api/v3/store/carts/{cart_id}/gift_cards:
+    post:
+      summary: Apply gift card
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Applies a gift card to the cart. Gift cards are treated as a payment method, not a discount —
+
+        the cart `total` remains unchanged while `amount_due` is reduced.
+
+
+        For promotion discount codes, use the `POST /carts/{cart_id}/discount_codes` endpoint instead.
+
+        '
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.giftCards.apply('cart_abc123', 'GC-ABCD-1234', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Bearer token for authenticated customers
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID (e.g., cart_abc123)
+        schema:
+          type: string
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Unique key for request idempotency.
+        schema:
+          type: string
+      responses:
+        '201':
+          description: gift card applied
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R501407956
+                token: mBMtKueSANaxHuT7o3H1zs5CWXfBtLZR76a
+                email: aldo.hickle@bode.co.uk
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '110.0'
+                display_total: $110.00
+                gift_card_total: '50.0'
+                display_gift_card_total: $50.00
+                amount_due: '60.0'
+                display_amount_due: $60.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '50.0'
+                display_store_credit_total: -$50.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements: []
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 923228
+                  slug: product-923228
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H63891944560
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Julieann Kuhn
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments:
+                - id: py_UkLWZg9DAJ
+                  payment_method_id: pm_UkLWZg9DAJ
+                  response_code: 1-SC-20260521181222228580
+                  number: PLBPL882
+                  amount: '50.0'
+                  display_amount: $50.00
+                  status: checkout
+                  source_type: store_credit
+                  source_id: credit_UkLWZg9DAJ
+                  source:
+                    id: credit_UkLWZg9DAJ
+                    amount: '50.0'
+                    amount_used: '0.0'
+                    amount_remaining: '50.0'
+                    display_amount: $50.00
+                    display_amount_used: $0.00
+                    display_amount_remaining: $50.00
+                    currency: USD
+                  payment_method:
+                    id: pm_UkLWZg9DAJ
+                    name: Store Credit
+                    description: null
+                    type: store_credit
+                    session_required: false
+                    source_required: true
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 207 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 208 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods:
+                - id: pm_UkLWZg9DAJ
+                  name: Store Credit
+                  description: null
+                  type: store_credit
+                  session_required: false
+                  source_required: true
+                gift_card:
+                  id: gc_UkLWZg9DAJ
+                  code: GIFTCODE1
+                  status: active
+                  currency: USD
+                  amount: '50.0'
+                  amount_used: '50.0'
+                  amount_authorized: '0.0'
+                  amount_remaining: '0.0'
+                  display_amount: $50.00
+                  display_amount_used: $50.00
+                  display_amount_remaining: $0.00
+                  expires_at: null
+                  redeemed_at: null
+                  expired: false
+                  active: true
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: gift card not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: gift_card_not_found
+                  message: The Gift Card was not found.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: gift card already redeemed
+          content:
+            application/json:
+              example:
+                error:
+                  code: gift_card_already_redeemed
+                  message: The Gift Card has already been redeemed.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: GC-ABCD-1234
+                  description: Gift card code to apply
+              required:
+              - code
+  /api/v3/store/carts/{cart_id}/gift_cards/{id}:
+    delete:
+      summary: Remove gift card
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Removes a previously applied gift card from the cart.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.giftCards.remove('cart_abc123', 'gc_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Bearer token for authenticated customers
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Gift card prefixed ID (e.g., gc_abc123)
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      responses:
+        '200':
+          description: gift card removed
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R971301843
+                token: TAXrAS6nE34CGB4J4SM9jYAC7D1LAfEdvuB
+                email: beatris@monahanconsidine.name
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '110.0'
+                display_total: $110.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '110.0'
+                display_amount_due: $110.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 966445
+                  slug: product-966445
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H50426852278
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Hilda Gorczany
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments:
+                - id: py_UkLWZg9DAJ
+                  payment_method_id: pm_UkLWZg9DAJ
+                  response_code: 1-SC-20260521181224917306
+                  number: P50IZG86
+                  amount: '50.0'
+                  display_amount: $50.00
+                  status: invalid
+                  source_type: store_credit
+                  source_id: credit_UkLWZg9DAJ
+                  source:
+                    id: credit_UkLWZg9DAJ
+                    amount: '50.0'
+                    amount_used: '0.0'
+                    amount_remaining: '50.0'
+                    display_amount: $50.00
+                    display_amount_used: $0.00
+                    display_amount_remaining: $50.00
+                    currency: USD
+                  payment_method:
+                    id: pm_UkLWZg9DAJ
+                    name: Store Credit
+                    description: null
+                    type: store_credit
+                    session_required: false
+                    source_required: true
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 223 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 224 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+  /api/v3/store/carts/{cart_id}/items:
+    post:
+      summary: Add item to cart
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Adds a variant to the cart. Creates a new line item or increases quantity if variant already in cart.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.items.create('cart_abc123', {\n  variant_id: 'variant_abc123',\n  quantity: 2,\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Bearer token for authenticated customers
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID (e.g., cart_abc123)
+        schema:
+          type: string
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Unique key for request idempotency.
+        schema:
+          type: string
+      responses:
+        '201':
+          description: item added with metadata
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R881799706
+                token: RVbjRddtDRtcExjXQRpMB8Bim5LNSShGBH6
+                email: remona@effertzbauch.info
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 2
+                item_total: '29.99'
+                display_item_total: $29.99
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '29.99'
+                display_total: $29.99
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '29.99'
+                display_amount_due: $29.99
+                delivery_total: '0.0'
+                display_delivery_total: $0.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: address
+                  field: ship_address
+                  message: Shipping address is required
+                - step: delivery
+                  field: shipping_method
+                  message: Select a shipping method for all shipments
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 996441
+                  slug: product-996441
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                - id: li_gbHJdmfrXB
+                  variant_id: variant_gbHJdmfrXB
+                  quantity: 1
+                  currency: USD
+                  name: Product 1009810
+                  slug: product-1009810
+                  options_text: ''
+                  price: '19.99'
+                  display_price: $19.99
+                  total: '19.99'
+                  display_total: $19.99
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '19.99'
+                  display_pre_tax_amount: $19.99
+                  discounted_amount: '19.99'
+                  display_discounted_amount: $19.99
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments: []
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 238 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address: null
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: variant not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: variant_not_found
+                  message: Variant not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                variant_id:
+                  type: string
+                  example: variant_abc123
+                  description: Variant ID to add
+                quantity:
+                  type: integer
+                  example: 2
+                  description: 'Quantity to add (default: 1)'
+                metadata:
+                  type: object
+                  additionalProperties: true
+                  description: Arbitrary key-value metadata
+                  example:
+                    gift_message: Happy Birthday!
+              required:
+              - variant_id
+  /api/v3/store/carts/{cart_id}/items/{id}:
+    patch:
+      summary: Update line item quantity
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Updates the quantity of a line item in the cart
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.items.update('cart_abc123', 'li_abc123', {\n  quantity: 5,\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: Line item ID
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: metadata updated on line item
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R794423726
+                token: 1sJMUmLYsh3UaeGjL4VQKgK3DMj8h2YAx2z
+                email: pablo_corwin@hillsstark.biz
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 0
+                item_total: '0.0'
+                display_item_total: $0.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '0.0'
+                display_total: $0.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '0.0'
+                display_amount_due: $0.00
+                delivery_total: '0.0'
+                display_delivery_total: $0.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: address
+                  field: ship_address
+                  message: Shipping address is required
+                - step: delivery
+                  field: shipping_method
+                  message: Select a shipping method for all shipments
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 1039114
+                  slug: product-1039114
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments: []
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 247 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address: null
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  minimum: 1
+                  example: 5
+                metadata:
+                  type: object
+                  additionalProperties: true
+                  description: Arbitrary key-value metadata (merged with existing)
+                  example:
+                    engraving: J.D.
+    delete:
+      summary: Remove line item from cart
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Removes a line item from the cart
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.items.delete('cart_abc123', 'li_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: line item removed, returns updated cart
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R184817343
+                token: vPBcAwTjPCjFLRYvznh9D9dkaWZt8aapnyH
+                email: michael.lang@hackett.com
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 0
+                item_total: '0.0'
+                display_item_total: $0.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '0.0'
+                display_total: $0.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '0.0'
+                display_amount_due: $0.00
+                delivery_total: '0.0'
+                display_delivery_total: $0.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: cart
+                  field: line_items
+                  message: Add at least one item to your cart
+                - step: address
+                  field: ship_address
+                  message: Shipping address is required
+                - step: delivery
+                  field: shipping_method
+                  message: Select a shipping method for all shipments
+                shipping_eq_billing_address: false
+                discounts: []
+                items: []
+                fulfillments: []
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 250 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address: null
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: line item not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: line_item_not_found
+                  message: Line item not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v3/store/carts/{cart_id}/payment_sessions:
+    post:
+      summary: Create payment session
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Creates a new payment session for the cart. Delegates to the payment gateway to initialize a provider-specific session (e.g. Stripe PaymentIntent, Adyen session, PayPal order).
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst session = await client.carts.paymentSessions.create('cart_abc123', {\n  payment_method_id: 'pm_abc123',\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        description: Bearer token for authenticated customers
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID (e.g., cart_abc123)
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Unique key for request idempotency.
+        schema:
+          type: string
+      responses:
+        '201':
+          description: payment session created
+          content:
+            application/json:
+              example:
+                id: ps_gbHJdmfrXB
+                status: pending
+                currency: USD
+                external_id: bogus_799f9d0cdd2a024b44a972f2
+                external_data:
+                  client_secret: bogus_secret_e705380ff182660e
+                customer_external_id: null
+                expires_at: null
+                amount: '110.0'
+                payment_method_id: pm_UkLWZg9DAJ
+                order_id: or_UkLWZg9DAJ
+                payment_method:
+                  id: pm_UkLWZg9DAJ
+                  name: Credit Card
+                  description: null
+                  type: bogus
+                  session_required: true
+                  source_required: true
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method_id:
+                  type: string
+                  example: pm_abc123
+                  description: Payment method ID
+                amount:
+                  type: string
+                  example: '99.99'
+                  description: Payment amount (defaults to order total minus store credits)
+                external_data:
+                  type: object
+                  description: Provider-specific data passed to the gateway
+              required:
+              - payment_method_id
+  /api/v3/store/carts/{cart_id}/payment_sessions/{id}:
+    parameters:
+    - name: x-spree-api-key
+      in: header
+      required: true
+      schema:
+        type: string
+    - name: Authorization
+      in: header
+      required: false
+      description: Bearer token for authenticated customers
+      schema:
+        type: string
+    - name: cart_id
+      in: path
+      required: true
+      description: Cart prefixed ID
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      description: Payment session ID
+      schema:
+        type: string
+    - name: x-spree-token
+      in: header
+      required: false
+      description: Order token for guest access
+      schema:
+        type: string
+    get:
+      summary: Get payment session
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Returns a single payment session with its current status and provider data.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst session = await client.carts.paymentSessions.get('cart_abc123', 'ps_abc123', {\n  token: '<token>',\n})"
+      responses:
+        '200':
+          description: payment session found
+          content:
+            application/json:
+              example:
+                id: ps_UkLWZg9DAJ
+                status: pending
+                currency: USD
+                external_id: bogus_aecf7276c91c09ca9e9ec79a
+                external_data:
+                  client_secret: secret_123
+                customer_external_id: null
+                expires_at: null
+                amount: '110.0'
+                payment_method_id: pm_UkLWZg9DAJ
+                order_id: or_UkLWZg9DAJ
+                payment_method:
+                  id: pm_UkLWZg9DAJ
+                  name: Credit Card
+                  description: null
+                  type: bogus
+                  session_required: true
+                  source_required: true
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+        '404':
+          description: payment session not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Payment session not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update payment session
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Updates a payment session. Delegates to the payment gateway to sync changes with the provider.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst session = await client.carts.paymentSessions.update('cart_abc123', 'ps_abc123', {\n  amount: '50.00',\n}, {\n  token: '<token>',\n})"
+      parameters: []
+      responses:
+        '200':
+          description: payment session updated
+          content:
+            application/json:
+              example:
+                id: ps_UkLWZg9DAJ
+                status: pending
+                currency: USD
+                external_id: bogus_4d892ef9777434a81f39f60d
+                external_data:
+                  client_secret: secret_123
+                customer_external_id: null
+                expires_at: null
+                amount: '50.0'
+                payment_method_id: pm_UkLWZg9DAJ
+                order_id: or_UkLWZg9DAJ
+                payment_method:
+                  id: pm_UkLWZg9DAJ
+                  name: Credit Card
+                  description: null
+                  type: bogus
+                  session_required: true
+                  source_required: true
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: string
+                  example: '50.00'
+                  description: Updated payment amount
+                external_data:
+                  type: object
+                  description: Provider-specific data to update
+  /api/v3/store/carts/{cart_id}/payment_sessions/{id}/complete:
+    parameters:
+    - name: x-spree-api-key
+      in: header
+      required: true
+      schema:
+        type: string
+    - name: Authorization
+      in: header
+      required: false
+      description: Bearer token for authenticated customers
+      schema:
+        type: string
+    - name: cart_id
+      in: path
+      required: true
+      description: Cart prefixed ID
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      description: Payment session ID
+      schema:
+        type: string
+    - name: x-spree-token
+      in: header
+      required: false
+      description: Order token for guest access
+      schema:
+        type: string
+    patch:
+      summary: Complete payment session
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Completes a payment session by confirming the payment with the provider. This triggers payment capture/authorization and order completion.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst session = await client.carts.paymentSessions.complete('cart_abc123', 'ps_abc123', {\n  session_result: 'success',\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Unique key for request idempotency.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: payment session completed
+          content:
+            application/json:
+              example:
+                id: ps_UkLWZg9DAJ
+                status: completed
+                currency: USD
+                external_id: bogus_a8a35246fb9e9da3d0a251b8
+                external_data:
+                  client_secret: secret_123
+                customer_external_id: null
+                expires_at: null
+                amount: '110.0'
+                payment_method_id: pm_UkLWZg9DAJ
+                order_id: or_UkLWZg9DAJ
+                payment_method:
+                  id: pm_UkLWZg9DAJ
+                  name: Credit Card
+                  description: null
+                  type: bogus
+                  session_required: true
+                  source_required: true
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+        '404':
+          description: payment session not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Payment session not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                session_result:
+                  type: string
+                  description: Provider-specific session result token
+                external_data:
+                  type: object
+                  description: Provider-specific completion data
+  /api/v3/store/carts/{cart_id}/payments:
+    post:
+      summary: Create payment
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Creates a payment for a non-session payment method (e.g. Check, Cash on Delivery, Bank Transfer). For payment methods that require a session (e.g. Stripe, PayPal), use the payment sessions endpoint instead.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst payment = await client.carts.payments.create('cart_abc123', {\n  payment_method_id: 'pm_abc123',\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        description: Order token for guest access
+        schema:
+          type: string
+      responses:
+        '201':
+          description: payment created
+          content:
+            application/json:
+              example:
+                id: py_UkLWZg9DAJ
+                payment_method_id: pm_UkLWZg9DAJ
+                response_code: null
+                number: PDW8QZGM
+                amount: '110.0'
+                display_amount: $110.00
+                status: checkout
+                source_type: null
+                source_id: null
+                source: null
+                payment_method:
+                  id: pm_UkLWZg9DAJ
+                  name: Check
+                  description: null
+                  type: check
+                  session_required: false
+                  source_required: false
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '422':
+          description: session-based payment method
+          content:
+            application/json:
+              example:
+                error:
+                  code: payment_session_required
+                  message: This payment method requires a payment session. Use the payment sessions endpoint instead.
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method_id:
+                  type: string
+                  example: pm_abc123
+                  description: Payment method ID (must be a non-session payment method)
+                amount:
+                  type: string
+                  example: '99.99'
+                  description: Payment amount (defaults to order total minus store credits)
+                metadata:
+                  type: object
+                  description: Arbitrary metadata to attach to the payment
+              required:
+              - payment_method_id
+  /api/v3/store/carts/{cart_id}/store_credits:
+    post:
+      summary: Apply store credit
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Applies store credit to the cart during checkout.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.storeCredits.apply('cart_abc123', 10.0, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID (e.g., cart_abc123)
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Unique key for request idempotency.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: store credit applied
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R563436707
+                token: MEKMkDqDZiwtriHVLkLzxZ7hGj4nxCtmBig
+                email: renate_tromp@adams.biz
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '110.0'
+                display_total: $110.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '100.0'
+                display_amount_due: $100.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '10.0'
+                display_store_credit_total: -$10.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements: []
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 1657
+                  slug: product-1657
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H22654230230
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Marissa Sipes
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments:
+                - id: py_UkLWZg9DAJ
+                  payment_method_id: pm_UkLWZg9DAJ
+                  response_code: 1-SC-20260521181251050531
+                  number: PFR3QR4H
+                  amount: '10.0'
+                  display_amount: $10.00
+                  status: checkout
+                  source_type: store_credit
+                  source_id: credit_UkLWZg9DAJ
+                  source:
+                    id: credit_UkLWZg9DAJ
+                    amount: '50.0'
+                    amount_used: '0.0'
+                    amount_remaining: '50.0'
+                    display_amount: $50.00
+                    display_amount_used: $0.00
+                    display_amount_remaining: $50.00
+                    currency: USD
+                  payment_method:
+                    id: pm_UkLWZg9DAJ
+                    name: Store Credit
+                    description: Store Credit
+                    type: store_credit
+                    session_required: false
+                    source_required: true
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 324 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 325 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods:
+                - id: pm_UkLWZg9DAJ
+                  name: Store Credit
+                  description: Store Credit
+                  type: store_credit
+                  session_required: false
+                  source_required: true
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '422':
+          description: no store credit available
+          content:
+            application/json:
+              example:
+                error:
+                  code: processing_error
+                  message: User does not have any Store Credits available
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  example: 10.0
+                  description: Amount to apply (optional - defaults to max available)
+    delete:
+      summary: Remove store credit
+      tags:
+      - Carts
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Removes store credit from the cart.
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst cart = await client.carts.storeCredits.remove('cart_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: cart_id
+        in: path
+        required: true
+        description: Cart prefixed ID
+        schema:
+          type: string
+      - name: x-spree-token
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: store credit removed
+          content:
+            application/json:
+              example:
+                id: cart_UkLWZg9DAJ
+                market_id: null
+                number: R554787846
+                token: vfB6PnFw9cPg6LbJqQKBA7jHh5zQGzRLtnz
+                email: elvis@hyatt.ca
+                customer_note: null
+                currency: USD
+                locale: en
+                total_quantity: 1
+                item_total: '10.0'
+                display_item_total: $10.00
+                adjustment_total: '0.0'
+                display_adjustment_total: $0.00
+                discount_total: '0.0'
+                display_discount_total: $0.00
+                tax_total: '0.0'
+                display_tax_total: $0.00
+                included_tax_total: '0.0'
+                display_included_tax_total: $0.00
+                additional_tax_total: '0.0'
+                display_additional_tax_total: $0.00
+                total: '110.0'
+                display_total: $110.00
+                gift_card_total: '0.0'
+                display_gift_card_total: $0.00
+                amount_due: '110.0'
+                display_amount_due: $110.00
+                delivery_total: '100.0'
+                display_delivery_total: $100.00
+                warnings: []
+                store_credit_total: '0.0'
+                display_store_credit_total: $0.00
+                covered_by_store_credit: false
+                current_step: address
+                completed_steps: []
+                requirements:
+                - step: payment
+                  field: payment
+                  message: Add a payment method
+                shipping_eq_billing_address: false
+                discounts: []
+                items:
+                - id: li_UkLWZg9DAJ
+                  variant_id: variant_UkLWZg9DAJ
+                  quantity: 1
+                  currency: USD
+                  name: Product 1673494
+                  slug: product-1673494
+                  options_text: ''
+                  price: '10.0'
+                  display_price: $10.00
+                  total: '10.0'
+                  display_total: $10.00
+                  adjustment_total: '0.0'
+                  display_adjustment_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  pre_tax_amount: '10.0'
+                  display_pre_tax_amount: $10.00
+                  discounted_amount: '10.0'
+                  display_discounted_amount: $10.00
+                  display_compare_at_amount: $0.00
+                  compare_at_amount: null
+                  thumbnail_url: null
+                  option_values: []
+                  digital_links: []
+                fulfillments:
+                - id: ful_UkLWZg9DAJ
+                  number: H45381203670
+                  tracking: U10000
+                  tracking_url: null
+                  cost: '100.0'
+                  display_cost: $100.00
+                  total: '100.0'
+                  display_total: $100.00
+                  discount_total: '0.0'
+                  display_discount_total: $0.00
+                  additional_tax_total: '0.0'
+                  display_additional_tax_total: $0.00
+                  included_tax_total: '0.0'
+                  display_included_tax_total: $0.00
+                  tax_total: '0.0'
+                  display_tax_total: $0.00
+                  status: pending
+                  fulfillment_type: shipping
+                  fulfilled_at: null
+                  items:
+                  - item_id: li_UkLWZg9DAJ
+                    variant_id: variant_UkLWZg9DAJ
+                    quantity: 1
+                  delivery_method:
+                    id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    code: UPS_GROUND
+                  stock_location:
+                    id: sloc_UkLWZg9DAJ
+                    state_abbr: NY
+                    name: Ozella Hirthe
+                    address1: 1600 Pennsylvania Ave NW
+                    city: Washington
+                    zipcode: '20500'
+                    country_iso: US
+                    country_name: United States of America
+                    state_text: NY
+                  delivery_rates:
+                  - id: dr_UkLWZg9DAJ
+                    delivery_method_id: dm_UkLWZg9DAJ
+                    name: UPS Ground
+                    selected: true
+                    cost: '100.0'
+                    total: '100.0'
+                    additional_tax_total: '0.0'
+                    included_tax_total: '0.0'
+                    tax_total: '0.0'
+                    display_cost: $100.00
+                    display_total: $100.00
+                    display_additional_tax_total: $0.00
+                    display_included_tax_total: $0.00
+                    display_tax_total: $0.00
+                    delivery_method:
+                      id: dm_UkLWZg9DAJ
+                      name: UPS Ground
+                      code: UPS_GROUND
+                payments: []
+                billing_address:
+                  id: addr_EfhxLZ9ck8
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 332 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                shipping_address:
+                  id: addr_VqXmZF31wY
+                  first_name: John
+                  last_name: Doe
+                  full_name: John Doe
+                  address1: 333 Lovely Street
+                  address2: Northwest
+                  postal_code: '10118'
+                  city: New York
+                  phone: 555-555-0199
+                  company: Company
+                  country_name: United States of America
+                  country_iso: US
+                  state_text: NY
+                  state_abbr: NY
+                  quick_checkout: false
+                  is_default_billing: false
+                  is_default_shipping: false
+                  state_name: New York
+                payment_methods: []
+                gift_card: null
+                market: null
+              schema:
+                $ref: '#/components/schemas/Cart'
+components:
+  schemas:
+    Fulfillment:
+      type: object
+      properties:
+        id:
+          type: string
+        number:
+          type: string
+        tracking:
+          type: string
+          nullable: true
+        tracking_url:
+          type: string
+          nullable: true
+        cost:
+          type: string
+        display_cost:
+          type: string
+        total:
+          type: string
+        display_total:
+          type: string
+        discount_total:
+          type: string
+        display_discount_total:
+          type: string
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        status:
+          type: string
+        fulfillment_type:
+          type: string
+        fulfilled_at:
+          type: string
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FulfillmentManifestItem'
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethod'
+        stock_location:
+          $ref: '#/components/schemas/StockLocation'
+        delivery_rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryRate'
+      required:
+      - id
+      - number
+      - tracking
+      - tracking_url
+      - cost
+      - display_cost
+      - total
+      - display_total
+      - discount_total
+      - display_discount_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - tax_total
+      - display_tax_total
+      - status
+      - fulfillment_type
+      - fulfilled_at
+      - items
+      - delivery_method
+      - stock_location
+      - delivery_rates
+      x-typelizer: true
+    DeliveryRate:
+      type: object
+      properties:
+        id:
+          type: string
+        delivery_method_id:
+          type: string
+        name:
+          type: string
+        selected:
+          type: boolean
+        cost:
+          type: string
+        total:
+          type: string
+        additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        tax_total:
+          type: string
+        display_cost:
+          type: string
+        display_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethod'
+      required:
+      - id
+      - delivery_method_id
+      - name
+      - selected
+      - cost
+      - total
+      - additional_tax_total
+      - included_tax_total
+      - tax_total
+      - display_cost
+      - display_total
+      - display_additional_tax_total
+      - display_included_tax_total
+      - display_tax_total
+      - delivery_method
+      x-typelizer: true
+    DeliveryMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+          nullable: true
+      required:
+      - id
+      - name
+      - code
+      x-typelizer: true
+    State:
+      type: object
+      properties:
+        abbr:
+          type: string
+        name:
+          type: string
+      required:
+      - abbr
+      - name
+      x-typelizer: true
+    PaymentSession:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        currency:
+          type: string
+        external_id:
+          type: string
+        external_data:
+          type: object
+        customer_external_id:
+          type: string
+          nullable: true
+        expires_at:
+          type: string
+          nullable: true
+        amount:
+          type: string
+        payment_method_id:
+          type: string
+        order_id:
+          type: string
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        payment:
+          $ref: '#/components/schemas/Payment'
+      required:
+      - id
+      - status
+      - currency
+      - external_id
+      - external_data
+      - customer_external_id
+      - expires_at
+      - amount
+      - payment_method_id
+      - order_id
+      - payment_method
+      x-typelizer: true
+    LineItem:
+      type: object
+      properties:
+        id:
+          type: string
+        variant_id:
+          type: string
+        quantity:
+          type: number
+        currency:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        options_text:
+          type: string
+        price:
+          type: string
+        display_price:
+          type: string
+        total:
+          type: string
+        display_total:
+          type: string
+        adjustment_total:
+          type: string
+        display_adjustment_total:
+          type: string
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        discount_total:
+          type: string
+        display_discount_total:
+          type: string
+        pre_tax_amount:
+          type: string
+        display_pre_tax_amount:
+          type: string
+        discounted_amount:
+          type: string
+        display_discounted_amount:
+          type: string
+        display_compare_at_amount:
+          type: string
+          nullable: true
+        compare_at_amount:
+          type: string
+          nullable: true
+        thumbnail_url:
+          type: string
+          nullable: true
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue'
+        digital_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitalLink'
+      required:
+      - id
+      - variant_id
+      - quantity
+      - currency
+      - name
+      - slug
+      - options_text
+      - price
+      - display_price
+      - total
+      - display_total
+      - adjustment_total
+      - display_adjustment_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - discount_total
+      - display_discount_total
+      - pre_tax_amount
+      - display_pre_tax_amount
+      - discounted_amount
+      - display_discounted_amount
+      - display_compare_at_amount
+      - compare_at_amount
+      - thumbnail_url
+      - option_values
+      - digital_links
+      x-typelizer: true
+    DigitalLink:
+      type: object
+      properties:
+        id:
+          type: string
+        access_counter:
+          type: number
+        filename:
+          type: string
+        content_type:
+          type: string
+        download_url:
+          type: string
+        authorizable:
+          type: boolean
+        expired:
+          type: boolean
+        access_limit_exceeded:
+          type: boolean
+      required:
+      - id
+      - access_counter
+      - filename
+      - content_type
+      - download_url
+      - authorizable
+      - expired
+      - access_limit_exceeded
+      x-typelizer: true
+    CartWarning:
+      type: object
+      description: A warning about a cart issue (e.g., item removed due to stock change)
+      properties:
+        code:
+          type: string
+          description: Machine-readable warning code
+          example: line_item_removed
+        message:
+          type: string
+          description: Human-readable warning message
+          example: Blue T-Shirt was removed because it was sold out
+        line_item_id:
+          type: string
+          nullable: true
+          description: Prefixed line item ID (when applicable)
+          example: li_abc123
+        variant_id:
+          type: string
+          nullable: true
+          description: Prefixed variant ID (when applicable)
+          example: variant_abc123
+      required:
+      - code
+      - message
+    Country:
+      type: object
+      properties:
+        iso:
+          type: string
+        iso3:
+          type: string
+        name:
+          type: string
+        states_required:
+          type: boolean
+        zipcode_required:
+          type: boolean
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/State'
+        market:
+          allOf:
+          - $ref: '#/components/schemas/Market'
+          nullable: true
+      required:
+      - iso
+      - iso3
+      - name
+      - states_required
+      - zipcode_required
+      x-typelizer: true
+    CreditCard:
+      type: object
+      properties:
+        id:
+          type: string
+        brand:
+          type: string
+        last4:
+          type: string
+        month:
+          type: number
+        year:
+          type: number
+        name:
+          type: string
+          nullable: true
+        default:
+          type: boolean
+        gateway_payment_profile_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - brand
+      - last4
+      - month
+      - year
+      - name
+      - default
+      - gateway_payment_profile_id
+      x-typelizer: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type: object
+              description: Field-specific validation errors
+              nullable: true
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
+    StoreCredit:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        amount_used:
+          type: string
+        amount_remaining:
+          type: string
+        display_amount:
+          type: string
+        display_amount_used:
+          type: string
+        display_amount_remaining:
+          type: string
+        currency:
+          type: string
+      required:
+      - id
+      - amount
+      - amount_used
+      - amount_remaining
+      - display_amount
+      - display_amount_used
+      - display_amount_remaining
+      - currency
+      x-typelizer: true
+    CheckoutRequirement:
+      type: object
+      properties:
+        step:
+          type: string
+          description: Checkout step this requirement belongs to
+          example: payment
+        field:
+          type: string
+          description: Field that needs to be satisfied
+          example: payment
+        message:
+          type: string
+          description: Human-readable requirement message
+          example: Add a payment method
+      required:
+      - step
+      - field
+      - message
+    PaymentSource:
+      type: object
+      properties:
+        id:
+          type: string
+        gateway_payment_profile_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - gateway_payment_profile_id
+      x-typelizer: true
+    FulfillmentManifestItem:
+      type: object
+      description: An item within a fulfillment — which line item and how many units are in this fulfillment
+      properties:
+        item_id:
+          type: string
+          description: Line item ID
+          example: li_abc123
+        variant_id:
+          type: string
+          description: Variant ID
+          example: variant_abc123
+        quantity:
+          type: integer
+          description: Quantity in this fulfillment
+          example: 2
+      required:
+      - item_id
+      - variant_id
+      - quantity
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        full_name:
+          type: string
+        address1:
+          type: string
+          nullable: true
+        address2:
+          type: string
+          nullable: true
+        postal_code:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        company:
+          type: string
+          nullable: true
+        country_name:
+          type: string
+        country_iso:
+          type: string
+        state_text:
+          type: string
+          nullable: true
+        state_abbr:
+          type: string
+          nullable: true
+        quick_checkout:
+          type: boolean
+        is_default_billing:
+          type: boolean
+        is_default_shipping:
+          type: boolean
+        state_name:
+          type: string
+          nullable: true
+      required:
+      - id
+      - first_name
+      - last_name
+      - full_name
+      - address1
+      - address2
+      - postal_code
+      - city
+      - phone
+      - company
+      - country_name
+      - country_iso
+      - state_text
+      - state_abbr
+      - quick_checkout
+      - is_default_billing
+      - is_default_shipping
+      - state_name
+      x-typelizer: true
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        market_id:
+          type: string
+          nullable: true
+        channel_id:
+          type: string
+          nullable: true
+        number:
+          type: string
+        email:
+          type: string
+        customer_note:
+          type: string
+          nullable: true
+        currency:
+          type: string
+        locale:
+          type: string
+          nullable: true
+        total_quantity:
+          type: number
+        item_total:
+          type: string
+        display_item_total:
+          type: string
+        adjustment_total:
+          type: string
+        display_adjustment_total:
+          type: string
+        discount_total:
+          type: string
+        display_discount_total:
+          type: string
+        tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        total:
+          type: string
+        display_total:
+          type: string
+        gift_card_total:
+          type: string
+        display_gift_card_total:
+          type: string
+        amount_due:
+          type: string
+        display_amount_due:
+          type: string
+        delivery_total:
+          type: string
+        display_delivery_total:
+          type: string
+        fulfillment_status:
+          type: string
+          nullable: true
+        payment_status:
+          type: string
+          nullable: true
+        completed_at:
+          type: string
+          nullable: true
+        store_credit_total:
+          type: string
+        display_store_credit_total:
+          type: string
+        covered_by_store_credit:
+          type: boolean
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Discount'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItem'
+        fulfillments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fulfillment'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        billing_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          nullable: true
+        shipping_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          nullable: true
+        gift_card:
+          allOf:
+          - $ref: '#/components/schemas/GiftCard'
+          nullable: true
+        market:
+          allOf:
+          - $ref: '#/components/schemas/Market'
+          nullable: true
+      required:
+      - id
+      - market_id
+      - channel_id
+      - number
+      - email
+      - customer_note
+      - currency
+      - locale
+      - total_quantity
+      - item_total
+      - display_item_total
+      - adjustment_total
+      - display_adjustment_total
+      - discount_total
+      - display_discount_total
+      - tax_total
+      - display_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - total
+      - display_total
+      - gift_card_total
+      - display_gift_card_total
+      - amount_due
+      - display_amount_due
+      - delivery_total
+      - display_delivery_total
+      - fulfillment_status
+      - payment_status
+      - completed_at
+      - store_credit_total
+      - display_store_credit_total
+      - covered_by_store_credit
+      - discounts
+      - items
+      - fulfillments
+      - payments
+      - billing_address
+      - shipping_address
+      - gift_card
+      - market
+      x-typelizer: true
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        payment_method_id:
+          type: string
+        response_code:
+          type: string
+          nullable: true
+        number:
+          type: string
+        amount:
+          type: string
+        display_amount:
+          type: string
+        status:
+          type: string
+        source_type:
+          type: string
+          nullable: true
+          enum:
+          - credit_card
+          - store_credit
+          - payment_source
+        source_id:
+          type: string
+          nullable: true
+        source:
+          anyOf:
+          - $ref: '#/components/schemas/CreditCard'
+          - $ref: '#/components/schemas/StoreCredit'
+          - $ref: '#/components/schemas/PaymentSource'
+          nullable: true
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+      required:
+      - id
+      - payment_method_id
+      - response_code
+      - number
+      - amount
+      - display_amount
+      - status
+      - source_type
+      - source_id
+      - source
+      - payment_method
+      x-typelizer: true
+    OptionValue:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
+          type: string
+          nullable: true
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+      required:
+      - id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
+      x-typelizer: true
+    GiftCard:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        status:
+          type: string
+        currency:
+          type: string
+        amount:
+          type: string
+        amount_used:
+          type: string
+        amount_authorized:
+          type: string
+        amount_remaining:
+          type: string
+        display_amount:
+          type: string
+        display_amount_used:
+          type: string
+        display_amount_remaining:
+          type: string
+        expires_at:
+          type: string
+          nullable: true
+        redeemed_at:
+          type: string
+          nullable: true
+        expired:
+          type: boolean
+        active:
+          type: boolean
+      required:
+      - id
+      - code
+      - status
+      - currency
+      - amount
+      - amount_used
+      - amount_authorized
+      - amount_remaining
+      - display_amount
+      - display_amount_used
+      - display_amount_remaining
+      - expires_at
+      - redeemed_at
+      - expired
+      - active
+      x-typelizer: true
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        type:
+          type: string
+        session_required:
+          type: boolean
+        source_required:
+          type: boolean
+      required:
+      - id
+      - name
+      - description
+      - type
+      - session_required
+      - source_required
+      x-typelizer: true
+    Discount:
+      type: object
+      properties:
+        id:
+          type: string
+        promotion_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        amount:
+          type: string
+        display_amount:
+          type: string
+      required:
+      - id
+      - promotion_id
+      - name
+      - description
+      - code
+      - amount
+      - display_amount
+      x-typelizer: true
+    StockLocation:
+      type: object
+      properties:
+        id:
+          type: string
+        state_abbr:
+          type: string
+          nullable: true
+        name:
+          type: string
+        address1:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        zipcode:
+          type: string
+          nullable: true
+        country_iso:
+          type: string
+          nullable: true
+        country_name:
+          type: string
+          nullable: true
+        state_text:
+          type: string
+          nullable: true
+      required:
+      - id
+      - state_abbr
+      - name
+      - address1
+      - city
+      - zipcode
+      - country_iso
+      - country_name
+      - state_text
+      x-typelizer: true
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+        market_id:
+          type: string
+          nullable: true
+        number:
+          type: string
+        token:
+          type: string
+        email:
+          type: string
+          nullable: true
+        customer_note:
+          type: string
+          nullable: true
+        currency:
+          type: string
+        locale:
+          type: string
+          nullable: true
+        total_quantity:
+          type: number
+        item_total:
+          type: string
+        display_item_total:
+          type: string
+        adjustment_total:
+          type: string
+        display_adjustment_total:
+          type: string
+        discount_total:
+          type: string
+        display_discount_total:
+          type: string
+        tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        total:
+          type: string
+        display_total:
+          type: string
+        gift_card_total:
+          type: string
+        display_gift_card_total:
+          type: string
+        amount_due:
+          type: string
+        display_amount_due:
+          type: string
+        delivery_total:
+          type: string
+        display_delivery_total:
+          type: string
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartWarning'
+        store_credit_total:
+          type: string
+        display_store_credit_total:
+          type: string
+        covered_by_store_credit:
+          type: boolean
+        current_step:
+          type: string
+        completed_steps:
+          type: array
+          items:
+            type: string
+        requirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutRequirement'
+        shipping_eq_billing_address:
+          type: boolean
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Discount'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItem'
+        fulfillments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fulfillment'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        billing_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          nullable: true
+        shipping_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          nullable: true
+        payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+        gift_card:
+          allOf:
+          - $ref: '#/components/schemas/GiftCard'
+          nullable: true
+        market:
+          allOf:
+          - $ref: '#/components/schemas/Market'
+          nullable: true
+      required:
+      - id
+      - market_id
+      - number
+      - token
+      - email
+      - customer_note
+      - currency
+      - locale
+      - total_quantity
+      - item_total
+      - display_item_total
+      - adjustment_total
+      - display_adjustment_total
+      - discount_total
+      - display_discount_total
+      - tax_total
+      - display_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - total
+      - display_total
+      - gift_card_total
+      - display_gift_card_total
+      - amount_due
+      - display_amount_due
+      - delivery_total
+      - display_delivery_total
+      - warnings
+      - store_credit_total
+      - display_store_credit_total
+      - covered_by_store_credit
+      - current_step
+      - completed_steps
+      - requirements
+      - shipping_eq_billing_address
+      - discounts
+      - items
+      - fulfillments
+      - payments
+      - billing_address
+      - shipping_address
+      - payment_methods
+      - gift_card
+      - market
+      x-typelizer: true
+    Market:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        currency:
+          type: string
+        default_locale:
+          type: string
+        tax_inclusive:
+          type: boolean
+        default:
+          type: boolean
+        supported_locales:
+          type: array
+          items:
+            type: string
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+      required:
+      - id
+      - name
+      - currency
+      - default_locale
+      - tax_inclusive
+      - default
+      - supported_locales
+      x-typelizer: true
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

@@ -1,0 +1,2005 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Promotions API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Promotions
+paths:
+  /api/v3/admin/promotions/{promotion_id}/coupon_codes:
+    parameters:
+    - name: promotion_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: List coupon codes for a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the auto-generated coupon codes for a multi-code promotion. Single-code promotions store the code on the promotion itself; this endpoint returns an empty list for them.
+
+
+        **Required scope:** `read_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: coupons } = await client.promotions.couponCodes.list('promo_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: coupon codes found
+          content:
+            application/json:
+              example:
+                data:
+                - id: coupon_UkLWZg9DAJ
+                  code: AAA111
+                  state: unused
+                  created_at: '2026-05-24T17:36:36.570Z'
+                  updated_at: '2026-05-24T17:36:36.570Z'
+                  promotion_id: promo_UkLWZg9DAJ
+                  order_id: null
+                - id: coupon_gbHJdmfrXB
+                  code: BBB222
+                  state: unused
+                  created_at: '2026-05-24T17:36:36.571Z'
+                  updated_at: '2026-05-24T17:36:36.571Z'
+                  promotion_id: promo_UkLWZg9DAJ
+                  order_id: null
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 2
+                  pages: 1
+                  from: 1
+                  to: 2
+                  in: 2
+                  previous: null
+                  next: null
+  /api/v3/admin/promotions/{promotion_id}/promotion_actions:
+    parameters:
+    - name: promotion_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: List actions for a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `read_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: actions } = await client.promotions.actions.list('promo_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: actions found
+          content:
+            application/json:
+              example:
+                data:
+                - id: pact_UkLWZg9DAJ
+                  created_at: '2026-05-24T17:37:39.416Z'
+                  updated_at: '2026-05-24T17:37:39.416Z'
+                  type: free_shipping
+                  promotion_id: promo_UkLWZg9DAJ
+                  preferences: {}
+                  preference_schema: []
+                  label: Free shipping
+                  calculator: null
+                  line_items: null
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+    post:
+      summary: Create an action on a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Adds a new action to a promotion. The `type` is the wire shorthand from `GET /promotion_actions/types` (e.g. `free_shipping`, `create_item_adjustments`). Fully-qualified Ruby class names are also accepted for backward compatibility.
+
+
+        **Required scope:** `write_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst action = await client.promotions.actions.create('promo_UkLWZg9DAJ', {\n  type: 'free_shipping',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: action created
+          content:
+            application/json:
+              example:
+                id: pact_UkLWZg9DAJ
+                created_at: '2026-05-24T17:37:39.979Z'
+                updated_at: '2026-05-24T17:37:39.979Z'
+                type: free_shipping
+                promotion_id: promo_UkLWZg9DAJ
+                preferences: {}
+                preference_schema: []
+                label: Free shipping
+                calculator: null
+                line_items: null
+        '422':
+          description: unknown action type
+          content:
+            application/json:
+              example:
+                error:
+                  code: unknown_promotion_action_type
+                  message: Unknown type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: free_shipping
+                preferences:
+                  type: object
+                  additionalProperties: true
+              required:
+              - type
+  /api/v3/admin/promotions/{promotion_id}/promotion_actions/{id}:
+    parameters:
+    - name: promotion_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Delete an action from a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_promotions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: action deleted
+  /api/v3/admin/promotions/{promotion_id}/promotion_rules:
+    parameters:
+    - name: promotion_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: List rules for a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `read_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: rules } = await client.promotions.rules.list('promo_UkLWZg9DAJ')"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: rules found
+          content:
+            application/json:
+              example:
+                data:
+                - id: prorule_UkLWZg9DAJ
+                  created_at: '2026-05-24T17:37:40.551Z'
+                  updated_at: '2026-05-24T17:37:40.551Z'
+                  type: currency
+                  promotion_id: promo_UkLWZg9DAJ
+                  preferences:
+                    currency: USD
+                  preference_schema:
+                  - key: currency
+                    type: string
+                    default: null
+                  label: Currency
+                  product_ids: null
+                  category_ids: null
+                  customer_ids: null
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+    post:
+      summary: Create a rule on a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Adds a new rule to a promotion. The `type` is the wire shorthand from `GET /promotion_rules/types` (e.g. `currency`, `item_total`, `product`). Fully-qualified Ruby class names are also accepted for backward compatibility.
+
+
+        **Required scope:** `write_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst rule = await client.promotions.rules.create('promo_UkLWZg9DAJ', {\n  type: 'currency',\n  preferences: { currency: 'EUR' },\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: rule created with preferences
+          content:
+            application/json:
+              example:
+                id: prorule_UkLWZg9DAJ
+                created_at: '2026-05-24T17:37:41.133Z'
+                updated_at: '2026-05-24T17:37:41.133Z'
+                type: currency
+                promotion_id: promo_UkLWZg9DAJ
+                preferences:
+                  currency: EUR
+                preference_schema:
+                - key: currency
+                  type: string
+                  default: null
+                label: Currency
+                product_ids: null
+                category_ids: null
+                customer_ids: null
+        '422':
+          description: unknown rule type
+          content:
+            application/json:
+              example:
+                error:
+                  code: unknown_promotion_rule_type
+                  message: Unknown type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: currency
+                preferences:
+                  type: object
+                  additionalProperties: true
+              required:
+              - type
+  /api/v3/admin/promotions/{promotion_id}/promotion_rules/{id}:
+    parameters:
+    - name: promotion_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: Update a rule's preferences
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_promotions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: rule updated
+          content:
+            application/json:
+              example:
+                id: prorule_UkLWZg9DAJ
+                created_at: '2026-05-24T17:37:41.423Z'
+                updated_at: '2026-05-24T17:37:41.701Z'
+                type: currency
+                promotion_id: promo_UkLWZg9DAJ
+                preferences:
+                  currency: GBP
+                preference_schema:
+                - key: currency
+                  type: string
+                  default: null
+                label: Currency
+                product_ids: null
+                category_ids: null
+                customer_ids: null
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                preferences:
+                  type: object
+                  additionalProperties: true
+    delete:
+      summary: Delete a rule from a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_promotions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: rule deleted
+  /api/v3/admin/promotions:
+    get:
+      summary: List promotions
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the store''s promotions, including manual coupon and automatic promotions.
+
+
+        **Required scope:** `read_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: promotions } = await client.promotions.list()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: promotions found
+          content:
+            application/json:
+              example:
+                data:
+                - id: promo_UkLWZg9DAJ
+                  name: Summer Sale
+                  description: null
+                  code: summer
+                  starts_at: '2026-05-24T17:37:41.992Z'
+                  expires_at: null
+                  usage_limit: null
+                  match_policy: all
+                  path: null
+                  kind: coupon_code
+                  multi_codes: false
+                  number_of_codes: null
+                  code_prefix: null
+                  promotion_category_id: null
+                  metadata: {}
+                  created_at: '2026-05-24T17:37:41.993Z'
+                  updated_at: '2026-05-24T17:37:41.994Z'
+                  store_ids:
+                  - store_UkLWZg9DAJ
+                  action_ids: []
+                  rule_ids: []
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+    post:
+      summary: Create a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Creates a new promotion. `code` is required for single-code coupon promotions;
+
+        pass `multi_codes: true` with `number_of_codes` to auto-generate a batch.
+
+
+        Rules and actions can be created in the same request by passing arrays of
+
+        `{ type, preferences, ... }` rows. The server reconciles to the desired set:
+
+        new rows are built, existing rows (by `id`) are updated, omitted rows are removed.
+
+
+
+        **Required scope:** `write_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\n// Single coupon code, no rules/actions\nconst promotion = await client.promotions.create({\n  name: 'Black Friday',\n  code: 'BLACKFRIDAY',\n  starts_at: '2026-11-29T00:00:00Z',\n  expires_at: '2026-12-01T00:00:00Z',\n})\n\n// One-shot: promotion + rules + actions in a single request\nconst blackFriday = await client.promotions.create({\n  name: 'Black Friday',\n  code: 'BLACKFRIDAY',\n  kind: 'coupon_code',\n  starts_at: '2026-11-29T00:00:00Z',\n  expires_at: '2026-12-01T00:00:00Z',\n  match_policy: 'all',\n  rules: [\n    {\n      type: 'currency',\n      preferences: { currency: 'USD' },\n    },\n    {\n      type: 'item_total',\n      preferences: { amount_min: 100, operator_min: 'gte' },\n    },\n    {\n      type: 'product',\n      preferences: { match_policy: 'any' },\n      product_ids: ['prod_abc123', 'prod_def456'],\n    },\n  ],\n  actions: [\n    {\n      type: 'create_item_adjustments',\n      calculator: {\n        type: 'percent_on_line_item',\n        preferences: { percent: 25 },\n      },\n    },\n    { type: 'free_shipping' },\n  ],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: promotion created with rules and actions
+          content:
+            application/json:
+              example:
+                id: promo_gbHJdmfrXB
+                name: Black Friday
+                description: null
+                code: blackfriday-os
+                starts_at: '2026-05-24T17:37:42.886Z'
+                expires_at: null
+                usage_limit: null
+                match_policy: all
+                path: null
+                kind: coupon_code
+                multi_codes: false
+                number_of_codes: null
+                code_prefix: null
+                promotion_category_id: null
+                metadata: {}
+                created_at: '2026-05-24T17:37:42.887Z'
+                updated_at: '2026-05-24T17:37:42.905Z'
+                store_ids:
+                - store_UkLWZg9DAJ
+                action_ids:
+                - pact_UkLWZg9DAJ
+                - pact_gbHJdmfrXB
+                rule_ids:
+                - prorule_UkLWZg9DAJ
+                - prorule_gbHJdmfrXB
+                - prorule_EfhxLZ9ck8
+        '422':
+          description: invalid params
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Name can't be blank and Code can't be blank
+                  details:
+                    name:
+                    - can't be blank
+                    code:
+                    - can't be blank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
+                  nullable: true
+                description:
+                  type: string
+                  nullable: true
+                starts_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                expires_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                usage_limit:
+                  type: integer
+                  nullable: true
+                match_policy:
+                  type: string
+                  enum:
+                  - all
+                  - any
+                kind:
+                  type: string
+                  enum:
+                  - coupon_code
+                  - automatic
+                multi_codes:
+                  type: boolean
+                number_of_codes:
+                  type: integer
+                  nullable: true
+                code_prefix:
+                  type: string
+                  nullable: true
+                promotion_category_id:
+                  type: string
+                  nullable: true
+                rules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: currency
+                      preferences:
+                        type: object
+                        additionalProperties: true
+                      product_ids:
+                        type: array
+                        items:
+                          type: string
+                      category_ids:
+                        type: array
+                        items:
+                          type: string
+                      customer_ids:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                    - type
+                actions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: free_shipping
+                      preferences:
+                        type: object
+                        additionalProperties: true
+                      calculator:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            example: flat_percent_item_total
+                          preferences:
+                            type: object
+                            additionalProperties: true
+                    required:
+                    - type
+              required:
+              - name
+  /api/v3/admin/promotions/{id}:
+    get:
+      summary: Show a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `read_promotions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: promotion found
+          content:
+            application/json:
+              example:
+                id: promo_UkLWZg9DAJ
+                name: Summer Sale
+                description: null
+                code: summer
+                starts_at: '2026-05-24T17:37:43.209Z'
+                expires_at: null
+                usage_limit: null
+                match_policy: all
+                path: null
+                kind: coupon_code
+                multi_codes: false
+                number_of_codes: null
+                code_prefix: null
+                promotion_category_id: null
+                metadata: {}
+                created_at: '2026-05-24T17:37:43.209Z'
+                updated_at: '2026-05-24T17:37:43.211Z'
+                store_ids:
+                - store_UkLWZg9DAJ
+                action_ids: []
+                rule_ids: []
+    patch:
+      summary: Update a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Updates a promotion. The `rules` and `actions` arrays are treated as
+
+        a *desired set* — rows with `id` update in place, rows without `id` are
+
+        built fresh, and any existing row not present in the array is destroyed.
+
+        Pass `rules: []` or `actions: []` to clear them.
+
+
+
+        **Required scope:** `write_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\n// Basic field update\nawait client.promotions.update(promotionId, {\n  description: 'Updated description',\n})\n\n// One-shot: rewrite rules + actions in a single request\nawait client.promotions.update(promotionId, {\n  name: 'Holiday Sale',\n  rules: [\n    // Update an existing rule by id — `preferences` overwrite the prior set\n    {\n      id: 'prorule_existing',\n      type: 'currency',\n      preferences: { currency: 'EUR' },\n    },\n    // Add a new rule\n    {\n      type: 'item_total',\n      preferences: { amount_min: 50, operator_min: 'gte' },\n    },\n  ],\n  actions: [\n    // Swap calculator type on an existing action\n    {\n      id: 'proaction_existing',\n      type: 'create_item_adjustments',\n      calculator: {\n        type: 'percent_on_line_item',\n        preferences: { percent: 15 },\n      },\n    },\n  ],\n})\n\n// Remove all rules/actions\nawait client.promotions.update(promotionId, {\n  rules: [],\n  actions: [],\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: rules and actions cleared with empty arrays
+          content:
+            application/json:
+              example:
+                id: promo_UkLWZg9DAJ
+                name: Summer Sale
+                description: null
+                code: summer
+                starts_at: '2026-05-24T17:37:44.083Z'
+                expires_at: null
+                usage_limit: null
+                match_policy: all
+                path: null
+                kind: coupon_code
+                multi_codes: false
+                number_of_codes: null
+                code_prefix: null
+                promotion_category_id: null
+                metadata: {}
+                created_at: '2026-05-24T17:37:44.084Z'
+                updated_at: '2026-05-24T17:37:44.366Z'
+                store_ids:
+                - store_UkLWZg9DAJ
+                action_ids: []
+                rule_ids: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                  nullable: true
+                code:
+                  type: string
+                  nullable: true
+                starts_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                expires_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                usage_limit:
+                  type: integer
+                  nullable: true
+                match_policy:
+                  type: string
+                  enum:
+                  - all
+                  - any
+                kind:
+                  type: string
+                  enum:
+                  - coupon_code
+                  - automatic
+                promotion_category_id:
+                  type: string
+                  nullable: true
+                rules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        nullable: true
+                        description: Pass to update an existing rule; omit to build a new one
+                      type:
+                        type: string
+                        example: currency
+                      preferences:
+                        type: object
+                        additionalProperties: true
+                      product_ids:
+                        type: array
+                        items:
+                          type: string
+                      category_ids:
+                        type: array
+                        items:
+                          type: string
+                      customer_ids:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                    - type
+                actions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        nullable: true
+                      type:
+                        type: string
+                        example: free_shipping
+                      preferences:
+                        type: object
+                        additionalProperties: true
+                      calculator:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            example: flat_percent_item_total
+                          preferences:
+                            type: object
+                            additionalProperties: true
+                    required:
+                    - type
+    delete:
+      summary: Delete a promotion
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: '**Required scope:** `write_promotions` (for API-key authentication).'
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: promotion deleted
+  /api/v3/admin/promotion_actions/types:
+    get:
+      summary: List available promotion action types
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the registered Spree::PromotionAction subclasses with their preference schemas. Used by admin UIs to populate the "Add action" picker and render generic preference forms.
+
+
+        **Required scope:** `read_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: actionTypes } = await client.promotionActions.types()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: action types found
+          content:
+            application/json:
+              example:
+                data:
+                - type: create_line_items
+                  label: Create line items
+                  description: null
+                  preference_schema: []
+                - type: create_item_adjustments
+                  label: Create per-line-item adjustment
+                  description: null
+                  preference_schema: []
+                - type: create_adjustment
+                  label: Create whole-order adjustment
+                  description: null
+                  preference_schema: []
+                - type: free_shipping
+                  label: Free shipping
+                  description: null
+                  preference_schema: []
+  /api/v3/admin/promotion_rules/types:
+    get:
+      summary: List available promotion rule types
+      tags:
+      - Promotions
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: 'Returns the registered Spree::PromotionRule subclasses with their preference schemas.
+
+
+        **Required scope:** `read_promotions` (for API-key authentication).'
+      x-codeSamples:
+      - lang: javascript
+        label: Spree Admin SDK
+        source: "import { createAdminClient } from '@spree/admin-sdk'\n\nconst client = createAdminClient({\n  baseUrl: 'https://your-store.com',\n  secretKey: 'sk_xxx',\n})\n\nconst { data: ruleTypes } = await client.promotionRules.types()"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: rule types found
+          content:
+            application/json:
+              example:
+                data:
+                - type: category
+                  label: Categories
+                  description: null
+                  preference_schema:
+                  - key: match_policy
+                    type: string
+                    default: any
+                - type: country
+                  label: Country
+                  description: null
+                  preference_schema:
+                  - key: country_isos
+                    type: array
+                    default: []
+                  - key: country_id
+                    type: integer
+                    default: null
+                  - key: country_iso
+                    type: string
+                    default: null
+                - type: currency
+                  label: Currency
+                  description: null
+                  preference_schema:
+                  - key: currency
+                    type: string
+                    default: null
+                - type: customer_group
+                  label: Customer Group(s)
+                  description: null
+                  preference_schema:
+                  - key: customer_group_ids
+                    type: array
+                    default: []
+                - type: customer
+                  label: Customers
+                  description: null
+                  preference_schema: []
+                - type: first_order
+                  label: First order
+                  description: null
+                  preference_schema: []
+                - type: item_total
+                  label: Item total
+                  description: null
+                  preference_schema:
+                  - key: amount_min
+                    type: decimal
+                    default: 100.0
+                  - key: operator_min
+                    type: string
+                    default: '>'
+                  - key: amount_max
+                    type: decimal
+                    default: null
+                  - key: operator_max
+                    type: string
+                    default: <
+                - type: one_use_per_user
+                  label: One Use Per User
+                  description: null
+                  preference_schema: []
+                - type: customer_logged_in
+                  label: Only logged in customers
+                  description: null
+                  preference_schema: []
+                - type: option_value
+                  label: Option Value(s)
+                  description: null
+                  preference_schema:
+                  - key: match_policy
+                    type: string
+                    default: any
+                  - key: eligible_values
+                    type: array
+                    default: []
+                - type: product
+                  label: Product(s)
+                  description: null
+                  preference_schema:
+                  - key: match_policy
+                    type: string
+                    default: any
+  /api/v2/platform/promotions:
+    get:
+      summary: Return a list of Promotions
+      tags:
+      - Promotions
+      security:
+      - bearer_auth: []
+      description: Returns a list of Promotions
+      operationId: promotions-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: promotion_category,promotion_rules,promotion_actions,stores
+        schema:
+          type: string
+      - name: filter[code_eq]
+        in: query
+        description: ''
+        example: BLK-FRI
+        schema:
+          type: string
+      - name: filter[name_cont]
+        in: query
+        description: ''
+        example: New Customer
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '23'
+                      type: promotion
+                      attributes:
+                        description: null
+                        expires_at: null
+                        starts_at: null
+                        name: Promo
+                        type: null
+                        usage_limit: null
+                        match_policy: all
+                        code: null
+                        advertise: false
+                        path: null
+                        created_at: '2022-11-08T19:35:02.793Z'
+                        updated_at: '2022-11-08T19:35:02.795Z'
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        promotion_category:
+                          data: null
+                        promotion_rules:
+                          data: []
+                        promotion_actions:
+                          data: []
+                        stores:
+                          data:
+                          - id: '375'
+                            type: store
+                    - id: '24'
+                      type: promotion
+                      attributes:
+                        description: null
+                        expires_at: null
+                        starts_at: null
+                        name: Promo
+                        type: null
+                        usage_limit: null
+                        match_policy: all
+                        code: null
+                        advertise: false
+                        path: null
+                        created_at: '2022-11-08T19:35:02.805Z'
+                        updated_at: '2022-11-08T19:35:02.807Z'
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        promotion_category:
+                          data:
+                            id: '13'
+                            type: promotion_category
+                        promotion_rules:
+                          data: []
+                        promotion_actions:
+                          data:
+                          - id: '16'
+                            type: promotion_action
+                        stores:
+                          data:
+                          - id: '375'
+                            type: store
+                    - id: '25'
+                      type: promotion
+                      attributes:
+                        description: null
+                        expires_at: null
+                        starts_at: null
+                        name: Promo
+                        type: null
+                        usage_limit: null
+                        match_policy: all
+                        code: null
+                        advertise: false
+                        path: null
+                        created_at: '2022-11-08T19:35:02.822Z'
+                        updated_at: '2022-11-08T19:35:02.824Z'
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        promotion_category:
+                          data:
+                            id: '13'
+                            type: promotion_category
+                        promotion_rules:
+                          data: []
+                        promotion_actions:
+                          data:
+                          - id: '17'
+                            type: promotion_action
+                        stores:
+                          data:
+                          - id: '375'
+                            type: store
+                    - id: '26'
+                      type: promotion
+                      attributes:
+                        description: null
+                        expires_at: null
+                        starts_at: null
+                        name: Promo
+                        type: null
+                        usage_limit: null
+                        match_policy: all
+                        code: null
+                        advertise: false
+                        path: null
+                        created_at: '2022-11-08T19:35:02.837Z'
+                        updated_at: '2022-11-08T19:35:02.839Z'
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        promotion_category:
+                          data:
+                            id: '13'
+                            type: promotion_category
+                        promotion_rules:
+                          data:
+                          - id: '12'
+                            type: promotion_rule
+                        promotion_actions:
+                          data:
+                          - id: '18'
+                            type: promotion_action
+                        stores:
+                          data:
+                          - id: '375'
+                            type: store
+                    meta:
+                      count: 4
+                      total_count: 4
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/promotions?page=1&per_page=&include=&filter[code_eq]=&filter[name_cont]=
+                      next: http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Promotion
+      tags:
+      - Promotions
+      security:
+      - bearer_auth: []
+      description: Creates a Promotion
+      operationId: create-promotion
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: promotion_category,promotion_rules,promotion_actions,stores
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '35'
+                      type: promotion
+                      attributes:
+                        description: First 1000 Customers Save 20%
+                        expires_at: '2022-11-12T19:35:03.283Z'
+                        starts_at: '2022-11-08T19:35:03.283Z'
+                        name: Black Friday 20% Off
+                        type: Spree::Promotion
+                        usage_limit: 1000
+                        match_policy: any
+                        code: BLK-20
+                        advertise: true
+                        path: /black-fri/today
+                        created_at: '2022-11-08T19:35:03.521Z'
+                        updated_at: '2022-11-08T19:35:03.533Z'
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        promotion_category:
+                          data:
+                            id: '15'
+                            type: promotion_category
+                        promotion_rules:
+                          data: []
+                        promotion_actions:
+                          data: []
+                        stores:
+                          data:
+                          - id: '382'
+                            type: store
+                          - id: '383'
+                            type: store
+                          - id: '381'
+                            type: store
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_promotion_params'
+  /api/v2/platform/promotions/{id}:
+    get:
+      summary: Return a Promotion
+      tags:
+      - Promotions
+      security:
+      - bearer_auth: []
+      description: Returns a Promotion
+      operationId: show-promotion
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: promotion_category,promotion_rules,promotion_actions,stores
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '44'
+                      type: promotion
+                      attributes:
+                        description: null
+                        expires_at: null
+                        starts_at: null
+                        name: Promo
+                        type: null
+                        usage_limit: null
+                        match_policy: all
+                        code: null
+                        advertise: false
+                        path: null
+                        created_at: '2022-11-08T19:35:03.971Z'
+                        updated_at: '2022-11-08T19:35:03.973Z'
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        promotion_category:
+                          data:
+                            id: '17'
+                            type: promotion_category
+                        promotion_rules:
+                          data:
+                          - id: '16'
+                            type: promotion_rule
+                        promotion_actions:
+                          data:
+                          - id: '31'
+                            type: promotion_action
+                        stores:
+                          data:
+                          - id: '387'
+                            type: store
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Promotion
+      tags:
+      - Promotions
+      security:
+      - bearer_auth: []
+      description: Updates a Promotion
+      operationId: update-promotion
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: promotion_category,promotion_rules,promotion_actions,stores
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '58'
+                      type: promotion
+                      attributes:
+                        description: This is the new updated promo
+                        expires_at: null
+                        starts_at: null
+                        name: 10% OFF
+                        type: null
+                        usage_limit: null
+                        match_policy: all
+                        code: RAND-10
+                        advertise: false
+                        path: null
+                        created_at: '2022-11-08T19:35:04.723Z'
+                        updated_at: '2022-11-08T19:35:04.970Z'
+                        public_metadata: {}
+                        private_metadata: {}
+                      relationships:
+                        promotion_category:
+                          data:
+                            id: '20'
+                            type: promotion_category
+                        promotion_rules:
+                          data:
+                          - id: '19'
+                            type: promotion_rule
+                        promotion_actions:
+                          data:
+                          - id: '42'
+                            type: promotion_action
+                        stores:
+                          data:
+                          - id: '396'
+                            type: store
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/update_promotion_params'
+              - $ref: '#/components/schemas/update_promotion_add_rule_params'
+              - $ref: '#/components/schemas/update_promotion_update_rule_params'
+              - $ref: '#/components/schemas/update_promotion_add_action_params'
+              - $ref: '#/components/schemas/update_promotion_change_action_params'
+              - $ref: '#/components/schemas/update_promotion_action_calculator_params'
+              - $ref: '#/components/schemas/update_promotion_change_calculator_params'
+    delete:
+      summary: Delete a Promotion
+      tags:
+      - Promotions
+      security:
+      - bearer_auth: []
+      description: Deletes a Promotion
+      operationId: delete-promotion
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    update_promotion_update_rule_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_rules_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Rule, you are required to pass the ID of the rule you are updating.
+                    type:
+                      type: string
+                      example: Spree::Promotion::Rules::Country
+                      enum:
+                      - Spree::Promotion::Rules::Country
+                      - Spree::Promotion::Rules::ItemTotal
+                      - Spree::Promotion::Rules::Product
+                      - Spree::Promotion::Rules::User
+                      - Spree::Promotion::Rules::FirstOrder
+                      - Spree::Promotion::Rules::UserLoggedIn
+                      - Spree::Promotion::Rules::OneUsePerUser
+                      - Spree::Promotion::Rules::Taxon
+                      - Spree::Promotion::Rules::OptionValue
+                      description: Set the Promotion Rule type.
+                    preferred_country_id:
+                      type: integer
+                      example: 143
+                      description: 'Each rule type has its own preferred attributes. In this example we are changing the ID of the Country this rule applies to. To learn more about Spree preferences visit TODO: [LINK].'
+      required:
+      - promotion
+      title: Update an existing Rule
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    update_promotion_action_calculator_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the action you wish to update.
+                    calculator_attributes:
+                      properties:
+                        id:
+                          type: string
+                          example: '19'
+                          description: To update an existing Action Calculator, you are required to pass the ID of the calculator.
+                        type:
+                          type: string
+                          example: Spree::Promotion::Actions::CreateAdjustment
+                          enum:
+                          - Spree::Promotion::Actions::CreateAdjustment
+                          - Spree::Promotion::Actions::CreateItemAdjustments
+                          - Spree::Promotion::Actions::CreateLineItems
+                          - Spree::Promotion::Actions::FreeShipping
+                          description: Set the Type of Promotion Action you wish to use.
+                        preferred_flat_percent:
+                          type: integer
+                          example: 10
+                          description: In this example we are setting the preferred flat percentage to `10`.
+      required:
+      - promotion
+      title: Update an Action Calculator
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_promotion_change_calculator_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
+                    calculator_attributes:
+                      properties:
+                        type:
+                          type: string
+                          example: Spree::Calculator::FlatPercentItemTotal
+                          enum:
+                          - Spree::Calculator::FlatPercentItemTotal
+                          - Spree::Calculator::FlatRate
+                          - Spree::Calculator::FlexiRate
+                          - Spree::Calculator::TieredPercent
+                          - Spree::Calculator::TieredFlatRate
+                          - Spree::Calculator::PercentOnLineItem
+                          description: 'To set the Promotion Action Calculator pass the calculator type. Each Promotion action has certain Calculators available, to learn more visit TODO: [LINK]'
+      required:
+      - promotion
+      title: Change an Action Calculator
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_promotion_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Promotions Used in 2021
+              description: Change the promotion a name.
+            code:
+              type: string
+              example: CYB-MON
+              nullable: true
+              description: Change or remove the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
+            description:
+              type: string
+              example: Save today with discount code XYZ at checkout.
+              nullable: true
+              description: Update the promotion a description.
+            usage_limit:
+              type: integer
+              example: 100
+              nullable: true
+              description: If you wish you can set a usage limit for this promotion.
+            advertise:
+              type: boolean
+            starts_at:
+              type: string
+              format: date_time
+              nullable: true
+              description: Set a date and time that this promotion begins.
+            ends_at:
+              type: string
+              format: date_time
+              nullable: true
+              description: Set a date and time that this promotion ends.
+            store_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+      required:
+      - promotion
+      title: Update a Promotion
+      x-internal: false
+    create_promotion_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Promotions Used in 2021
+              description: Give the promotion a name.
+            code:
+              type: string
+              example: BLK-FRI
+              nullable: true
+              description: Set the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
+            description:
+              type: string
+              example: Save today with discount code XYZ at checkout.
+              nullable: true
+              description: Give the promotion a description.
+            usage_limit:
+              type: integer
+              example: 100
+              nullable: true
+              description: If you wish you can set a usage limit for this promotion.
+            advertise:
+              type: boolean
+            starts_at:
+              type: string
+              format: date_time
+              nullable: true
+              description: Set a date and time that this promotion begins.
+            ends_at:
+              type: string
+              format: date_time
+              nullable: true
+              description: Set a date and time that this promotion ends.
+            store_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+      required:
+      - promotion
+      title: Create a Promotion
+      x-internal: false
+    update_promotion_add_rule_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_rules_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    type:
+                      type: string
+                      example: Spree::Promotion::Rules::Country
+                      enum:
+                      - Spree::Promotion::Rules::Country
+                      - Spree::Promotion::Rules::ItemTotal
+                      - Spree::Promotion::Rules::Product
+                      - Spree::Promotion::Rules::User
+                      - Spree::Promotion::Rules::FirstOrder
+                      - Spree::Promotion::Rules::UserLoggedIn
+                      - Spree::Promotion::Rules::OneUsePerUser
+                      - Spree::Promotion::Rules::Taxon
+                      - Spree::Promotion::Rules::OptionValue
+                      description: Set the Promotion Rule type.
+                    preferred_country_id:
+                      type: integer
+                      example: 122
+                      description: 'Each rule type has its own preferred attributes. In this example we are setting the ID of the Country this rule applies to. To learn more about Spree preferences visit TODO: [LINK].'
+      required:
+      - promotion
+      title: Add a Rule to a Promotion
+      x-internal: false
+    update_promotion_add_action_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    type:
+                      type: string
+                      example: Spree::Promotion::Actions::CreateAdjustment
+                      enum:
+                      - Spree::Promotion::Actions::CreateAdjustment
+                      - Spree::Promotion::Actions::CreateItemAdjustments
+                      - Spree::Promotion::Actions::FreeShipping
+                      - Spree::Promotion::Actions::CreateLineItems
+                      description: Set the Promotion Action Type.
+      required:
+      - promotion
+      title: Add an Action to a Promotion
+      x-internal: false
+    update_promotion_change_action_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
+                    type:
+                      type: string
+                      example: Spree::Promotion::Actions::CreateAdjustment
+                      enum:
+                      - Spree::Promotion::Actions::CreateAdjustment
+                      - Spree::Promotion::Actions::CreateItemAdjustments
+                      - Spree::Promotion::Actions::CreateLineItems
+                      - Spree::Promotion::Actions::FreeShipping
+                      description: Set the Type of Promotion Action you wish to use.
+      required:
+      - promotion
+      title: Change an Action Type
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

@@ -1,0 +1,488 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Webhook Subscribers API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Webhook Subscribers
+paths:
+  /api/v2/platform/webhooks/subscribers:
+    get:
+      summary: Return a list of Webhook Subscribers
+      tags:
+      - Webhook Subscribers
+      security:
+      - bearer_auth: []
+      description: Returns a list of Webhook Subscribers
+      operationId: webhook-subscribers-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: filter[active_eq]
+        in: query
+        description: ''
+        example: 'true'
+        schema:
+          type: string
+      - name: filter[url_cont]
+        in: query
+        description: ''
+        example: mysite
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '5'
+                      type: subscriber
+                      attributes:
+                        url: https://www.url5.com/
+                        active: true
+                        subscriptions:
+                        - '*'
+                        created_at: '2022-11-08T19:35:58.830Z'
+                        updated_at: '2022-11-08T19:35:58.830Z'
+                    - id: '6'
+                      type: subscriber
+                      attributes:
+                        url: https://www.url6.com/
+                        active: true
+                        subscriptions:
+                        - '*'
+                        created_at: '2022-11-08T19:35:58.831Z'
+                        updated_at: '2022-11-08T19:35:58.831Z'
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/webhooks/subscribers?page=1&per_page=&filter[active_eq]=&filter[url_cont]=
+                      next: http://www.example.com/api/v2/platform/webhooks/subscribers?filter%5Bactive_eq%5D=&filter%5Burl_cont%5D=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/webhooks/subscribers?filter%5Bactive_eq%5D=&filter%5Burl_cont%5D=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/webhooks/subscribers?filter%5Bactive_eq%5D=&filter%5Burl_cont%5D=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/webhooks/subscribers?filter%5Bactive_eq%5D=&filter%5Burl_cont%5D=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Webhook Subscriber
+      tags:
+      - Webhook Subscribers
+      security:
+      - bearer_auth: []
+      description: Creates a Webhook Subscriber
+      operationId: create-webhook-subscriber
+      parameters: []
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '9'
+                      type: subscriber
+                      attributes:
+                        url: https://www.url9.com/
+                        active: true
+                        subscriptions:
+                        - '*'
+                        created_at: '2022-11-08T19:35:59.334Z'
+                        updated_at: '2022-11-08T19:35:59.334Z'
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Url must be a valid URL, Url can't be blank, and Url the URL must have a path
+                    errors:
+                      url:
+                      - must be a valid URL
+                      - can't be blank
+                      - the URL must have a path
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_webhook_subscriber_params'
+  /api/v2/platform/webhooks/subscribers/{id}:
+    get:
+      summary: Return a Webhook Subscriber
+      tags:
+      - Webhook Subscribers
+      security:
+      - bearer_auth: []
+      description: Returns a Webhook Subscriber
+      operationId: show-webhook-subscriber
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '10'
+                      type: subscriber
+                      attributes:
+                        url: https://www.url10.com/
+                        active: true
+                        subscriptions:
+                        - '*'
+                        created_at: '2022-11-08T19:35:59.604Z'
+                        updated_at: '2022-11-08T19:35:59.604Z'
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Webhook Subscriber
+      tags:
+      - Webhook Subscribers
+      security:
+      - bearer_auth: []
+      description: Updates a Webhook Subscriber
+      operationId: update-webhook-subscriber
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '12'
+                      type: subscriber
+                      attributes:
+                        url: https://www.url12.com/
+                        active: true
+                        subscriptions:
+                        - '*'
+                        created_at: '2022-11-08T19:36:00.130Z'
+                        updated_at: '2022-11-08T19:36:00.130Z'
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Url must be a valid URL, Url can't be blank, and Url the URL must have a path
+                    errors:
+                      url:
+                      - must be a valid URL
+                      - can't be blank
+                      - the URL must have a path
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_webhook_subscriber_params'
+    delete:
+      summary: Delete a Webhook Subscriber
+      tags:
+      - Webhook Subscribers
+      security:
+      - bearer_auth: []
+      description: Deletes a Webhook Subscriber
+      operationId: delete-webhook-subscriber
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    update_webhook_subscriber_params:
+      type: object
+      properties:
+        subscriber:
+          type: object
+          required:
+          - url
+          properties:
+            active:
+              type: boolean
+              example: true
+              default: false
+            subscriptions:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: order.completed
+              example:
+              - order.created
+              - order.completed
+              - product.updated
+              default: []
+            url:
+              type: string
+              example: https://www.url.com/
+      required:
+      - subscriber
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_webhook_subscriber_params:
+      type: object
+      properties:
+        subscriber:
+          type: object
+          required:
+          - url
+          properties:
+            active:
+              type: boolean
+              example: true
+              default: false
+            subscriptions:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: order.completed
+              example:
+              - order.created
+              - order.completed
+              - product.updated
+              default: []
+            url:
+              type: string
+              example: https://www.url.com/
+      required:
+      - subscriber
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration

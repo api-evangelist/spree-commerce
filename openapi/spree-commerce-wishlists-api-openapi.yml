@@ -1,0 +1,1842 @@
+openapi: 3.0.3
+info:
+  title: Admin Account / Address Wishlists API
+  contact:
+    name: Spree Commerce
+    url: https://spreecommerce.org
+    email: hello@spreecommerce.org
+  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  version: v3
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+tags:
+- name: Wishlists
+paths:
+  /api/v2/platform/wishlists:
+    get:
+      summary: Return a list of Wishlists
+      tags:
+      - Wishlists
+      security:
+      - bearer_auth: []
+      description: Returns a list of Wishlists
+      operationId: wishlists-list
+      parameters:
+      - name: page
+        in: query
+        example: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        example: 50
+        schema:
+          type: integer
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: wished_items
+        schema:
+          type: string
+      - name: filter[name_cont]
+        in: query
+        description: ''
+        example: Birthday
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Records returned
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                    - id: '22'
+                      type: wishlist
+                      attributes:
+                        name: Black Friday
+                        is_private: true
+                        is_default: false
+                        created_at: '2022-11-08T19:36:06.256Z'
+                        updated_at: '2022-11-08T19:36:06.256Z'
+                        token: PunEhftsfcoHddCoVyqQLTYq
+                        variant_included: false
+                      relationships:
+                        wished_items:
+                          data:
+                          - id: '17'
+                            type: wished_item
+                          - id: '18'
+                            type: wished_item
+                    - id: '23'
+                      type: wishlist
+                      attributes:
+                        name: Birthday
+                        is_private: true
+                        is_default: false
+                        created_at: '2022-11-08T19:36:06.257Z'
+                        updated_at: '2022-11-08T19:36:06.257Z'
+                        token: FYKHQXSsnSwAVEaci7RgbPXq
+                        variant_included: false
+                      relationships:
+                        wished_items:
+                          data:
+                          - id: '19'
+                            type: wished_item
+                          - id: '20'
+                            type: wished_item
+                    meta:
+                      count: 2
+                      total_count: 2
+                      total_pages: 1
+                    links:
+                      self: http://www.example.com/api/v2/platform/wishlists?page=1&per_page=&include=&filter[name_cont]=
+                      next: http://www.example.com/api/v2/platform/wishlists?filter%5Bname_cont%5D=&include=&page=1&per_page=
+                      prev: http://www.example.com/api/v2/platform/wishlists?filter%5Bname_cont%5D=&include=&page=1&per_page=
+                      last: http://www.example.com/api/v2/platform/wishlists?filter%5Bname_cont%5D=&include=&page=1&per_page=
+                      first: http://www.example.com/api/v2/platform/wishlists?filter%5Bname_cont%5D=&include=&page=1&per_page=
+              schema:
+                $ref: '#/components/schemas/resources_list'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: Create a Wishlist
+      tags:
+      - Wishlists
+      security:
+      - bearer_auth: []
+      description: Creates a Wishlist
+      operationId: create-wishlist
+      parameters:
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: wished_items
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '26'
+                      type: wishlist
+                      attributes:
+                        name: Wishlist_26
+                        is_private: true
+                        is_default: false
+                        created_at: '2022-11-08T19:36:07.290Z'
+                        updated_at: '2022-11-08T19:36:07.290Z'
+                        token: w7zjAVs9QJd9MLdPXDQcxrqi
+                        variant_included: false
+                      relationships:
+                        wished_items:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank and User can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+                      user:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_wishlist_params'
+  /api/v2/platform/wishlists/{id}:
+    get:
+      summary: Return a Wishlist
+      tags:
+      - Wishlists
+      security:
+      - bearer_auth: []
+      description: Returns a Wishlist
+      operationId: show-wishlist
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: wished_items
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '27'
+                      type: wishlist
+                      attributes:
+                        name: My Wishlist
+                        is_private: true
+                        is_default: false
+                        created_at: '2022-11-08T19:36:07.570Z'
+                        updated_at: '2022-11-08T19:36:07.570Z'
+                        token: mTKMs2ZP2PQc1Gu64XMvPrtk
+                        variant_included: false
+                      relationships:
+                        wished_items:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+    patch:
+      summary: Update a Wishlist
+      tags:
+      - Wishlists
+      security:
+      - bearer_auth: []
+      description: Updates a Wishlist
+      operationId: update-wishlist
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: 'Select which associated resources you would like to fetch, see: <a href="https://jsonapi.org/format/#fetching-includes">https://jsonapi.org/format/#fetching-includes</a>'
+        example: wished_items
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Record updated
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    data:
+                      id: '29'
+                      type: wishlist
+                      attributes:
+                        name: My Super Wishlist
+                        is_private: true
+                        is_default: false
+                        created_at: '2022-11-08T19:36:08.103Z'
+                        updated_at: '2022-11-08T19:36:08.334Z'
+                        token: W4TY5oxqYi2kvpYs26XUPH3p
+                        variant_included: false
+                      relationships:
+                        wished_items:
+                          data: []
+              schema:
+                $ref: '#/components/schemas/resource'
+        '422':
+          description: Invalid request
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: Name can't be blank
+                    errors:
+                      name:
+                      - can't be blank
+              schema:
+                $ref: '#/components/schemas/validation_errors'
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_wishlist_params'
+    delete:
+      summary: Delete a Wishlist
+      tags:
+      - Wishlists
+      security:
+      - bearer_auth: []
+      description: Deletes a Wishlist
+      operationId: delete-wishlist
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The resource you were looking for could not be found.
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Authentication Failed
+          content:
+            application/vnd.api+json:
+              examples:
+                Example:
+                  value:
+                    error: The access token is invalid
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v3/store/wishlists:
+    get:
+      summary: List wishlists
+      tags:
+      - Wishlists
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Returns all wishlists for the authenticated customer
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst wishlists = await client.wishlists.list({}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: wishlists found
+          content:
+            application/json:
+              example:
+                data:
+                - id: wl_UkLWZg9DAJ
+                  name: My Wishlist
+                  token: czkimqa2wGQpziZPiHu4TETD
+                  is_default: false
+                  is_private: true
+                meta:
+                  page: 1
+                  limit: 25
+                  count: 1
+                  pages: 1
+                  from: 1
+                  to: 1
+                  in: 1
+                  previous: null
+                  next: null
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Wishlist'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              example:
+                error:
+                  code: authentication_required
+                  message: Authentication required
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a wishlist
+      tags:
+      - Wishlists
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Creates a new wishlist for the customer
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst wishlist = await client.wishlists.create({\n  name: 'Birthday Ideas',\n  is_private: true,\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: wishlist created
+          content:
+            application/json:
+              example:
+                id: wl_gbHJdmfrXB
+                name: Birthday Ideas
+                token: HkhGZqtmkmgvuTiENz7zMHwA
+                is_default: false
+                is_private: true
+              schema:
+                $ref: '#/components/schemas/Wishlist'
+        '422':
+          description: validation error
+          content:
+            application/json:
+              example:
+                error:
+                  code: validation_error
+                  message: Name can't be blank
+                  details:
+                    name:
+                    - can't be blank
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Birthday Ideas
+                is_private:
+                  type: boolean
+                  example: true
+                is_default:
+                  type: boolean
+                  example: false
+              required:
+              - name
+  /api/v3/store/wishlists/{id}:
+    get:
+      summary: Get a wishlist
+      tags:
+      - Wishlists
+      security:
+      - api_key: []
+        bearer_auth: []
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst wishlist = await client.wishlists.get('wl_abc123', {\n  expand: ['wished_items'],\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        required: false
+        description: Expand wished_items
+        schema:
+          type: string
+      - name: fields
+        in: query
+        required: false
+        description: Comma-separated list of fields to include (e.g., name,slug,price). id is always included.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: wishlist found
+          content:
+            application/json:
+              example:
+                id: wl_UkLWZg9DAJ
+                name: My Wishlist
+                token: URczbyJbeCgRS1a82JhitHvQ
+                is_default: false
+                is_private: true
+              schema:
+                $ref: '#/components/schemas/Wishlist'
+        '404':
+          description: wishlist not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Wishlist not found
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a wishlist
+      tags:
+      - Wishlists
+      security:
+      - api_key: []
+        bearer_auth: []
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst wishlist = await client.wishlists.update('wl_abc123', {\n  name: 'Updated Name',\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: wishlist updated
+          content:
+            application/json:
+              example:
+                id: wl_UkLWZg9DAJ
+                name: Updated Name
+                token: RbsVopS8AJBteR6s51rRT9tN
+                is_default: false
+                is_private: true
+              schema:
+                $ref: '#/components/schemas/Wishlist'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Updated Name
+                is_private:
+                  type: boolean
+                  example: true
+                is_default:
+                  type: boolean
+                  example: false
+    delete:
+      summary: Delete a wishlist
+      tags:
+      - Wishlists
+      security:
+      - api_key: []
+        bearer_auth: []
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nawait client.wishlists.delete('wl_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: wishlist deleted
+  /api/v3/store/wishlists/{wishlist_id}/items:
+    post:
+      summary: Add item to wishlist
+      tags:
+      - Wishlists
+      security:
+      - api_key: []
+        bearer_auth: []
+      description: Adds a variant to the wishlist
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nconst item = await client.wishlists.items.create('wl_abc123', {\n  variant_id: 'variant_abc123',\n  quantity: 1,\n}, {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: wishlist_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: item added
+          content:
+            application/json:
+              example:
+                id: wi_gbHJdmfrXB
+                variant_id: variant_gbHJdmfrXB
+                wishlist_id: wl_UkLWZg9DAJ
+                quantity: 1
+                variant:
+                  id: variant_gbHJdmfrXB
+                  product_id: prod_gbHJdmfrXB
+                  sku: SKU-202
+                  options_text: ''
+                  track_inventory: true
+                  media_count: 0
+                  thumbnail_url: null
+                  purchasable: true
+                  in_stock: false
+                  backorderable: true
+                  weight: 0.0
+                  height: null
+                  width: null
+                  depth: null
+                  price:
+                    id: price_gbHJdmfrXB
+                    amount: '19.99'
+                    amount_in_cents: 1999
+                    compare_at_amount: null
+                    compare_at_amount_in_cents: null
+                    currency: USD
+                    display_amount: $19.99
+                    display_compare_at_amount: null
+                    price_list_id: null
+                  original_price: null
+                  option_values: []
+              schema:
+                $ref: '#/components/schemas/WishlistItem'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                variant_id:
+                  type: string
+                  example: variant_abc123
+                quantity:
+                  type: integer
+                  example: 1
+              required:
+              - variant_id
+  /api/v3/store/wishlists/{wishlist_id}/items/{id}:
+    delete:
+      summary: Remove item from wishlist
+      tags:
+      - Wishlists
+      security:
+      - api_key: []
+        bearer_auth: []
+      x-codeSamples:
+      - lang: javascript
+        label: Spree SDK
+        source: "import { createClient } from '@spree/sdk'\n\nconst client = createClient({\n  baseUrl: 'https://your-store.com',\n  publishableKey: '<api-key>',\n})\n\nawait client.wishlists.items.delete('wl_abc123', 'wi_abc123', {\n  token: '<token>',\n})"
+      parameters:
+      - name: x-spree-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: wishlist_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: item removed
+        '404':
+          description: item not found
+          content:
+            application/json:
+              example:
+                error:
+                  code: record_not_found
+                  message: Wished item not found
+  /api/v2/storefront/wishlists:
+    get:
+      description: Returns all wishlists available to the current user, in the current store.
+      summary: List all Wishlists
+      tags:
+      - Wishlists
+      operationId: list-wishlists-for-current-user
+      parameters:
+      - $ref: '#/components/parameters/WishlistIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsWishlist'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/WishlistIsVariantIncludedParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/WishlistList'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+    post:
+      description: Creates a new wishlist for the current user in the current store.
+      summary: Create a Wishlist
+      tags:
+      - Wishlists
+      operationId: create-wishlist
+      responses:
+        '200':
+          $ref: '#/components/responses/Wishlist'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+      security:
+      - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The Wishlist name.
+                is_private:
+                  type: boolean
+                  description: Set the Wishlist to public or private. Defaults to true (private).
+                is_default:
+                  type: boolean
+                  description: Whether the wishlist is set to the users default wishlist for the current store. Defaults to false.
+              required:
+              - name
+            examples:
+              Create wishlist:
+                value:
+                  name: My Wishlist
+                  is_private: false
+                  is_default: true
+      parameters:
+      - $ref: '#/components/parameters/SparseFieldsWishlist'
+  /api/v2/storefront/wishlists/{token}:
+    get:
+      description: 'Retrieves a wishlist using the wishlist token.
+
+
+        If the wishlist is publicly viewable, the endpoint will return the requested wishlist regardless of the user. If the wishlist is private, only the wishlist owner can access the wishlist.'
+      summary: Retrieve a Wishlist
+      tags:
+      - Wishlists
+      operationId: get-wishlist-details
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      - $ref: '#/components/parameters/WishlistIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsWishlist'
+      - $ref: '#/components/parameters/WishlistIsVariantIncludedParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/Wishlist'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+    patch:
+      description: Updates the specific Wishlist by setting the values passed in the request body. Any parameters not provided will be left unchanged.
+      summary: Update a Wishlist
+      tags:
+      - Wishlists
+      operationId: update-wishlist
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              properties:
+                wishlist:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Change the wishlist name.
+                    is_private:
+                      type: boolean
+                      description: Set the wishlist to public or private.
+                    is_default:
+                      type: boolean
+                      description: Make this wishlist the default wishlist.
+            examples:
+              Update Name:
+                value:
+                  wishlist:
+                    name: Birthday Ideas
+              Set to Private:
+                value:
+                  wishlist:
+                    is_private: true
+              Make Default:
+                value:
+                  wishlist:
+                    is_default: true
+        description: ''
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      - $ref: '#/components/parameters/SparseFieldsWishlist'
+      responses:
+        '200':
+          $ref: '#/components/responses/Wishlist'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+        '422':
+          $ref: '#/components/responses/422UnprocessableEntity'
+      security:
+      - bearerAuth: []
+    delete:
+      description: This operation deletes the wishlist identified in the URI `token`.
+      summary: Delete a Wishlist
+      tags:
+      - Wishlists
+      operationId: delete-wishlist
+      parameters:
+      - $ref: '#/components/parameters/Token'
+      responses:
+        '204':
+          description: 204 Success - No Content
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+  /api/v2/storefront/wishlists/default:
+    get:
+      description: Returns the default wishlist for the current user, in the current store. If the user does not have a default wishlist in the current store one will be created.
+      summary: Retrieve the default Wishlist
+      tags:
+      - Wishlists
+      operationId: get-default-wishlist
+      parameters:
+      - $ref: '#/components/parameters/WishlistIncludeParam'
+      - $ref: '#/components/parameters/SparseFieldsWishlist'
+      - $ref: '#/components/parameters/WishlistIsVariantIncludedParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/Wishlist'
+        '403':
+          $ref: '#/components/responses/403Forbidden'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    Wishlist:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+        is_default:
+          type: boolean
+        is_private:
+          type: boolean
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WishlistItem'
+      required:
+      - id
+      - name
+      - token
+      - is_default
+      - is_private
+      x-typelizer: true
+    WishlistIncludes:
+      x-internal: false
+      title: Wishlist Includes
+      allOf:
+      - $ref: '#/components/schemas/WishedItem'
+    CustomField:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+          deprecated: true
+        field_type:
+          type: string
+          enum:
+          - short_text
+          - long_text
+          - rich_text
+          - number
+          - boolean
+          - json
+        key:
+          type: string
+        value:
+          type: object
+      required:
+      - id
+      - label
+      - type
+      - field_type
+      - key
+      - value
+      x-typelizer: true
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type: object
+              description: Field-specific validation errors
+              nullable: true
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
+    WishedItem:
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: wished_item
+        attributes:
+          type: object
+          properties:
+            quantity:
+              type: integer
+            price:
+              type: string
+            total:
+              type: string
+            display_price:
+              type: string
+            display_total:
+              type: string
+        relationships:
+          type: object
+          properties:
+            variant:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    create_wishlist_params:
+      type: object
+      properties:
+        wishlist:
+          type: object
+          required:
+          - name
+          - user_id
+          properties:
+            name:
+              type: string
+            user_id:
+              type: string
+            is_default:
+              type: boolean
+            is_private:
+              type: boolean
+      required:
+      - wishlist
+      x-internal: false
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    PriceHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        amount_in_cents:
+          type: number
+        currency:
+          type: string
+        display_amount:
+          type: string
+        recorded_at:
+          type: string
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - currency
+      - display_amount
+      - recorded_at
+      x-typelizer: true
+    Price:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+          nullable: true
+        amount_in_cents:
+          type: number
+          nullable: true
+        compare_at_amount:
+          type: string
+          nullable: true
+        compare_at_amount_in_cents:
+          type: number
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+        display_amount:
+          type: string
+          nullable: true
+        display_compare_at_amount:
+          type: string
+          nullable: true
+        price_list_id:
+          type: string
+          nullable: true
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - compare_at_amount
+      - compare_at_amount_in_cents
+      - currency
+      - display_amount
+      - display_compare_at_amount
+      - price_list_id
+      x-typelizer: true
+    Wishlist_2:
+      description: ''
+      type: object
+      title: Wishlist
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: wishlist
+        attributes:
+          type: object
+          properties:
+            token:
+              type: string
+            name:
+              type: string
+            is_private:
+              type: boolean
+            is_default:
+              type: boolean
+            variant_included:
+              type: boolean
+              description: Returns `true` or `false` depending on the variant ID passed in through the `is_variant_included` query param.
+        relationships:
+          type: object
+          properties:
+            wished_items:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    allOf:
+                    - $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    update_wishlist_params:
+      type: object
+      properties:
+        wishlist:
+          type: object
+          properties:
+            name:
+              type: string
+            user_id:
+              type: string
+            is_default:
+              type: boolean
+            is_private:
+              type: boolean
+      required:
+      - wishlist
+      x-internal: false
+    Relation:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    WishlistItem:
+      type: object
+      properties:
+        id:
+          type: string
+        variant_id:
+          type: string
+        wishlist_id:
+          type: string
+        quantity:
+          type: number
+        variant:
+          $ref: '#/components/schemas/Variant'
+      required:
+      - id
+      - variant_id
+      - wishlist_id
+      - quantity
+      - variant
+      x-typelizer: true
+    OptionValue:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
+          type: string
+          nullable: true
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type: string
+          nullable: true
+      required:
+      - id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
+      x-typelizer: true
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    Media:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+          nullable: true
+        variant_ids:
+          type: array
+          items:
+            type: string
+        position:
+          type: number
+        alt:
+          type: string
+          nullable: true
+        media_type:
+          type: string
+        focal_point_x:
+          type: number
+          nullable: true
+        focal_point_y:
+          type: number
+          nullable: true
+        external_video_url:
+          type: string
+          nullable: true
+        original_url:
+          type: string
+          nullable: true
+        mini_url:
+          type: string
+          nullable: true
+        small_url:
+          type: string
+          nullable: true
+        medium_url:
+          type: string
+          nullable: true
+        large_url:
+          type: string
+          nullable: true
+        xlarge_url:
+          type: string
+          nullable: true
+        og_image_url:
+          type: string
+          nullable: true
+      required:
+      - id
+      - product_id
+      - variant_ids
+      - position
+      - alt
+      - media_type
+      - focal_point_x
+      - focal_point_y
+      - external_video_url
+      - original_url
+      - mini_url
+      - small_url
+      - medium_url
+      - large_url
+      - xlarge_url
+      - og_image_url
+      x-typelizer: true
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 25
+        count:
+          type: integer
+          example: 100
+          description: Total number of records
+        pages:
+          type: integer
+          example: 4
+          description: Total number of pages
+        from:
+          type: integer
+          example: 1
+          description: Index of first record on this page
+        to:
+          type: integer
+          example: 25
+          description: Index of last record on this page
+        in:
+          type: integer
+          example: 25
+          description: Number of records on this page
+        previous:
+          type: integer
+          nullable: true
+          example: null
+          description: Previous page number
+        next:
+          type: integer
+          nullable: true
+          example: 2
+          description: Next page number
+      required:
+      - page
+      - limit
+      - count
+      - pages
+      - from
+      - to
+      - in
+    Variant:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        sku:
+          type: string
+          nullable: true
+        options_text:
+          type: string
+        track_inventory:
+          type: boolean
+        media_count:
+          type: number
+        thumbnail_url:
+          type: string
+          nullable: true
+        purchasable:
+          type: boolean
+        in_stock:
+          type: boolean
+        backorderable:
+          type: boolean
+        weight:
+          type: number
+          nullable: true
+        height:
+          type: number
+          nullable: true
+        width:
+          type: number
+          nullable: true
+        depth:
+          type: number
+          nullable: true
+        price:
+          $ref: '#/components/schemas/Price'
+        original_price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          nullable: true
+        primary_media:
+          $ref: '#/components/schemas/Media'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        prior_price:
+          allOf:
+          - $ref: '#/components/schemas/PriceHistory'
+          nullable: true
+      required:
+      - id
+      - product_id
+      - sku
+      - options_text
+      - track_inventory
+      - media_count
+      - thumbnail_url
+      - purchasable
+      - in_stock
+      - backorderable
+      - weight
+      - height
+      - width
+      - depth
+      - price
+      - original_price
+      - option_values
+      x-typelizer: true
+  parameters:
+    Token:
+      name: token
+      in: path
+      required: true
+      description: The token is a unique string used to identify the target resource.
+      schema:
+        type: string
+      example: vmJtMiMozBdFtn1VkdJ8dYen
+    WishlistIsVariantIncludedParam:
+      name: is_variant_included
+      in: query
+      schema:
+        type: string
+      example: '150'
+      description: Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`
+    WishlistIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      example: wished_items.variant
+      description: Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes).
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+    SparseFieldsWishlist:
+      in: query
+      name: fields[wishlist]
+      example: name,token,is_default,is_private,variant_included
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+  responses:
+    Wishlist:
+      description: 200 Success - Returns the `wishlist` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Wishlist_2'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishlistIncludes'
+            required:
+            - data
+          examples:
+            Wishlist:
+              value:
+                data:
+                  id: '28'
+                  type: wishlist
+                  attributes:
+                    token: 1inBHcJnxBrVEMAZb9esRqZP
+                    name: My Wishlist
+                    is_private: false
+                    is_default: true
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '14'
+                        type: wished_item
+            Wishlist including Wished Items:
+              value:
+                data:
+                  id: '28'
+                  type: wishlist
+                  attributes:
+                    token: 1inBHcJnxBrVEMAZb9esRqZP
+                    name: My Wishlist
+                    is_private: false
+                    is_default: true
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '14'
+                        type: wished_item
+                included:
+                - id: '14'
+                  type: wished_item
+                  attributes:
+                    quantity: 7
+                    price: '26.99'
+                    total: '188.93'
+                    display_price: $26.99
+                    display_total: $188.93
+                  relationships:
+                    variant:
+                      data:
+                        id: '149'
+                        type: variant
+                    wishlist:
+                      data:
+                        id: '28'
+                        type: wishlist
+    WishlistList:
+      description: 200 Success - Returns an array of `wishlist` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Wishlist_2'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishlistIncludes'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
+          examples:
+            List of Wishlist's:
+              value:
+                data:
+                - id: '4'
+                  type: wishlist
+                  attributes:
+                    token: gD1QP6SybtooojnxtkXPvcvh
+                    name: My Wishlist
+                    is_private: false
+                    is_default: false
+                    variant_included: true
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '4'
+                        type: wished_item
+                      - id: '5'
+                        type: wished_item
+                - id: '8'
+                  type: wishlist
+                  attributes:
+                    token: LKWCxupq2gsN9DRhwuNBCrf5
+                    name: Fathers Day
+                    is_private: true
+                    is_default: true
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '6'
+                        type: wished_item
+                - id: '7'
+                  type: wishlist
+                  attributes:
+                    token: QHnjcCvz21Dtzc6isWyiyBxM
+                    name: Black Friday
+                    is_private: false
+                    is_default: false
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data: []
+                meta:
+                  count: 3
+                  total_count: 3
+                  total_pages: 1
+                links:
+                  self: http://localhost:3000/api/v2/storefront/wishlists?is_variant_included=150
+                  next: http://localhost:3000/api/v2/storefront/wishlists?page=1
+                  prev: http://localhost:3000/api/v2/storefront/wishlists?page=1
+                  last: http://localhost:3000/api/v2/storefront/wishlists?page=1
+                  first: http://localhost:3000/api/v2/storefront/wishlists?page=1
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-spree-api-key
+      in: header
+      description: Secret API key for admin access
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin user authentication
+x-tagGroups:
+- name: Authentication
+  tags:
+  - Authentication
+- name: Product Catalog
+  tags:
+  - Product Catalog
+- name: Orders
+  tags:
+  - Orders
+- name: Customers
+  tags:
+  - Customers
+- name: Configuration
+  tags:
+  - Configuration
