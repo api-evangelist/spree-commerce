@@ -354,12 +354,6 @@ Reference Spree application template used to bootstrap new Spree installations -
 - [Postman Collection](collections/spree-commerce-storefront-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
 - [Open Collection](collections/spree-commerce-storefront-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
-### Spree Multi-Vendor Marketplace Extension
-
-Open-source marketplace extension that turns a Spree store into a multi-vendor marketplace - vendor accounts, vendor-specific catalogs, orders, payouts, and admin scoping.
-
-- **Human URL:** [https://github.com/spree/spree_multi_vendor](https://github.com/spree/spree_multi_vendor)
-- **Base URL:** `https://github.com/spree/spree_multi_vendor`
 
 #### Tags
 
