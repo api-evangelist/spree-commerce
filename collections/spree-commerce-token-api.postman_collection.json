@@ -1,0 +1,154 @@
+{
+  "item": [
+    {
+      "id": "67b79dd2-276c-41a6-8e61-f830753fd4fb",
+      "name": "Token",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d46e28ce-3a83-463b-abea-280f52b81c06",
+          "name": "Create or Refresh a Token",
+          "request": {
+            "name": "Create or Refresh a Token",
+            "description": {
+              "content": "This endpoint creates a new Bearer Token or refreshes an existing Bearer Token.\n\nThe `token` found in the response body is required to authorize API calls.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "spree_oauth",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grant_type\": \"<string>\",\n  \"username\": \"<string>\",\n  \"password\": \"<string>\",\n  \"scope\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7d265d75-e7ea-4c10-a3d4-40b5b1a96d7f",
+              "name": "Token was successfully created or refreshed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "spree_oauth",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"grant_type\": \"password\",\n  \"username\": \"spree@example.com\",\n  \"password\": \"spree123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"SfM3k8kq5Wkc6xz6rgMlsl-mbygJ1ptq4DR0Ah51vjA\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 7200,\n  \"refresh_token\": \"SqJDIwX00fehqHxS6xmb-kzqAlrYe_0EHgekMexVT8k\",\n  \"created_at\": 1581873931\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2d893291-6ca0-4732-935c-b32338030946",
+    "name": "Admin Account / Address Token API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

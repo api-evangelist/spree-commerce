@@ -1,0 +1,482 @@
+{
+  "item": [
+    {
+      "id": "4724a452-53ee-4749-bb40-6702f26cd76b",
+      "name": "Checkout",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e52e0945-232d-441b-a9c1-4980940b9674",
+          "name": "Update Checkout",
+          "request": {
+            "name": "Update Checkout",
+            "description": {
+              "content": "The Update Checkout endpoint allows you to manage the typical stages of an e-commerce checkout system.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "checkout"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"email\": \"<string>\",\n    \"bill_address_attributes\": {\n      \"firstname\": \"<string>\",\n      \"lastname\": \"<string>\",\n      \"address1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"country_iso\": \"<string>\",\n      \"address2\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"zipcode\": \"<string>\",\n      \"state_name\": \"<string>\",\n      \"company\": \"<string>\",\n      \"label\": \"<string>\"\n    },\n    \"ship_address_attributes\": {\n      \"firstname\": \"<string>\",\n      \"lastname\": \"<string>\",\n      \"address1\": \"<string>\",\n      \"city\": \"<string>\",\n      \"country_iso\": \"<string>\",\n      \"address2\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"zipcode\": \"<string>\",\n      \"state_name\": \"<string>\",\n      \"company\": \"<string>\",\n      \"label\": \"<string>\"\n    },\n    \"shipments_attributes\": [\n      {\n        \"id\": \"<string>\",\n        \"selected_shipping_rate_id\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"selected_shipping_rate_id\": \"<string>\"\n      }\n    ],\n    \"payments_attributes\": [\n      {\n        \"payment_method_id\": \"<string>\",\n        \"source_attributes\": {\n          \"gateway_payment_profile_id\": \"<string>\",\n          \"month\": \"<number>\",\n          \"year\": \"<number>\",\n          \"cc_type\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"payment_method_id\": \"<string>\",\n        \"source_attributes\": {\n          \"gateway_payment_profile_id\": \"<string>\",\n          \"month\": \"<number>\",\n          \"year\": \"<number>\",\n          \"cc_type\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2165fb7d-d5b0-49bd-9f91-82c4c3c1fa44",
+              "name": "200 Success - Returns the `cart` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order\": {\n    \"email\": \"john@snow.org\",\n    \"bill_address_attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Snow\",\n      \"address1\": \"7735 Old Georgetown Road\",\n      \"city\": \"Bethesda\",\n      \"phone\": \"3014445002\",\n      \"zipcode\": \"20814\",\n      \"state_name\": \"MD\",\n      \"country_iso\": \"US\"\n    },\n    \"ship_address_attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Snow\",\n      \"address1\": \"7735 Old Georgetown Road\",\n      \"city\": \"Bethesda\",\n      \"phone\": \"3014445002\",\n      \"zipcode\": \"20814\",\n      \"state_name\": \"MD\",\n      \"country_iso\": \"US\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"17\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R233871560\",\n      \"item_total\": \"0.0\",\n      \"total\": \"0.0\",\n      \"subtotal_cents\": 0,\n      \"store_credit_total_cents\": 0,\n      \"total_cents\": 0,\n      \"total_minus_store_credits\": \"0.0\",\n      \"total_minus_store_credits_cents\": 0,\n      \"ship_total\": \"0.0\",\n      \"ship_total_cents\": 0,\n      \"adjustment_total\": \"0.0\",\n      \"created_at\": \"2021-09-28T22:15:07.471Z\",\n      \"updated_at\": \"2021-09-28T22:15:07.471Z\",\n      \"completed_at\": null,\n      \"included_tax_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_included_tax_total\": \"$0.00\",\n      \"tax_total\": \"0.0\",\n      \"tax_total_cents\": 0,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"token\": \"zTEpsukRq_yEUcXVCSv0uw1632867307450\",\n      \"email\": null,\n      \"display_item_total\": \"$0.00\",\n      \"display_ship_total\": \"$0.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_tax_total\": \"$0.00\",\n      \"promo_total\": \"0.0\",\n      \"display_promo_total\": \"$0.00\",\n      \"promo_total_cents\": 0,\n      \"item_count\": 0,\n      \"special_instructions\": null,\n      \"display_total\": \"$0.00\",\n      \"display_total_minus_store_credits\": \"$0.00\",\n      \"pre_tax_item_amount\": \"0.0\",\n      \"display_pre_tax_item_amount\": \"$0.00\",\n      \"pre_tax_total\": \"0.0\",\n      \"display_pre_tax_total\": \"$0.00\",\n      \"shipment_state\": null,\n      \"payment_state\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": []\n      },\n      \"variants\": {\n        \"data\": []\n      },\n      \"promotions\": {\n        \"data\": []\n      },\n      \"payments\": {\n        \"data\": []\n      },\n      \"shipments\": {\n        \"data\": []\n      },\n      \"user\": {\n        \"data\": null\n      },\n      \"billing_address\": {\n        \"data\": null\n      },\n      \"shipping_address\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "855b9285-c644-4dbf-8383-0ada253cd975",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order\": {\n    \"email\": \"john@snow.org\",\n    \"bill_address_attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Snow\",\n      \"address1\": \"7735 Old Georgetown Road\",\n      \"city\": \"Bethesda\",\n      \"phone\": \"3014445002\",\n      \"zipcode\": \"20814\",\n      \"state_name\": \"MD\",\n      \"country_iso\": \"US\"\n    },\n    \"ship_address_attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Snow\",\n      \"address1\": \"7735 Old Georgetown Road\",\n      \"city\": \"Bethesda\",\n      \"phone\": \"3014445002\",\n      \"zipcode\": \"20814\",\n      \"state_name\": \"MD\",\n      \"country_iso\": \"US\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad74cb82-4fbd-496f-acde-501d43825920",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order\": {\n    \"email\": \"john@snow.org\",\n    \"bill_address_attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Snow\",\n      \"address1\": \"7735 Old Georgetown Road\",\n      \"city\": \"Bethesda\",\n      \"phone\": \"3014445002\",\n      \"zipcode\": \"20814\",\n      \"state_name\": \"MD\",\n      \"country_iso\": \"US\"\n    },\n    \"ship_address_attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Snow\",\n      \"address1\": \"7735 Old Georgetown Road\",\n      \"city\": \"Bethesda\",\n      \"phone\": \"3014445002\",\n      \"zipcode\": \"20814\",\n      \"state_name\": \"MD\",\n      \"country_iso\": \"US\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b739393-2019-48bf-959c-77e4330c0cfb",
+          "name": "Validate order payment",
+          "request": {
+            "name": "Validate order payment",
+            "description": {
+              "content": "Validate an order before placing it. It will respond with an error when:\n- cart was changed\n- any order item is out of stock\n- any order item is discontinued",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "checkout",
+                "validate_order_for_payment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "skip_state",
+                  "value": "<boolean>",
+                  "description": "Set to `true` if the check for cart changes should be skipped"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields[cart]",
+                  "value": "<string>",
+                  "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "92614777-09a5-4818-b116-02ef7ab4fcaa",
+              "name": "200 Success - Returns the `cart` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "validate_order_for_payment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "skip_state",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"17\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R233871560\",\n      \"item_total\": \"0.0\",\n      \"total\": \"0.0\",\n      \"subtotal_cents\": 0,\n      \"store_credit_total_cents\": 0,\n      \"total_cents\": 0,\n      \"total_minus_store_credits\": \"0.0\",\n      \"total_minus_store_credits_cents\": 0,\n      \"ship_total\": \"0.0\",\n      \"ship_total_cents\": 0,\n      \"adjustment_total\": \"0.0\",\n      \"created_at\": \"2021-09-28T22:15:07.471Z\",\n      \"updated_at\": \"2021-09-28T22:15:07.471Z\",\n      \"completed_at\": null,\n      \"included_tax_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_included_tax_total\": \"$0.00\",\n      \"tax_total\": \"0.0\",\n      \"tax_total_cents\": 0,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"token\": \"zTEpsukRq_yEUcXVCSv0uw1632867307450\",\n      \"email\": null,\n      \"display_item_total\": \"$0.00\",\n      \"display_ship_total\": \"$0.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_tax_total\": \"$0.00\",\n      \"promo_total\": \"0.0\",\n      \"display_promo_total\": \"$0.00\",\n      \"promo_total_cents\": 0,\n      \"item_count\": 0,\n      \"special_instructions\": null,\n      \"display_total\": \"$0.00\",\n      \"display_total_minus_store_credits\": \"$0.00\",\n      \"pre_tax_item_amount\": \"0.0\",\n      \"display_pre_tax_item_amount\": \"$0.00\",\n      \"pre_tax_total\": \"0.0\",\n      \"display_pre_tax_total\": \"$0.00\",\n      \"shipment_state\": null,\n      \"payment_state\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": []\n      },\n      \"variants\": {\n        \"data\": []\n      },\n      \"promotions\": {\n        \"data\": []\n      },\n      \"payments\": {\n        \"data\": []\n      },\n      \"shipments\": {\n        \"data\": []\n      },\n      \"user\": {\n        \"data\": null\n      },\n      \"billing_address\": {\n        \"data\": null\n      },\n      \"shipping_address\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc723b09-a1e3-4630-a55d-bdc281ac369c",
+              "name": "422 Unprocessable entity - Returns the `cart` object with errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "validate_order_for_payment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "skip_state",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R123456789\",\n      \"token\": \"eL0nVxe1Aum-Qr9-UkryPA1633360128076\",\n      \"item_total\": \"19.99\",\n      \"subtotal_cents\": 1999,\n      \"store_credit_total_cents\": 0,\n      \"total\": \"29.99\",\n      \"total_cents\": 2999,\n      \"total_minus_store_credits\": \"29.99\",\n      \"total_minus_store_credits_cents\": 2999,\n      \"ship_total\": \"5.0\",\n      \"ship_total_cents\": 500,\n      \"adjustment_total\": \"10.0\",\n      \"created_at\": \"2020-02-16T07:14:54.617Z\",\n      \"updated_at\": \"2020-02-16T07:14:54.617Z\",\n      \"completed_at\": \"1990-01-24T03:28:16.426Z\",\n      \"included_tax_total\": \"5.00\",\n      \"additional_tax_total\": \"5.0\",\n      \"display_additional_tax_total\": \"$5.00\",\n      \"tax_total\": \"10.0\",\n      \"tax_total_cents\": 1000,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"email\": \"spree@example.com\",\n      \"display_item_total\": \"$19.99\",\n      \"display_ship_total\": \"$19.99\",\n      \"display_adjustment_total\": \"$10.00\",\n      \"display_included_tax_total\": \"$5.00\",\n      \"promo_total\": \"-10.0\",\n      \"promo_total_cents\": -1000,\n      \"display_promo_total\": \"-$10.00\",\n      \"item_count\": 2,\n      \"special_instructions\": \"Please wrap it as a gift\",\n      \"display_total\": \"$29.99\",\n      \"display_total_minus_store_credits\": \"$29.99\",\n      \"pre_tax_item_amount\": \"17.00\",\n      \"display_pre_tax_item_amount\": \"$17.00\",\n      \"pre_tax_total\": \"20.00\",\n      \"display_tax_total\": \"$10.00\",\n      \"display_pre_tax_total\": \"$20.00\",\n      \"shipment_state\": \"canceled\",\n      \"payment_state\": \"failed\"\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": [\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          },\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          }\n        ]\n      },\n      \"variants\": {\n        \"data\": [\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          },\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          }\n        ]\n      },\n      \"promotions\": {\n        \"data\": [\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          },\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          }\n        ]\n      },\n      \"payments\": {\n        \"data\": [\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          },\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          }\n        ]\n      },\n      \"shipments\": {\n        \"data\": [\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          },\n          {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          }\n        ]\n      },\n      \"user\": {\n        \"data\": {\n          \"id\": \"string\",\n          \"type\": \"string\"\n        }\n      },\n      \"billing_address\": {\n        \"data\": {\n          \"id\": \"string\",\n          \"type\": \"string\"\n        }\n      },\n      \"shipping_address\": {\n        \"data\": {\n          \"id\": \"string\",\n          \"type\": \"string\"\n        }\n      }\n    }\n  },\n  \"meta\": {\n    \"messages\": [\n      \"Cart changed\",\n      \"Cart changed\"\n    ]\n  },\n  \"included\": [\n    {\n      \"id\": \"1\",\n      \"type\": \"line_item\",\n      \"attributes\": {\n        \"name\": \"Sample product\",\n        \"quantity\": 1,\n        \"slug\": \"sample-product\",\n        \"options_text\": \"Size: small, Color: red\",\n        \"price\": \"125.0\",\n        \"currency\": \"USD\",\n        \"display_price\": \"$125.00\",\n        \"total\": \"250.0\",\n        \"display_total\": \"$250.00\",\n        \"adjustment_total\": \"10.0\",\n        \"display_adjustment_total\": \"$10.00\",\n        \"additional_tax_total\": \"5.0\",\n        \"display_additional_tax_total\": \"$5.00\",\n        \"discounted_amount\": \"125.0\",\n        \"display_discounted_amount\": \"$125.00\",\n        \"pre_tax_amount\": \"125.0\",\n        \"display_pre_tax_amount\": \"$125.00\",\n        \"promo_total\": \"-5.0\",\n        \"display_promo_total\": \"string\",\n        \"included_tax_total\": \"0.0\",\n        \"display_inluded_tax_total\": \"$0.00\",\n        \"compare_at_amount\": \"290.99\",\n        \"display_compare_at_amount\": \"$290.99\",\n        \"public_metadata\": {\n          \"recommended_by_us\": true\n        }\n      },\n      \"relationships\": {\n        \"variant\": {\n          \"data\": {\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"digital_links\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"1\",\n      \"type\": \"line_item\",\n      \"attributes\": {\n        \"name\": \"Sample product\",\n        \"quantity\": 1,\n        \"slug\": \"sample-product\",\n        \"options_text\": \"Size: small, Color: red\",\n        \"price\": \"125.0\",\n        \"currency\": \"USD\",\n        \"display_price\": \"$125.00\",\n        \"total\": \"250.0\",\n        \"display_total\": \"$250.00\",\n        \"adjustment_total\": \"10.0\",\n        \"display_adjustment_total\": \"$10.00\",\n        \"additional_tax_total\": \"5.0\",\n        \"display_additional_tax_total\": \"$5.00\",\n        \"discounted_amount\": \"125.0\",\n        \"display_discounted_amount\": \"$125.00\",\n        \"pre_tax_amount\": \"125.0\",\n        \"display_pre_tax_amount\": \"$125.00\",\n        \"promo_total\": \"-5.0\",\n        \"display_promo_total\": \"string\",\n        \"included_tax_total\": \"0.0\",\n        \"display_inluded_tax_total\": \"$0.00\",\n        \"compare_at_amount\": \"290.99\",\n        \"display_compare_at_amount\": \"$290.99\",\n        \"public_metadata\": {\n          \"recommended_by_us\": true\n        }\n      },\n      \"relationships\": {\n        \"variant\": {\n          \"data\": {\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"digital_links\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0de2ab8a-030a-4418-ad97-1abcdc101cf1",
+    "name": "Admin Account / Address Checkout API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

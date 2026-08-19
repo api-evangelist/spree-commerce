@@ -1,0 +1,165 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Payment Methods API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment Methods",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of Payment Methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/payment_methods",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "50",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "stores",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              },
+              {
+                "name": "filter[name]",
+                "value": "Stripe",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of Payment Methods"
+        },
+        {
+          "info": {
+            "name": "Create a Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/platform/payment_methods",
+            "params": [
+              {
+                "name": "include",
+                "value": "stores",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a Payment Method"
+        },
+        {
+          "info": {
+            "name": "Return a Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/payment_methods/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "stores",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a Payment Method"
+        },
+        {
+          "info": {
+            "name": "Update a Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/payment_methods/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "stores",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a Payment Method"
+        },
+        {
+          "info": {
+            "name": "Delete a Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/platform/payment_methods/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a Payment Method"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

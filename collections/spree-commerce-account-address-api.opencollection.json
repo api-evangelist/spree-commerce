@@ -1,0 +1,114 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account / Address",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/account/addresses",
+            "params": [
+              {
+                "name": "fields[address]",
+                "value": "firstname,lastname,country_name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "filter[exclude_quick_checkout]",
+                "value": "true",
+                "type": "query",
+                "description": "Exclude addresses that were created during quick checkout"
+              }
+            ]
+          },
+          "docs": "Returns a list of addresses for the current user."
+        },
+        {
+          "info": {
+            "name": "Create an Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/account/addresses",
+            "params": [
+              {
+                "name": "fields[address]",
+                "value": "firstname,lastname,country_name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new address for the current user."
+        },
+        {
+          "info": {
+            "name": "Update an Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/account/addresses/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the specified `address`."
+              },
+              {
+                "name": "fields[address]",
+                "value": "firstname,lastname,country_name",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the specified address for the current user."
+        },
+        {
+          "info": {
+            "name": "Remove an Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/storefront/account/addresses/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the specified `address`."
+              }
+            ]
+          },
+          "docs": "This endpoint removes the specified address for the current user. It uses a soft delete to retain address information for pre-existing orders."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Policies API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List store policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/policies",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all policies for the current store (e.g., return policy, privacy policy, terms of service).\nPolicies are managed in Spree Admin and contain rich text content.\n"
+        },
+        {
+          "info": {
+            "name": "Get a policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/policies/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Policy slug (e.g., return-policy) or prefixed ID (e.g., pol_abc123)"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single policy by slug or prefixed ID. Includes the full rich text body."
+        },
+        {
+          "info": {
+            "name": "List all Store Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/policies"
+          },
+          "docs": "Returns a list of Store Policies. This endpoint is only available in Spree 5.2 or later."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/policies/:policy_slug"
+          },
+          "docs": "Returns the details of a specified Policy. This endpoint is only available in Spree 5.2 or later."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

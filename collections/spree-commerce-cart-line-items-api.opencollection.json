@@ -1,0 +1,107 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Cart / Line Items API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cart / Line Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add an Item to Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/cart/add_item",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a variant to the current cart by creating a line item. Each line item represents a specified variant and the desired quantity."
+        },
+        {
+          "info": {
+            "name": "Set Line Item Quantity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/cart/set_quantity",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the quantity of a specified line item."
+        },
+        {
+          "info": {
+            "name": "Remove a Line Item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/storefront/cart/remove_line_item/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the `line_item` you wish to remove."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Removes a line item from the cart by deleting the line item.\n\nAfter deleting the line item, the system will re-calculate taxes, promotions, shipments etc."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

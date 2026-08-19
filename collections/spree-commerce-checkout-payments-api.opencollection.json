@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Checkout / Payments API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Checkout / Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create new Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/checkout/create_payment",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates new Payment for the current checkout.\n\nYou can either create new payment source (eg. a Credit Card) or use an existing (for signed in users only).\n\nNewly created payment source will be associated to the current signed in user.\n\nSystem will automatically invalidate previous (non-finalized) payments (excluding store credit / gift card payments).\n\n[More details on payment system](/developer/core-concepts/payments)"
+        },
+        {
+          "info": {
+            "name": "List Payment Methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/checkout/payment_methods"
+          },
+          "docs": "Returns a list of available payment methods for this checkout."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

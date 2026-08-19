@@ -1,0 +1,1052 @@
+{
+  "item": [
+    {
+      "id": "a0579f46-77d2-4066-abe2-240314008c14",
+      "name": "Stripe",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1a34ab57-fb9b-48e9-b088-c26531f4935c",
+          "name": "Create a Stripe Payment Intent",
+          "request": {
+            "name": "Create a Stripe Payment Intent",
+            "description": {
+              "content": "Create a Stripe Payment Intent using provided payment method. It creates a Stripe customer if not exists.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "stripe",
+                "payment_intents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_intent\": {\n    \"amount\": \"<number>\",\n    \"stripe_payment_method_id\": \"<string>\",\n    \"off_session\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7086cc2b-20b4-485f-b05a-854dec081f49",
+              "name": "200 Success - Returns the Stripe Payment Intent with the Stripe ID, client key, ephemeral_key, customer_id, amount and Stripe Payment Method ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_intent\": {\n    \"amount\": \"<number>\",\n    \"stripe_payment_method_id\": \"<string>\",\n    \"off_session\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"980a80d5-f51b-4065-b3a0-622fc5cb6bf6\",\n    \"type\": \"payment_intent\",\n    \"attributes\": {\n      \"stripe_id\": \"pi_3QhUuj2ESifGlJez0ADSS4tu\",\n      \"client_secret\": \"pi_3KQRG2DcAgmy0ota09WCW6nf_secret_8XTxRbOyg7oEkvvIOvnP75dRw\",\n      \"ephemeral_key_secret\": \"ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA\",\n      \"customer_id\": \"cus_Q9uqUz6gVQFku2\",\n      \"amount\": \"44.0\",\n      \"stripe_payment_method_id\": \"pm_1Qedd42ESifGlJez0IOx5AZ3\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5cc2bfa-1cb1-4121-a0ce-accca9f05f80",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_intent\": {\n    \"amount\": \"<number>\",\n    \"stripe_payment_method_id\": \"<string>\",\n    \"off_session\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "676d7c5e-de2d-41a9-b4de-b5eb92a6dfd9",
+          "name": "Return a Stripe Payment Intent",
+          "request": {
+            "name": "Return a Stripe Payment Intent",
+            "description": {
+              "content": "Returns the Payment Intent information",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "stripe",
+                "payment_intents",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "898b52bb-c2ce-439d-913d-aa6e4961895b",
+              "name": "200 Success - Returns the Stripe Payment Intent with the Stripe ID, client key, ephemeral_key, customer_id, amount and Stripe Payment Method ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"980a80d5-f51b-4065-b3a0-622fc5cb6bf6\",\n    \"type\": \"payment_intent\",\n    \"attributes\": {\n      \"stripe_id\": \"pi_3QhUuj2ESifGlJez0ADSS4tu\",\n      \"client_secret\": \"pi_3KQRG2DcAgmy0ota09WCW6nf_secret_8XTxRbOyg7oEkvvIOvnP75dRw\",\n      \"ephemeral_key_secret\": \"ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA\",\n      \"customer_id\": \"cus_Q9uqUz6gVQFku2\",\n      \"amount\": \"44.0\",\n      \"stripe_payment_method_id\": \"pm_1Qedd42ESifGlJez0IOx5AZ3\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35d2cf63-90d6-4975-9914-9e09d2939d18",
+              "name": "403 Forbidden - You are not authorized to access this page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"You are not authorized to access this page.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "458e7f51-9df4-4892-9c37-582b6dc1e343",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2ec0b3f6-d521-4943-8b63-224aa8796f63",
+          "name": "Updates Stripe Payment Intent",
+          "request": {
+            "name": "Updates Stripe Payment Intent",
+            "description": {
+              "content": "Updates the payment intent with new `amount` and `stripe_payment_method_id`",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "stripe",
+                "payment_intents",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_intent\": {\n    \"amount\": \"<number>\",\n    \"stripe_payment_method_id\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5a03a0f9-0e9d-4228-b3df-8f8e9560524f",
+              "name": "200 Success - Returns the Stripe Payment Intent with the Stripe ID, client key, ephemeral_key, customer_id, amount and Stripe Payment Method ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_intent\": {\n    \"amount\": \"<number>\",\n    \"stripe_payment_method_id\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"980a80d5-f51b-4065-b3a0-622fc5cb6bf6\",\n    \"type\": \"payment_intent\",\n    \"attributes\": {\n      \"stripe_id\": \"pi_3QhUuj2ESifGlJez0ADSS4tu\",\n      \"client_secret\": \"pi_3KQRG2DcAgmy0ota09WCW6nf_secret_8XTxRbOyg7oEkvvIOvnP75dRw\",\n      \"ephemeral_key_secret\": \"ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA\",\n      \"customer_id\": \"cus_Q9uqUz6gVQFku2\",\n      \"amount\": \"44.0\",\n      \"stripe_payment_method_id\": \"pm_1Qedd42ESifGlJez0IOx5AZ3\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "608d4ffe-3224-45e4-b510-1c4daae2a63e",
+              "name": "403 Forbidden - You are not authorized to access this page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_intent\": {\n    \"amount\": \"<number>\",\n    \"stripe_payment_method_id\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"You are not authorized to access this page.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5b34337-bf58-42b9-99d2-1bfec57389d5",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_intent\": {\n    \"amount\": \"<number>\",\n    \"stripe_payment_method_id\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4d811c9-29bc-4e97-85ea-b97e547aa728",
+          "name": "Mark the payment intent as confirmed, and move the order to the complete state",
+          "request": {
+            "name": "Mark the payment intent as confirmed, and move the order to the complete state",
+            "description": {
+              "content": "This endpoint is used to complete the order with succeeded payment intent. First it will check if the payment intent has `status` `succeeded`, if yes, then it will move the order to the complete state.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "stripe",
+                "payment_intents",
+                ":id",
+                "confirm"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH"
+          },
+          "response": [
+            {
+              "id": "22c9513f-000b-4ad4-8fa5-cbbdb90d409b",
+              "name": "200 Success - Returns the Stripe Payment Intent with the Stripe ID, client key, ephemeral_key, customer_id, amount and Stripe Payment Method ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"980a80d5-f51b-4065-b3a0-622fc5cb6bf6\",\n    \"type\": \"payment_intent\",\n    \"attributes\": {\n      \"stripe_id\": \"pi_3QhUuj2ESifGlJez0ADSS4tu\",\n      \"client_secret\": \"pi_3KQRG2DcAgmy0ota09WCW6nf_secret_8XTxRbOyg7oEkvvIOvnP75dRw\",\n      \"ephemeral_key_secret\": \"ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA\",\n      \"customer_id\": \"cus_Q9uqUz6gVQFku2\",\n      \"amount\": \"44.0\",\n      \"stripe_payment_method_id\": \"pm_1Qedd42ESifGlJez0IOx5AZ3\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30784047-2ae2-4909-b79e-6ee6254466aa",
+              "name": "403 Forbidden - You are not authorized to access this page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"You are not authorized to access this page.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b31298f-b92c-4b11-be10-c8f30228d5db",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75d94550-4ff9-46b6-952a-dc0a8f7465db",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "payment_intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bbfc2fbb-9fa6-4fed-80dd-18aa9dad0786",
+          "name": "Create a Stripe Setup Intent",
+          "request": {
+            "name": "Create a Stripe Setup Intent",
+            "description": {
+              "content": "First, this endpoint creates a customer in Stripe (if it doesn't already exist), then it creates an Ephemeral Key for the customer, and finally, it creates a Setup Intent for the customer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "stripe",
+                "setup_intents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "854c8b4d-8b4d-42cf-b072-315e09e52e5f",
+              "name": "200 Success - Returns the `customer_id` of the authenticated user, created ephemeral key's secret and client secret of the created setup intent.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "setup_intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"customer_id\": \"cus_Q9uqUz6gVQFku2\",\n  \"ephemeral_key_secret\": \"ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA\",\n  \"setup_intent_client_secret\": \"seti_1PJb0hIhR0gIegIeZYQQuxpH_secret_Q9uqLuTAvIJQSK1SFS6OaxJMRpe9s7R\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf75139a-4ddf-4348-859a-0948a8306b3e",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "stripe",
+                    "setup_intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1aea78ea-7720-46b1-b514-a5cf5fa6a556",
+    "name": "Admin Account / Address Stripe API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

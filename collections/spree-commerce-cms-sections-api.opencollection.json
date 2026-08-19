@@ -1,0 +1,165 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address CMS Sections API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CMS Sections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of CMS Sections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/cms_sections",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "50",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "product",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              },
+              {
+                "name": "filter[name_eq]",
+                "value": "Hero",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of CMS Sections"
+        },
+        {
+          "info": {
+            "name": "Create a CMS Section",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/platform/cms_sections",
+            "params": [
+              {
+                "name": "include",
+                "value": "product",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a CMS Section"
+        },
+        {
+          "info": {
+            "name": "Return a CMS Section",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/cms_sections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "product",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a CMS Section"
+        },
+        {
+          "info": {
+            "name": "Update a CMS Section",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/cms_sections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "product",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a CMS Section"
+        },
+        {
+          "info": {
+            "name": "Delete a CMS Section",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/platform/cms_sections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a CMS Section"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

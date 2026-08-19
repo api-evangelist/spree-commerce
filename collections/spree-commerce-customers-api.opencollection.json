@@ -1,0 +1,1851 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Customers API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List customer groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customer_groups",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (contains)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by field. Prefix with `-` for descending (e.g., `-created_at`)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the customer groups configured for the current store. Groups\nsegment customers for targeted promotions (see the `customer_group`\npromotion rule) and reporting. The list endpoint never embeds the\nmember list — fetch a single group with `?expand=customers` if you\nneed them inline, or query `/admin/customers?customer_group_id_in=…`\nfor paginated membership.\n\n\n**Required scope:** `read_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a customer group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customer_groups",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a customer group in the current store. `customer_ids` is\noptional; when present, customers are attached at create time.\nPass prefixed IDs (e.g. `cus_…`) — the server decodes them\nautomatically.\n\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get a customer group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customer_groups/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Customer group prefixed ID"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to embed. Supported: `customers`."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single customer group. Pass `?expand=customers` to embed\nthe full member list inline (recommended only for single-record\nreads — embed cost scales with membership size).\n\n\n**Required scope:** `read_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a customer group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/customer_groups/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Customer group prefixed ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates name, description, or membership. `customer_ids` is a\nfull-set replacement — the server reconciles the membership to\nmatch the array, adding new IDs and removing ones not present.\nSend `customer_ids: []` to clear all members.\n\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a customer group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/customer_groups/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Customer group prefixed ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Soft-deletes the group. Member users are not deleted; their `customer_group_users` rows are dropped.\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List customer addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/addresses",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., country, state). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., first_name,last_name,address1,city). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the customer's saved addresses.\n\n**Required scope:** `read_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a customer address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/addresses",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds a new address to the customer's address book. Pass `is_default_billing: true` or `is_default_shipping: true` to set as the default — the previous default loses its flag in the same transaction.\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a customer address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/addresses/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates a customer address.\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a customer address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/addresses/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes the address. If it was a default, the customer loses that default (no auto-promotion).\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List customer credit cards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/credit_cards",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., payment_method). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., brand,last4,month,year). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the customer's saved credit cards. Useful for off-session admin charges via `POST /admin/orders/:id/payments { source_id }`.\n\n**Required scope:** `read_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Show a customer credit card",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/credit_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., payment_method). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., brand,last4,month,year). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a saved credit card by ID.\n\n**Required scope:** `read_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a customer credit card",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/credit_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a saved credit card.\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List customer store credits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/store_credits",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., category, store, created_by). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., amount,amount_used,memo,currency). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns store credits issued to the customer.\n\n**Required scope:** `read_store_credits` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Issue a store credit to a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/store_credits",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "`created_by` is set automatically from the authenticated admin.\n\n**Required scope:** `write_store_credits` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a store credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/store_credits/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update memo / category / amount. The amount can only be changed if `amount_used == 0`.\n\n**Required scope:** `write_store_credits` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a store credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:customer_id/store_credits/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes an unused store credit (amount_used == 0). Returns 422 otherwise.\n\n**Required scope:** `write_store_credits` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customers",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "q[search]",
+                "value": "",
+                "type": "query",
+                "description": "Email + name full-text-ish search"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., addresses, store_credits). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., email,first_name,last_name). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of customers. Supports Ransack search/filters.\n\n**Required scope:** `read_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customers",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a customer. No welcome email is sent automatically.\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Show a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Customer ID"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations: addresses, orders, store_credits, default_billing_address, default_shipping_address"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., email,first_name,last_name). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns full customer details including computed order stats (orders_count, total_spent, last_order_completed_at).\n\n**Required scope:** `read_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates customer attributes. `tags` replaces the full set.\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/customers/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a customer. Returns 422 if the customer has any orders.\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-add customers to groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customers/bulk_add_to_groups",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Attaches each customer in `ids` to every group in `customer_group_ids`.\nIdempotent — customers already in a group are skipped server-side.\nGroups from sibling stores are silently ignored. Returns counts of\ncustomers and groups that were processed (post store-scoping).\n\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-remove customers from groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customers/bulk_remove_from_groups",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Detaches each customer in `ids` from every group in `customer_group_ids`.\nNo-op for non-members. Groups from sibling stores are silently ignored.\n\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-add tags to customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customers/bulk_add_tags",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds each tag name in `tags` to every customer in `ids`. Tags are\nupserted by name; re-adding an existing tag is a no-op.\n\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-remove tags from customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/customers/bulk_remove_tags",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes each tag name in `tags` from every customer in `ids`. No-op\nfor customers that don't carry the tag.\n\n\n**Required scope:** `write_customers` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List customer addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/addresses",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all addresses in the customer address book"
+        },
+        {
+          "info": {
+            "name": "Create an address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/addresses",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds a new address to the customer address book"
+        },
+        {
+          "info": {
+            "name": "Get an address",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/addresses/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get an address"
+        },
+        {
+          "info": {
+            "name": "Update an address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/addresses/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an address"
+        },
+        {
+          "info": {
+            "name": "Delete an address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/addresses/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an address"
+        },
+        {
+          "info": {
+            "name": "List saved credit cards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/credit_cards",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all saved credit cards for the authenticated customer"
+        },
+        {
+          "info": {
+            "name": "Get a credit card",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/credit_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a saved credit card by its ID"
+        },
+        {
+          "info": {
+            "name": "Delete a credit card",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/credit_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a saved credit card from the customer account"
+        },
+        {
+          "info": {
+            "name": "List orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/orders",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (default: 1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (default: 25, max: 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order. Prefix with - for descending. Values: completed_at, -completed_at, total, -total, number, -number"
+              },
+              {
+                "name": "q[completed_at_gt]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by completed after date (ISO 8601)"
+              },
+              {
+                "name": "q[completed_at_lt]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by completed before date (ISO 8601)"
+              },
+              {
+                "name": "q[number_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact order number (e.g., R123456)"
+              },
+              {
+                "name": "q[state_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by order state (complete, returned, canceled)"
+              },
+              {
+                "name": "q[payment_state_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by payment state (paid, balance_due, credit_owed, void, failed)"
+              },
+              {
+                "name": "q[total_gteq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by minimum total"
+              },
+              {
+                "name": "q[total_lteq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by maximum total"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (items, fulfillments, payments, discounts, billing_address, shipping_address, gift_card). Use \"none\" to skip associations."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., total,amount_due,item_count). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of completed orders for the authenticated customer."
+        },
+        {
+          "info": {
+            "name": "Get an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/orders/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Order prefixed ID"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (items, fulfillments, payments, discounts, billing_address, shipping_address, gift_card). Use \"none\" to skip associations."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., total,amount_due,item_count). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single completed order for the authenticated customer."
+        },
+        {
+          "info": {
+            "name": "Register a new customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/customers",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new customer account and returns a JWT token"
+        },
+        {
+          "info": {
+            "name": "Get current customer profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the profile of the currently authenticated customer"
+        },
+        {
+          "info": {
+            "name": "Update current customer profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/customers/me",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the profile of the currently authenticated customer"
+        },
+        {
+          "info": {
+            "name": "List gift cards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/gift_cards",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all gift cards for the authenticated customer"
+        },
+        {
+          "info": {
+            "name": "Get a gift card",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/gift_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a gift card by its ID"
+        },
+        {
+          "info": {
+            "name": "Create payment setup session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/payment_setup_sessions",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new payment setup session for saving a payment method for future use. Delegates to the payment gateway to initialize a provider-specific setup flow (e.g. Stripe SetupIntent, Adyen zero-auth tokenization)."
+        },
+        {
+          "info": {
+            "name": "Get payment setup session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/payment_setup_sessions/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Payment setup session ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a payment setup session with its current status and provider data."
+        },
+        {
+          "info": {
+            "name": "Complete payment setup session",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/payment_setup_sessions/:id/complete",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Payment setup session ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Completes a payment setup session by confirming the setup with the provider, resulting in a saved payment method."
+        },
+        {
+          "info": {
+            "name": "List store credits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/store_credits",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., amount,currency). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns store credits for the authenticated customer, filtered by current store and currency. Supports Ransack filtering."
+        },
+        {
+          "info": {
+            "name": "Get a store credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/customers/me/store_credits/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., amount,currency). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a store credit"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

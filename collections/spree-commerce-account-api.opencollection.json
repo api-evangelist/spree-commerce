@@ -1,0 +1,73 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin / Address Account API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/account",
+            "params": [
+              {
+                "name": "include",
+                "value": "default_billing_address,default_shipping_address",
+                "type": "query",
+                "description": "Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information"
+              },
+              {
+                "name": "fields[user]",
+                "value": "email,completed_orders",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the current user details."
+        },
+        {
+          "info": {
+            "name": "Create an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new account"
+        },
+        {
+          "info": {
+            "name": "Update an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the users account details"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

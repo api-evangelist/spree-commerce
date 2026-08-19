@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Newsletter Subscribers API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Newsletter Subscribers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Subscribe to the newsletter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/newsletter_subscribers",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Subscribes an email address to the newsletter for the current store.\n\nBehavior:\n\n- If the email is already verified for this store, the existing subscription is returned unchanged.\n- If the request is unauthenticated (guest), the subscription is created in an unverified state\n  and two events are published: `newsletter_subscriber.subscription_requested` (carrying the\n  `verification_token` and the validated `redirect_url`, intended for headless storefronts that\n  want to send the confirmation em"
+        },
+        {
+          "info": {
+            "name": "Verify a newsletter subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/newsletter_subscribers/verify",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Confirms a pending newsletter subscription using the verification token sent by email.\n\nAfter successful verification:\n- The subscriber record is marked verified.\n- If the subscription is associated with a customer, that customer's `accepts_email_marketing`\n  flag is set to `true`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

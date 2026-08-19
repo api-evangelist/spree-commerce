@@ -1,0 +1,384 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Vendors API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Vendors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of Vendors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/vendors",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "50",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of Vendors. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Create a Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/platform/vendors",
+            "params": [
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Return a Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Update a Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Delete a Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Invites Vendor to the platform",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id/invite",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Also triggers an invitation email send out to the vendor's contact person. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Start onboarding process",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id/start_onboarding",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Marks Vendor as onboarding in progress. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Completes onboarding process",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id/complete_onboarding",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Marks Vendor as onboarding complete. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Approves Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id/approve",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Marks Vendor as approved, and triggers an approval email send out to the vendor's contact person. Also activated Vendor products will become available for purchase. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Rejects Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id/reject",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Marks Vendor as rejected, and triggers an approval email send out to the vendor's contact person. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Suspends Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/vendors/:id/suspend",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "members",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Marks Vendor as suspended, and triggers an approval email send out to the vendor's contact person. Also the vendor's products will become unavailable for purchase and will be hidden from the storefront. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "List all Vendors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/vendors",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "fields[vendor]",
+                "value": "name,slug,about_us,facebook",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a list of Vendors. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Vendor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/vendors/:vendor_slug",
+            "params": [
+              {
+                "name": "vendor_slug",
+                "value": "acme-co",
+                "type": "path",
+                "description": "Look for Vendor by ID or their slug"
+              },
+              {
+                "name": "fields[vendor]",
+                "value": "name,slug,about_us,facebook",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Account / Orders API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account / Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/account/orders",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              }
+            ]
+          },
+          "docs": "Returns all completed orders placed by the current user in the current store."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/account/orders/:order_number",
+            "params": [
+              {
+                "name": "order_number",
+                "value": "R653163382",
+                "type": "path",
+                "description": "The required **{order_number}** value can be found in the cart response body, identified as the `number` attribute."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a completed order for the current user within the scope of the current store."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

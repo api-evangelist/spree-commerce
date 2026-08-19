@@ -1,0 +1,208 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Custom Fields API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Custom Fields",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List custom field definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/custom_field_definitions",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., key,label,field_type). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all defined custom fields. Filter by `?q[resource_type_eq]=Spree::Product` to narrow to one parent type.\n\n**Required scope:** `read_custom_field_definitions` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a custom field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/custom_field_definitions",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Required scope:** `write_custom_field_definitions` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Show a custom field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/custom_field_definitions/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., key,label,field_type). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Required scope:** `read_custom_field_definitions` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a custom field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/custom_field_definitions/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Required scope:** `write_custom_field_definitions` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a custom field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/custom_field_definitions/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes the definition and cascades to all custom field values referencing it.\n\n**Required scope:** `write_custom_field_definitions` (for API-key authentication)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

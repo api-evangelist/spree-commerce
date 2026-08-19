@@ -1,0 +1,1000 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Configuration API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List staff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/admin_users",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns admin users with at least one role assignment on the current store.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Show a staff member",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/admin_users/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a staff member",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/admin_users/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates name fields and reassigns roles for the current store. `role_ids` is a complete replacement — roles not in the array are removed for this store.\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Remove a staff member from this store",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/admin_users/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes the user's role assignments on the current store. The account is preserved — the user keeps access to any other stores.\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List API keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/api_keys",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns publishable and secret API keys for the current store. Secret keys are listed by `token_prefix` only — the plaintext token is delivered exactly once on create.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create an API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/api_keys",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a publishable or secret API key. The plaintext token is included in the response **once** for secret keys; publishable keys expose their token on every read since they are intended for client-side use.\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Show an API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/api_keys/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete an API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/api_keys/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Revoke an API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/api_keys/:id/revoke",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Marks the key revoked. Future requests using its token will fail; the row is preserved for audit.\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/invitations",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns invitations for the current store, including pending and accepted.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create an invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/invitations",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Invites a teammate by email. The invitation is scoped to the current store and carries the chosen role; on accept, a `RoleUser` is created via the invitation's `after_accept` callback.\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Revoke an invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/invitations/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Resend an invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/invitations/:id/resend",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Issues a fresh token and dispatches the invitation email again.\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List payment methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/payment_methods",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,type,active). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the store's configured payment methods. Use `source_required: true` to know which methods need a saved source.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List available payment provider types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/payment_methods/types",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the registered Spree::PaymentMethod subclasses that can be used to create new payment methods. Useful for populating a \"Provider\" dropdown in admin UIs.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Show a payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/payment_methods/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand. Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,type,active). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a payment method by ID.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/roles",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the roles available for staff role pickers. Roles are global, not per-store.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List stock locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/stock_locations",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (contains)"
+              },
+              {
+                "name": "q[active_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by active status"
+              },
+              {
+                "name": "q[kind_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by kind (built-in: 'warehouse', 'store', 'fulfillment_center')"
+              },
+              {
+                "name": "q[pickup_enabled_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by pickup-enabled flag"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by field. Prefix with `-` for descending (e.g., `-created_at`)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the configured stock locations. Stock locations are global\n(shared across stores). Filter with Ransack predicates such as\n`q[active_eq]`, `q[kind_eq]`, `q[pickup_enabled_eq]`, or\n`q[name_cont]`.\n\nPickup-related attributes (`kind`, `pickup_enabled`,\n`pickup_stock_policy`, `pickup_ready_in_minutes`,\n`pickup_instructions`) drive merchant pickup support at checkout —\ncustomers can collect orders from any active location with\n`pickup_enabled: true`.\n\n\n**Required scope:** `read_settings` (for "
+        },
+        {
+          "info": {
+            "name": "Create a stock location",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/stock_locations",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new stock location.\n\nSetting `default: true` automatically demotes the previous default\nlocation.\n\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get a stock location",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/stock_locations/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Stock location ID"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single stock location by prefixed ID.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a stock location",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/stock_locations/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Stock location ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an existing stock location. Same address-field conventions as\nthe create endpoint.\n\nSetting `default: true` automatically demotes the previous default.\n\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a stock location",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/stock_locations/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Stock location ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Soft-deletes the stock location (sets `deleted_at`). Existing\nfulfillments that referenced it keep the historical record via\n`Spree::StockLocation.with_deleted`.\n\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List store credit categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/store_credit_categories",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (contains)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by field. Prefix with `-` for descending (e.g., `-created_at`)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the configured store credit categories. Categories classify\nstore credits (e.g., \"Goodwill\", \"Gift Card\", \"Refund\") and surface\nin the admin UI as a dropdown when issuing or editing a store\ncredit. Category names matching `Spree::Config[:non_expiring_credit_types]`\nare flagged via `non_expiring: true`.\n\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get a store credit category",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/store_credit_categories/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Store credit category ID"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single store credit category by prefixed ID.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get the current store",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/store",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the current store configuration. The store is resolved from the request context (host or admin selection); there is no `id` parameter.\n\n**Required scope:** `read_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update the current store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/store",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the current store configuration.\n\n**Required scope:** `write_settings` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/tags",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "taggable_type",
+                "value": "",
+                "type": "query",
+                "description": "Taggable type (`Spree::Product`, `Spree::Order`, or `Spree::User`)"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Optional case-insensitive substring filter"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns tag names for a given taggable type. Used for autocomplete in tag inputs on products, orders, and customers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

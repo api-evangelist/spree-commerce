@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Posts API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Posts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Posts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/posts",
+            "params": [
+              {
+                "name": "filter[ids]",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "Fetch only resources with corresponding IDs"
+              },
+              {
+                "name": "filter[title]",
+                "value": "Hello World",
+                "type": "query",
+                "description": "Filter Posts by title"
+              },
+              {
+                "name": "filter[post_category_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Filter Posts by Post Category ID"
+              },
+              {
+                "name": "filter[post_category_slug]",
+                "value": "news",
+                "type": "query",
+                "description": "Filter Posts by Post Category slug"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "sort",
+                "value": "-published_at",
+                "type": "query",
+                "description": "Sort posts by attribute. Prefix with \"-\" for descending order. Available options: id, title, published_at, created_at, updated_at"
+              },
+              {
+                "name": "include",
+                "value": "post_category",
+                "type": "query",
+                "description": "Include related resources (available: post_category)"
+              }
+            ]
+          },
+          "docs": "Returns a list of published Posts. This endpoint is only available in Spree 5.2 or later."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Post",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/posts/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello-world",
+                "type": "path",
+                "description": "Post slug or ID"
+              },
+              {
+                "name": "include",
+                "value": "post_category",
+                "type": "query",
+                "description": "Include related resources (available: post_category)"
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified Post. You can use either the post slug or ID. This endpoint is only available in Spree 5.2 or later."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

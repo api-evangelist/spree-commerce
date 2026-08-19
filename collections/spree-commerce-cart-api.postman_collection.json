@@ -1,0 +1,505 @@
+{
+  "item": [
+    {
+      "id": "89483f0c-1871-4149-91e7-d7f42872954d",
+      "name": "Cart",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1bce288e-4a97-44f5-b739-0e073e15299e",
+          "name": "Create a Cart",
+          "request": {
+            "name": "Create a Cart",
+            "description": {
+              "content": "Creates a new cart.\n\n**Please be aware**; The `token` value found in the response body is used to authorize all future operations on this cart through the Auth API Key `X-Spree-Order-Token`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "cart"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields[cart]",
+                  "value": "<string>",
+                  "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"public_metadata\": \"<object>\",\n  \"private_metadata\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1b8d7369-044a-4e02-b674-c0c218fa36be",
+              "name": "200 Success - Returns the `cart` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "cart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"public_metadata\": {\n    \"total_weight\": 3250\n  },\n  \"private_metadata\": {\n    \"had_same_cart_items\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"17\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R233871560\",\n      \"item_total\": \"0.0\",\n      \"total\": \"0.0\",\n      \"subtotal_cents\": 0,\n      \"store_credit_total_cents\": 0,\n      \"total_cents\": 0,\n      \"total_minus_store_credits\": \"0.0\",\n      \"total_minus_store_credits_cents\": 0,\n      \"ship_total\": \"0.0\",\n      \"ship_total_cents\": 0,\n      \"adjustment_total\": \"0.0\",\n      \"created_at\": \"2021-09-28T22:15:07.471Z\",\n      \"updated_at\": \"2021-09-28T22:15:07.471Z\",\n      \"completed_at\": null,\n      \"included_tax_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_included_tax_total\": \"$0.00\",\n      \"tax_total\": \"0.0\",\n      \"tax_total_cents\": 0,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"token\": \"zTEpsukRq_yEUcXVCSv0uw1632867307450\",\n      \"email\": null,\n      \"display_item_total\": \"$0.00\",\n      \"display_ship_total\": \"$0.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_tax_total\": \"$0.00\",\n      \"promo_total\": \"0.0\",\n      \"display_promo_total\": \"$0.00\",\n      \"promo_total_cents\": 0,\n      \"item_count\": 0,\n      \"special_instructions\": null,\n      \"display_total\": \"$0.00\",\n      \"display_total_minus_store_credits\": \"$0.00\",\n      \"pre_tax_item_amount\": \"0.0\",\n      \"display_pre_tax_item_amount\": \"$0.00\",\n      \"pre_tax_total\": \"0.0\",\n      \"display_pre_tax_total\": \"$0.00\",\n      \"shipment_state\": null,\n      \"payment_state\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": []\n      },\n      \"variants\": {\n        \"data\": []\n      },\n      \"promotions\": {\n        \"data\": []\n      },\n      \"payments\": {\n        \"data\": []\n      },\n      \"shipments\": {\n        \"data\": []\n      },\n      \"user\": {\n        \"data\": null\n      },\n      \"billing_address\": {\n        \"data\": null\n      },\n      \"shipping_address\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3858611-3aa6-46d4-a7e0-8ec381b6e5f5",
+          "name": "Delete a Cart",
+          "request": {
+            "name": "Delete a Cart",
+            "description": {
+              "content": "Deletes a specified cart.\n\nWhen this endpoint is successfully executed, all shipments are cancelled, payments are voided, then line items, shipments & payments are all deleted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "cart"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "61c71913-2d26-4338-9ce4-e54515d8e88d",
+              "name": "204 Success No Content Returned - Current Cart has been removed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "cart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2b3a4dce-1481-4df3-9dd3-a929c0ad7e83",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "cart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ad588586-ad49-4cdb-9057-0e7468156a2f",
+          "name": "Retrieve a Cart",
+          "request": {
+            "name": "Retrieve a Cart",
+            "description": {
+              "content": "Returns the cart for the current user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "cart"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields[cart]",
+                  "value": "<string>",
+                  "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>",
+                  "description": "Must be specified when is different than current store default currency."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "8fa3a33b-a2ce-4b39-9b7f-082dfff1907d",
+              "name": "200 Success - Returns the `cart` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "cart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "USD"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"17\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R233871560\",\n      \"item_total\": \"0.0\",\n      \"total\": \"0.0\",\n      \"subtotal_cents\": 0,\n      \"store_credit_total_cents\": 0,\n      \"total_cents\": 0,\n      \"total_minus_store_credits\": \"0.0\",\n      \"total_minus_store_credits_cents\": 0,\n      \"ship_total\": \"0.0\",\n      \"ship_total_cents\": 0,\n      \"adjustment_total\": \"0.0\",\n      \"created_at\": \"2021-09-28T22:15:07.471Z\",\n      \"updated_at\": \"2021-09-28T22:15:07.471Z\",\n      \"completed_at\": null,\n      \"included_tax_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_included_tax_total\": \"$0.00\",\n      \"tax_total\": \"0.0\",\n      \"tax_total_cents\": 0,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"token\": \"zTEpsukRq_yEUcXVCSv0uw1632867307450\",\n      \"email\": null,\n      \"display_item_total\": \"$0.00\",\n      \"display_ship_total\": \"$0.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_tax_total\": \"$0.00\",\n      \"promo_total\": \"0.0\",\n      \"display_promo_total\": \"$0.00\",\n      \"promo_total_cents\": 0,\n      \"item_count\": 0,\n      \"special_instructions\": null,\n      \"display_total\": \"$0.00\",\n      \"display_total_minus_store_credits\": \"$0.00\",\n      \"pre_tax_item_amount\": \"0.0\",\n      \"display_pre_tax_item_amount\": \"$0.00\",\n      \"pre_tax_total\": \"0.0\",\n      \"display_pre_tax_total\": \"$0.00\",\n      \"shipment_state\": null,\n      \"payment_state\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": []\n      },\n      \"variants\": {\n        \"data\": []\n      },\n      \"promotions\": {\n        \"data\": []\n      },\n      \"payments\": {\n        \"data\": []\n      },\n      \"shipments\": {\n        \"data\": []\n      },\n      \"user\": {\n        \"data\": null\n      },\n      \"billing_address\": {\n        \"data\": null\n      },\n      \"shipping_address\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a0655e5-9f89-44ce-b88d-c2ce0bbab566",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "cart"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "USD"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6e64a183-6af2-4b90-8898-a8935b3b55ee",
+    "name": "Admin Account / Address Cart API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

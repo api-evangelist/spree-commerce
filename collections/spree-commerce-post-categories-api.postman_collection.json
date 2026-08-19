@@ -1,0 +1,374 @@
+{
+  "item": [
+    {
+      "id": "c9a665f3-54e3-4404-8ad1-7e1b274e06b6",
+      "name": "Post Categories",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f1099893-93cc-4701-9259-561083062e76",
+          "name": "List all Post Categories",
+          "request": {
+            "name": "List all Post Categories",
+            "description": {
+              "content": "Returns a list of Post Categories. This endpoint is only available in Spree 5.2 or later.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "post_categories"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter[ids]",
+                  "value": "<string>",
+                  "description": "Fetch only resources with corresponding IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[title]",
+                  "value": "<string>",
+                  "description": "Filter Post Categories by title"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Number of requested page when paginating collection"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Number of requested records per page when paginating collection"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort post categories by attribute. Prefix with \"-\" for descending order. Available options: id, title, created_at, updated_at"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7148ef27-da7e-4d7b-ace9-d1ef7ce127ba",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "post_categories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[ids]",
+                      "value": "1,2,3"
+                    },
+                    {
+                      "key": "filter[title]",
+                      "value": "News"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "title"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"1\",\n      \"type\": \"post_category\",\n      \"attributes\": {\n        \"title\": \"Resources\",\n        \"slug\": \"resources\",\n        \"created_at\": \"2025-08-11T20:58:24.354Z\",\n        \"updated_at\": \"2025-08-11T20:58:24.354Z\",\n        \"description\": null\n      },\n      \"relationships\": {}\n    },\n    {\n      \"id\": \"2\",\n      \"type\": \"post_category\",\n      \"attributes\": {\n        \"title\": \"Articles\",\n        \"slug\": \"articles\",\n        \"created_at\": \"2025-08-11T20:58:24.365Z\",\n        \"updated_at\": \"2025-08-11T20:58:24.365Z\",\n        \"description\": null\n      },\n      \"relationships\": {}\n    },\n    {\n      \"id\": \"3\",\n      \"type\": \"post_category\",\n      \"attributes\": {\n        \"title\": \"News\",\n        \"slug\": \"news\",\n        \"created_at\": \"2025-08-11T20:58:24.375Z\",\n        \"updated_at\": \"2025-08-11T20:58:24.375Z\",\n        \"description\": null\n      },\n      \"relationships\": {}\n    }\n  ],\n  \"meta\": {\n    \"count\": 3,\n    \"total_count\": 3,\n    \"total_pages\": 1\n  },\n  \"links\": {\n    \"self\": \"http://localhost:3000/api/v2/storefront/post_categories\",\n    \"next\": \"http://localhost:3000/api/v2/storefront/post_categories?page=1\",\n    \"prev\": \"http://localhost:3000/api/v2/storefront/post_categories?page=1\",\n    \"last\": \"http://localhost:3000/api/v2/storefront/post_categories?page=1\",\n    \"first\": \"http://localhost:3000/api/v2/storefront/post_categories?page=1\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "332640d4-8181-4554-bad2-10f2cef8890e",
+          "name": "Retrieve a Post Category",
+          "request": {
+            "name": "Retrieve a Post Category",
+            "description": {
+              "content": "Returns the details of a specified Post Category, including related posts. You can use either the category slug or ID. This endpoint is only available in Spree 5.2 or later.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "post_categories",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Include related resources (available: posts)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Post Category slug or ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "992db0c9-22e5-421c-b44d-312665364d15",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "post_categories",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "posts"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Post Category slug or ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3\",\n    \"type\": \"post_category\",\n    \"attributes\": {\n      \"title\": \"News\",\n      \"slug\": \"news\",\n      \"created_at\": \"2025-08-11T20:58:24.375Z\",\n      \"updated_at\": \"2025-08-11T20:58:24.375Z\",\n      \"description\": null\n    },\n    \"relationships\": {\n      \"posts\": {\n        \"data\": [\n          {\n            \"id\": \"1\",\n            \"type\": \"post\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba640f26-fa7a-4d12-984f-1aae5ab85a8d",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "post_categories",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "posts"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Post Category slug or ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c460808e-520d-45bd-8d84-0d0315d32e73",
+    "name": "Admin Account / Address Post Categories API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

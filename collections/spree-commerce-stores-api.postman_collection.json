@@ -1,0 +1,216 @@
+{
+  "item": [
+    {
+      "id": "ecd97edc-78ad-485b-82e9-ebf84a9877f0",
+      "name": "Stores",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "23f438e9-5211-47b0-a48c-095f7b5e96a3",
+          "name": "Return the current Store",
+          "request": {
+            "name": "Return the current Store",
+            "description": {
+              "content": "Returns the current Store. [Read more about Stores](/developer/core-concepts/stores)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "store"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\ndefault_country\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+                },
+                {
+                  "disabled": false,
+                  "key": "fields[store]",
+                  "value": "<string>",
+                  "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0faa3d74-495e-43dc-b1d5-e7968fb2a1b6",
+              "name": "200 Success - Returns the `store` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "store"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "default_country"
+                    },
+                    {
+                      "key": "fields[store]",
+                      "value": "name,url,supported_locales"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3\",\n    \"type\": \"store\",\n    \"attributes\": {\n      \"name\": \"Mystore\",\n      \"url\": \"spree-demo.com\",\n      \"meta_description\": \"Luxury clothing store for men and women.\",\n      \"meta_keywords\": \"luxury clothing men women\",\n      \"seo_title\": \"\",\n      \"default_currency\": \"USD\",\n      \"default\": true,\n      \"supported_currencies\": \"EUR,GBP,USD\",\n      \"facebook\": \"https://www.facebook.com/mystorename\",\n      \"twitter\": \"https://twitter.com/mystorename\",\n      \"instagram\": \"https://instagram.com/mystorename\",\n      \"default_locale\": \"en\",\n      \"customer_support_email\": \"support@mystore.com\",\n      \"description\": \"Mystore has been selling luxury clothing for more than 20 years and has 15 stores currently.\",\n      \"address\": \"813 Howard Street, Oswego NY 13126, USA\",\n      \"contact_phone\": \"+123456789\",\n      \"supported_locales\": \"en\",\n      \"favicon_path\": \"/assets/favicon.ico\"\n    },\n    \"relationships\": {\n      \"default_country\": {\n        \"data\": {\n          \"id\": \"2\",\n          \"type\": \"country\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c3b6d19-065a-49c5-8bdb-bb596eb9a6ac",
+              "name": "403 Forbidden - You are not authorized to access this page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "store"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "default_country"
+                    },
+                    {
+                      "key": "fields[store]",
+                      "value": "name,url,supported_locales"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"You are not authorized to access this page.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9daa1b38-9e24-43ab-9a0e-e82c5c5db2fd",
+    "name": "Admin Account / Address Stores API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

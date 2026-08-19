@@ -1,0 +1,306 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Taxons API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Taxons",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of Taxons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/taxons",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "50",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "taxonomy,parent,children",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              },
+              {
+                "name": "filter[taxonomy_id_eq]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "filter[name_cont]",
+                "value": "Shirts",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of Taxons"
+        },
+        {
+          "info": {
+            "name": "Create a Taxon",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/platform/taxons",
+            "params": [
+              {
+                "name": "include",
+                "value": "taxonomy,parent,children",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a Taxon"
+        },
+        {
+          "info": {
+            "name": "Return a Taxon",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/taxons/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "taxonomy,parent,children",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a Taxon"
+        },
+        {
+          "info": {
+            "name": "Update a Taxon",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/taxons/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "taxonomy,parent,children",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a Taxon"
+        },
+        {
+          "info": {
+            "name": "Delete a Taxon",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/platform/taxons/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a Taxon"
+        },
+        {
+          "info": {
+            "name": "Reposition a Taxon",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/taxons/:id/reposition",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Reposition a Taxon"
+        },
+        {
+          "info": {
+            "name": "List all Taxons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/taxons",
+            "params": [
+              {
+                "name": "filter[ids]",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "Fetch only resources with corresponding IDs"
+              },
+              {
+                "name": "filter[name]",
+                "value": "rails",
+                "type": "query",
+                "description": "Find resources with matching name (supports wild-card, partial-word match search)"
+              },
+              {
+                "name": "filter[parent_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Fetch children nodes of specified Taxon"
+              },
+              {
+                "name": "filter[parent_permalink]",
+                "value": "clothes",
+                "type": "query",
+                "description": "Fetch children nodes of specified Taxon permalink"
+              },
+              {
+                "name": "filter[taxonomy_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Fetch Taxons in a specified Taxonomy"
+              },
+              {
+                "name": "filter[roots]",
+                "value": "false",
+                "type": "query",
+                "description": "Fetch only root Taxons (Taxonomies)"
+              },
+              {
+                "name": "filter[vendor_id]",
+                "value": "1",
+                "type": "query",
+                "description": "Fetch only Taxons that have products of a selected Vendor"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "include",
+                "value": "parent,taxonomy,children,image,products",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[taxon]",
+                "value": "name,pretty_name,permalink",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a list of Taxons. [Read more about Taxons](/developer/core-concepts/products#taxons-and-taxonomies)"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Taxon",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/taxons/:taxon_permalink",
+            "params": [
+              {
+                "name": "taxon_permalink",
+                "value": "categories/women",
+                "type": "path",
+                "description": "Specify the taxon using the permalink or taxon ID."
+              },
+              {
+                "name": "include",
+                "value": "parent,taxonomy,children,image,products",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[taxon]",
+                "value": "name,pretty_name,permalink",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified taxon."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

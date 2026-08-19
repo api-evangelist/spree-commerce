@@ -1,0 +1,612 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Wishlists API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Wishlists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of Wishlists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/wishlists",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "50",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "wished_items",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              },
+              {
+                "name": "filter[name_cont]",
+                "value": "Birthday",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of Wishlists"
+        },
+        {
+          "info": {
+            "name": "Create a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/platform/wishlists",
+            "params": [
+              {
+                "name": "include",
+                "value": "wished_items",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a Wishlist"
+        },
+        {
+          "info": {
+            "name": "Return a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/wishlists/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "wished_items",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a Wishlist"
+        },
+        {
+          "info": {
+            "name": "Update a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/platform/wishlists/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "wished_items",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a Wishlist"
+        },
+        {
+          "info": {
+            "name": "Delete a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/platform/wishlists/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a Wishlist"
+        },
+        {
+          "info": {
+            "name": "List wishlists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/wishlists",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all wishlists for the authenticated customer"
+        },
+        {
+          "info": {
+            "name": "Create a wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/wishlists",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new wishlist for the customer"
+        },
+        {
+          "info": {
+            "name": "Get a wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/wishlists/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Expand wished_items"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a wishlist"
+        },
+        {
+          "info": {
+            "name": "Update a wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/wishlists/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a wishlist"
+        },
+        {
+          "info": {
+            "name": "Delete a wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/wishlists/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a wishlist"
+        },
+        {
+          "info": {
+            "name": "Add item to wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/wishlists/:wishlist_id/items",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "wishlist_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds a variant to the wishlist"
+        },
+        {
+          "info": {
+            "name": "Remove item from wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/wishlists/:wishlist_id/items/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "wishlist_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Remove item from wishlist"
+        },
+        {
+          "info": {
+            "name": "List all Wishlists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists",
+            "params": [
+              {
+                "name": "include",
+                "value": "wished_items.variant",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "is_variant_included",
+                "value": "150",
+                "type": "query",
+                "description": "Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`"
+              }
+            ]
+          },
+          "docs": "Returns all wishlists available to the current user, in the current store."
+        },
+        {
+          "info": {
+            "name": "Create a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists",
+            "params": [
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new wishlist for the current user in the current store."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              },
+              {
+                "name": "include",
+                "value": "wished_items.variant",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "is_variant_included",
+                "value": "150",
+                "type": "query",
+                "description": "Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`"
+              }
+            ]
+          },
+          "docs": "Retrieves a wishlist using the wishlist token.\n\nIf the wishlist is publicly viewable, the endpoint will return the requested wishlist regardless of the user. If the wishlist is private, only the wishlist owner can access the wishlist."
+        },
+        {
+          "info": {
+            "name": "Update a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the specific Wishlist by setting the values passed in the request body. Any parameters not provided will be left unchanged."
+        },
+        {
+          "info": {
+            "name": "Delete a Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              }
+            ]
+          },
+          "docs": "This operation deletes the wishlist identified in the URI `token`."
+        },
+        {
+          "info": {
+            "name": "Retrieve the default Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/default",
+            "params": [
+              {
+                "name": "include",
+                "value": "wished_items.variant",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[wishlist]",
+                "value": "name,token,is_default,is_private,variant_included",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "is_variant_included",
+                "value": "150",
+                "type": "query",
+                "description": "Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`"
+              }
+            ]
+          },
+          "docs": "Returns the default wishlist for the current user, in the current store. If the user does not have a default wishlist in the current store one will be created."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

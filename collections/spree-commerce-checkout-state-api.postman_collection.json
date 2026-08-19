@@ -1,0 +1,728 @@
+{
+  "item": [
+    {
+      "id": "ee62afb3-ab19-4152-aa3d-997ed35780cc",
+      "name": "Checkout / State",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e74d5029-05c6-43ce-b16a-55256a2b7743",
+          "name": "Next Checkout Step",
+          "request": {
+            "name": "Next Checkout Step",
+            "description": {
+              "content": "Goes to the next checkout step.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "checkout",
+                "next"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields[cart]",
+                  "value": "<string>",
+                  "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH"
+          },
+          "response": [
+            {
+              "id": "1c3236f1-b015-467d-9da6-e98784ff47df",
+              "name": "200 Success - Returns the `cart` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "next"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"17\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R233871560\",\n      \"item_total\": \"0.0\",\n      \"total\": \"0.0\",\n      \"subtotal_cents\": 0,\n      \"store_credit_total_cents\": 0,\n      \"total_cents\": 0,\n      \"total_minus_store_credits\": \"0.0\",\n      \"total_minus_store_credits_cents\": 0,\n      \"ship_total\": \"0.0\",\n      \"ship_total_cents\": 0,\n      \"adjustment_total\": \"0.0\",\n      \"created_at\": \"2021-09-28T22:15:07.471Z\",\n      \"updated_at\": \"2021-09-28T22:15:07.471Z\",\n      \"completed_at\": null,\n      \"included_tax_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_included_tax_total\": \"$0.00\",\n      \"tax_total\": \"0.0\",\n      \"tax_total_cents\": 0,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"token\": \"zTEpsukRq_yEUcXVCSv0uw1632867307450\",\n      \"email\": null,\n      \"display_item_total\": \"$0.00\",\n      \"display_ship_total\": \"$0.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_tax_total\": \"$0.00\",\n      \"promo_total\": \"0.0\",\n      \"display_promo_total\": \"$0.00\",\n      \"promo_total_cents\": 0,\n      \"item_count\": 0,\n      \"special_instructions\": null,\n      \"display_total\": \"$0.00\",\n      \"display_total_minus_store_credits\": \"$0.00\",\n      \"pre_tax_item_amount\": \"0.0\",\n      \"display_pre_tax_item_amount\": \"$0.00\",\n      \"pre_tax_total\": \"0.0\",\n      \"display_pre_tax_total\": \"$0.00\",\n      \"shipment_state\": null,\n      \"payment_state\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": []\n      },\n      \"variants\": {\n        \"data\": []\n      },\n      \"promotions\": {\n        \"data\": []\n      },\n      \"payments\": {\n        \"data\": []\n      },\n      \"shipments\": {\n        \"data\": []\n      },\n      \"user\": {\n        \"data\": null\n      },\n      \"billing_address\": {\n        \"data\": null\n      },\n      \"shipping_address\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9296d84-8a81-4d4d-b4de-25b6ad615316",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "next"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fb617f4-be9b-4d01-8988-df124acd4e86",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "next"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "94ed1ea7-35d5-49f2-acef-70e0e230f12f",
+          "name": "Advance Checkout",
+          "request": {
+            "name": "Advance Checkout",
+            "description": {
+              "content": "Advances the checkout to the furthest checkout step validation allows, up until the **completed** step.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "checkout",
+                "advance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+                },
+                {
+                  "disabled": false,
+                  "key": "fields[cart]",
+                  "value": "<string>",
+                  "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH"
+          },
+          "response": [
+            {
+              "id": "5d521ca9-8cb0-405e-926b-edc2258e01ff",
+              "name": "200 Success - Returns the `cart` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "advance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"17\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R233871560\",\n      \"item_total\": \"0.0\",\n      \"total\": \"0.0\",\n      \"subtotal_cents\": 0,\n      \"store_credit_total_cents\": 0,\n      \"total_cents\": 0,\n      \"total_minus_store_credits\": \"0.0\",\n      \"total_minus_store_credits_cents\": 0,\n      \"ship_total\": \"0.0\",\n      \"ship_total_cents\": 0,\n      \"adjustment_total\": \"0.0\",\n      \"created_at\": \"2021-09-28T22:15:07.471Z\",\n      \"updated_at\": \"2021-09-28T22:15:07.471Z\",\n      \"completed_at\": null,\n      \"included_tax_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_included_tax_total\": \"$0.00\",\n      \"tax_total\": \"0.0\",\n      \"tax_total_cents\": 0,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"token\": \"zTEpsukRq_yEUcXVCSv0uw1632867307450\",\n      \"email\": null,\n      \"display_item_total\": \"$0.00\",\n      \"display_ship_total\": \"$0.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_tax_total\": \"$0.00\",\n      \"promo_total\": \"0.0\",\n      \"display_promo_total\": \"$0.00\",\n      \"promo_total_cents\": 0,\n      \"item_count\": 0,\n      \"special_instructions\": null,\n      \"display_total\": \"$0.00\",\n      \"display_total_minus_store_credits\": \"$0.00\",\n      \"pre_tax_item_amount\": \"0.0\",\n      \"display_pre_tax_item_amount\": \"$0.00\",\n      \"pre_tax_total\": \"0.0\",\n      \"display_pre_tax_total\": \"$0.00\",\n      \"shipment_state\": null,\n      \"payment_state\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": []\n      },\n      \"variants\": {\n        \"data\": []\n      },\n      \"promotions\": {\n        \"data\": []\n      },\n      \"payments\": {\n        \"data\": []\n      },\n      \"shipments\": {\n        \"data\": []\n      },\n      \"user\": {\n        \"data\": null\n      },\n      \"billing_address\": {\n        \"data\": null\n      },\n      \"shipping_address\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "501185b4-c9e9-4828-9b3c-e7b71483a6f7",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "advance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ec35a0f-13fa-48a8-822b-64e72aaf4a86",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "advance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    },
+                    {
+                      "key": "fields[cart]",
+                      "value": "token,currency,number"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "614efa54-dbd6-460f-bfa7-0e06e2414e2c",
+          "name": "Complete Checkout",
+          "request": {
+            "name": "Complete Checkout",
+            "description": {
+              "content": "Completes the checkout by marking the order as complete.\n\n**Please be aware**; Once a checkout is marked as `complete` it is considered a completed order, the Cart and Checkout endpoints will no longer access a completed order, and a new cart will need to be created.\n\nIf you want to access a completed order you will need to use the **Account / Orders** or **Order Status** endpoints.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "checkout",
+                "complete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH"
+          },
+          "response": [
+            {
+              "id": "e0d7149d-ca3f-43f1-b9d5-2e409725a720",
+              "name": "200 Success - Returns the `cart` object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "complete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"17\",\n    \"type\": \"cart\",\n    \"attributes\": {\n      \"number\": \"R233871560\",\n      \"item_total\": \"0.0\",\n      \"total\": \"0.0\",\n      \"subtotal_cents\": 0,\n      \"store_credit_total_cents\": 0,\n      \"total_cents\": 0,\n      \"total_minus_store_credits\": \"0.0\",\n      \"total_minus_store_credits_cents\": 0,\n      \"ship_total\": \"0.0\",\n      \"ship_total_cents\": 0,\n      \"adjustment_total\": \"0.0\",\n      \"created_at\": \"2021-09-28T22:15:07.471Z\",\n      \"updated_at\": \"2021-09-28T22:15:07.471Z\",\n      \"completed_at\": null,\n      \"included_tax_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_included_tax_total\": \"$0.00\",\n      \"tax_total\": \"0.0\",\n      \"tax_total_cents\": 0,\n      \"currency\": \"USD\",\n      \"state\": \"cart\",\n      \"token\": \"zTEpsukRq_yEUcXVCSv0uw1632867307450\",\n      \"email\": null,\n      \"display_item_total\": \"$0.00\",\n      \"display_ship_total\": \"$0.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_tax_total\": \"$0.00\",\n      \"promo_total\": \"0.0\",\n      \"display_promo_total\": \"$0.00\",\n      \"promo_total_cents\": 0,\n      \"item_count\": 0,\n      \"special_instructions\": null,\n      \"display_total\": \"$0.00\",\n      \"display_total_minus_store_credits\": \"$0.00\",\n      \"pre_tax_item_amount\": \"0.0\",\n      \"display_pre_tax_item_amount\": \"$0.00\",\n      \"pre_tax_total\": \"0.0\",\n      \"display_pre_tax_total\": \"$0.00\",\n      \"shipment_state\": null,\n      \"payment_state\": null\n    },\n    \"relationships\": {\n      \"line_items\": {\n        \"data\": []\n      },\n      \"variants\": {\n        \"data\": []\n      },\n      \"promotions\": {\n        \"data\": []\n      },\n      \"payments\": {\n        \"data\": []\n      },\n      \"shipments\": {\n        \"data\": []\n      },\n      \"user\": {\n        \"data\": null\n      },\n      \"billing_address\": {\n        \"data\": null\n      },\n      \"shipping_address\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a64890d-4564-4095-8c05-f272950716ad",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "complete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1233846-5452-4f0f-9fb0-30d534133b87",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "checkout",
+                    "complete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5cbb9c9c-d084-40f6-b685-b1727f0b434b",
+    "name": "Admin Account / Address Checkout / State API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

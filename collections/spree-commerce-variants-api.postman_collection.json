@@ -1,0 +1,974 @@
+{
+  "item": [
+    {
+      "id": "6d02c14f-3132-406b-b76f-22d1a06e0a9b",
+      "name": "Variants",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3887e947-93ef-402b-a899-13f154b61310",
+          "name": "Return a list of Variants",
+          "request": {
+            "name": "Return a list of Variants",
+            "description": {
+              "content": "Returns a list of Variants",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "variants"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[product_id_eq]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[sku_i_cont]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7acebb95-b313-4051-b354-dfbe3a75a5bf",
+              "name": "Records returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "product,tax_category,images,digitals"
+                    },
+                    {
+                      "key": "filter[product_id_eq]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "filter[sku_i_cont]",
+                      "value": "SKU123"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"284\",\n      \"type\": \"variant\",\n      \"attributes\": {\n        \"sku\": \"SKU-283\",\n        \"weight\": \"0.0\",\n        \"height\": null,\n        \"depth\": null,\n        \"deleted_at\": null,\n        \"is_master\": true,\n        \"cost_price\": \"17.0\",\n        \"position\": 1,\n        \"cost_currency\": \"USD\",\n        \"track_inventory\": true,\n        \"updated_at\": \"2022-11-08T19:35:56.573Z\",\n        \"discontinue_on\": null,\n        \"created_at\": \"2022-11-08T19:35:56.573Z\",\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"barcode\": null,\n        \"display_price\": \"$19.99\",\n        \"display_compare_at_price\": null,\n        \"name\": \"Product 213286\",\n        \"options_text\": \"\",\n        \"total_on_hand\": 0,\n        \"purchasable\": true,\n        \"in_stock\": false,\n        \"backorderable\": true,\n        \"available\": true,\n        \"currency\": \"USD\",\n        \"price\": \"19.99\",\n        \"compare_at_price\": null\n      },\n      \"relationships\": {\n        \"product\": {\n          \"data\": {\n            \"id\": \"214\",\n            \"type\": \"product\"\n          }\n        },\n        \"tax_category\": {\n          \"data\": null\n        },\n        \"digitals\": {\n          \"data\": []\n        },\n        \"images\": {\n          \"data\": []\n        },\n        \"option_values\": {\n          \"data\": []\n        },\n        \"stock_items\": {\n          \"data\": [\n            {\n              \"id\": \"300\",\n              \"type\": \"stock_item\"\n            }\n          ]\n        },\n        \"stock_locations\": {\n          \"data\": [\n            {\n              \"id\": \"187\",\n              \"type\": \"stock_location\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"285\",\n      \"type\": \"variant\",\n      \"attributes\": {\n        \"sku\": \"SKU-284\",\n        \"weight\": \"23.12\",\n        \"height\": \"92.8\",\n        \"depth\": \"47.37\",\n        \"deleted_at\": null,\n        \"is_master\": false,\n        \"cost_price\": \"17.0\",\n        \"position\": 2,\n        \"cost_currency\": \"USD\",\n        \"track_inventory\": true,\n        \"updated_at\": \"2022-11-08T19:35:56.608Z\",\n        \"discontinue_on\": null,\n        \"created_at\": \"2022-11-08T19:35:56.605Z\",\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"barcode\": null,\n        \"display_price\": \"$19.99\",\n        \"display_compare_at_price\": null,\n        \"name\": \"Product 213286\",\n        \"options_text\": \"Size: S\",\n        \"total_on_hand\": 0,\n        \"purchasable\": true,\n        \"in_stock\": false,\n        \"backorderable\": true,\n        \"available\": true,\n        \"currency\": \"USD\",\n        \"price\": \"19.99\",\n        \"compare_at_price\": null\n      },\n      \"relationships\": {\n        \"product\": {\n          \"data\": {\n            \"id\": \"214\",\n            \"type\": \"product\"\n          }\n        },\n        \"tax_category\": {\n          \"data\": null\n        },\n        \"digitals\": {\n          \"data\": []\n        },\n        \"images\": {\n          \"data\": []\n        },\n        \"option_values\": {\n          \"data\": [\n            {\n              \"id\": \"83\",\n              \"type\": \"option_value\"\n            }\n          ]\n        },\n        \"stock_items\": {\n          \"data\": [\n            {\n              \"id\": \"301\",\n              \"type\": \"stock_item\"\n            }\n          ]\n        },\n        \"stock_locations\": {\n          \"data\": [\n            {\n              \"id\": \"187\",\n              \"type\": \"stock_location\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"286\",\n      \"type\": \"variant\",\n      \"attributes\": {\n        \"sku\": \"SKU-285\",\n        \"weight\": \"90.94\",\n        \"height\": \"108.64\",\n        \"depth\": \"191.7\",\n        \"deleted_at\": null,\n        \"is_master\": false,\n        \"cost_price\": \"17.0\",\n        \"position\": 3,\n        \"cost_currency\": \"USD\",\n        \"track_inventory\": true,\n        \"updated_at\": \"2022-11-08T19:35:56.633Z\",\n        \"discontinue_on\": null,\n        \"created_at\": \"2022-11-08T19:35:56.629Z\",\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"barcode\": null,\n        \"display_price\": \"$19.99\",\n        \"display_compare_at_price\": null,\n        \"name\": \"Product 213286\",\n        \"options_text\": \"Size: S\",\n        \"total_on_hand\": 0,\n        \"purchasable\": true,\n        \"in_stock\": false,\n        \"backorderable\": true,\n        \"available\": true,\n        \"currency\": \"USD\",\n        \"price\": \"19.99\",\n        \"compare_at_price\": null\n      },\n      \"relationships\": {\n        \"product\": {\n          \"data\": {\n            \"id\": \"214\",\n            \"type\": \"product\"\n          }\n        },\n        \"tax_category\": {\n          \"data\": null\n        },\n        \"digitals\": {\n          \"data\": []\n        },\n        \"images\": {\n          \"data\": []\n        },\n        \"option_values\": {\n          \"data\": [\n            {\n              \"id\": \"84\",\n              \"type\": \"option_value\"\n            }\n          ]\n        },\n        \"stock_items\": {\n          \"data\": [\n            {\n              \"id\": \"302\",\n              \"type\": \"stock_item\"\n            }\n          ]\n        },\n        \"stock_locations\": {\n          \"data\": [\n            {\n              \"id\": \"187\",\n              \"type\": \"stock_location\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"count\": 3,\n    \"total_count\": 3,\n    \"total_pages\": 1\n  },\n  \"links\": {\n    \"self\": \"http://www.example.com/api/v2/platform/variants?page=1&per_page=&include=&filter[product_id_eq]=&filter[sku_i_cont]=\",\n    \"next\": \"http://www.example.com/api/v2/platform/variants?filter%5Bproduct_id_eq%5D=&filter%5Bsku_i_cont%5D=&include=&page=1&per_page=\",\n    \"prev\": \"http://www.example.com/api/v2/platform/variants?filter%5Bproduct_id_eq%5D=&filter%5Bsku_i_cont%5D=&include=&page=1&per_page=\",\n    \"last\": \"http://www.example.com/api/v2/platform/variants?filter%5Bproduct_id_eq%5D=&filter%5Bsku_i_cont%5D=&include=&page=1&per_page=\",\n    \"first\": \"http://www.example.com/api/v2/platform/variants?filter%5Bproduct_id_eq%5D=&filter%5Bsku_i_cont%5D=&include=&page=1&per_page=\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "854d7792-a7c9-4ab6-af18-110b80e95a99",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "product,tax_category,images,digitals"
+                    },
+                    {
+                      "key": "filter[product_id_eq]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "filter[sku_i_cont]",
+                      "value": "SKU123"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3604cf9-0e1a-4071-b24c-a41b4189edfe",
+          "name": "Return a Variant",
+          "request": {
+            "name": "Return a Variant",
+            "description": {
+              "content": "Returns a Variant",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "variants",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2d50d685-3ac8-4546-bc5f-d26a6e286112",
+              "name": "Record found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "product,tax_category,images,digitals"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"291\",\n    \"type\": \"variant\",\n    \"attributes\": {\n      \"sku\": \"SKU-290\",\n      \"weight\": \"185.0\",\n      \"height\": \"33.55\",\n      \"depth\": \"3.78\",\n      \"deleted_at\": null,\n      \"is_master\": false,\n      \"cost_price\": \"17.0\",\n      \"position\": 2,\n      \"cost_currency\": \"USD\",\n      \"track_inventory\": true,\n      \"updated_at\": \"2022-11-08T19:35:57.221Z\",\n      \"discontinue_on\": null,\n      \"created_at\": \"2022-11-08T19:35:57.218Z\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"barcode\": null,\n      \"display_price\": \"$19.99\",\n      \"display_compare_at_price\": null,\n      \"name\": \"Product 2153349\",\n      \"options_text\": \"Size: S\",\n      \"total_on_hand\": 0,\n      \"purchasable\": true,\n      \"in_stock\": false,\n      \"backorderable\": true,\n      \"available\": true,\n      \"currency\": \"USD\",\n      \"price\": \"19.99\",\n      \"compare_at_price\": null\n    },\n    \"relationships\": {\n      \"product\": {\n        \"data\": {\n          \"id\": \"216\",\n          \"type\": \"product\"\n        }\n      },\n      \"tax_category\": {\n        \"data\": null\n      },\n      \"digitals\": {\n        \"data\": []\n      },\n      \"images\": {\n        \"data\": []\n      },\n      \"option_values\": {\n        \"data\": [\n          {\n            \"id\": \"87\",\n            \"type\": \"option_value\"\n          }\n        ]\n      },\n      \"stock_items\": {\n        \"data\": [\n          {\n            \"id\": \"307\",\n            \"type\": \"stock_item\"\n          }\n        ]\n      },\n      \"stock_locations\": {\n        \"data\": [\n          {\n            \"id\": \"189\",\n            \"type\": \"stock_location\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba888b9a-caa4-41c4-9e29-7a6e4a9b2645",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "product,tax_category,images,digitals"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a95f394-0b28-44c3-a73b-fb20ff7170b0",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "product,tax_category,images,digitals"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3489d03c-9920-4154-9ee0-6d2695b8b549",
+          "name": "Delete a Variant",
+          "request": {
+            "name": "Delete a Variant",
+            "description": {
+              "content": "Deletes a Variant",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "variants",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "35f52c50-4820-4b0f-837e-f986fc8de511",
+              "name": "Record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "93d43c9f-47a7-4138-997a-9bf91b2c9abf",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "068086a2-773e-41f0-b9f2-683d3537b1c5",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "variants",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95f1459c-09cc-45ae-9da6-eb0bff6240fa",
+          "name": "List all Product Variants",
+          "request": {
+            "name": "List all Product Variants",
+            "description": {
+              "content": "Returns a list of product variants. You can use product permalink:\n\n```\nGET /api/v2/storefront/products/knitted-high-neck-sweater/variants\n```\n\nOr Product ID:\n\n```\nGET /api/v2/storefront/products/21/variants\n```\n\n**Note** API will attempt a permalink lookup before an ID lookup.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "products",
+                ":product_slug",
+                "variants"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter[options][color]",
+                  "value": "<string>",
+                  "description": "Find Variants that have the specified option (eg. color, size) and value (eg. red, XS)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Number of requested page when paginating collection"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Number of requested records per page when paginating collection"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\nproduct,option_values,images,filter_values\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+                },
+                {
+                  "disabled": false,
+                  "key": "fields[variant]",
+                  "value": "<string>",
+                  "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "product_slug",
+                  "description": "(Required) Product Slug"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5f816754-9233-47f9-bede-aa8746ef01b1",
+              "name": "200 Success - Returns an array of `variant` objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "products",
+                    ":product_slug",
+                    "variants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[options][color]",
+                      "value": "red"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "include",
+                      "value": "product,option_values,images,filter_values"
+                    },
+                    {
+                      "key": "fields[variant]",
+                      "value": "price,currency,options,options_text"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "product_slug",
+                      "description": "(Required) Product Slug"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"1\",\n      \"type\": \"variant\",\n      \"attributes\": {\n        \"sku\": \"SKU-1001\",\n        \"price\": \"15.99\",\n        \"currency\": \"USD\",\n        \"display_price\": \"$15.99\",\n        \"weight\": \"10\",\n        \"height\": \"10\",\n        \"width\": \"10\",\n        \"depth\": \"10\",\n        \"is_master\": false,\n        \"options_text\": \"Size: small, Color: red\",\n        \"options\": [\n          {\n            \"name\": \"string\",\n            \"value\": \"string\",\n            \"presentation\": \"string\"\n          },\n          {\n            \"name\": \"string\",\n            \"value\": \"string\",\n            \"presentation\": \"string\"\n          }\n        ],\n        \"purchasable\": true,\n        \"in_stock\": false,\n        \"backorderable\": false\n      },\n      \"relationships\": {\n        \"product\": {\n          \"data\": {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          }\n        },\n        \"images\": {\n          \"data\": [\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            },\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            }\n          ]\n        },\n        \"option_values\": {\n          \"data\": [\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            },\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"1\",\n      \"type\": \"variant\",\n      \"attributes\": {\n        \"sku\": \"SKU-1001\",\n        \"price\": \"15.99\",\n        \"currency\": \"USD\",\n        \"display_price\": \"$15.99\",\n        \"weight\": \"10\",\n        \"height\": \"10\",\n        \"width\": \"10\",\n        \"depth\": \"10\",\n        \"is_master\": false,\n        \"options_text\": \"Size: small, Color: red\",\n        \"options\": [\n          {\n            \"name\": \"string\",\n            \"value\": \"string\",\n            \"presentation\": \"string\"\n          },\n          {\n            \"name\": \"string\",\n            \"value\": \"string\",\n            \"presentation\": \"string\"\n          }\n        ],\n        \"purchasable\": false,\n        \"in_stock\": true,\n        \"backorderable\": false\n      },\n      \"relationships\": {\n        \"product\": {\n          \"data\": {\n            \"id\": \"string\",\n            \"type\": \"string\"\n          }\n        },\n        \"images\": {\n          \"data\": [\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            },\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            }\n          ]\n        },\n        \"option_values\": {\n          \"data\": [\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            },\n            {\n              \"id\": \"string\",\n              \"type\": \"string\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"count\": 7,\n    \"total_count\": 145,\n    \"total_pages\": 10\n  },\n  \"links\": {\n    \"self\": \"string\",\n    \"next\": \"string\",\n    \"prev\": \"string\",\n    \"last\": \"string\",\n    \"first\": \"string\"\n  },\n  \"included\": [\n    {\n      \"id\": \"1\",\n      \"type\": \"product\",\n      \"attributes\": {\n        \"name\": \"Example product\",\n        \"description\": \"Example description\",\n        \"available_on\": \"2012-10-17T03:43:57Z\",\n        \"slug\": \"example-product\",\n        \"price\": \"15.99\",\n        \"currency\": \"USD\",\n        \"display_price\": \"$15.99\",\n        \"purchasable\": true,\n        \"in_stock\": true,\n        \"backorderable\": true,\n        \"meta_description\": \"Example product\",\n        \"meta_keywords\": \"example, product\",\n        \"updated_at\": \"2020-02-16T07:14:54.617Z\",\n        \"sku\": \"9238-WS\",\n        \"available\": false,\n        \"compare_at_price\": \"49.99\",\n        \"display_compare_at_price\": \"$49.99\",\n        \"localized_slugs\": {},\n        \"tags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"labels\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"relationships\": {\n        \"variants\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"option_types\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"product_properties\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"taxons\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"images\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"default_variant\": {\n          \"data\": {\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"primary_variant\": {\n          \"data\": {\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"1\",\n      \"type\": \"product\",\n      \"attributes\": {\n        \"name\": \"Example product\",\n        \"description\": \"Example description\",\n        \"available_on\": \"2012-10-17T03:43:57Z\",\n        \"slug\": \"example-product\",\n        \"price\": \"15.99\",\n        \"currency\": \"USD\",\n        \"display_price\": \"$15.99\",\n        \"purchasable\": true,\n        \"in_stock\": true,\n        \"backorderable\": true,\n        \"meta_description\": \"Example product\",\n        \"meta_keywords\": \"example, product\",\n        \"updated_at\": \"2020-02-16T07:14:54.617Z\",\n        \"sku\": \"9238-WS\",\n        \"available\": false,\n        \"compare_at_price\": \"49.99\",\n        \"display_compare_at_price\": \"$49.99\",\n        \"localized_slugs\": {},\n        \"tags\": [\n          \"string\",\n          \"string\"\n        ],\n        \"labels\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"relationships\": {\n        \"variants\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"option_types\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"product_properties\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"taxons\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"images\": {\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"default_variant\": {\n          \"data\": {\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"primary_variant\": {\n          \"data\": {\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "000b7a36-2df8-471e-b8df-c6b9fc331d08",
+    "name": "Admin Account / Address Variants API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

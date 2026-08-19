@@ -1,0 +1,138 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Wishlists / Wished Items API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Wishlists / Wished Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Item to Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token/add_item",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Add Item to Wishlist endpoint adds a variant to an existing wishlist by creating a new `wished_item`. A wished item in a wishlist is comparable to a line item in a cart.\n\nEach wished item references a single variant, holds the desired quantity and returns price information determined by the variant price in current currency, and desired quantity."
+        },
+        {
+          "info": {
+            "name": "Add Items to Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token/add_items",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Add Items to Wishlist endpoint adds variants to an existing wishlist by creating a new `wished_item` objects. A wished item in a wishlist is comparable to a line item in a cart.\n\nEach wished item references a single variant, holds the desired quantity and returns price information determined by the variant price in current currency, and desired quantity."
+        },
+        {
+          "info": {
+            "name": "Set Wished Item Quantity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token/set_item_quantity/:item_id",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              },
+              {
+                "name": "item_id",
+                "value": "3",
+                "type": "path",
+                "description": "The wished item id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint sets the wished item quantity."
+        },
+        {
+          "info": {
+            "name": "Delete Item from Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token/remove_item/:item_id",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "item_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a wished item from a wishlist."
+        },
+        {
+          "info": {
+            "name": "Delete Items from Wishlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/storefront/wishlists/:token/remove_items",
+            "params": [
+              {
+                "name": "token",
+                "value": "vmJtMiMozBdFtn1VkdJ8dYen",
+                "type": "path",
+                "description": "The token is a unique string used to identify the target resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes wished items from a wishlist."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

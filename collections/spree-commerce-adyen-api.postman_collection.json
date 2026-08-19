@@ -1,0 +1,596 @@
+{
+  "item": [
+    {
+      "id": "b26ec700-29db-4d5d-a64f-396f2deeab3d",
+      "name": "Adyen",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6401a5b2-4e99-4daf-b10a-6cf6cae450c3",
+          "name": "Create an Adyen Payment Session",
+          "request": {
+            "name": "Create an Adyen Payment Session",
+            "description": {
+              "content": "Create a new Adyen payment session with the specified amount. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "adyen",
+                "payment_sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_session\": {\n    \"amount\": \"<number>\",\n    \"channel\": \"Web\",\n    \"return_url\": \"https://{host}/adyen/payment_sessions/redirect\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "790413f8-c86f-404e-b70c-04e8655f148b",
+              "name": "200 Success - Returns the Adyen Payment Session with session data and payment amount.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "adyen",
+                    "payment_sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_session\": {\n    \"amount\": 80.99,\n    \"channel\": \"Android\",\n    \"return_url\": \"my-app://your.package.name\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3\",\n    \"type\": \"adyen_payment_session\",\n    \"attributes\": {\n      \"adyen_id\": \"CS3E6B43783787E79B\",\n      \"amount\": \"80.99\",\n      \"currency\": \"USD\",\n      \"channel\": \"iOS\",\n      \"adyen_data\": \"Ab02b4c0!BQABAgCNxadId3f9NXF6OMYGXsZAoAwcnOdgINKAypoyo8GUq8UqjnT/7J8K4kNhl6tjWOpGY6t+r+4QQVVfo4IHFWtjzNkj2k9dnTS4932UyCznLC+gHbzPHcfN6rNiHBIpQo523a94EvV2Sq1Gh/3j6N2aNCjfV2TDWynQJU11uOhalgwhAnVrD3HmFtbVqM60kGiPRBfE4LwLuQ7f+7S/cdVx8HzWizvafndeRnx5lM3RQNibNRbimJ3G6YZh/HI9FwZYbxkUoq8dQl8dgdquNKAxsSO0BcC6UpTU2Z8d/z3lAsm0UlX1+YiryRut4Ipg9YqJbVt3gnj7Kh4kZFRO1hZM8NDeD9PshE8riBXDpUwJ84m+9I+cfbnwYWgfZaGuxfGG+IiiliQBWIjHefd6ukUATLWsPX6ufUL7BT3rSMx/5QMmdNrE/zMA9B1tFg5Tm8t88S6WQcSZ/vIgOv+peDml5j44OcEth6iEqxRwsmT3T0nZUhYwYUSTEykrpY9+Ly2+NWpTE+sgvXhld6SZubbbG9gIBad6TIwaKkUO0kJOx6Zvk37uU2D0z8mnWIktimBZIqhegsdBXutVyUe93xSighf/C41n69COSjALE3KCcXGCmR4NsdwJ7LesJMYLu1S4gDOObvkuW5IY2k8r6pptUWgsOxcyUvbpPMlQrjRTHAwRPxcnk0SJrSL29HwASnsia2V5IjoiQUYwQUFBMTAzQ0E1MzdFQUVEODdDMjRERDUzOTA5QjgwQTc4QTkyM0UzODIzRDY4REFDQzk0QjlGRjgzMDVEQyJ9JcDZ7NsVaMwwHpvV0vX/5b7P9FS/1TfuFbQRmlFX4vCQOLxSiyAf5P4uN7Hb2Zw4dplBl4oSEBBUvrKk5TCqjGoS1azHS8Fv5LCcl2yCDH6WBtQKzJnT6NmXl29+ILYCxETtyF9K8LwgJyu8sHs2jQnnLujLBqqjIZqDFa8TORtGiwvhtS3UMtagkkg0SkCaaaOjqtZdWrTy7C9Gy9nFZNYEfmurFZmgLRROTB3jRNwmveWvayFJl4TTtub14l+RZJDx2VgjAwqRU8btN/0xnrT9m2kg6LOyW4F9TkauPgAzY3Gu//HQOGW7VDBPq6y83mzP7iNp8Whe14NQSu29i9rBricl0f6RoWin87jRD7AtZx0MxlhNxUF579COCwNHAMhs310nntoSY5U8s13of9Wn2lDcBcg2QmSNOixMMIcBkjHpEQEZAeGzfi8OvJtjoi9TVY0VzrpSbR1dcx8MNjOUeY37H+XlWkdEkd3457zbeOuSlEbjvuDYW7tYHYWipsd4fNllXiMzKW+w6YxL2Kqj0M5B+3ihuEKg7VS3b/XKs+OS7eHGZSImAt9e4tGltEqYzdRHzm4S6pnJytaoPp7+OswEm+JQTi739w4CJeNWxr1t9dot2k9OQw3vZabeI7OTrwBc2IwtUYZ9oPlBVOibMoUwCIVmSPrSgF8nCj9S2RdZgamLNnyg1srQmWnNxtOLMnvTnWedICtoE48rMG2Q+cDrEjy11TCGK3R+LHE+LaqPv96yk3ztsHomOF7XstAvLvUAIH3Z/X5+ePNcDzV7OZkS9xcLkqGqeqR04iHGZZfLw3q4rauZMWLyxb+NkGKfgTtGhe7nq+Z7bGXWxzQh694dJf+59oGCslmfJ44cd8SX3o2JjSZ7Ew7LgQt7fj6z+yif1Bs8SH3QNZN9POsfxJggCwRIhvaPmZR7hsV75+b4jC+wU2LAHik8Nr1pt48NpCxULtKNw6ZPUbJwMVWK7gmZtqa39l7OmIs2PE54vgeZk38XBi6K1UFqoZlV667GrnwOgscob3DFPMcjZhCBYOWJNLjxjqP6pw3zf7OB/ZA1m4F6yv4LVka19rlQk0esAqfTy36KbJggRYNJdGYgDr6u2zz3NblMfZpys5mtpW8ncoBdsOeWlL+cspDGig9HINHT2CnrL9+N7oU=\",\n      \"client_key\": \"test_ECRHWDLSER123456HMT57VW7XGOUDA23\",\n      \"status\": \"initial\",\n      \"expires_at\": \"2025-07-24T14:40:45.000Z\",\n      \"return_url\": \"https://example.com/adyen/payment_sessions/redirect\"\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"4\",\n          \"type\": \"cart\"\n        }\n      },\n      \"payment_method\": {\n        \"data\": {\n          \"id\": \"4\",\n          \"type\": \"payment_method\"\n        }\n      },\n      \"user\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "023aa094-d267-4294-b379-976793d9791c",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "adyen",
+                    "payment_sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_session\": {\n    \"amount\": 80.99,\n    \"channel\": \"Android\",\n    \"return_url\": \"my-app://your.package.name\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "500c8ab0-619b-4a02-8a3d-c294ab5d7a6b",
+          "name": "Complete an Adyen payment session and order",
+          "request": {
+            "name": "Complete an Adyen payment session and order",
+            "description": {
+              "content": "Complete an Adyen payment session and order. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "adyen",
+                "payment_sessions",
+                ":id",
+                "complete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_result\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5c973264-2ea5-413d-b2eb-4ab2bebeb2da",
+              "name": "200 Success - Returns the Adyen Payment Session with session data and payment amount.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "adyen",
+                    "payment_sessions",
+                    ":id",
+                    "complete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"session_result\": \"AdyenResultData\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3\",\n    \"type\": \"adyen_payment_session\",\n    \"attributes\": {\n      \"adyen_id\": \"CS3E6B43783787E79B\",\n      \"amount\": \"80.99\",\n      \"currency\": \"USD\",\n      \"channel\": \"iOS\",\n      \"adyen_data\": \"Ab02b4c0!BQABAgCNxadId3f9NXF6OMYGXsZAoAwcnOdgINKAypoyo8GUq8UqjnT/7J8K4kNhl6tjWOpGY6t+r+4QQVVfo4IHFWtjzNkj2k9dnTS4932UyCznLC+gHbzPHcfN6rNiHBIpQo523a94EvV2Sq1Gh/3j6N2aNCjfV2TDWynQJU11uOhalgwhAnVrD3HmFtbVqM60kGiPRBfE4LwLuQ7f+7S/cdVx8HzWizvafndeRnx5lM3RQNibNRbimJ3G6YZh/HI9FwZYbxkUoq8dQl8dgdquNKAxsSO0BcC6UpTU2Z8d/z3lAsm0UlX1+YiryRut4Ipg9YqJbVt3gnj7Kh4kZFRO1hZM8NDeD9PshE8riBXDpUwJ84m+9I+cfbnwYWgfZaGuxfGG+IiiliQBWIjHefd6ukUATLWsPX6ufUL7BT3rSMx/5QMmdNrE/zMA9B1tFg5Tm8t88S6WQcSZ/vIgOv+peDml5j44OcEth6iEqxRwsmT3T0nZUhYwYUSTEykrpY9+Ly2+NWpTE+sgvXhld6SZubbbG9gIBad6TIwaKkUO0kJOx6Zvk37uU2D0z8mnWIktimBZIqhegsdBXutVyUe93xSighf/C41n69COSjALE3KCcXGCmR4NsdwJ7LesJMYLu1S4gDOObvkuW5IY2k8r6pptUWgsOxcyUvbpPMlQrjRTHAwRPxcnk0SJrSL29HwASnsia2V5IjoiQUYwQUFBMTAzQ0E1MzdFQUVEODdDMjRERDUzOTA5QjgwQTc4QTkyM0UzODIzRDY4REFDQzk0QjlGRjgzMDVEQyJ9JcDZ7NsVaMwwHpvV0vX/5b7P9FS/1TfuFbQRmlFX4vCQOLxSiyAf5P4uN7Hb2Zw4dplBl4oSEBBUvrKk5TCqjGoS1azHS8Fv5LCcl2yCDH6WBtQKzJnT6NmXl29+ILYCxETtyF9K8LwgJyu8sHs2jQnnLujLBqqjIZqDFa8TORtGiwvhtS3UMtagkkg0SkCaaaOjqtZdWrTy7C9Gy9nFZNYEfmurFZmgLRROTB3jRNwmveWvayFJl4TTtub14l+RZJDx2VgjAwqRU8btN/0xnrT9m2kg6LOyW4F9TkauPgAzY3Gu//HQOGW7VDBPq6y83mzP7iNp8Whe14NQSu29i9rBricl0f6RoWin87jRD7AtZx0MxlhNxUF579COCwNHAMhs310nntoSY5U8s13of9Wn2lDcBcg2QmSNOixMMIcBkjHpEQEZAeGzfi8OvJtjoi9TVY0VzrpSbR1dcx8MNjOUeY37H+XlWkdEkd3457zbeOuSlEbjvuDYW7tYHYWipsd4fNllXiMzKW+w6YxL2Kqj0M5B+3ihuEKg7VS3b/XKs+OS7eHGZSImAt9e4tGltEqYzdRHzm4S6pnJytaoPp7+OswEm+JQTi739w4CJeNWxr1t9dot2k9OQw3vZabeI7OTrwBc2IwtUYZ9oPlBVOibMoUwCIVmSPrSgF8nCj9S2RdZgamLNnyg1srQmWnNxtOLMnvTnWedICtoE48rMG2Q+cDrEjy11TCGK3R+LHE+LaqPv96yk3ztsHomOF7XstAvLvUAIH3Z/X5+ePNcDzV7OZkS9xcLkqGqeqR04iHGZZfLw3q4rauZMWLyxb+NkGKfgTtGhe7nq+Z7bGXWxzQh694dJf+59oGCslmfJ44cd8SX3o2JjSZ7Ew7LgQt7fj6z+yif1Bs8SH3QNZN9POsfxJggCwRIhvaPmZR7hsV75+b4jC+wU2LAHik8Nr1pt48NpCxULtKNw6ZPUbJwMVWK7gmZtqa39l7OmIs2PE54vgeZk38XBi6K1UFqoZlV667GrnwOgscob3DFPMcjZhCBYOWJNLjxjqP6pw3zf7OB/ZA1m4F6yv4LVka19rlQk0esAqfTy36KbJggRYNJdGYgDr6u2zz3NblMfZpys5mtpW8ncoBdsOeWlL+cspDGig9HINHT2CnrL9+N7oU=\",\n      \"client_key\": \"test_ECRHWDLSER123456HMT57VW7XGOUDA23\",\n      \"status\": \"initial\",\n      \"expires_at\": \"2025-07-24T14:40:45.000Z\",\n      \"return_url\": \"https://example.com/adyen/payment_sessions/redirect\"\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"4\",\n          \"type\": \"cart\"\n        }\n      },\n      \"payment_method\": {\n        \"data\": {\n          \"id\": \"4\",\n          \"type\": \"payment_method\"\n        }\n      },\n      \"user\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1177b3c-3961-4dc7-92fe-a3f5eb91e59d",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "adyen",
+                    "payment_sessions",
+                    ":id",
+                    "complete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"session_result\": \"AdyenResultData\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Example is invalid\",\n  \"errors\": {\n    \"example\": [\n      \"Example is invalid\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8cf8a80f-ff2b-4acc-9277-d0cdbf548e61",
+          "name": "Get Adyen Payment Session",
+          "request": {
+            "name": "Get Adyen Payment Session",
+            "description": {
+              "content": "Retrieve An Adyen payment session information. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "storefront",
+                "adyen",
+                "payment_sessions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "c78be26d-58d6-4093-9068-be40f4ac53ad",
+              "name": "200 Success - Returns the Adyen Payment Session with session data and payment amount.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "adyen",
+                    "payment_sessions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3\",\n    \"type\": \"adyen_payment_session\",\n    \"attributes\": {\n      \"adyen_id\": \"CS3E6B43783787E79B\",\n      \"amount\": \"80.99\",\n      \"currency\": \"USD\",\n      \"channel\": \"iOS\",\n      \"adyen_data\": \"Ab02b4c0!BQABAgCNxadId3f9NXF6OMYGXsZAoAwcnOdgINKAypoyo8GUq8UqjnT/7J8K4kNhl6tjWOpGY6t+r+4QQVVfo4IHFWtjzNkj2k9dnTS4932UyCznLC+gHbzPHcfN6rNiHBIpQo523a94EvV2Sq1Gh/3j6N2aNCjfV2TDWynQJU11uOhalgwhAnVrD3HmFtbVqM60kGiPRBfE4LwLuQ7f+7S/cdVx8HzWizvafndeRnx5lM3RQNibNRbimJ3G6YZh/HI9FwZYbxkUoq8dQl8dgdquNKAxsSO0BcC6UpTU2Z8d/z3lAsm0UlX1+YiryRut4Ipg9YqJbVt3gnj7Kh4kZFRO1hZM8NDeD9PshE8riBXDpUwJ84m+9I+cfbnwYWgfZaGuxfGG+IiiliQBWIjHefd6ukUATLWsPX6ufUL7BT3rSMx/5QMmdNrE/zMA9B1tFg5Tm8t88S6WQcSZ/vIgOv+peDml5j44OcEth6iEqxRwsmT3T0nZUhYwYUSTEykrpY9+Ly2+NWpTE+sgvXhld6SZubbbG9gIBad6TIwaKkUO0kJOx6Zvk37uU2D0z8mnWIktimBZIqhegsdBXutVyUe93xSighf/C41n69COSjALE3KCcXGCmR4NsdwJ7LesJMYLu1S4gDOObvkuW5IY2k8r6pptUWgsOxcyUvbpPMlQrjRTHAwRPxcnk0SJrSL29HwASnsia2V5IjoiQUYwQUFBMTAzQ0E1MzdFQUVEODdDMjRERDUzOTA5QjgwQTc4QTkyM0UzODIzRDY4REFDQzk0QjlGRjgzMDVEQyJ9JcDZ7NsVaMwwHpvV0vX/5b7P9FS/1TfuFbQRmlFX4vCQOLxSiyAf5P4uN7Hb2Zw4dplBl4oSEBBUvrKk5TCqjGoS1azHS8Fv5LCcl2yCDH6WBtQKzJnT6NmXl29+ILYCxETtyF9K8LwgJyu8sHs2jQnnLujLBqqjIZqDFa8TORtGiwvhtS3UMtagkkg0SkCaaaOjqtZdWrTy7C9Gy9nFZNYEfmurFZmgLRROTB3jRNwmveWvayFJl4TTtub14l+RZJDx2VgjAwqRU8btN/0xnrT9m2kg6LOyW4F9TkauPgAzY3Gu//HQOGW7VDBPq6y83mzP7iNp8Whe14NQSu29i9rBricl0f6RoWin87jRD7AtZx0MxlhNxUF579COCwNHAMhs310nntoSY5U8s13of9Wn2lDcBcg2QmSNOixMMIcBkjHpEQEZAeGzfi8OvJtjoi9TVY0VzrpSbR1dcx8MNjOUeY37H+XlWkdEkd3457zbeOuSlEbjvuDYW7tYHYWipsd4fNllXiMzKW+w6YxL2Kqj0M5B+3ihuEKg7VS3b/XKs+OS7eHGZSImAt9e4tGltEqYzdRHzm4S6pnJytaoPp7+OswEm+JQTi739w4CJeNWxr1t9dot2k9OQw3vZabeI7OTrwBc2IwtUYZ9oPlBVOibMoUwCIVmSPrSgF8nCj9S2RdZgamLNnyg1srQmWnNxtOLMnvTnWedICtoE48rMG2Q+cDrEjy11TCGK3R+LHE+LaqPv96yk3ztsHomOF7XstAvLvUAIH3Z/X5+ePNcDzV7OZkS9xcLkqGqeqR04iHGZZfLw3q4rauZMWLyxb+NkGKfgTtGhe7nq+Z7bGXWxzQh694dJf+59oGCslmfJ44cd8SX3o2JjSZ7Ew7LgQt7fj6z+yif1Bs8SH3QNZN9POsfxJggCwRIhvaPmZR7hsV75+b4jC+wU2LAHik8Nr1pt48NpCxULtKNw6ZPUbJwMVWK7gmZtqa39l7OmIs2PE54vgeZk38XBi6K1UFqoZlV667GrnwOgscob3DFPMcjZhCBYOWJNLjxjqP6pw3zf7OB/ZA1m4F6yv4LVka19rlQk0esAqfTy36KbJggRYNJdGYgDr6u2zz3NblMfZpys5mtpW8ncoBdsOeWlL+cspDGig9HINHT2CnrL9+N7oU=\",\n      \"client_key\": \"test_ECRHWDLSER123456HMT57VW7XGOUDA23\",\n      \"status\": \"initial\",\n      \"expires_at\": \"2025-07-24T14:40:45.000Z\",\n      \"return_url\": \"https://example.com/adyen/payment_sessions/redirect\"\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"4\",\n          \"type\": \"cart\"\n        }\n      },\n      \"payment_method\": {\n        \"data\": {\n          \"id\": \"4\",\n          \"type\": \"payment_method\"\n        }\n      },\n      \"user\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a788c50d-49ae-4a5b-971c-d38a07daac74",
+              "name": "403 Forbidden - You are not authorized to access this page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "adyen",
+                    "payment_sessions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"You are not authorized to access this page.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29bd8aa9-c575-46b7-a373-381359d016ad",
+              "name": "404 Not Found - Resource not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "storefront",
+                    "adyen",
+                    "payment_sessions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "526a79c1-6125-48ec-a4d0-4be484121507",
+    "name": "Admin Account / Address Adyen API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

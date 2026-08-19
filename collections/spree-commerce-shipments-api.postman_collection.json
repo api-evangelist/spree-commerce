@@ -1,0 +1,3523 @@
+{
+  "item": [
+    {
+      "id": "599707f6-c6e0-4e90-bfbe-b6956ffd1e8d",
+      "name": "Shipments",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7bd3d728-4201-40d9-8f98-c775a398ba88",
+          "name": "Return a list of Shipments",
+          "request": {
+            "name": "Return a list of Shipments",
+            "description": {
+              "content": "Returns a list of Shipments",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[state_eq]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "44b6c9aa-547f-4533-af83-62d657207521",
+              "name": "Records returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    },
+                    {
+                      "key": "filter[state_eq]",
+                      "value": "complete"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"28\",\n      \"type\": \"shipment\",\n      \"attributes\": {\n        \"tracking\": \"U10000\",\n        \"number\": \"H74819281258\",\n        \"cost\": \"100.0\",\n        \"shipped_at\": null,\n        \"state\": \"pending\",\n        \"created_at\": \"2022-11-08T19:35:09.196Z\",\n        \"updated_at\": \"2022-11-08T19:35:09.199Z\",\n        \"adjustment_total\": \"0.0\",\n        \"additional_tax_total\": \"0.0\",\n        \"promo_total\": \"0.0\",\n        \"included_tax_total\": \"0.0\",\n        \"pre_tax_amount\": \"0.0\",\n        \"taxable_adjustment_total\": \"0.0\",\n        \"non_taxable_adjustment_total\": \"0.0\",\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"display_discounted_cost\": \"$100.00\",\n        \"display_item_cost\": \"$0.00\",\n        \"display_amount\": \"$100.00\",\n        \"display_final_price\": \"$100.00\",\n        \"display_cost\": \"$100.00\",\n        \"tracking_url\": null\n      },\n      \"relationships\": {\n        \"order\": {\n          \"data\": {\n            \"id\": \"78\",\n            \"type\": \"order\"\n          }\n        },\n        \"address\": {\n          \"data\": null\n        },\n        \"stock_location\": {\n          \"data\": {\n            \"id\": \"106\",\n            \"type\": \"stock_location\"\n          }\n        },\n        \"adjustments\": {\n          \"data\": []\n        },\n        \"inventory_units\": {\n          \"data\": []\n        },\n        \"shipping_rates\": {\n          \"data\": [\n            {\n              \"id\": \"30\",\n              \"type\": \"shipping_rate\"\n            }\n          ]\n        },\n        \"state_changes\": {\n          \"data\": []\n        },\n        \"selected_shipping_rate\": {\n          \"data\": {\n            \"id\": \"30\",\n            \"type\": \"shipping_rate\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"29\",\n      \"type\": \"shipment\",\n      \"attributes\": {\n        \"tracking\": \"U10000\",\n        \"number\": \"H45064150244\",\n        \"cost\": \"100.0\",\n        \"shipped_at\": null,\n        \"state\": \"pending\",\n        \"created_at\": \"2022-11-08T19:35:09.230Z\",\n        \"updated_at\": \"2022-11-08T19:35:09.233Z\",\n        \"adjustment_total\": \"0.0\",\n        \"additional_tax_total\": \"0.0\",\n        \"promo_total\": \"0.0\",\n        \"included_tax_total\": \"0.0\",\n        \"pre_tax_amount\": \"0.0\",\n        \"taxable_adjustment_total\": \"0.0\",\n        \"non_taxable_adjustment_total\": \"0.0\",\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"display_discounted_cost\": \"$100.00\",\n        \"display_item_cost\": \"$0.00\",\n        \"display_amount\": \"$100.00\",\n        \"display_final_price\": \"$100.00\",\n        \"display_cost\": \"$100.00\",\n        \"tracking_url\": null\n      },\n      \"relationships\": {\n        \"order\": {\n          \"data\": {\n            \"id\": \"79\",\n            \"type\": \"order\"\n          }\n        },\n        \"address\": {\n          \"data\": null\n        },\n        \"stock_location\": {\n          \"data\": {\n            \"id\": \"107\",\n            \"type\": \"stock_location\"\n          }\n        },\n        \"adjustments\": {\n          \"data\": []\n        },\n        \"inventory_units\": {\n          \"data\": []\n        },\n        \"shipping_rates\": {\n          \"data\": [\n            {\n              \"id\": \"31\",\n              \"type\": \"shipping_rate\"\n            }\n          ]\n        },\n        \"state_changes\": {\n          \"data\": []\n        },\n        \"selected_shipping_rate\": {\n          \"data\": {\n            \"id\": \"31\",\n            \"type\": \"shipping_rate\"\n          }\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"count\": 2,\n    \"total_count\": 2,\n    \"total_pages\": 1\n  },\n  \"links\": {\n    \"self\": \"http://www.example.com/api/v2/platform/shipments?page=1&per_page=&include=&filter[state_eq]=\",\n    \"next\": \"http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=\",\n    \"prev\": \"http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=\",\n    \"last\": \"http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=\",\n    \"first\": \"http://www.example.com/api/v2/platform/shipments?filter%5Bstate_eq%5D=&include=&page=1&per_page=\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21ba21cf-7337-4396-88aa-0c3ba5f6573d",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    },
+                    {
+                      "key": "filter[state_eq]",
+                      "value": "complete"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6a85276a-fcca-4801-a707-00f57e07b10e",
+          "name": "Create a Shipment",
+          "request": {
+            "name": "Create a Shipment",
+            "description": {
+              "content": "Creates a Shipment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipment\": {\n    \"stock_location_id\": \"<string>\",\n    \"order_id\": \"<string>\",\n    \"variant_id\": \"<string>\",\n    \"quantity\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "08df396d-3160-46b7-9cdf-97453d849660",
+              "name": "Record created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"stock_location_id\": \"101\",\n    \"order_id\": \"101\",\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"32\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": null,\n      \"number\": \"H86798855348\",\n      \"cost\": \"0.0\",\n      \"shipped_at\": null,\n      \"state\": \"pending\",\n      \"created_at\": \"2022-11-08T19:35:09.957Z\",\n      \"updated_at\": \"2022-11-08T19:35:09.970Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$0.00\",\n      \"display_item_cost\": \"$19.99\",\n      \"display_amount\": \"$0.00\",\n      \"display_final_price\": \"$0.00\",\n      \"display_cost\": \"$0.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"82\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"110\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"28\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": []\n      },\n      \"state_changes\": {\n        \"data\": []\n      },\n      \"selected_shipping_rate\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f6a4d8b-e559-4e0a-9eb9-287607869846",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"stock_location_id\": \"101\",\n    \"order_id\": \"101\",\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"order_not_found\",\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "88e207cc-dfd9-4b10-9e16-622173b0d0b6",
+          "name": "Return a Shipment",
+          "request": {
+            "name": "Return a Shipment",
+            "description": {
+              "content": "Returns a Shipment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5739c3e3-3c80-47b7-be75-7581d998270c",
+              "name": "Record found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"34\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H70979559010\",\n      \"cost\": \"100.0\",\n      \"shipped_at\": null,\n      \"state\": \"pending\",\n      \"created_at\": \"2022-11-08T19:35:10.459Z\",\n      \"updated_at\": \"2022-11-08T19:35:10.475Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$100.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$100.00\",\n      \"display_final_price\": \"$100.00\",\n      \"display_cost\": \"$100.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"83\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"112\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"30\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"37\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": []\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"37\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02889856-303a-44cd-af6e-952a16f772e3",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9082e149-7619-4c82-81e4-0a7c0f16bf17",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4eca45e8-2848-47d6-944b-bd166cee84a0",
+          "name": "Update a Shipment",
+          "request": {
+            "name": "Update a Shipment",
+            "description": {
+              "content": "Updates a Shipment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipment\": {\n    \"tracking\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8ee3d212-32f5-4499-95ff-9f0c3c483e55",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"tracking\": \"MY-TRACKING-REF-12324\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"38\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"MY-TRACKING-NUMBER-1234\",\n      \"number\": \"H91981279448\",\n      \"cost\": \"100.0\",\n      \"shipped_at\": null,\n      \"state\": \"pending\",\n      \"created_at\": \"2022-11-08T19:35:11.360Z\",\n      \"updated_at\": \"2022-11-08T19:35:11.610Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$100.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$100.00\",\n      \"display_final_price\": \"$100.00\",\n      \"display_cost\": \"$100.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"85\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"116\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"34\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"45\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": []\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"45\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91ab3f4d-844b-455e-a22c-1ddafc23f978",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"tracking\": \"MY-TRACKING-REF-12324\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dcb6af1a-92b3-46b7-b734-0b74b5a85081",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"tracking\": \"MY-TRACKING-REF-12324\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "942bd357-77ea-4ac9-8956-6e3b29ff5b42",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"tracking\": \"MY-TRACKING-REF-12324\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Stock location can't be blank\",\n  \"errors\": {\n    \"stock_location\": [\n      \"can't be blank\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5bf1704d-1767-4b4e-83df-b307fa4802f6",
+          "name": "Delete a Shipment",
+          "request": {
+            "name": "Delete a Shipment",
+            "description": {
+              "content": "Deletes a Shipment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7bcda60d-29f4-4b75-ad8e-1ea606863d99",
+              "name": "Record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "30c3f749-4c0f-4726-9664-7ca2b79298e9",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ea6af90-cf87-48d4-94fd-a87d375bcd62",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f5c20680-d1f6-4a26-aee0-ccdb4d999d66",
+          "name": "Adds item (Variant) to an existing Shipment",
+          "request": {
+            "name": "Adds item (Variant) to an existing Shipment",
+            "description": {
+              "content": "If selected Variant was already added to Order it will increase the quantity of existing Line Item, if not it will create a new Line Item",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id",
+                "add_item"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"<string>\",\n    \"quantity\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d43e76b6-d808-4cad-a411-55754374a161",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "add_item"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"48\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H80492609966\",\n      \"cost\": \"0.0\",\n      \"shipped_at\": null,\n      \"state\": \"pending\",\n      \"created_at\": \"2022-11-08T19:35:13.675Z\",\n      \"updated_at\": \"2022-11-08T19:35:13.998Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$0.00\",\n      \"display_item_cost\": \"$29.99\",\n      \"display_amount\": \"$0.00\",\n      \"display_final_price\": \"$0.00\",\n      \"display_cost\": \"$0.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"90\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"126\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"44\",\n            \"type\": \"inventory_unit\"\n          },\n          {\n            \"id\": \"45\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"76\",\n            \"type\": \"shipping_rate\"\n          },\n          {\n            \"id\": \"77\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": []\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"77\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18dea993-e4c3-4ec9-8a10-e6a4296a3eb5",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "add_item"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31bde498-d2e9-49c5-9fe5-b31d82e55952",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "add_item"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b22b9bfb-3bd2-44a3-a619-38190e858ab9",
+          "name": "Removes item (Variant) from Shipment",
+          "request": {
+            "name": "Removes item (Variant) from Shipment",
+            "description": {
+              "content": "If selected Variant is removed completely and Shipment doesn't include any other Line Items, Shipment itself will be deleted",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id",
+                "remove_item"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"<string>\",\n    \"quantity\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "387101e5-a75f-4882-ab31-d7ec165742a5",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "remove_item"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"54\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H51498419568\",\n      \"cost\": \"0.0\",\n      \"shipped_at\": null,\n      \"state\": \"pending\",\n      \"created_at\": \"2022-11-08T19:35:15.496Z\",\n      \"updated_at\": \"2022-11-08T19:35:15.944Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$0.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$0.00\",\n      \"display_final_price\": \"$0.00\",\n      \"display_cost\": \"$0.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"93\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"133\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"51\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"100\",\n            \"type\": \"shipping_rate\"\n          },\n          {\n            \"id\": \"101\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": []\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"97\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21e5d9ea-1894-4386-9e2b-faa3be91c580",
+              "name": "Record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "remove_item"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ee40fcb1-0397-46de-b6a3-f17bae3efef1",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "remove_item"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ec2520a-02da-48b6-b1ce-87aeb3de533f",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "remove_item"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shipment\": {\n    \"variant_id\": \"101\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb5dd077-1405-41bb-8f26-5684d922d218",
+          "name": "Mark Shipment as ready to be shipped",
+          "request": {
+            "name": "Mark Shipment as ready to be shipped",
+            "description": {
+              "content": "Marks Shipment as ready to be shipped",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id",
+                "ready"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1464405c-c8c1-4045-990d-8e32bd9cf0ff",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "ready"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"58\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H47907335950\",\n      \"cost\": \"100.0\",\n      \"shipped_at\": null,\n      \"state\": \"ready\",\n      \"created_at\": \"2022-11-08T19:35:16.670Z\",\n      \"updated_at\": \"2022-11-08T19:35:16.922Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$100.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$100.00\",\n      \"display_final_price\": \"$100.00\",\n      \"display_cost\": \"$100.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"95\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"137\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"55\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"109\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": [\n          {\n            \"id\": \"25\",\n            \"type\": \"state_change\"\n          }\n        ]\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"109\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d237af6-960f-4eaa-afc0-045c77ca5c36",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "ready"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2b31158-8ffd-4521-a6db-c8eccee052a7",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "ready"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4f34c81d-4ff7-4b45-9c2b-c5acd5fe2a38",
+          "name": "Mark Shipment as shipped",
+          "request": {
+            "name": "Mark Shipment as shipped",
+            "description": {
+              "content": "Marks Shipment as shipped",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id",
+                "ship"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f35e2c38-8751-45c8-9258-34e77a4fe25b",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "ship"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"62\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H98524317894\",\n      \"cost\": \"100.0\",\n      \"shipped_at\": \"2022-11-08T19:35:17.839Z\",\n      \"state\": \"shipped\",\n      \"created_at\": \"2022-11-08T19:35:17.583Z\",\n      \"updated_at\": \"2022-11-08T19:35:17.839Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$100.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$100.00\",\n      \"display_final_price\": \"$100.00\",\n      \"display_cost\": \"$100.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"97\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"141\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"59\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"117\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": [\n          {\n            \"id\": \"27\",\n            \"type\": \"state_change\"\n          }\n        ]\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"117\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f11fb7e4-748f-4424-ad27-1ede38ff157b",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "ship"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "880c221b-7a0b-4387-b3d9-0fd24a1f48ec",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "ship"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "33df2f7b-e323-41d4-8301-745ca1d24faa",
+          "name": "Cancels the Shipment",
+          "request": {
+            "name": "Cancels the Shipment",
+            "description": {
+              "content": "Cancels the Shipment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "939a3b8a-22ea-4d3b-9e97-5554b92b605e",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"66\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H87762281833\",\n      \"cost\": \"100.0\",\n      \"shipped_at\": null,\n      \"state\": \"canceled\",\n      \"created_at\": \"2022-11-08T19:35:18.498Z\",\n      \"updated_at\": \"2022-11-08T19:35:18.748Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$100.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$100.00\",\n      \"display_final_price\": \"$100.00\",\n      \"display_cost\": \"$100.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"99\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"145\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"63\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"125\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": [\n          {\n            \"id\": \"28\",\n            \"type\": \"state_change\"\n          }\n        ]\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"125\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fb1d39a-0945-48c0-8355-3a2d8944ae1b",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f3ac89dd-dd15-4060-be83-0e2d2fd56771",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "259cf72e-aec4-4931-857b-3fa81f7e8ffd",
+          "name": "Resumes the Shipment",
+          "request": {
+            "name": "Resumes the Shipment",
+            "description": {
+              "content": "Resumes previously canceled Shipment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id",
+                "resume"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "041f58e1-5232-4004-88a6-4d32b672762a",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"70\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H65608010898\",\n      \"cost\": \"100.0\",\n      \"shipped_at\": null,\n      \"state\": \"ready\",\n      \"created_at\": \"2022-11-08T19:35:19.500Z\",\n      \"updated_at\": \"2022-11-08T19:35:19.754Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$100.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$100.00\",\n      \"display_final_price\": \"$100.00\",\n      \"display_cost\": \"$100.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"101\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"149\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"67\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"133\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": [\n          {\n            \"id\": \"29\",\n            \"type\": \"state_change\"\n          }\n        ]\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"133\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47ddb180-06ac-4c61-a948-3e9ec40bb908",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8af4e46d-4eb0-4142-bcec-e03c1a35bd3e",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f1e21d17-6cc1-479e-9886-b945eeb38d43",
+          "name": "Moves Shipment back to pending state",
+          "request": {
+            "name": "Moves Shipment back to pending state",
+            "description": {
+              "content": "Moves Shipment back to pending state",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "shipments",
+                ":id",
+                "pend"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9736fd5a-9dce-4bf0-ba09-3ac654e14623",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "pend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"75\",\n    \"type\": \"shipment\",\n    \"attributes\": {\n      \"tracking\": \"U10000\",\n      \"number\": \"H29346097126\",\n      \"cost\": \"100.0\",\n      \"shipped_at\": null,\n      \"state\": \"pending\",\n      \"created_at\": \"2022-11-08T19:35:20.604Z\",\n      \"updated_at\": \"2022-11-08T19:35:20.853Z\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"0.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_cost\": \"$100.00\",\n      \"display_item_cost\": \"$10.00\",\n      \"display_amount\": \"$100.00\",\n      \"display_final_price\": \"$100.00\",\n      \"display_cost\": \"$100.00\",\n      \"tracking_url\": null\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"104\",\n          \"type\": \"order\"\n        }\n      },\n      \"address\": {\n        \"data\": null\n      },\n      \"stock_location\": {\n        \"data\": {\n          \"id\": \"154\",\n          \"type\": \"stock_location\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": [\n          {\n            \"id\": \"72\",\n            \"type\": \"inventory_unit\"\n          }\n        ]\n      },\n      \"shipping_rates\": {\n        \"data\": [\n          {\n            \"id\": \"144\",\n            \"type\": \"shipping_rate\"\n          }\n        ]\n      },\n      \"state_changes\": {\n        \"data\": [\n          {\n            \"id\": \"30\",\n            \"type\": \"state_change\"\n          }\n        ]\n      },\n      \"selected_shipping_rate\": {\n        \"data\": {\n          \"id\": \"144\",\n          \"type\": \"shipping_rate\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e34a757-8ace-41f7-8042-b7e348a41435",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "pend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9cd0771a-de57-45aa-83fc-006ace54a7ad",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "shipments",
+                    ":id",
+                    "pend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "line_items,variants,product"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bd382055-4345-4f96-b252-0eb1544a7f4d",
+    "name": "Admin Account / Address Shipments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

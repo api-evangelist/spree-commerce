@@ -1,0 +1,1142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Product Catalog API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Product Catalog",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List option types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/option_types",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (contains)"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., option_values). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,label,position). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of option types.\n\n**Required scope:** `read_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create an option type",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/option_types",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new option type. Supports nested option values.\n\nOption values can be provided inline and will be created or updated by name.\n\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get an option type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/option_types/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Option type ID"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., option_values). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,label,position). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single option type by ID, including its option values.\n\n**Required scope:** `read_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update an option type",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/option_types/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Option type ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an option type. Supports updating nested option values.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete an option type",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/option_types/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Option type ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes an option type.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/products",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort field (e.g., name, -name, price, -price, best_selling)"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., variants, media, option_types, categories). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price,status). id is always included."
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (contains)"
+              },
+              {
+                "name": "q[status_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of products for the current store.\n\n**Required scope:** `read_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/products",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new product. Supports nested variants with prices and option types.\n\nOption types and values are auto-created if they don't exist.\nPrices are upserted by currency. Stock items are upserted by stock location.\n\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/products/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID (e.g., prod_xxx)"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., variants, media, option_types, categories). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price,status). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single product by ID.\n\n**Required scope:** `read_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/products/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates a product. Only provided fields are updated.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/products/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Soft-deletes a product.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-update product status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/products/bulk_status_update",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Sets `status` on each product in `ids`. Reindexes the affected products\nfor search. Cross-store IDs are silently dropped. Returns counts.\n\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-add products to categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/products/bulk_add_to_categories",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Attaches each product in `ids` to every category (taxon) in `category_ids`.\nCategories from sibling stores are silently ignored.\n\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-remove products from categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/products/bulk_remove_from_categories",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Detaches each product in `ids` from every category in `category_ids`.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-add tags to products",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/products/bulk_add_tags",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds each tag name in `tags` to every product in `ids`. Tags are upserted by name.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-remove tags from products",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/products/bulk_remove_tags",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes each tag in `tags` from every product in `ids`.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Bulk-delete products",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/products/bulk_destroy",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Soft-deletes each product in `ids`. Returns the count actually destroyed.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List product variants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/products/:product_id/variants",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., images, prices, stock_items, option_values). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., sku,price,stock). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of variants for a product, including the master variant.\n\n**Required scope:** `read_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a variant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/products/:product_id/variants",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new variant for a product. Supports nested prices and stock items.\n\nOption types and values are auto-created if they don't exist.\nPrices are upserted by currency. Stock items are upserted by stock location.\n\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get a variant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/products/:product_id/variants/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Variant ID"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (e.g., images, prices, stock_items, option_values). Use dot notation for nested expand (max 4 levels)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., sku,price,stock). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single variant by ID.\n\n**Required scope:** `read_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a variant",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/products/:product_id/variants/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Variant ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates a variant. Only provided fields are updated.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a variant",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/products/:product_id/variants/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Variant ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Soft-deletes a variant.\n\n**Required scope:** `write_products` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/categories",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of categories for the current store"
+        },
+        {
+          "info": {
+            "name": "Get a category",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/categories/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Category permalink (e.g., clothing/shirts) or prefix ID (e.g., ctg_abc123)"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Expand associations (children, parent, ancestors, custom_fields)"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single category by permalink or prefix ID"
+        },
+        {
+          "info": {
+            "name": "List products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/products",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (default: 1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (default: 25, max: 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order. Prefix with - for descending. Values: price, -price, best_selling, name, -name, -available_on, available_on"
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name containing string"
+              },
+              {
+                "name": "q[in_category]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by category prefixed ID (includes descendants)"
+              },
+              {
+                "name": "q[in_categories][]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by multiple category prefixed IDs (OR logic, includes descendants)"
+              },
+              {
+                "name": "q[price_gte]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by minimum price"
+              },
+              {
+                "name": "q[price_lte]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by maximum price"
+              },
+              {
+                "name": "q[with_option_value_ids][]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by option value prefix IDs (e.g., optval_abc). Pass multiple values for OR logic."
+              },
+              {
+                "name": "q[in_stock]",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only in-stock products"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (variants, media, categories, option_types)"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of active products for the current store"
+        },
+        {
+          "info": {
+            "name": "Get a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/products/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Product slug (e.g., spree-tote) or prefix ID (e.g., product_abc123)"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single product by slug or prefix ID"
+        },
+        {
+          "info": {
+            "name": "Get product filters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/products/filters",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "category_id",
+                "value": "",
+                "type": "query",
+                "description": "Scope filters to products in this category (prefix ID)"
+              },
+              {
+                "name": "q[name_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name containing string"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns available filters for products with their options and counts.\nUse this endpoint to build filter UIs for product listing pages.\n\nThe filters are context-aware - when a category_id is provided, only filters\nrelevant to products in that category are returned.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

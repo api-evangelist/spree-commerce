@@ -1,0 +1,1401 @@
+{
+  "item": [
+    {
+      "id": "56ddb591-12da-4667-a62c-2ab9b48fe2d5",
+      "name": "Payment Methods",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "41fd2be5-c24b-4c76-b0f2-1e25fae2ac49",
+          "name": "Return a list of Payment Methods",
+          "request": {
+            "name": "Return a list of Payment Methods",
+            "description": {
+              "content": "Returns a list of Payment Methods",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "payment_methods"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[name]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0140ea09-c202-4b6e-ac09-31b9c617cf0b",
+              "name": "Records returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    },
+                    {
+                      "key": "filter[name]",
+                      "value": "Stripe"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"12\",\n      \"type\": \"payment_method\",\n      \"attributes\": {\n        \"name\": \"Test\",\n        \"type\": \"Spree::PaymentMethod\",\n        \"description\": null,\n        \"active\": true,\n        \"display_on\": \"both\",\n        \"auto_capture\": null,\n        \"position\": 1,\n        \"created_at\": \"2022-11-08T19:34:47.914Z\",\n        \"updated_at\": \"2022-11-08T19:34:47.916Z\",\n        \"deleted_at\": null,\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"preferences\": {}\n      },\n      \"relationships\": {\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"287\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"13\",\n      \"type\": \"payment_method\",\n      \"attributes\": {\n        \"name\": \"Test\",\n        \"type\": \"Spree::PaymentMethod\",\n        \"description\": null,\n        \"active\": true,\n        \"display_on\": \"both\",\n        \"auto_capture\": null,\n        \"position\": 2,\n        \"created_at\": \"2022-11-08T19:34:47.923Z\",\n        \"updated_at\": \"2022-11-08T19:34:47.924Z\",\n        \"deleted_at\": null,\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"preferences\": {}\n      },\n      \"relationships\": {\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"287\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"14\",\n      \"type\": \"payment_method\",\n      \"attributes\": {\n        \"name\": \"Test\",\n        \"type\": \"Spree::PaymentMethod\",\n        \"description\": null,\n        \"active\": true,\n        \"display_on\": \"both\",\n        \"auto_capture\": null,\n        \"position\": 3,\n        \"created_at\": \"2022-11-08T19:34:47.929Z\",\n        \"updated_at\": \"2022-11-08T19:34:47.930Z\",\n        \"deleted_at\": null,\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"preferences\": {}\n      },\n      \"relationships\": {\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"287\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"15\",\n      \"type\": \"payment_method\",\n      \"attributes\": {\n        \"name\": \"Credit Card\",\n        \"type\": \"Spree::Gateway::Bogus\",\n        \"description\": null,\n        \"active\": true,\n        \"display_on\": \"both\",\n        \"auto_capture\": null,\n        \"position\": 4,\n        \"created_at\": \"2022-11-08T19:34:47.935Z\",\n        \"updated_at\": \"2022-11-08T19:34:47.937Z\",\n        \"deleted_at\": null,\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"preferences\": {\n          \"dummy_key\": \"PUBLICKEY123\",\n          \"test_mode\": true,\n          \"server\": \"test\"\n        }\n      },\n      \"relationships\": {\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"287\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"16\",\n      \"type\": \"payment_method\",\n      \"attributes\": {\n        \"name\": \"Credit Card\",\n        \"type\": \"Spree::Gateway::Bogus\",\n        \"description\": null,\n        \"active\": true,\n        \"display_on\": \"both\",\n        \"auto_capture\": null,\n        \"position\": 5,\n        \"created_at\": \"2022-11-08T19:34:47.941Z\",\n        \"updated_at\": \"2022-11-08T19:34:47.943Z\",\n        \"deleted_at\": null,\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"preferences\": {\n          \"dummy_key\": \"PUBLICKEY123\",\n          \"test_mode\": true,\n          \"server\": \"test\"\n        }\n      },\n      \"relationships\": {\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"287\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"count\": 5,\n    \"total_count\": 5,\n    \"total_pages\": 1\n  },\n  \"links\": {\n    \"self\": \"http://www.example.com/api/v2/platform/payment_methods?page=1&per_page=&include=&filter[name]=\",\n    \"next\": \"http://www.example.com/api/v2/platform/payment_methods?filter%5Bname%5D=&include=&page=1&per_page=\",\n    \"prev\": \"http://www.example.com/api/v2/platform/payment_methods?filter%5Bname%5D=&include=&page=1&per_page=\",\n    \"last\": \"http://www.example.com/api/v2/platform/payment_methods?filter%5Bname%5D=&include=&page=1&per_page=\",\n    \"first\": \"http://www.example.com/api/v2/platform/payment_methods?filter%5Bname%5D=&include=&page=1&per_page=\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc7187a0-c3b9-4df3-b783-58d4add7aaac",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    },
+                    {
+                      "key": "filter[name]",
+                      "value": "Stripe"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "59bae777-2672-4ff3-acf0-a014909a5879",
+          "name": "Create a Payment Method",
+          "request": {
+            "name": "Create a Payment Method",
+            "description": {
+              "content": "Creates a Payment Method",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "payment_methods"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_method\": {\n    \"name\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"<string>\",\n    \"type\": \"<string>\",\n    \"display_on\": \"<string>\",\n    \"store_ids\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b6a05ee8-9ce5-4ad3-a6ba-b25b645c1ffb",
+              "name": "Record created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_method\": {\n    \"name\": \"Test Payment Method\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"This is a test payment method\",\n    \"type\": \"Spree::Gateway::Bogus\",\n    \"display_on\": \"both\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"24\",\n    \"type\": \"payment_method\",\n    \"attributes\": {\n      \"name\": \"API Bogus\",\n      \"type\": \"Spree::Gateway::Bogus\",\n      \"description\": null,\n      \"active\": true,\n      \"display_on\": \"both\",\n      \"auto_capture\": null,\n      \"position\": 3,\n      \"created_at\": \"2022-11-08T19:34:48.527Z\",\n      \"updated_at\": \"2022-11-08T19:34:48.530Z\",\n      \"deleted_at\": null,\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"preferences\": {\n        \"dummy_key\": \"PUBLICKEY123\",\n        \"test_mode\": true,\n        \"server\": \"test\"\n      }\n    },\n    \"relationships\": {\n      \"stores\": {\n        \"data\": [\n          {\n            \"id\": \"291\",\n            \"type\": \"store\"\n          },\n          {\n            \"id\": \"292\",\n            \"type\": \"store\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4c47848-31de-41a1-9962-042aa451035d",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_method\": {\n    \"name\": \"Test Payment Method\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"This is a test payment method\",\n    \"type\": \"Spree::Gateway::Bogus\",\n    \"display_on\": \"both\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Name can't be blank\",\n  \"errors\": {\n    \"name\": [\n      \"can't be blank\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "01cef731-56e6-46f9-9736-cda1a36bc2a8",
+          "name": "Return a Payment Method",
+          "request": {
+            "name": "Return a Payment Method",
+            "description": {
+              "content": "Returns a Payment Method",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "payment_methods",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "40ef42af-0ce1-475c-a2f7-f2673c00f609",
+              "name": "Record found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"30\",\n    \"type\": \"payment_method\",\n    \"attributes\": {\n      \"name\": \"Credit Card\",\n      \"type\": \"Spree::Gateway::Bogus\",\n      \"description\": null,\n      \"active\": true,\n      \"display_on\": \"both\",\n      \"auto_capture\": null,\n      \"position\": 4,\n      \"created_at\": \"2022-11-08T19:34:48.855Z\",\n      \"updated_at\": \"2022-11-08T19:34:48.857Z\",\n      \"deleted_at\": null,\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"preferences\": {\n        \"dummy_key\": \"PUBLICKEY123\",\n        \"test_mode\": true,\n        \"server\": \"test\"\n      }\n    },\n    \"relationships\": {\n      \"stores\": {\n        \"data\": [\n          {\n            \"id\": \"295\",\n            \"type\": \"store\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a095bb0a-bece-4d92-b150-99f4751d7950",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e688141-9c52-43bc-9f1d-c55beb02c1ff",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "61f1d6a8-e98a-41f3-a0b6-7d7c0a623a03",
+          "name": "Update a Payment Method",
+          "request": {
+            "name": "Update a Payment Method",
+            "description": {
+              "content": "Updates a Payment Method",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "payment_methods",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_method\": {\n    \"name\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"<string>\",\n    \"type\": \"<string>\",\n    \"display_on\": \"<string>\",\n    \"store_ids\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d1aeec70-ebf7-4c06-a608-52498e326755",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_method\": {\n    \"name\": \"Test Payment Method\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"This is a test payment method\",\n    \"type\": \"Spree::Gateway::Bogus\",\n    \"display_on\": \"both\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"40\",\n    \"type\": \"payment_method\",\n    \"attributes\": {\n      \"name\": \"Credit Card\",\n      \"type\": \"Spree::Gateway::Bogus\",\n      \"description\": null,\n      \"active\": true,\n      \"display_on\": \"both\",\n      \"auto_capture\": null,\n      \"position\": 3,\n      \"created_at\": \"2022-11-08T19:34:49.452Z\",\n      \"updated_at\": \"2022-11-08T19:34:49.687Z\",\n      \"deleted_at\": null,\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"preferences\": {\n        \"dummy_key\": \"UPDATED-DUMMY-KEY-123\",\n        \"test_mode\": false,\n        \"server\": \"production\"\n      }\n    },\n    \"relationships\": {\n      \"stores\": {\n        \"data\": [\n          {\n            \"id\": \"301\",\n            \"type\": \"store\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0a95753-6555-4823-974d-0cf0afa54897",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_method\": {\n    \"name\": \"Test Payment Method\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"This is a test payment method\",\n    \"type\": \"Spree::Gateway::Bogus\",\n    \"display_on\": \"both\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b43f4d3-176b-405f-9a04-fd191344bdc5",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_method\": {\n    \"name\": \"Test Payment Method\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"This is a test payment method\",\n    \"type\": \"Spree::Gateway::Bogus\",\n    \"display_on\": \"both\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06e74a8c-0a2a-4dcb-9ab8-de118b65585b",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payment_method\": {\n    \"name\": \"Test Payment Method\",\n    \"active\": \"<boolean>\",\n    \"auto_capture\": \"<boolean>\",\n    \"description\": \"This is a test payment method\",\n    \"type\": \"Spree::Gateway::Bogus\",\n    \"display_on\": \"both\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ],\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Name can't be blank\",\n  \"errors\": {\n    \"name\": [\n      \"can't be blank\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2dcf438e-d72d-4f39-958b-e5ea80430ca1",
+          "name": "Delete a Payment Method",
+          "request": {
+            "name": "Delete a Payment Method",
+            "description": {
+              "content": "Deletes a Payment Method",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "payment_methods",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "26dc67a9-4827-49cc-9d10-23ba60befdf8",
+              "name": "Record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4fe0aecb-6977-4d9b-ab7c-48bffe7838de",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b563094c-35f4-4153-a739-72a523116d25",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "payment_methods",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "81ba3c31-b22a-4e6c-8401-b13431db4c58",
+    "name": "Admin Account / Address Payment Methods API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

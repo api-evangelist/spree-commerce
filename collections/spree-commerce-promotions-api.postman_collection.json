@@ -1,0 +1,4055 @@
+{
+  "item": [
+    {
+      "id": "c8fbb6e3-04a9-4e45-8905-71e618d4da4a",
+      "name": "Promotions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e4729994-ed09-4eee-81fd-bfe59e1b9786",
+          "name": "List coupon codes for a promotion",
+          "request": {
+            "name": "List coupon codes for a promotion",
+            "description": {
+              "content": "Returns the auto-generated coupon codes for a multi-code promotion. Single-code promotions store the code on the promotion itself; this endpoint returns an empty list for them.\n\n**Required scope:** `read_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "coupon_codes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "54c69c1c-4fde-407c-988a-285a60c08dd8",
+              "name": "coupon codes found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "coupon_codes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"coupon_UkLWZg9DAJ\",\n      \"code\": \"AAA111\",\n      \"state\": \"unused\",\n      \"created_at\": \"2026-05-24T17:36:36.570Z\",\n      \"updated_at\": \"2026-05-24T17:36:36.570Z\",\n      \"promotion_id\": \"promo_UkLWZg9DAJ\",\n      \"order_id\": null\n    },\n    {\n      \"id\": \"coupon_gbHJdmfrXB\",\n      \"code\": \"BBB222\",\n      \"state\": \"unused\",\n      \"created_at\": \"2026-05-24T17:36:36.571Z\",\n      \"updated_at\": \"2026-05-24T17:36:36.571Z\",\n      \"promotion_id\": \"promo_UkLWZg9DAJ\",\n      \"order_id\": null\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 25,\n    \"count\": 2,\n    \"pages\": 1,\n    \"from\": 1,\n    \"to\": 2,\n    \"in\": 2,\n    \"previous\": null,\n    \"next\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da9e49e6-0d98-4c54-93a1-a55deb72531e",
+          "name": "List actions for a promotion",
+          "request": {
+            "name": "List actions for a promotion",
+            "description": {
+              "content": "**Required scope:** `read_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "promotion_actions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "25ad0ea6-b917-455d-a4cd-4ee503731214",
+              "name": "actions found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"pact_UkLWZg9DAJ\",\n      \"created_at\": \"2026-05-24T17:37:39.416Z\",\n      \"updated_at\": \"2026-05-24T17:37:39.416Z\",\n      \"type\": \"free_shipping\",\n      \"promotion_id\": \"promo_UkLWZg9DAJ\",\n      \"preferences\": {},\n      \"preference_schema\": [],\n      \"label\": \"Free shipping\",\n      \"calculator\": null,\n      \"line_items\": null\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 25,\n    \"count\": 1,\n    \"pages\": 1,\n    \"from\": 1,\n    \"to\": 1,\n    \"in\": 1,\n    \"previous\": null,\n    \"next\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1f7737f0-a67f-4f13-9a56-699c3cfe87df",
+          "name": "Create an action on a promotion",
+          "request": {
+            "name": "Create an action on a promotion",
+            "description": {
+              "content": "Adds a new action to a promotion. The `type` is the wire shorthand from `GET /promotion_actions/types` (e.g. `free_shipping`, `create_item_adjustments`). Fully-qualified Ruby class names are also accepted for backward compatibility.\n\n**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "promotion_actions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"preferences\": {\n    \"key_0\": \"string\",\n    \"key_1\": 4065.229147172199,\n    \"key_2\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a7e7572e-96af-4db7-9797-de5402d4fc5a",
+              "name": "action created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"free_shipping\",\n  \"preferences\": {\n    \"key_0\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"pact_UkLWZg9DAJ\",\n  \"created_at\": \"2026-05-24T17:37:39.979Z\",\n  \"updated_at\": \"2026-05-24T17:37:39.979Z\",\n  \"type\": \"free_shipping\",\n  \"promotion_id\": \"promo_UkLWZg9DAJ\",\n  \"preferences\": {},\n  \"preference_schema\": [],\n  \"label\": \"Free shipping\",\n  \"calculator\": null,\n  \"line_items\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fbb80577-2f54-40eb-ada3-034e518f2d32",
+              "name": "unknown action type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"free_shipping\",\n  \"preferences\": {\n    \"key_0\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unknown_promotion_action_type\",\n    \"message\": \"Unknown type\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "628e469a-9aa8-46f8-b17e-001b12c0d2ce",
+          "name": "Delete an action from a promotion",
+          "request": {
+            "name": "Delete an action from a promotion",
+            "description": {
+              "content": "**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "promotion_actions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f464aef0-88c3-4594-b18b-e04df08b5d78",
+              "name": "action deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_actions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1ab1b3d-3d66-4d84-9ca9-8528a6d9e068",
+          "name": "List rules for a promotion",
+          "request": {
+            "name": "List rules for a promotion",
+            "description": {
+              "content": "**Required scope:** `read_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "promotion_rules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ffb1aef9-1e16-4441-adb5-d1b8d6548171",
+              "name": "rules found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_rules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"prorule_UkLWZg9DAJ\",\n      \"created_at\": \"2026-05-24T17:37:40.551Z\",\n      \"updated_at\": \"2026-05-24T17:37:40.551Z\",\n      \"type\": \"currency\",\n      \"promotion_id\": \"promo_UkLWZg9DAJ\",\n      \"preferences\": {\n        \"currency\": \"USD\"\n      },\n      \"preference_schema\": [\n        {\n          \"key\": \"currency\",\n          \"type\": \"string\",\n          \"default\": null\n        }\n      ],\n      \"label\": \"Currency\",\n      \"product_ids\": null,\n      \"category_ids\": null,\n      \"customer_ids\": null\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 25,\n    \"count\": 1,\n    \"pages\": 1,\n    \"from\": 1,\n    \"to\": 1,\n    \"in\": 1,\n    \"previous\": null,\n    \"next\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f0561775-3657-4a94-b9f3-8064e7318a31",
+          "name": "Create a rule on a promotion",
+          "request": {
+            "name": "Create a rule on a promotion",
+            "description": {
+              "content": "Adds a new rule to a promotion. The `type` is the wire shorthand from `GET /promotion_rules/types` (e.g. `currency`, `item_total`, `product`). Fully-qualified Ruby class names are also accepted for backward compatibility.\n\n**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "promotion_rules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"preferences\": {\n    \"key_0\": 3104.991619091273,\n    \"key_1\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7eaafce2-13fc-408e-ac1b-f1a49cd5b140",
+              "name": "rule created with preferences",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_rules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"currency\",\n  \"preferences\": {\n    \"key_0\": 6037.361733663001\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"prorule_UkLWZg9DAJ\",\n  \"created_at\": \"2026-05-24T17:37:41.133Z\",\n  \"updated_at\": \"2026-05-24T17:37:41.133Z\",\n  \"type\": \"currency\",\n  \"promotion_id\": \"promo_UkLWZg9DAJ\",\n  \"preferences\": {\n    \"currency\": \"EUR\"\n  },\n  \"preference_schema\": [\n    {\n      \"key\": \"currency\",\n      \"type\": \"string\",\n      \"default\": null\n    }\n  ],\n  \"label\": \"Currency\",\n  \"product_ids\": null,\n  \"category_ids\": null,\n  \"customer_ids\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf05be0e-50a3-4368-9711-4b938c27d1f3",
+              "name": "unknown rule type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_rules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"currency\",\n  \"preferences\": {\n    \"key_0\": 6037.361733663001\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unknown_promotion_rule_type\",\n    \"message\": \"Unknown type\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "620b31f5-e58b-4d89-af07-3ab1b64896b9",
+          "name": "Update a rule's preferences",
+          "request": {
+            "name": "Update a rule's preferences",
+            "description": {
+              "content": "**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "promotion_rules",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preferences\": {\n    \"key_0\": 9478.998107637162\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7fb57c6c-bdfc-4e44-b51a-1f6d677c593e",
+              "name": "rule updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_rules",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"preferences\": {\n    \"key_0\": 6354.922000986848\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"prorule_UkLWZg9DAJ\",\n  \"created_at\": \"2026-05-24T17:37:41.423Z\",\n  \"updated_at\": \"2026-05-24T17:37:41.701Z\",\n  \"type\": \"currency\",\n  \"promotion_id\": \"promo_UkLWZg9DAJ\",\n  \"preferences\": {\n    \"currency\": \"GBP\"\n  },\n  \"preference_schema\": [\n    {\n      \"key\": \"currency\",\n      \"type\": \"string\",\n      \"default\": null\n    }\n  ],\n  \"label\": \"Currency\",\n  \"product_ids\": null,\n  \"category_ids\": null,\n  \"customer_ids\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90adde6e-8553-41d0-b076-d74ae0ac715f",
+          "name": "Delete a rule from a promotion",
+          "request": {
+            "name": "Delete a rule from a promotion",
+            "description": {
+              "content": "**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":promotion_id",
+                "promotion_rules",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "promotion_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "55339325-03e2-4c81-8578-5d49b767a390",
+              "name": "rule deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":promotion_id",
+                    "promotion_rules",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "promotion_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a6d8265a-3a53-40f2-b473-dd5d64f6e684",
+          "name": "List promotions",
+          "request": {
+            "name": "List promotions",
+            "description": {
+              "content": "Returns the store's promotions, including manual coupon and automatic promotions.\n\n**Required scope:** `read_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b85fe06a-e48d-42d3-887c-6cb5cab33099",
+              "name": "promotions found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"promo_UkLWZg9DAJ\",\n      \"name\": \"Summer Sale\",\n      \"description\": null,\n      \"code\": \"summer\",\n      \"starts_at\": \"2026-05-24T17:37:41.992Z\",\n      \"expires_at\": null,\n      \"usage_limit\": null,\n      \"match_policy\": \"all\",\n      \"path\": null,\n      \"kind\": \"coupon_code\",\n      \"multi_codes\": false,\n      \"number_of_codes\": null,\n      \"code_prefix\": null,\n      \"promotion_category_id\": null,\n      \"metadata\": {},\n      \"created_at\": \"2026-05-24T17:37:41.993Z\",\n      \"updated_at\": \"2026-05-24T17:37:41.994Z\",\n      \"store_ids\": [\n        \"store_UkLWZg9DAJ\"\n      ],\n      \"action_ids\": [],\n      \"rule_ids\": []\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 25,\n    \"count\": 1,\n    \"pages\": 1,\n    \"from\": 1,\n    \"to\": 1,\n    \"in\": 1,\n    \"previous\": null,\n    \"next\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79850d68-c5b2-42a0-8013-d997f065e853",
+          "name": "Create a promotion",
+          "request": {
+            "name": "Create a promotion",
+            "description": {
+              "content": "Creates a new promotion. `code` is required for single-code coupon promotions;\npass `multi_codes: true` with `number_of_codes` to auto-generate a batch.\n\nRules and actions can be created in the same request by passing arrays of\n`{ type, preferences, ... }` rows. The server reconciles to the desired set:\nnew rows are built, existing rows (by `id`) are updated, omitted rows are removed.\n\n\n**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"code\": \"<string>\",\n  \"description\": \"<string>\",\n  \"starts_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"usage_limit\": \"<integer>\",\n  \"match_policy\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"multi_codes\": \"<boolean>\",\n  \"number_of_codes\": \"<integer>\",\n  \"code_prefix\": \"<string>\",\n  \"promotion_category_id\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": 6160,\n        \"key_1\": 2147\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"actions\": [\n    {\n      \"type\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": \"string\"\n      },\n      \"calculator\": {\n        \"type\": \"<string>\",\n        \"preferences\": {\n          \"key_0\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": 746.268428584701,\n        \"key_1\": false,\n        \"key_2\": 4814.347248556966\n      },\n      \"calculator\": {\n        \"type\": \"<string>\",\n        \"preferences\": {\n          \"key_0\": 8268,\n          \"key_1\": false\n        }\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b40b11f5-d27a-46c4-8476-f05918194568",
+              "name": "promotion created with rules and actions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"code\": \"<string>\",\n  \"description\": \"<string>\",\n  \"starts_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"usage_limit\": \"<integer>\",\n  \"match_policy\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"multi_codes\": \"<boolean>\",\n  \"number_of_codes\": \"<integer>\",\n  \"code_prefix\": \"<string>\",\n  \"promotion_category_id\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"currency\",\n      \"preferences\": {\n        \"key_0\": 4546,\n        \"key_1\": \"string\"\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"currency\",\n      \"preferences\": {\n        \"key_0\": 9660,\n        \"key_1\": 6203.66715753349\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"actions\": [\n    {\n      \"type\": \"free_shipping\",\n      \"preferences\": {\n        \"key_0\": true,\n        \"key_1\": false,\n        \"key_2\": false,\n        \"key_3\": 6263\n      },\n      \"calculator\": {\n        \"type\": \"flat_percent_item_total\",\n        \"preferences\": {\n          \"key_0\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"free_shipping\",\n      \"preferences\": {\n        \"key_0\": 6352.425309838565,\n        \"key_1\": false\n      },\n      \"calculator\": {\n        \"type\": \"flat_percent_item_total\",\n        \"preferences\": {\n          \"key_0\": \"string\"\n        }\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"promo_gbHJdmfrXB\",\n  \"name\": \"Black Friday\",\n  \"description\": null,\n  \"code\": \"blackfriday-os\",\n  \"starts_at\": \"2026-05-24T17:37:42.886Z\",\n  \"expires_at\": null,\n  \"usage_limit\": null,\n  \"match_policy\": \"all\",\n  \"path\": null,\n  \"kind\": \"coupon_code\",\n  \"multi_codes\": false,\n  \"number_of_codes\": null,\n  \"code_prefix\": null,\n  \"promotion_category_id\": null,\n  \"metadata\": {},\n  \"created_at\": \"2026-05-24T17:37:42.887Z\",\n  \"updated_at\": \"2026-05-24T17:37:42.905Z\",\n  \"store_ids\": [\n    \"store_UkLWZg9DAJ\"\n  ],\n  \"action_ids\": [\n    \"pact_UkLWZg9DAJ\",\n    \"pact_gbHJdmfrXB\"\n  ],\n  \"rule_ids\": [\n    \"prorule_UkLWZg9DAJ\",\n    \"prorule_gbHJdmfrXB\",\n    \"prorule_EfhxLZ9ck8\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7fe2ff0-9d5d-42ff-96b7-0ad06488a497",
+              "name": "invalid params",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"code\": \"<string>\",\n  \"description\": \"<string>\",\n  \"starts_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"usage_limit\": \"<integer>\",\n  \"match_policy\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"multi_codes\": \"<boolean>\",\n  \"number_of_codes\": \"<integer>\",\n  \"code_prefix\": \"<string>\",\n  \"promotion_category_id\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"currency\",\n      \"preferences\": {\n        \"key_0\": 4546,\n        \"key_1\": \"string\"\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"currency\",\n      \"preferences\": {\n        \"key_0\": 9660,\n        \"key_1\": 6203.66715753349\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"actions\": [\n    {\n      \"type\": \"free_shipping\",\n      \"preferences\": {\n        \"key_0\": true,\n        \"key_1\": false,\n        \"key_2\": false,\n        \"key_3\": 6263\n      },\n      \"calculator\": {\n        \"type\": \"flat_percent_item_total\",\n        \"preferences\": {\n          \"key_0\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"free_shipping\",\n      \"preferences\": {\n        \"key_0\": 6352.425309838565,\n        \"key_1\": false\n      },\n      \"calculator\": {\n        \"type\": \"flat_percent_item_total\",\n        \"preferences\": {\n          \"key_0\": \"string\"\n        }\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Name can't be blank and Code can't be blank\",\n    \"details\": {\n      \"name\": [\n        \"can't be blank\"\n      ],\n      \"code\": [\n        \"can't be blank\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "06f6aaef-4a5b-493f-b88b-712492b17bca",
+          "name": "Show a promotion",
+          "request": {
+            "name": "Show a promotion",
+            "description": {
+              "content": "**Required scope:** `read_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "adc0fc8c-e503-4060-9365-41bdc71abcb4",
+              "name": "promotion found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"promo_UkLWZg9DAJ\",\n  \"name\": \"Summer Sale\",\n  \"description\": null,\n  \"code\": \"summer\",\n  \"starts_at\": \"2026-05-24T17:37:43.209Z\",\n  \"expires_at\": null,\n  \"usage_limit\": null,\n  \"match_policy\": \"all\",\n  \"path\": null,\n  \"kind\": \"coupon_code\",\n  \"multi_codes\": false,\n  \"number_of_codes\": null,\n  \"code_prefix\": null,\n  \"promotion_category_id\": null,\n  \"metadata\": {},\n  \"created_at\": \"2026-05-24T17:37:43.209Z\",\n  \"updated_at\": \"2026-05-24T17:37:43.211Z\",\n  \"store_ids\": [\n    \"store_UkLWZg9DAJ\"\n  ],\n  \"action_ids\": [],\n  \"rule_ids\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b11cb17-12c8-4b8a-ba2b-2422fb1a1b52",
+          "name": "Update a promotion",
+          "request": {
+            "name": "Update a promotion",
+            "description": {
+              "content": "Updates a promotion. The `rules` and `actions` arrays are treated as\na *desired set* — rows with `id` update in place, rows without `id` are\nbuilt fresh, and any existing row not present in the array is destroyed.\nPass `rules: []` or `actions: []` to clear them.\n\n\n**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"code\": \"<string>\",\n  \"starts_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"usage_limit\": \"<integer>\",\n  \"match_policy\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"promotion_category_id\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": \"string\",\n        \"key_1\": 1518,\n        \"key_2\": \"string\"\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": true,\n        \"key_1\": true,\n        \"key_2\": false\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"actions\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": 8613.242981182453\n      },\n      \"calculator\": {\n        \"type\": \"<string>\",\n        \"preferences\": {\n          \"key_0\": 829.302686604596,\n          \"key_1\": 2843,\n          \"key_2\": 959.1845409685307,\n          \"key_3\": true\n        }\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": 2988.7092208928148,\n        \"key_1\": false,\n        \"key_2\": 7226\n      },\n      \"calculator\": {\n        \"type\": \"<string>\",\n        \"preferences\": {\n          \"key_0\": true\n        }\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "029ea2ae-4257-4254-a048-b81148eb3681",
+              "name": "rules and actions cleared with empty arrays",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"code\": \"<string>\",\n  \"starts_at\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\",\n  \"usage_limit\": \"<integer>\",\n  \"match_policy\": \"<string>\",\n  \"kind\": \"<string>\",\n  \"promotion_category_id\": \"<string>\",\n  \"rules\": [\n    {\n      \"type\": \"currency\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": false\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"currency\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": 9426.56896929996,\n        \"key_1\": \"string\",\n        \"key_2\": true,\n        \"key_3\": \"string\"\n      },\n      \"product_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"category_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"customer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"actions\": [\n    {\n      \"type\": \"free_shipping\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": true\n      },\n      \"calculator\": {\n        \"type\": \"flat_percent_item_total\",\n        \"preferences\": {\n          \"key_0\": true,\n          \"key_1\": true\n        }\n      }\n    },\n    {\n      \"type\": \"free_shipping\",\n      \"id\": \"<string>\",\n      \"preferences\": {\n        \"key_0\": 7960.707272172403,\n        \"key_1\": true\n      },\n      \"calculator\": {\n        \"type\": \"flat_percent_item_total\",\n        \"preferences\": {\n          \"key_0\": 3147\n        }\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"promo_UkLWZg9DAJ\",\n  \"name\": \"Summer Sale\",\n  \"description\": null,\n  \"code\": \"summer\",\n  \"starts_at\": \"2026-05-24T17:37:44.083Z\",\n  \"expires_at\": null,\n  \"usage_limit\": null,\n  \"match_policy\": \"all\",\n  \"path\": null,\n  \"kind\": \"coupon_code\",\n  \"multi_codes\": false,\n  \"number_of_codes\": null,\n  \"code_prefix\": null,\n  \"promotion_category_id\": null,\n  \"metadata\": {},\n  \"created_at\": \"2026-05-24T17:37:44.084Z\",\n  \"updated_at\": \"2026-05-24T17:37:44.366Z\",\n  \"store_ids\": [\n    \"store_UkLWZg9DAJ\"\n  ],\n  \"action_ids\": [],\n  \"rule_ids\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d381d63f-e020-4f3d-b394-b87fae52e634",
+          "name": "Delete a promotion",
+          "request": {
+            "name": "Delete a promotion",
+            "description": {
+              "content": "**Required scope:** `write_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "64cda855-9c1c-468e-a5de-1ad3112172ae",
+              "name": "promotion deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "09049665-86d4-470e-830b-909fbc7ce610",
+          "name": "List available promotion action types",
+          "request": {
+            "name": "List available promotion action types",
+            "description": {
+              "content": "Returns the registered Spree::PromotionAction subclasses with their preference schemas. Used by admin UIs to populate the \"Add action\" picker and render generic preference forms.\n\n**Required scope:** `read_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotion_actions",
+                "types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e9a68e55-c10c-4957-8051-88d966832725",
+              "name": "action types found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotion_actions",
+                    "types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"type\": \"create_line_items\",\n      \"label\": \"Create line items\",\n      \"description\": null,\n      \"preference_schema\": []\n    },\n    {\n      \"type\": \"create_item_adjustments\",\n      \"label\": \"Create per-line-item adjustment\",\n      \"description\": null,\n      \"preference_schema\": []\n    },\n    {\n      \"type\": \"create_adjustment\",\n      \"label\": \"Create whole-order adjustment\",\n      \"description\": null,\n      \"preference_schema\": []\n    },\n    {\n      \"type\": \"free_shipping\",\n      \"label\": \"Free shipping\",\n      \"description\": null,\n      \"preference_schema\": []\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1b193e1-a4e6-4956-888b-ef44db712a6e",
+          "name": "List available promotion rule types",
+          "request": {
+            "name": "List available promotion rule types",
+            "description": {
+              "content": "Returns the registered Spree::PromotionRule subclasses with their preference schemas.\n\n**Required scope:** `read_promotions` (for API-key authentication).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v3",
+                "admin",
+                "promotion_rules",
+                "types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-spree-api-key",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-spree-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2d1a5e39-d8dd-4278-adef-715db5b51cf3",
+              "name": "rule types found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v3",
+                    "admin",
+                    "promotion_rules",
+                    "types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-spree-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-spree-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"type\": \"category\",\n      \"label\": \"Categories\",\n      \"description\": null,\n      \"preference_schema\": [\n        {\n          \"key\": \"match_policy\",\n          \"type\": \"string\",\n          \"default\": \"any\"\n        }\n      ]\n    },\n    {\n      \"type\": \"country\",\n      \"label\": \"Country\",\n      \"description\": null,\n      \"preference_schema\": [\n        {\n          \"key\": \"country_isos\",\n          \"type\": \"array\",\n          \"default\": []\n        },\n        {\n          \"key\": \"country_id\",\n          \"type\": \"integer\",\n          \"default\": null\n        },\n        {\n          \"key\": \"country_iso\",\n          \"type\": \"string\",\n          \"default\": null\n        }\n      ]\n    },\n    {\n      \"type\": \"currency\",\n      \"label\": \"Currency\",\n      \"description\": null,\n      \"preference_schema\": [\n        {\n          \"key\": \"currency\",\n          \"type\": \"string\",\n          \"default\": null\n        }\n      ]\n    },\n    {\n      \"type\": \"customer_group\",\n      \"label\": \"Customer Group(s)\",\n      \"description\": null,\n      \"preference_schema\": [\n        {\n          \"key\": \"customer_group_ids\",\n          \"type\": \"array\",\n          \"default\": []\n        }\n      ]\n    },\n    {\n      \"type\": \"customer\",\n      \"label\": \"Customers\",\n      \"description\": null,\n      \"preference_schema\": []\n    },\n    {\n      \"type\": \"first_order\",\n      \"label\": \"First order\",\n      \"description\": null,\n      \"preference_schema\": []\n    },\n    {\n      \"type\": \"item_total\",\n      \"label\": \"Item total\",\n      \"description\": null,\n      \"preference_schema\": [\n        {\n          \"key\": \"amount_min\",\n          \"type\": \"decimal\",\n          \"default\": 100\n        },\n        {\n          \"key\": \"operator_min\",\n          \"type\": \"string\",\n          \"default\": \">\"\n        },\n        {\n          \"key\": \"amount_max\",\n          \"type\": \"decimal\",\n          \"default\": null\n        },\n        {\n          \"key\": \"operator_max\",\n          \"type\": \"string\",\n          \"default\": \"<\"\n        }\n      ]\n    },\n    {\n      \"type\": \"one_use_per_user\",\n      \"label\": \"One Use Per User\",\n      \"description\": null,\n      \"preference_schema\": []\n    },\n    {\n      \"type\": \"customer_logged_in\",\n      \"label\": \"Only logged in customers\",\n      \"description\": null,\n      \"preference_schema\": []\n    },\n    {\n      \"type\": \"option_value\",\n      \"label\": \"Option Value(s)\",\n      \"description\": null,\n      \"preference_schema\": [\n        {\n          \"key\": \"match_policy\",\n          \"type\": \"string\",\n          \"default\": \"any\"\n        },\n        {\n          \"key\": \"eligible_values\",\n          \"type\": \"array\",\n          \"default\": []\n        }\n      ]\n    },\n    {\n      \"type\": \"product\",\n      \"label\": \"Product(s)\",\n      \"description\": null,\n      \"preference_schema\": [\n        {\n          \"key\": \"match_policy\",\n          \"type\": \"string\",\n          \"default\": \"any\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e0457ce8-d88d-4cbe-9c0a-52b7c29083b1",
+          "name": "Return a list of Promotions",
+          "request": {
+            "name": "Return a list of Promotions",
+            "description": {
+              "content": "Returns a list of Promotions",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "promotions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[code_eq]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[name_cont]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f655b49a-2013-45c6-b7db-11b811584022",
+              "name": "Records returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    },
+                    {
+                      "key": "filter[code_eq]",
+                      "value": "BLK-FRI"
+                    },
+                    {
+                      "key": "filter[name_cont]",
+                      "value": "New Customer"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"23\",\n      \"type\": \"promotion\",\n      \"attributes\": {\n        \"description\": null,\n        \"expires_at\": null,\n        \"starts_at\": null,\n        \"name\": \"Promo\",\n        \"type\": null,\n        \"usage_limit\": null,\n        \"match_policy\": \"all\",\n        \"code\": null,\n        \"advertise\": false,\n        \"path\": null,\n        \"created_at\": \"2022-11-08T19:35:02.793Z\",\n        \"updated_at\": \"2022-11-08T19:35:02.795Z\",\n        \"public_metadata\": {},\n        \"private_metadata\": {}\n      },\n      \"relationships\": {\n        \"promotion_category\": {\n          \"data\": null\n        },\n        \"promotion_rules\": {\n          \"data\": []\n        },\n        \"promotion_actions\": {\n          \"data\": []\n        },\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"375\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"24\",\n      \"type\": \"promotion\",\n      \"attributes\": {\n        \"description\": null,\n        \"expires_at\": null,\n        \"starts_at\": null,\n        \"name\": \"Promo\",\n        \"type\": null,\n        \"usage_limit\": null,\n        \"match_policy\": \"all\",\n        \"code\": null,\n        \"advertise\": false,\n        \"path\": null,\n        \"created_at\": \"2022-11-08T19:35:02.805Z\",\n        \"updated_at\": \"2022-11-08T19:35:02.807Z\",\n        \"public_metadata\": {},\n        \"private_metadata\": {}\n      },\n      \"relationships\": {\n        \"promotion_category\": {\n          \"data\": {\n            \"id\": \"13\",\n            \"type\": \"promotion_category\"\n          }\n        },\n        \"promotion_rules\": {\n          \"data\": []\n        },\n        \"promotion_actions\": {\n          \"data\": [\n            {\n              \"id\": \"16\",\n              \"type\": \"promotion_action\"\n            }\n          ]\n        },\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"375\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"25\",\n      \"type\": \"promotion\",\n      \"attributes\": {\n        \"description\": null,\n        \"expires_at\": null,\n        \"starts_at\": null,\n        \"name\": \"Promo\",\n        \"type\": null,\n        \"usage_limit\": null,\n        \"match_policy\": \"all\",\n        \"code\": null,\n        \"advertise\": false,\n        \"path\": null,\n        \"created_at\": \"2022-11-08T19:35:02.822Z\",\n        \"updated_at\": \"2022-11-08T19:35:02.824Z\",\n        \"public_metadata\": {},\n        \"private_metadata\": {}\n      },\n      \"relationships\": {\n        \"promotion_category\": {\n          \"data\": {\n            \"id\": \"13\",\n            \"type\": \"promotion_category\"\n          }\n        },\n        \"promotion_rules\": {\n          \"data\": []\n        },\n        \"promotion_actions\": {\n          \"data\": [\n            {\n              \"id\": \"17\",\n              \"type\": \"promotion_action\"\n            }\n          ]\n        },\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"375\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"26\",\n      \"type\": \"promotion\",\n      \"attributes\": {\n        \"description\": null,\n        \"expires_at\": null,\n        \"starts_at\": null,\n        \"name\": \"Promo\",\n        \"type\": null,\n        \"usage_limit\": null,\n        \"match_policy\": \"all\",\n        \"code\": null,\n        \"advertise\": false,\n        \"path\": null,\n        \"created_at\": \"2022-11-08T19:35:02.837Z\",\n        \"updated_at\": \"2022-11-08T19:35:02.839Z\",\n        \"public_metadata\": {},\n        \"private_metadata\": {}\n      },\n      \"relationships\": {\n        \"promotion_category\": {\n          \"data\": {\n            \"id\": \"13\",\n            \"type\": \"promotion_category\"\n          }\n        },\n        \"promotion_rules\": {\n          \"data\": [\n            {\n              \"id\": \"12\",\n              \"type\": \"promotion_rule\"\n            }\n          ]\n        },\n        \"promotion_actions\": {\n          \"data\": [\n            {\n              \"id\": \"18\",\n              \"type\": \"promotion_action\"\n            }\n          ]\n        },\n        \"stores\": {\n          \"data\": [\n            {\n              \"id\": \"375\",\n              \"type\": \"store\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"count\": 4,\n    \"total_count\": 4,\n    \"total_pages\": 1\n  },\n  \"links\": {\n    \"self\": \"http://www.example.com/api/v2/platform/promotions?page=1&per_page=&include=&filter[code_eq]=&filter[name_cont]=\",\n    \"next\": \"http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=\",\n    \"prev\": \"http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=\",\n    \"last\": \"http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=\",\n    \"first\": \"http://www.example.com/api/v2/platform/promotions?filter%5Bcode_eq%5D=&filter%5Bname_cont%5D=&include=&page=1&per_page=\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "081bd54a-ab43-42a1-a75a-936a03676e06",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    },
+                    {
+                      "key": "filter[code_eq]",
+                      "value": "BLK-FRI"
+                    },
+                    {
+                      "key": "filter[name_cont]",
+                      "value": "New Customer"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "114c0ff0-d3fc-4c97-b60d-e55858d6a288",
+          "name": "Create a Promotion",
+          "request": {
+            "name": "Create a Promotion",
+            "description": {
+              "content": "Creates a Promotion",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "promotions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"promotion\": {\n    \"name\": \"<string>\",\n    \"code\": \"<string>\",\n    \"description\": \"<string>\",\n    \"usage_limit\": \"<integer>\",\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dc367139-28f6-45d3-b1d4-fdef7ddf458f",
+              "name": "Record created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"promotion\": {\n    \"name\": \"Promotions Used in 2021\",\n    \"code\": \"BLK-FRI\",\n    \"description\": \"Save today with discount code XYZ at checkout.\",\n    \"usage_limit\": 100,\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"35\",\n    \"type\": \"promotion\",\n    \"attributes\": {\n      \"description\": \"First 1000 Customers Save 20%\",\n      \"expires_at\": \"2022-11-12T19:35:03.283Z\",\n      \"starts_at\": \"2022-11-08T19:35:03.283Z\",\n      \"name\": \"Black Friday 20% Off\",\n      \"type\": \"Spree::Promotion\",\n      \"usage_limit\": 1000,\n      \"match_policy\": \"any\",\n      \"code\": \"BLK-20\",\n      \"advertise\": true,\n      \"path\": \"/black-fri/today\",\n      \"created_at\": \"2022-11-08T19:35:03.521Z\",\n      \"updated_at\": \"2022-11-08T19:35:03.533Z\",\n      \"public_metadata\": {},\n      \"private_metadata\": {}\n    },\n    \"relationships\": {\n      \"promotion_category\": {\n        \"data\": {\n          \"id\": \"15\",\n          \"type\": \"promotion_category\"\n        }\n      },\n      \"promotion_rules\": {\n        \"data\": []\n      },\n      \"promotion_actions\": {\n        \"data\": []\n      },\n      \"stores\": {\n        \"data\": [\n          {\n            \"id\": \"382\",\n            \"type\": \"store\"\n          },\n          {\n            \"id\": \"383\",\n            \"type\": \"store\"\n          },\n          {\n            \"id\": \"381\",\n            \"type\": \"store\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75268c59-a4cb-4b6c-a749-0cd1d427f4e5",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"promotion\": {\n    \"name\": \"Promotions Used in 2021\",\n    \"code\": \"BLK-FRI\",\n    \"description\": \"Save today with discount code XYZ at checkout.\",\n    \"usage_limit\": 100,\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Name can't be blank\",\n  \"errors\": {\n    \"name\": [\n      \"can't be blank\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bcf04eac-29ca-4a86-ba46-01d79e5b9ac4",
+          "name": "Return a Promotion",
+          "request": {
+            "name": "Return a Promotion",
+            "description": {
+              "content": "Returns a Promotion",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "promotions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e1677394-e490-4056-a727-18b5b55c4b79",
+              "name": "Record found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"44\",\n    \"type\": \"promotion\",\n    \"attributes\": {\n      \"description\": null,\n      \"expires_at\": null,\n      \"starts_at\": null,\n      \"name\": \"Promo\",\n      \"type\": null,\n      \"usage_limit\": null,\n      \"match_policy\": \"all\",\n      \"code\": null,\n      \"advertise\": false,\n      \"path\": null,\n      \"created_at\": \"2022-11-08T19:35:03.971Z\",\n      \"updated_at\": \"2022-11-08T19:35:03.973Z\",\n      \"public_metadata\": {},\n      \"private_metadata\": {}\n    },\n    \"relationships\": {\n      \"promotion_category\": {\n        \"data\": {\n          \"id\": \"17\",\n          \"type\": \"promotion_category\"\n        }\n      },\n      \"promotion_rules\": {\n        \"data\": [\n          {\n            \"id\": \"16\",\n            \"type\": \"promotion_rule\"\n          }\n        ]\n      },\n      \"promotion_actions\": {\n        \"data\": [\n          {\n            \"id\": \"31\",\n            \"type\": \"promotion_action\"\n          }\n        ]\n      },\n      \"stores\": {\n        \"data\": [\n          {\n            \"id\": \"387\",\n            \"type\": \"store\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "610a0004-c622-4fd9-bac3-364d2e1ae98d",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6fbfe2e2-6330-46b9-abdd-82bd40174f9a",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "005aaa84-58f1-46ae-9b71-8013a6a24823",
+          "name": "Update a Promotion",
+          "request": {
+            "name": "Update a Promotion",
+            "description": {
+              "content": "Updates a Promotion",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "promotions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"promotion\": {\n    \"name\": \"<string>\",\n    \"code\": \"<string>\",\n    \"description\": \"<string>\",\n    \"usage_limit\": \"<integer>\",\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b5254fea-aa1c-43ec-85f4-8ee22cf3f97c",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"promotion\": {\n    \"name\": \"Promotions Used in 2021\",\n    \"code\": \"CYB-MON\",\n    \"description\": \"Save today with discount code XYZ at checkout.\",\n    \"usage_limit\": 100,\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"58\",\n    \"type\": \"promotion\",\n    \"attributes\": {\n      \"description\": \"This is the new updated promo\",\n      \"expires_at\": null,\n      \"starts_at\": null,\n      \"name\": \"10% OFF\",\n      \"type\": null,\n      \"usage_limit\": null,\n      \"match_policy\": \"all\",\n      \"code\": \"RAND-10\",\n      \"advertise\": false,\n      \"path\": null,\n      \"created_at\": \"2022-11-08T19:35:04.723Z\",\n      \"updated_at\": \"2022-11-08T19:35:04.970Z\",\n      \"public_metadata\": {},\n      \"private_metadata\": {}\n    },\n    \"relationships\": {\n      \"promotion_category\": {\n        \"data\": {\n          \"id\": \"20\",\n          \"type\": \"promotion_category\"\n        }\n      },\n      \"promotion_rules\": {\n        \"data\": [\n          {\n            \"id\": \"19\",\n            \"type\": \"promotion_rule\"\n          }\n        ]\n      },\n      \"promotion_actions\": {\n        \"data\": [\n          {\n            \"id\": \"42\",\n            \"type\": \"promotion_action\"\n          }\n        ]\n      },\n      \"stores\": {\n        \"data\": [\n          {\n            \"id\": \"396\",\n            \"type\": \"store\"\n          }\n        ]\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15464fc2-b807-44a1-a798-d0b5bf64655e",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"promotion\": {\n    \"name\": \"Promotions Used in 2021\",\n    \"code\": \"CYB-MON\",\n    \"description\": \"Save today with discount code XYZ at checkout.\",\n    \"usage_limit\": 100,\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69cbf771-39b1-42e2-a981-2ec65faa832e",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"promotion\": {\n    \"name\": \"Promotions Used in 2021\",\n    \"code\": \"CYB-MON\",\n    \"description\": \"Save today with discount code XYZ at checkout.\",\n    \"usage_limit\": 100,\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "254f57a0-ff76-4204-a7e1-01f6459f07f5",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "promotion_category,promotion_rules,promotion_actions,stores"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"promotion\": {\n    \"name\": \"Promotions Used in 2021\",\n    \"code\": \"CYB-MON\",\n    \"description\": \"Save today with discount code XYZ at checkout.\",\n    \"usage_limit\": 100,\n    \"advertise\": \"<boolean>\",\n    \"starts_at\": \"<date_time>\",\n    \"ends_at\": \"<date_time>\",\n    \"store_ids\": [\n      \"2\",\n      \"2\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Name can't be blank\",\n  \"errors\": {\n    \"name\": [\n      \"can't be blank\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0d9faf0-6ee4-4ab1-844a-e378508e62f6",
+          "name": "Delete a Promotion",
+          "request": {
+            "name": "Delete a Promotion",
+            "description": {
+              "content": "Deletes a Promotion",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "promotions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "290c6d0a-024c-44ee-90f1-b121a4e3ff0f",
+              "name": "Record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dd87714c-00e3-4a86-b03b-c6439dd210e7",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce92207b-6f7b-42d5-98da-90847c28ac2d",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "promotions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e4f6cc8b-e10d-4144-adea-35792eeadd51",
+    "name": "Admin Account / Address Promotions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

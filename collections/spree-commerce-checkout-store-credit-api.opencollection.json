@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Checkout / Store Credit API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Checkout / Store Credit",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Store Credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/checkout/add_store_credit",
+            "params": [
+              {
+                "name": "amount",
+                "value": "100",
+                "type": "query",
+                "description": "Amount of Store Credit to use. As much as possible Store Credit will be applied if no amount is passed."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "The Add Store Credit endpoint takes the users existing store credit from their account and adds a set amount of this store credit to the current cart.\n\nIn essence, by adding the user's store credit to a cart, the user's store credit is being spent."
+        },
+        {
+          "info": {
+            "name": "Remove Store Credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/checkout/remove_store_credit",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Removes store credit from the cart if any had previously been applied."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

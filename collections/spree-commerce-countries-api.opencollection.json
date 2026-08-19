@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Countries API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Countries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns a list of Countries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/countries",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of Countries"
+        },
+        {
+          "info": {
+            "name": "Returns a Country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/countries/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a Country"
+        },
+        {
+          "info": {
+            "name": "List all Countries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/countries"
+          },
+          "docs": "Returns a list of all countries."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/countries/:iso",
+            "params": [
+              {
+                "name": "iso",
+                "value": "",
+                "type": "path",
+                "description": "Provide a Country ISO `US` or ISO3 `USA` code."
+              },
+              {
+                "name": "include",
+                "value": "states",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[country]",
+                "value": "iso_name,name,states_required",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specific country."
+        },
+        {
+          "info": {
+            "name": "Get Default Country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/countries/default",
+            "params": [
+              {
+                "name": "include",
+                "value": "states",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[country]",
+                "value": "iso_name,name,states_required",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the default country for the current store. By default this will be the US."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

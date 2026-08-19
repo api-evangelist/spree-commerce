@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Cart API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cart",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/cart",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              },
+              {
+                "name": "currency",
+                "value": "USD",
+                "type": "query",
+                "description": "Must be specified when is different than current store default currency."
+              }
+            ]
+          },
+          "docs": "Returns the cart for the current user."
+        },
+        {
+          "info": {
+            "name": "Create a Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/cart",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cart.\n\n**Please be aware**; The `token` value found in the response body is used to authorize all future operations on this cart through the Auth API Key `X-Spree-Order-Token`."
+        },
+        {
+          "info": {
+            "name": "Delete a Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/storefront/cart"
+          },
+          "docs": "Deletes a specified cart.\n\nWhen this endpoint is successfully executed, all shipments are cancelled, payments are voided, then line items, shipments & payments are all deleted."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

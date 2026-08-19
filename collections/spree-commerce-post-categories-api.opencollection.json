@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Post Categories API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Post Categories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all Post Categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/post_categories",
+            "params": [
+              {
+                "name": "filter[ids]",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "Fetch only resources with corresponding IDs"
+              },
+              {
+                "name": "filter[title]",
+                "value": "News",
+                "type": "query",
+                "description": "Filter Post Categories by title"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "sort",
+                "value": "title",
+                "type": "query",
+                "description": "Sort post categories by attribute. Prefix with \"-\" for descending order. Available options: id, title, created_at, updated_at"
+              }
+            ]
+          },
+          "docs": "Returns a list of Post Categories. This endpoint is only available in Spree 5.2 or later."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Post Category",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/post_categories/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "news",
+                "type": "path",
+                "description": "Post Category slug or ID"
+              },
+              {
+                "name": "include",
+                "value": "posts",
+                "type": "query",
+                "description": "Include related resources (available: posts)"
+              }
+            ]
+          },
+          "docs": "Returns the details of a specified Post Category, including related posts. You can use either the category slug or ID. This endpoint is only available in Spree 5.2 or later."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

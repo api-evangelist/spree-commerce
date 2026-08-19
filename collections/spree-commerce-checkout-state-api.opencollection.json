@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Checkout / State API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Checkout / State",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Next Checkout Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/checkout/next",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Goes to the next checkout step."
+        },
+        {
+          "info": {
+            "name": "Advance Checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/checkout/advance",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Advances the checkout to the furthest checkout step validation allows, up until the **completed** step."
+        },
+        {
+          "info": {
+            "name": "Complete Checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/checkout/complete",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              }
+            ]
+          },
+          "docs": "Completes the checkout by marking the order as complete.\n\n**Please be aware**; Once a checkout is marked as `complete` it is considered a completed order, the Cart and Checkout endpoints will no longer access a completed order, and a new cart will need to be created.\n\nIf you want to access a completed order you will need to use the **Account / Orders** or **Order Status** endpoints."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

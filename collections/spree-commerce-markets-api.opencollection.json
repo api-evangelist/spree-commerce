@@ -1,0 +1,333 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Markets API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Markets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List countries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/countries",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns countries available in the store. Use ?expand=market to include market details (currency, locale, tax_inclusive)."
+        },
+        {
+          "info": {
+            "name": "Get a country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/countries/:iso",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "iso",
+                "value": "",
+                "type": "path",
+                "description": "Country ISO 3166-1 alpha-2 code (e.g., \"US\", \"DE\")"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single country by ISO code. Supports ?expand=states for address forms and ?expand=market for market details."
+        },
+        {
+          "info": {
+            "name": "List supported currencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/currencies",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns currencies supported by the store (derived from markets)"
+        },
+        {
+          "info": {
+            "name": "List supported locales",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/locales",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns locales supported by the store (derived from markets)"
+        },
+        {
+          "info": {
+            "name": "List markets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/markets",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all markets for the current store with their countries, currency, locales, and tax configuration."
+        },
+        {
+          "info": {
+            "name": "Get a market",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/markets/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Market prefixed ID (e.g., \"mkt_k5nR8xLq\")"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single market by prefixed ID with its countries, currency, locales, and tax configuration."
+        },
+        {
+          "info": {
+            "name": "Resolve market by country",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/markets/resolve",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "Country ISO 3166-1 alpha-2 code (e.g., \"DE\", \"US\")"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Determine which market applies for a given country ISO code. Useful for auto-selecting the correct currency and locale when a customer's location is known."
+        },
+        {
+          "info": {
+            "name": "List countries in a market",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/markets/:market_id/countries",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "market_id",
+                "value": "",
+                "type": "path",
+                "description": "Market prefixed ID"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns countries belonging to a specific market. Use this for address form country dropdowns during checkout."
+        },
+        {
+          "info": {
+            "name": "Get a country in a market",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/markets/:market_id/countries/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "market_id",
+                "value": "",
+                "type": "path",
+                "description": "Market prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Country ISO 3166-1 alpha-2 code (e.g., \"DE\")"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., name,slug,price). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single country by ISO code within a market. Supports ?expand=states for address forms."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

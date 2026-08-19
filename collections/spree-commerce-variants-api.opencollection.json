@@ -1,0 +1,160 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Variants API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Variants",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return a list of Variants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/variants",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "50",
+                "type": "query"
+              },
+              {
+                "name": "include",
+                "value": "product,tax_category,images,digitals",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              },
+              {
+                "name": "filter[product_id_eq]",
+                "value": "1",
+                "type": "query"
+              },
+              {
+                "name": "filter[sku_i_cont]",
+                "value": "SKU123",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of Variants"
+        },
+        {
+          "info": {
+            "name": "Return a Variant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/platform/variants/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "product,tax_category,images,digitals",
+                "type": "query",
+                "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a Variant"
+        },
+        {
+          "info": {
+            "name": "Delete a Variant",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v2/platform/variants/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a Variant"
+        },
+        {
+          "info": {
+            "name": "List all Product Variants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/products/:product_slug/variants",
+            "params": [
+              {
+                "name": "product_slug",
+                "value": "knitted-high-neck-sweater",
+                "type": "path",
+                "description": "Product Slug"
+              },
+              {
+                "name": "filter[options][color]",
+                "value": "red",
+                "type": "query",
+                "description": "Find Variants that have the specified option (eg. color, size) and value (eg. red, XS)"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Number of requested page when paginating collection"
+              },
+              {
+                "name": "per_page",
+                "value": "25",
+                "type": "query",
+                "description": "Number of requested records per page when paginating collection"
+              },
+              {
+                "name": "include",
+                "value": "product,option_values,images,filter_values",
+                "type": "query",
+                "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\nproduct,option_values,images,filter_values\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+              },
+              {
+                "name": "fields[variant]",
+                "value": "price,currency,options,options_text",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a list of product variants. You can use product permalink:\n\n```\nGET /api/v2/storefront/products/knitted-high-neck-sweater/variants\n```\n\nOr Product ID:\n\n```\nGET /api/v2/storefront/products/21/variants\n```\n\n**Note** API will attempt a permalink lookup before an ID lookup."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

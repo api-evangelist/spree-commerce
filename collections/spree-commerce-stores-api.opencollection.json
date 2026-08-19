@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Stores API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stores",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Return the current Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/store",
+            "params": [
+              {
+                "name": "include",
+                "value": "default_country",
+                "type": "query",
+                "description": "Specify what related resources (relationships) you would like to receive in the response body. Eg.\n\n```\ndefault_country\n```\n\n[More information](https://jsonapi.org/format/#fetching-includes)"
+              },
+              {
+                "name": "fields[store]",
+                "value": "name,url,supported_locales",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns the current Store. [Read more about Stores](/developer/core-concepts/stores)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

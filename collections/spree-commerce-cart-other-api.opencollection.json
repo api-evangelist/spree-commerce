@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Cart / Other API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cart / Other",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Empty the Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/cart/empty",
+            "params": [
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "This endpoint removed all line items from the cart. Inventory that was previously taken by this order will be re-stocked."
+        },
+        {
+          "info": {
+            "name": "List Estimated Shipping Rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/cart/estimate_shipping_rates",
+            "params": [
+              {
+                "name": "country_iso",
+                "value": "USA",
+                "type": "query",
+                "description": "Pass country ISO or ISO3 symbol to get estimations for this destination. If no code is passed we'll try to use Cart shipping address country or the default Country for the current Store."
+              },
+              {
+                "name": "fields[shipping_rate]",
+                "value": "name,selected,final_price,display_final_price,cost,display_cost,tax_amount,display_tax_amount,shipping_method_id",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns a list of shipping rates for the current cart. The rates given are only estimates and can vary from the final shipping rates."
+        },
+        {
+          "info": {
+            "name": "Associate a Cart with a User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/cart/associate",
+            "params": [
+              {
+                "name": "guest_order_token",
+                "value": "",
+                "type": "query",
+                "description": "Token of the guest cart to be associated with user."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Associates a guest cart with the currently signed in user."
+        },
+        {
+          "info": {
+            "name": "Change Cart Currency",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/cart/change_currency",
+            "params": [
+              {
+                "name": "new_currency",
+                "value": "",
+                "type": "query",
+                "description": "The currency to change the cart to."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Changes the cart currency and recalculates the cart values."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

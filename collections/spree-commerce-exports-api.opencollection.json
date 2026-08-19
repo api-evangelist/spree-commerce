@@ -1,0 +1,178 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Exports API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Exports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List exports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/exports",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns CSV exports queued or completed for the current store. Polled by the admin SPA to detect when an export finishes (`done: true`).\n\n**Required scope:** `read_exports` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create an export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/exports",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Queues a CSV export. The `type` selects the dataset; `search_params` is an\noptional Ransack query (same shape used by the `q[...]` params on list endpoints)\nthat filters which records are exported. Pass `record_selection: \"all\"` to\nclear the filter server-side and export everything in scope.\n\nGeneration is asynchronous. Poll `GET /admin/exports/{id}` until `done` is `true`,\nthen redirect the browser to `download_url` to fetch the file.\n\n\n**Required scope:** `write_exports` (for API-key authentic"
+        },
+        {
+          "info": {
+            "name": "Show an export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/exports/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns export status. While `done` is `false`, the SPA continues polling.\n\n**Required scope:** `read_exports` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete an export",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/exports/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes the export and purges its attachment.\n\n**Required scope:** `write_exports` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Download an export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/exports/:id/download",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Streams the exported CSV with `Content-Disposition: attachment`. Returns 422 with `code: export_not_ready` while `done` is still `false`. The endpoint is JWT/API-key protected, so SPA clients must fetch it (with `Authorization` header) and trigger the browser download via a Blob URL — a top-level navigation cannot carry the JWT.\n\n**Required scope:** `read_exports` (for API-key authentication)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

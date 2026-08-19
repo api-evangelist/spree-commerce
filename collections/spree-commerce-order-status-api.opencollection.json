@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Order Status API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Order Status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve an Order Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/order_status/:order_number",
+            "params": [
+              {
+                "name": "order_number",
+                "value": "R653163382",
+                "type": "path",
+                "description": "The required **{order_number}** value can be found in the cart response body, identified as the `number` attribute."
+              },
+              {
+                "name": "include",
+                "value": "line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card",
+                "type": "query",
+                "description": "Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes)."
+              },
+              {
+                "name": "fields[cart]",
+                "value": "token,currency,number",
+                "type": "query",
+                "description": "Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets)."
+              }
+            ]
+          },
+          "docs": "Returns completed order information.\n\nThis endpoint is useful when fetching orders placed by a guest user, allowing customers without an account to check the status of their order: (shipment/payment/processing) etc.\n\nPass the cart `token` value as the `X-Spree-Order-Token` for authorization, and the corresponding cart `number` in the URI **{order_number}** to successfully retrieve an order."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

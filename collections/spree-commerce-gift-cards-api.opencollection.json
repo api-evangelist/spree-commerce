@@ -1,0 +1,348 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Gift Cards API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Gift Cards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List gift card batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/gift_card_batches",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Records per page"
+              },
+              {
+                "name": "q[prefix_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by prefix (contains)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by field. Prefix with `-` for descending."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the gift card batches issued by the current store. Each batch\ngroups the cards generated together for a campaign or bulk-issuance\n— the cards themselves live under `/admin/gift_cards` and reference\nthe batch via `gift_card_batch_id`.\n\n\n**Required scope:** `read_gift_cards` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a gift card batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/gift_card_batches",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Issues a batch of gift cards in a single call. The server generates\n`codes_count` cards inline for small batches (configurable via\n`Spree.config.gift_card_batch_web_limit`, default 500) or enqueues\na background job for larger ones. Each card's code is the batch\n`prefix` followed by random hex.\n\n\n**Required scope:** `write_gift_cards` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get a gift card batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/gift_card_batches/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Gift card batch prefixed ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single batch.\n\n**Required scope:** `read_gift_cards` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "List gift cards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/gift_cards",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "q[code_cont]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by gift card code (contains)"
+              },
+              {
+                "name": "q[state_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status (active, redeemed, partially_redeemed, canceled)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort by field. Prefix with `-` for descending (e.g., `-created_at`)."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the gift cards issued by the current store. Filter by\n`q[code_cont]` for code search, `q[user_id_eq]` for cards issued\nto a specific customer, or `q[state_eq]` for status filtering.\n\n\n**Required scope:** `read_gift_cards` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Create a gift card",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/admin/gift_cards",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Issues a gift card scoped to the current store. The code is\nauto-generated when omitted. `currency` defaults to the store's\nconfigured currency. Pass `user_id` (prefixed ID) to attach the\ncard to a specific customer.\n\n\n**Required scope:** `write_gift_cards` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Get a gift card",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/admin/gift_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Gift card prefixed ID"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include. id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single gift card.\n\n**Required scope:** `read_gift_cards` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Update a gift card",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/admin/gift_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Gift card prefixed ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an active gift card's editable attributes. Redeemed or\npartially-redeemed cards cannot be edited.\n\n\n**Required scope:** `write_gift_cards` (for API-key authentication)."
+        },
+        {
+          "info": {
+            "name": "Delete a gift card",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/admin/gift_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Gift card prefixed ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes an unused gift card. Cards that have been redeemed or\npartially redeemed cannot be deleted and return 422.\n\n\n**Required scope:** `write_gift_cards` (for API-key authentication)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

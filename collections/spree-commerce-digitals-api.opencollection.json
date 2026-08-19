@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Digitals API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Digitals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download a digital product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/digitals/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "Digital link token"
+              }
+            ]
+          },
+          "docs": "Downloads a digital product file using the digital link token.\nThe token is provided via the `download_url` field on digital links\nreturned with order line items. No API key or authentication required —\nthe token itself grants access.\nEach download increments the access counter. Downloads may be limited by\nstore settings (number of downloads and/or time-based expiration).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

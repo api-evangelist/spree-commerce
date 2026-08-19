@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Digital Downloads API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Digital Downloads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download a Digital Asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/digitals/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path",
+                "description": "Use the token from the digital link."
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to download a digital item using the unique digital_link token.\n\nThe digital_link token value can be found by including `line_items.digital_links` in a completed order lookup.\n\nUse the **Retrieve an Order Status** endpoint found under the Order Status tab, or the **Retrieve an Order** endpoint found under the Account / Orders tab to perform a completed order lookup.\n\nDepending on the store that the item was purchased in, downloads may be restricted to a set number of day"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

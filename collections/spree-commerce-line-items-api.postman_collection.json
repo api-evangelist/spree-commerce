@@ -1,0 +1,1401 @@
+{
+  "item": [
+    {
+      "id": "120ee044-ddf5-47ed-9c8e-fd0b3e217914",
+      "name": "Line Items",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ed193269-4340-4e15-b9ee-b43fe4e77ad4",
+          "name": "Return a list of Line Items",
+          "request": {
+            "name": "Return a list of Line Items",
+            "description": {
+              "content": "Returns a list of Line Items",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "line_items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[order_id_eq]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b2d75426-de65-4e69-bcfe-601e1d796f55",
+              "name": "Records returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    },
+                    {
+                      "key": "filter[order_id_eq]",
+                      "value": "123"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"23\",\n      \"type\": \"line_item\",\n      \"attributes\": {\n        \"quantity\": 1,\n        \"price\": \"10.0\",\n        \"created_at\": \"2022-11-08T19:34:19.541Z\",\n        \"updated_at\": \"2022-11-08T19:34:19.550Z\",\n        \"currency\": \"USD\",\n        \"cost_price\": \"17.0\",\n        \"adjustment_total\": \"0.0\",\n        \"additional_tax_total\": \"0.0\",\n        \"promo_total\": \"0.0\",\n        \"included_tax_total\": \"0.0\",\n        \"pre_tax_amount\": \"10.0\",\n        \"taxable_adjustment_total\": \"0.0\",\n        \"non_taxable_adjustment_total\": \"0.0\",\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"display_discounted_amount\": \"$10.00\",\n        \"display_amount\": \"$10.00\",\n        \"display_final_amount\": \"$10.00\",\n        \"display_subtotal\": \"$10.00\",\n        \"display_pre_tax_amount\": \"$10.00\",\n        \"display_price\": \"$10.00\",\n        \"display_adjustment_total\": \"$0.00\",\n        \"display_additional_tax_total\": \"$0.00\",\n        \"display_promo_total\": \"$0.00\",\n        \"display_total\": \"$10.00\",\n        \"display_included_tax_total\": \"$0.00\"\n      },\n      \"relationships\": {\n        \"order\": {\n          \"data\": {\n            \"id\": \"29\",\n            \"type\": \"order\"\n          }\n        },\n        \"tax_category\": {\n          \"data\": {\n            \"id\": \"70\",\n            \"type\": \"tax_category\"\n          }\n        },\n        \"variant\": {\n          \"data\": {\n            \"id\": \"183\",\n            \"type\": \"variant\"\n          }\n        },\n        \"adjustments\": {\n          \"data\": []\n        },\n        \"inventory_units\": {\n          \"data\": []\n        },\n        \"digital_links\": {\n          \"data\": []\n        }\n      }\n    },\n    {\n      \"id\": \"24\",\n      \"type\": \"line_item\",\n      \"attributes\": {\n        \"quantity\": 1,\n        \"price\": \"10.0\",\n        \"created_at\": \"2022-11-08T19:34:19.584Z\",\n        \"updated_at\": \"2022-11-08T19:34:19.590Z\",\n        \"currency\": \"USD\",\n        \"cost_price\": \"17.0\",\n        \"adjustment_total\": \"0.0\",\n        \"additional_tax_total\": \"0.0\",\n        \"promo_total\": \"0.0\",\n        \"included_tax_total\": \"0.0\",\n        \"pre_tax_amount\": \"10.0\",\n        \"taxable_adjustment_total\": \"0.0\",\n        \"non_taxable_adjustment_total\": \"0.0\",\n        \"public_metadata\": {},\n        \"private_metadata\": {},\n        \"display_discounted_amount\": \"$10.00\",\n        \"display_amount\": \"$10.00\",\n        \"display_final_amount\": \"$10.00\",\n        \"display_subtotal\": \"$10.00\",\n        \"display_pre_tax_amount\": \"$10.00\",\n        \"display_price\": \"$10.00\",\n        \"display_adjustment_total\": \"$0.00\",\n        \"display_additional_tax_total\": \"$0.00\",\n        \"display_promo_total\": \"$0.00\",\n        \"display_total\": \"$10.00\",\n        \"display_included_tax_total\": \"$0.00\"\n      },\n      \"relationships\": {\n        \"order\": {\n          \"data\": {\n            \"id\": \"29\",\n            \"type\": \"order\"\n          }\n        },\n        \"tax_category\": {\n          \"data\": {\n            \"id\": \"70\",\n            \"type\": \"tax_category\"\n          }\n        },\n        \"variant\": {\n          \"data\": {\n            \"id\": \"184\",\n            \"type\": \"variant\"\n          }\n        },\n        \"adjustments\": {\n          \"data\": []\n        },\n        \"inventory_units\": {\n          \"data\": []\n        },\n        \"digital_links\": {\n          \"data\": []\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"count\": 2,\n    \"total_count\": 2,\n    \"total_pages\": 1\n  },\n  \"links\": {\n    \"self\": \"http://www.example.com/api/v2/platform/line_items?page=1&per_page=&include=&filter[order_id_eq]=\",\n    \"next\": \"http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=\",\n    \"prev\": \"http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=\",\n    \"last\": \"http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=\",\n    \"first\": \"http://www.example.com/api/v2/platform/line_items?filter%5Border_id_eq%5D=&include=&page=1&per_page=\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4dd8e3bd-ba0a-49c2-8b99-9e872da5857b",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    },
+                    {
+                      "key": "filter[order_id_eq]",
+                      "value": "123"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36e540b2-3b13-4e04-9ec9-a72dd1a03b77",
+          "name": "Create a Line Item",
+          "request": {
+            "name": "Create a Line Item",
+            "description": {
+              "content": "Creates a Line Item",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "line_items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"line_item\": {\n    \"order_id\": \"<string>\",\n    \"variant_id\": \"<string>\",\n    \"quantity\": \"<integer>\",\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fb4e1f3e-96cb-4992-afee-bf0e2d1a147c",
+              "name": "Record created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"line_item\": {\n    \"order_id\": \"1\",\n    \"variant_id\": \"1\",\n    \"quantity\": 2,\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"27\",\n    \"type\": \"line_item\",\n    \"attributes\": {\n      \"quantity\": 1,\n      \"price\": \"10.0\",\n      \"created_at\": \"2022-11-08T19:34:20.312Z\",\n      \"updated_at\": \"2022-11-08T19:34:20.352Z\",\n      \"currency\": \"USD\",\n      \"cost_price\": \"17.0\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"10.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_amount\": \"$10.00\",\n      \"display_amount\": \"$10.00\",\n      \"display_final_amount\": \"$10.00\",\n      \"display_subtotal\": \"$10.00\",\n      \"display_pre_tax_amount\": \"$10.00\",\n      \"display_price\": \"$10.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_promo_total\": \"$0.00\",\n      \"display_total\": \"$10.00\",\n      \"display_included_tax_total\": \"$0.00\"\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"31\",\n          \"type\": \"order\"\n        }\n      },\n      \"tax_category\": {\n        \"data\": {\n          \"id\": \"72\",\n          \"type\": \"tax_category\"\n        }\n      },\n      \"variant\": {\n        \"data\": {\n          \"id\": \"187\",\n          \"type\": \"variant\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": []\n      },\n      \"digital_links\": {\n        \"data\": []\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cfe7fc9b-6df4-4310-8561-3b33ad4ae120",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"line_item\": {\n    \"order_id\": \"1\",\n    \"variant_id\": \"1\",\n    \"quantity\": 2,\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Variant can't be blank, Price is not a number, Currency Must match order currency\",\n  \"errors\": {\n    \"variant\": [\n      \"can't be blank\"\n    ],\n    \"price\": [\n      \"is not a number\"\n    ],\n    \"currency\": [\n      \"Must match order currency\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1ff602f-ab13-4df5-b8bf-f55eefef9336",
+          "name": "Return a Line Item",
+          "request": {
+            "name": "Return a Line Item",
+            "description": {
+              "content": "Returns a Line Item",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "line_items",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7bb4482a-8b3d-4a68-a1a3-adf679c9a86b",
+              "name": "Record found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"28\",\n    \"type\": \"line_item\",\n    \"attributes\": {\n      \"quantity\": 1,\n      \"price\": \"10.0\",\n      \"created_at\": \"2022-11-08T19:34:20.761Z\",\n      \"updated_at\": \"2022-11-08T19:34:20.769Z\",\n      \"currency\": \"USD\",\n      \"cost_price\": \"17.0\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"10.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_amount\": \"$10.00\",\n      \"display_amount\": \"$10.00\",\n      \"display_final_amount\": \"$10.00\",\n      \"display_subtotal\": \"$10.00\",\n      \"display_pre_tax_amount\": \"$10.00\",\n      \"display_price\": \"$10.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_promo_total\": \"$0.00\",\n      \"display_total\": \"$10.00\",\n      \"display_included_tax_total\": \"$0.00\"\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"33\",\n          \"type\": \"order\"\n        }\n      },\n      \"tax_category\": {\n        \"data\": {\n          \"id\": \"73\",\n          \"type\": \"tax_category\"\n        }\n      },\n      \"variant\": {\n        \"data\": {\n          \"id\": \"188\",\n          \"type\": \"variant\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": []\n      },\n      \"digital_links\": {\n        \"data\": []\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b157d72-0309-4189-8314-64317cbd344a",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4afa96f1-0db7-4338-9c50-2f98eeb7ba9c",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec1986f1-298b-4029-8f20-21f0daa7d9fc",
+          "name": "Update a Line Item",
+          "request": {
+            "name": "Update a Line Item",
+            "description": {
+              "content": "Updates a Line Item",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "line_items",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"line_item\": {\n    \"variant_id\": \"<string>\",\n    \"quantity\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7899b912-61f5-4eb3-881d-d1fd5f301682",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"line_item\": {\n    \"variant_id\": \"1\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"30\",\n    \"type\": \"line_item\",\n    \"attributes\": {\n      \"quantity\": 4,\n      \"price\": \"10.0\",\n      \"created_at\": \"2022-11-08T19:34:21.508Z\",\n      \"updated_at\": \"2022-11-08T19:34:21.772Z\",\n      \"currency\": \"USD\",\n      \"cost_price\": \"17.0\",\n      \"adjustment_total\": \"0.0\",\n      \"additional_tax_total\": \"0.0\",\n      \"promo_total\": \"0.0\",\n      \"included_tax_total\": \"0.0\",\n      \"pre_tax_amount\": \"40.0\",\n      \"taxable_adjustment_total\": \"0.0\",\n      \"non_taxable_adjustment_total\": \"0.0\",\n      \"public_metadata\": {},\n      \"private_metadata\": {},\n      \"display_discounted_amount\": \"$40.00\",\n      \"display_amount\": \"$40.00\",\n      \"display_final_amount\": \"$40.00\",\n      \"display_subtotal\": \"$40.00\",\n      \"display_pre_tax_amount\": \"$40.00\",\n      \"display_price\": \"$10.00\",\n      \"display_adjustment_total\": \"$0.00\",\n      \"display_additional_tax_total\": \"$0.00\",\n      \"display_promo_total\": \"$0.00\",\n      \"display_total\": \"$40.00\",\n      \"display_included_tax_total\": \"$0.00\"\n    },\n    \"relationships\": {\n      \"order\": {\n        \"data\": {\n          \"id\": \"35\",\n          \"type\": \"order\"\n        }\n      },\n      \"tax_category\": {\n        \"data\": {\n          \"id\": \"75\",\n          \"type\": \"tax_category\"\n        }\n      },\n      \"variant\": {\n        \"data\": {\n          \"id\": \"192\",\n          \"type\": \"variant\"\n        }\n      },\n      \"adjustments\": {\n        \"data\": []\n      },\n      \"inventory_units\": {\n        \"data\": []\n      },\n      \"digital_links\": {\n        \"data\": []\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d738059-e36a-45e7-94a9-a9bce337dc5c",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"line_item\": {\n    \"variant_id\": \"1\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22bbfc3c-a8de-4a8f-91e4-9b479c424c2a",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"line_item\": {\n    \"variant_id\": \"1\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46bbfc2c-6fc1-41bd-bafb-9524b124d342",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "order,tax_category,variant.product,digital_links"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"line_item\": {\n    \"variant_id\": \"1\",\n    \"quantity\": 2\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Quantity selected of \\\"Product 1275645\\\" is not available.\",\n  \"errors\": {\n    \"quantity\": [\n      \"selected of \\\"Product 1275645\\\" is not available.\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83d5111e-2294-4ade-94cf-6b708b4590d5",
+          "name": "Delete a Line Item",
+          "request": {
+            "name": "Delete a Line Item",
+            "description": {
+              "content": "Deletes a Line Item",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "line_items",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "344760b2-e936-4428-afac-d2e19c7a5e6f",
+              "name": "Record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "69c63e1c-9c71-4233-b82d-a38d429c0e47",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e07449c8-6fd4-4667-b412-48393b11b48a",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "line_items",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "643c4a03-c0d5-47b6-ae7e-27274c6521f9",
+    "name": "Admin Account / Address Line Items API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}

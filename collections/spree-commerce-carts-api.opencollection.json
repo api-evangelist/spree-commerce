@@ -1,0 +1,1031 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Carts API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Carts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List active carts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/carts",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (default: 1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (default: 25, max: 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order. Prefix with - for descending. Values: created_at, -created_at, updated_at, -updated_at"
+              },
+              {
+                "name": "q[created_at_gt]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by created after date (ISO 8601)"
+              },
+              {
+                "name": "q[updated_at_gt]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by updated after date (ISO 8601)"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (items, fulfillments, payments, discounts, billing_address, shipping_address, gift_card, payment_methods). Use \"none\" to skip associations."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., total,amount_due,item_count). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns all active (incomplete) carts for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Create a new cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new shopping cart. Can be created by guests or authenticated customers.\nReturns a `token` that must be used for guest access to the cart.\n"
+        },
+        {
+          "info": {
+            "name": "Get a cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/carts/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID (e.g., cart_abc123)"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated associations to expand (items, fulfillments, payments, discounts, billing_address, shipping_address, gift_card, payment_methods). Use \"none\" to skip associations."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to include (e.g., total,amount_due,item_count). id is always included."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a shopping cart by prefixed ID.\nAuthorize via x-spree-token header (guest) or JWT Bearer token (authenticated user).\n"
+        },
+        {
+          "info": {
+            "name": "Update a cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/carts/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates cart info (email, addresses, customer note). When addresses change, the order state is reverted to address to ensure shipments are recalculated."
+        },
+        {
+          "info": {
+            "name": "Delete a cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/carts/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes/abandons the cart."
+        },
+        {
+          "info": {
+            "name": "Associate guest cart with authenticated user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/carts/:id/associate",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Associates a guest cart with the currently authenticated user.\nRequires JWT authentication. The cart must not belong to another user.\n"
+        },
+        {
+          "info": {
+            "name": "Complete cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts/:id/complete",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Completes the cart and finalizes the purchase. Returns an Order (not Cart)."
+        },
+        {
+          "info": {
+            "name": "Apply discount code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/discount_codes",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID (e.g., cart_abc123)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Applies a promotion discount code to the cart. The code is matched case-insensitively.\n\nFor gift cards, use the dedicated `POST /carts/{cart_id}/gift_cards` endpoint instead.\n"
+        },
+        {
+          "info": {
+            "name": "Remove discount code",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/discount_codes/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The discount code string to remove (e.g., SAVE10)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a previously applied discount code from the cart. The ID is the discount code string itself."
+        },
+        {
+          "info": {
+            "name": "Select delivery rate for fulfillment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/fulfillments/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Fulfillment ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Selects a delivery rate for a specific fulfillment and auto-advances checkout."
+        },
+        {
+          "info": {
+            "name": "Apply gift card",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/gift_cards",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID (e.g., cart_abc123)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Applies a gift card to the cart. Gift cards are treated as a payment method, not a discount —\nthe cart `total` remains unchanged while `amount_due` is reduced.\n\nFor promotion discount codes, use the `POST /carts/{cart_id}/discount_codes` endpoint instead.\n"
+        },
+        {
+          "info": {
+            "name": "Remove gift card",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/gift_cards/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Gift card prefixed ID (e.g., gc_abc123)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a previously applied gift card from the cart."
+        },
+        {
+          "info": {
+            "name": "Add item to cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/items",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID (e.g., cart_abc123)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds a variant to the cart. Creates a new line item or increases quantity if variant already in cart."
+        },
+        {
+          "info": {
+            "name": "Update line item quantity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/items/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Line item ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the quantity of a line item in the cart"
+        },
+        {
+          "info": {
+            "name": "Remove line item from cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/items/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a line item from the cart"
+        },
+        {
+          "info": {
+            "name": "Create payment session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/payment_sessions",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID (e.g., cart_abc123)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new payment session for the cart. Delegates to the payment gateway to initialize a provider-specific session (e.g. Stripe PaymentIntent, Adyen session, PayPal order)."
+        },
+        {
+          "info": {
+            "name": "Get payment session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/payment_sessions/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Payment session ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a single payment session with its current status and provider data."
+        },
+        {
+          "info": {
+            "name": "Update payment session",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/payment_sessions/:id",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Payment session ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates a payment session. Delegates to the payment gateway to sync changes with the provider."
+        },
+        {
+          "info": {
+            "name": "Complete payment session",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/payment_sessions/:id/complete",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Payment session ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Completes a payment session by confirming the payment with the provider. This triggers payment capture/authorization and order completion."
+        },
+        {
+          "info": {
+            "name": "Create payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/payments",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a payment for a non-session payment method (e.g. Check, Cash on Delivery, Bank Transfer). For payment methods that require a session (e.g. Stripe, PayPal), use the payment sessions endpoint instead."
+        },
+        {
+          "info": {
+            "name": "Apply store credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/store_credits",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID (e.g., cart_abc123)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Applies store credit to the cart during checkout."
+        },
+        {
+          "info": {
+            "name": "Remove store credit",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://{defaultHost}/api/v3/store/carts/:cart_id/store_credits",
+            "headers": [
+              {
+                "name": "x-spree-api-key",
+                "value": ""
+              },
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "x-spree-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path",
+                "description": "Cart prefixed ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-spree-api-key",
+              "value": "{{x-spree-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes store credit from the cart."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

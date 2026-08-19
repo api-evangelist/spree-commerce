@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Admin Account / Address Stripe API",
+    "version": "v3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stripe",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Stripe Payment Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/stripe/payment_intents",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Stripe Payment Intent using provided payment method. It creates a Stripe customer if not exists."
+        },
+        {
+          "info": {
+            "name": "Return a Stripe Payment Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{defaultHost}/api/v2/storefront/stripe/payment_intents/:id"
+          },
+          "docs": "Returns the Payment Intent information"
+        },
+        {
+          "info": {
+            "name": "Updates Stripe Payment Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/stripe/payment_intents/:id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the payment intent with new `amount` and `stripe_payment_method_id`"
+        },
+        {
+          "info": {
+            "name": "Mark the payment intent as confirmed, and move the order to the complete state",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://{defaultHost}/api/v2/storefront/stripe/payment_intents/:id/confirm"
+          },
+          "docs": "This endpoint is used to complete the order with succeeded payment intent. First it will check if the payment intent has `status` `succeeded`, if yes, then it will move the order to the complete state."
+        },
+        {
+          "info": {
+            "name": "Create a Stripe Setup Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{defaultHost}/api/v2/storefront/stripe/setup_intents"
+          },
+          "docs": "First, this endpoint creates a customer in Stripe (if it doesn't already exist), then it creates an Ephemeral Key for the customer, and finally, it creates a Setup Intent for the customer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

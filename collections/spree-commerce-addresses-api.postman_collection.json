@@ -1,0 +1,1414 @@
+{
+  "item": [
+    {
+      "id": "64e31a01-50b6-4524-89c1-ae7ad70cfd18",
+      "name": "Addresses",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6092f970-a7c8-46d3-a390-c21392c6edf6",
+          "name": "Return a list of Addresses",
+          "request": {
+            "name": "Return a list of Addresses",
+            "description": {
+              "content": "Returns a list of Addresses",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "addresses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[user_id_eq]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[firstname_cont]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bd77e0ac-cedf-44bc-bacb-1df8aa21e9d7",
+              "name": "Records returned",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    },
+                    {
+                      "key": "filter[user_id_eq]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "filter[firstname_cont]",
+                      "value": "John"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"1\",\n      \"type\": \"address\",\n      \"attributes\": {\n        \"firstname\": \"John\",\n        \"lastname\": \"Doe\",\n        \"address1\": \"1 Lovely Street\",\n        \"address2\": \"Northwest\",\n        \"city\": \"Herndon\",\n        \"zipcode\": \"35005\",\n        \"phone\": \"555-555-0199\",\n        \"state_name\": null,\n        \"alternative_phone\": \"555-555-0199\",\n        \"company\": \"Company\",\n        \"created_at\": \"2022-11-08T19:33:50.821Z\",\n        \"updated_at\": \"2022-11-08T19:33:50.821Z\",\n        \"deleted_at\": null,\n        \"label\": null,\n        \"public_metadata\": {},\n        \"private_metadata\": {}\n      },\n      \"relationships\": {\n        \"country\": {\n          \"data\": {\n            \"id\": \"1\",\n            \"type\": \"country\"\n          }\n        },\n        \"state\": {\n          \"data\": {\n            \"id\": \"1\",\n            \"type\": \"state\"\n          }\n        },\n        \"user\": {\n          \"data\": null\n        }\n      }\n    },\n    {\n      \"id\": \"2\",\n      \"type\": \"address\",\n      \"attributes\": {\n        \"firstname\": \"John\",\n        \"lastname\": \"Doe\",\n        \"address1\": \"2 Lovely Street\",\n        \"address2\": \"Northwest\",\n        \"city\": \"Herndon\",\n        \"zipcode\": \"35005\",\n        \"phone\": \"555-555-0199\",\n        \"state_name\": null,\n        \"alternative_phone\": \"555-555-0199\",\n        \"company\": \"Company\",\n        \"created_at\": \"2022-11-08T19:33:50.825Z\",\n        \"updated_at\": \"2022-11-08T19:33:50.825Z\",\n        \"deleted_at\": null,\n        \"label\": null,\n        \"public_metadata\": {},\n        \"private_metadata\": {}\n      },\n      \"relationships\": {\n        \"country\": {\n          \"data\": {\n            \"id\": \"1\",\n            \"type\": \"country\"\n          }\n        },\n        \"state\": {\n          \"data\": {\n            \"id\": \"2\",\n            \"type\": \"state\"\n          }\n        },\n        \"user\": {\n          \"data\": null\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"count\": 2,\n    \"total_count\": 2,\n    \"total_pages\": 1\n  },\n  \"links\": {\n    \"self\": \"http://www.example.com/api/v2/platform/addresses?page=1&per_page=&include=&filter[user_id_eq]=&filter[firstname_cont]=\",\n    \"next\": \"http://www.example.com/api/v2/platform/addresses?filter%5Bfirstname_cont%5D=&filter%5Buser_id_eq%5D=&include=&page=1&per_page=\",\n    \"prev\": \"http://www.example.com/api/v2/platform/addresses?filter%5Bfirstname_cont%5D=&filter%5Buser_id_eq%5D=&include=&page=1&per_page=\",\n    \"last\": \"http://www.example.com/api/v2/platform/addresses?filter%5Bfirstname_cont%5D=&filter%5Buser_id_eq%5D=&include=&page=1&per_page=\",\n    \"first\": \"http://www.example.com/api/v2/platform/addresses?filter%5Bfirstname_cont%5D=&filter%5Buser_id_eq%5D=&include=&page=1&per_page=\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bc61a85-63a5-485b-8f4c-3e48c5d4e708",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "50"
+                    },
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    },
+                    {
+                      "key": "filter[user_id_eq]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "filter[firstname_cont]",
+                      "value": "John"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d36f0fdb-7129-4912-8cf0-71b5c3d50222",
+          "name": "Create an Address",
+          "request": {
+            "name": "Create an Address",
+            "description": {
+              "content": "Creates an Address",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "addresses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": {\n    \"country_id\": \"<string>\",\n    \"address1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"zipcode\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"firstname\": \"<string>\",\n    \"lastname\": \"<string>\",\n    \"state_id\": \"<string>\",\n    \"state_name\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"alternative_phone\": \"<string>\",\n    \"label\": \"<string>\",\n    \"company\": \"<string>\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8193fbd2-820a-4756-a887-a6d70b19314a",
+              "name": "Record created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"country_id\": \"224\",\n    \"address1\": \"5th ave\",\n    \"city\": \"NY\",\n    \"zipcode\": \"10001\",\n    \"phone\": \"+1 123 456 789\",\n    \"firstname\": \"John\",\n    \"lastname\": \"Snow\",\n    \"state_id\": \"516\",\n    \"state_name\": \"New York\",\n    \"address2\": \"1st suite\",\n    \"alternative_phone\": \"<string>\",\n    \"label\": \"My home address\",\n    \"company\": \"Vendo Connect Inc\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": {\n      \"distance_from_nearest_city_in_km\": 10,\n      \"location_type\": \"building\"\n    },\n    \"private_metadata\": {\n      \"close_to_shop\": true\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"5\",\n    \"type\": \"address\",\n    \"attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Doe\",\n      \"address1\": \"5 Lovely Street\",\n      \"address2\": \"Northwest\",\n      \"city\": \"Herndon\",\n      \"zipcode\": \"35005\",\n      \"phone\": \"555-555-0199\",\n      \"state_name\": null,\n      \"alternative_phone\": \"555-555-0199\",\n      \"company\": \"Company\",\n      \"created_at\": \"2022-11-08T19:33:51.471Z\",\n      \"updated_at\": \"2022-11-08T19:33:51.471Z\",\n      \"deleted_at\": null,\n      \"label\": null,\n      \"public_metadata\": {},\n      \"private_metadata\": {}\n    },\n    \"relationships\": {\n      \"country\": {\n        \"data\": {\n          \"id\": \"4\",\n          \"type\": \"country\"\n        }\n      },\n      \"state\": {\n        \"data\": {\n          \"id\": \"5\",\n          \"type\": \"state\"\n        }\n      },\n      \"user\": {\n        \"data\": {\n          \"id\": \"1\",\n          \"type\": \"user\"\n        }\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d7e64e3-737d-45eb-aba1-c105a938e51f",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"country_id\": \"224\",\n    \"address1\": \"5th ave\",\n    \"city\": \"NY\",\n    \"zipcode\": \"10001\",\n    \"phone\": \"+1 123 456 789\",\n    \"firstname\": \"John\",\n    \"lastname\": \"Snow\",\n    \"state_id\": \"516\",\n    \"state_name\": \"New York\",\n    \"address2\": \"1st suite\",\n    \"alternative_phone\": \"<string>\",\n    \"label\": \"My home address\",\n    \"company\": \"Vendo Connect Inc\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": {\n      \"distance_from_nearest_city_in_km\": 10,\n      \"location_type\": \"building\"\n    },\n    \"private_metadata\": {\n      \"close_to_shop\": true\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"First Name can't be blank, Last Name can't be blank, Address can't be blank, City can't be blank, Country can't be blank, Zip Code can't be blank, and Phone can't be blank\",\n  \"errors\": {\n    \"firstname\": [\n      \"can't be blank\"\n    ],\n    \"lastname\": [\n      \"can't be blank\"\n    ],\n    \"address1\": [\n      \"can't be blank\"\n    ],\n    \"city\": [\n      \"can't be blank\"\n    ],\n    \"country\": [\n      \"can't be blank\"\n    ],\n    \"zipcode\": [\n      \"can't be blank\"\n    ],\n    \"phone\": [\n      \"can't be blank\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b3c6f2c1-143c-4c50-b163-c156ab41e7f4",
+          "name": "Return an Address",
+          "request": {
+            "name": "Return an Address",
+            "description": {
+              "content": "Returns an Address",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "addresses",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ccb6e206-038d-4280-a9f5-4d2b126bb1a3",
+              "name": "Record found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"6\",\n    \"type\": \"address\",\n    \"attributes\": {\n      \"firstname\": \"John\",\n      \"lastname\": \"Doe\",\n      \"address1\": \"6 Lovely Street\",\n      \"address2\": \"Northwest\",\n      \"city\": \"Herndon\",\n      \"zipcode\": \"35005\",\n      \"phone\": \"555-555-0199\",\n      \"state_name\": null,\n      \"alternative_phone\": \"555-555-0199\",\n      \"company\": \"Company\",\n      \"created_at\": \"2022-11-08T19:33:51.740Z\",\n      \"updated_at\": \"2022-11-08T19:33:51.740Z\",\n      \"deleted_at\": null,\n      \"label\": null,\n      \"public_metadata\": {},\n      \"private_metadata\": {}\n    },\n    \"relationships\": {\n      \"country\": {\n        \"data\": {\n          \"id\": \"6\",\n          \"type\": \"country\"\n        }\n      },\n      \"state\": {\n        \"data\": {\n          \"id\": \"6\",\n          \"type\": \"state\"\n        }\n      },\n      \"user\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb8b778b-c213-4883-bf3f-fd16a9d8a679",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ce28994-6cd7-48a9-b699-bc49593173ff",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b93274f7-1ba2-45a5-9413-ed9e883f8ae7",
+          "name": "Update an Address",
+          "request": {
+            "name": "Update an Address",
+            "description": {
+              "content": "Updates an Address",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "addresses",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Select which associated resources you would like to fetch, see: <a href=\"https://jsonapi.org/format/#fetching-includes\">https://jsonapi.org/format/#fetching-includes</a>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": {\n    \"country_id\": \"<string>\",\n    \"state_id\": \"<string>\",\n    \"state_name\": \"<string>\",\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"zipcode\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"alternative_phone\": \"<string>\",\n    \"firstname\": \"<string>\",\n    \"lastname\": \"<string>\",\n    \"label\": \"<string>\",\n    \"company\": \"<string>\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": \"<object>\",\n    \"private_metadata\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6a0f5dba-b87b-4c47-ad64-f14a81d1985e",
+              "name": "Record updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"country_id\": \"224\",\n    \"state_id\": \"516\",\n    \"state_name\": \"New York\",\n    \"address1\": \"5th ave\",\n    \"address2\": \"1st suite\",\n    \"city\": \"NY\",\n    \"zipcode\": \"10001\",\n    \"phone\": \"+1 123 456 789\",\n    \"alternative_phone\": \"<string>\",\n    \"firstname\": \"John\",\n    \"lastname\": \"Snow\",\n    \"label\": \"My home address\",\n    \"company\": \"Vendo Connect Inc\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": {\n      \"distance_from_city_in_km\": 10,\n      \"location_type\": \"building\"\n    },\n    \"private_metadata\": {\n      \"close_to_shop\": true\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"8\",\n    \"type\": \"address\",\n    \"attributes\": {\n      \"firstname\": \"Jack\",\n      \"lastname\": \"Doe\",\n      \"address1\": \"8 Lovely Street\",\n      \"address2\": \"Northwest\",\n      \"city\": \"Herndon\",\n      \"zipcode\": \"35005\",\n      \"phone\": \"555-555-0199\",\n      \"state_name\": null,\n      \"alternative_phone\": \"555-555-0199\",\n      \"company\": \"Company\",\n      \"created_at\": \"2022-11-08T19:33:52.269Z\",\n      \"updated_at\": \"2022-11-08T19:33:52.501Z\",\n      \"deleted_at\": null,\n      \"label\": null,\n      \"public_metadata\": {},\n      \"private_metadata\": {}\n    },\n    \"relationships\": {\n      \"country\": {\n        \"data\": {\n          \"id\": \"9\",\n          \"type\": \"country\"\n        }\n      },\n      \"state\": {\n        \"data\": {\n          \"id\": \"8\",\n          \"type\": \"state\"\n        }\n      },\n      \"user\": {\n        \"data\": null\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd98865f-2eb8-465a-98c4-5b48a470cee7",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"country_id\": \"224\",\n    \"state_id\": \"516\",\n    \"state_name\": \"New York\",\n    \"address1\": \"5th ave\",\n    \"address2\": \"1st suite\",\n    \"city\": \"NY\",\n    \"zipcode\": \"10001\",\n    \"phone\": \"+1 123 456 789\",\n    \"alternative_phone\": \"<string>\",\n    \"firstname\": \"John\",\n    \"lastname\": \"Snow\",\n    \"label\": \"My home address\",\n    \"company\": \"Vendo Connect Inc\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": {\n      \"distance_from_city_in_km\": 10,\n      \"location_type\": \"building\"\n    },\n    \"private_metadata\": {\n      \"close_to_shop\": true\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3923a2eb-d923-4462-8238-f5926bce34b1",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"country_id\": \"224\",\n    \"state_id\": \"516\",\n    \"state_name\": \"New York\",\n    \"address1\": \"5th ave\",\n    \"address2\": \"1st suite\",\n    \"city\": \"NY\",\n    \"zipcode\": \"10001\",\n    \"phone\": \"+1 123 456 789\",\n    \"alternative_phone\": \"<string>\",\n    \"firstname\": \"John\",\n    \"lastname\": \"Snow\",\n    \"label\": \"My home address\",\n    \"company\": \"Vendo Connect Inc\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": {\n      \"distance_from_city_in_km\": 10,\n      \"location_type\": \"building\"\n    },\n    \"private_metadata\": {\n      \"close_to_shop\": true\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4122a889-182d-4882-84ce-c1193c11be4b",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "user,country,state"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": {\n    \"country_id\": \"224\",\n    \"state_id\": \"516\",\n    \"state_name\": \"New York\",\n    \"address1\": \"5th ave\",\n    \"address2\": \"1st suite\",\n    \"city\": \"NY\",\n    \"zipcode\": \"10001\",\n    \"phone\": \"+1 123 456 789\",\n    \"alternative_phone\": \"<string>\",\n    \"firstname\": \"John\",\n    \"lastname\": \"Snow\",\n    \"label\": \"My home address\",\n    \"company\": \"Vendo Connect Inc\",\n    \"user_id\": \"<string>\",\n    \"public_metadata\": {\n      \"distance_from_city_in_km\": 10,\n      \"location_type\": \"building\"\n    },\n    \"private_metadata\": {\n      \"close_to_shop\": true\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"First Name can't be blank and Last Name can't be blank\",\n  \"errors\": {\n    \"firstname\": [\n      \"can't be blank\"\n    ],\n    \"lastname\": [\n      \"can't be blank\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f43a618b-ec7f-4dcb-bbbf-29e7f3a2e2b5",
+          "name": "Delete an Address",
+          "request": {
+            "name": "Delete an Address",
+            "description": {
+              "content": "Deletes an Address",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "platform",
+                "addresses",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{defaultHost}}",
+                  "key": "defaultHost"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f7534c6e-d27e-4cc7-83ca-06f7df7d6d01",
+              "name": "Record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8ed7439a-8dc8-4293-813d-869b5116c3b1",
+              "name": "Authentication Failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The access token is invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "106158c8-f41d-4a13-8164-8e7ee29de45a",
+              "name": "Record not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "platform",
+                    "addresses",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{defaultHost}}",
+                      "key": "defaultHost"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"error\": \"The resource you were looking for could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:3000",
+      "key": "defaultHost"
+    },
+    {
+      "type": "string",
+      "value": "http://{{defaultHost}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ec08afe1-3617-41d5-901b-fe86a72beda2",
+    "name": "Admin Account / Address Addresses API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n\n\nContact Support:\n Name: Spree Commerce\n Email: hello@spreecommerce.org",
+      "type": "text/plain"
+    }
+  }
+}
