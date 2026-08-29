@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Promotion Rules API
+  title: Platform Promotion Rules API
   contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+    name: Vendo Connect Inc.
+    url: https://getvendo.com
+    email: sales@getvendo.com
+  description: Spree Platform API
+  version: v2
 servers:
 - url: http://{defaultHost}
   variables:
@@ -352,14 +352,6 @@ components:
       - promotion_rule
       title: Create a Promotion Rule
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -375,30 +367,6 @@ components:
       - id
       - type
       - attributes
-      x-internal: false
-    update_promotion_rule_params:
-      type: object
-      properties:
-        promotion_rule:
-          type: object
-          properties:
-            type:
-              type: string
-              example: Spree::Promotion::Rules::Country
-              enum:
-              - Spree::Promotion::Rules::Country
-              - Spree::Promotion::Rules::ItemTotal
-              - Spree::Promotion::Rules::Product
-              - Spree::Promotion::Rules::User
-              - Spree::Promotion::Rules::FirstOrder
-              - Spree::Promotion::Rules::UserLoggedIn
-              - Spree::Promotion::Rules::OneUsePerUser
-              - Spree::Promotion::Rules::Taxon
-              - Spree::Promotion::Rules::OptionValue
-              description: Set the Promotion Rule type.
-      required:
-      - promotion_rule
-      title: Create a Promotion Rule
       x-internal: false
     resources_list:
       type: object
@@ -445,6 +413,38 @@ components:
       - meta
       - links
       x-internal: false
+    update_promotion_rule_params:
+      type: object
+      properties:
+        promotion_rule:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Promotion::Rules::Country
+              enum:
+              - Spree::Promotion::Rules::Country
+              - Spree::Promotion::Rules::ItemTotal
+              - Spree::Promotion::Rules::Product
+              - Spree::Promotion::Rules::User
+              - Spree::Promotion::Rules::FirstOrder
+              - Spree::Promotion::Rules::UserLoggedIn
+              - Spree::Promotion::Rules::OneUsePerUser
+              - Spree::Promotion::Rules::Taxon
+              - Spree::Promotion::Rules::OptionValue
+              description: Set the Promotion Rule type.
+      required:
+      - promotion_rule
+      title: Create a Promotion Rule
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     error:
       type: object
       properties:
@@ -454,29 +454,6 @@ components:
       - error
       x-internal: false
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
     bearer_auth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
-x-tagGroups:
-- name: Authentication
-  tags:
-  - Authentication
-- name: Product Catalog
-  tags:
-  - Product Catalog
-- name: Orders
-  tags:
-  - Orders
-- name: Customers
-  tags:
-  - Customers
-- name: Configuration
-  tags:
-  - Configuration

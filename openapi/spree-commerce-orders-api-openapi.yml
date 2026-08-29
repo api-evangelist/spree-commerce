@@ -1,12 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Orders API
-  contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  title: Spree Commerce Orders API
+  version: '1.0'
+  description: 'Operations tagged Orders across 3 of this provider''s published API definitions: spree-commerce-admin-api-openapi.yml, spree-commerce-platform-api-openapi.yml, spree-commerce-store-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: http://{defaultHost}
   variables:
@@ -109,6 +105,11 @@ paths:
                   in: 1
                   previous: null
                   next: null
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/fulfillments/{id}:
     get:
       summary: Show a shipment
@@ -283,6 +284,11 @@ paths:
                   example: 1Z999AA10123456784
                 selected_shipping_rate_id:
                   type: string
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/fulfillments/{id}/fulfill:
     patch:
       summary: Fulfill a fulfillment
@@ -359,6 +365,11 @@ paths:
                 updated_at: '2026-05-24T17:37:08.932Z'
                 order_id: or_UkLWZg9DAJ
                 stock_location_id: sloc_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/fulfillments/{id}/cancel:
     patch:
       summary: Cancel a fulfillment
@@ -435,6 +446,11 @@ paths:
                 updated_at: '2026-05-24T17:37:09.602Z'
                 order_id: or_UkLWZg9DAJ
                 stock_location_id: sloc_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/fulfillments/{id}/resume:
     patch:
       summary: Resume a fulfillment
@@ -511,6 +527,11 @@ paths:
                 updated_at: '2026-05-24T17:37:10.280Z'
                 order_id: or_UkLWZg9DAJ
                 stock_location_id: sloc_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/fulfillments/{id}/split:
     patch:
       summary: Split a fulfillment
@@ -606,6 +627,11 @@ paths:
                 stock_location_id:
                   type: string
                   description: Target stock location ID
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/gift_cards:
     post:
       summary: Apply a gift card to an order
@@ -677,6 +703,11 @@ paths:
                   type: string
                   description: Gift card code
                   example: GIFT-XXXX-YYYY
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/gift_cards/{id}:
     delete:
       summary: Remove a gift card from an order
@@ -720,6 +751,11 @@ paths:
       responses:
         '204':
           description: gift card removed
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/items:
     get:
       summary: List order items
@@ -926,6 +962,11 @@ paths:
                 quantity:
                   type: integer
                   default: 1
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/items/{id}:
     get:
       summary: Show an item
@@ -1169,6 +1210,11 @@ paths:
       responses:
         '204':
           description: line item removed
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/payments:
     get:
       summary: List payments
@@ -1337,6 +1383,11 @@ paths:
                 source_id:
                   type: string
                   description: Payment source ID
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/payments/{id}:
     get:
       summary: Show a payment
@@ -1426,6 +1477,11 @@ paths:
                 updated_at: '2026-05-24T17:37:17.641Z'
                 captured_amount: '0.0'
                 order_id: or_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/payments/{id}/capture:
     patch:
       summary: Capture a payment
@@ -1513,6 +1569,11 @@ paths:
                   message: 'Bogus Gateway: Forced failure'
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/payments/{id}/void:
     patch:
       summary: Void a payment
@@ -1590,6 +1651,11 @@ paths:
                 updated_at: '2026-05-24T17:37:19.923Z'
                 captured_amount: '0.0'
                 order_id: or_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/refunds:
     get:
       summary: List refunds
@@ -1719,6 +1785,11 @@ paths:
                 refund_reason_id:
                   type: string
                   description: Refund reason ID
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{order_id}/store_credits:
     post:
       summary: Apply customer's store credit to an order
@@ -1860,6 +1931,11 @@ paths:
       responses:
         '204':
           description: store credit removed
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders:
     get:
       summary: List orders
@@ -2233,6 +2309,11 @@ paths:
                 coupon_code:
                   type: string
                   description: Optional. Applied non-fatally; invalid codes do not block creation.
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{id}:
     get:
       summary: Show an order
@@ -2553,6 +2634,11 @@ paths:
       responses:
         '204':
           description: order deleted
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{id}/complete:
     patch:
       summary: Complete an order
@@ -2675,6 +2761,11 @@ paths:
                 notify_customer:
                   type: boolean
                   description: Send the order confirmation email after completion.
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{id}/cancel:
     patch:
       summary: Cancel an order
@@ -2771,6 +2862,11 @@ paths:
                 canceler_id: admin_UkLWZg9DAJ
                 created_by_id: null
                 customer_id: cus_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{id}/approve:
     patch:
       summary: Approve an order
@@ -2867,6 +2963,11 @@ paths:
                 canceler_id: null
                 created_by_id: null
                 customer_id: cus_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{id}/resume:
     patch:
       summary: Resume a canceled order
@@ -2963,6 +3064,11 @@ paths:
                 canceler_id: admin_UkLWZg9DAJ
                 created_by_id: null
                 customer_id: cus_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/orders/{id}/resend_confirmation:
     post:
       summary: Resend confirmation email
@@ -3059,6 +3165,11 @@ paths:
                 canceler_id: null
                 created_by_id: null
                 customer_id: cus_UkLWZg9DAJ
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders:
     get:
       summary: Return a list of Orders
@@ -3418,6 +3529,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_order_params'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}:
     get:
       summary: Return an Order
@@ -3762,6 +3878,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/advance:
     patch:
       summary: Advances an Order
@@ -3909,6 +4030,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/next:
     patch:
       summary: Next an Order
@@ -4056,6 +4182,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/complete:
     patch:
       summary: Completes an Order
@@ -4213,6 +4344,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/empty:
     patch:
       summary: Empties an Order
@@ -4354,6 +4490,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/approve:
     patch:
       summary: Approves an Order
@@ -4499,6 +4640,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/cancel:
     patch:
       summary: Cancels an Order
@@ -4545,6 +4691,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/use_store_credit:
     patch:
       summary: Use Store Credit for an Order
@@ -4596,6 +4747,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/amount_param'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/orders/{id}/apply_coupon_code:
     patch:
       summary: Apply Coupon Code for an Order
@@ -4647,6 +4803,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/coupon_code_param'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/store/orders/{id}:
     get:
       summary: Get an order
@@ -4877,373 +5038,13 @@ paths:
                   message: Order not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
 components:
   schemas:
-    Fulfillment:
-      type: object
-      properties:
-        id:
-          type: string
-        number:
-          type: string
-        tracking:
-          type: string
-          nullable: true
-        tracking_url:
-          type: string
-          nullable: true
-        cost:
-          type: string
-        display_cost:
-          type: string
-        total:
-          type: string
-        display_total:
-          type: string
-        discount_total:
-          type: string
-        display_discount_total:
-          type: string
-        additional_tax_total:
-          type: string
-        display_additional_tax_total:
-          type: string
-        included_tax_total:
-          type: string
-        display_included_tax_total:
-          type: string
-        tax_total:
-          type: string
-        display_tax_total:
-          type: string
-        status:
-          type: string
-        fulfillment_type:
-          type: string
-        fulfilled_at:
-          type: string
-          nullable: true
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/FulfillmentManifestItem'
-        delivery_method:
-          $ref: '#/components/schemas/DeliveryMethod'
-        stock_location:
-          $ref: '#/components/schemas/StockLocation'
-        delivery_rates:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryRate'
-      required:
-      - id
-      - number
-      - tracking
-      - tracking_url
-      - cost
-      - display_cost
-      - total
-      - display_total
-      - discount_total
-      - display_discount_total
-      - additional_tax_total
-      - display_additional_tax_total
-      - included_tax_total
-      - display_included_tax_total
-      - tax_total
-      - display_tax_total
-      - status
-      - fulfillment_type
-      - fulfilled_at
-      - items
-      - delivery_method
-      - stock_location
-      - delivery_rates
-      x-typelizer: true
-    DeliveryRate:
-      type: object
-      properties:
-        id:
-          type: string
-        delivery_method_id:
-          type: string
-        name:
-          type: string
-        selected:
-          type: boolean
-        cost:
-          type: string
-        total:
-          type: string
-        additional_tax_total:
-          type: string
-        included_tax_total:
-          type: string
-        tax_total:
-          type: string
-        display_cost:
-          type: string
-        display_total:
-          type: string
-        display_additional_tax_total:
-          type: string
-        display_included_tax_total:
-          type: string
-        display_tax_total:
-          type: string
-        delivery_method:
-          $ref: '#/components/schemas/DeliveryMethod'
-      required:
-      - id
-      - delivery_method_id
-      - name
-      - selected
-      - cost
-      - total
-      - additional_tax_total
-      - included_tax_total
-      - tax_total
-      - display_cost
-      - display_total
-      - display_additional_tax_total
-      - display_included_tax_total
-      - display_tax_total
-      - delivery_method
-      x-typelizer: true
-    DeliveryMethod:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        code:
-          type: string
-          nullable: true
-      required:
-      - id
-      - name
-      - code
-      x-typelizer: true
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    State:
-      type: object
-      properties:
-        abbr:
-          type: string
-        name:
-          type: string
-      required:
-      - abbr
-      - name
-      x-typelizer: true
-    LineItem:
-      type: object
-      properties:
-        id:
-          type: string
-        variant_id:
-          type: string
-        quantity:
-          type: number
-        currency:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        options_text:
-          type: string
-        price:
-          type: string
-        display_price:
-          type: string
-        total:
-          type: string
-        display_total:
-          type: string
-        adjustment_total:
-          type: string
-        display_adjustment_total:
-          type: string
-        additional_tax_total:
-          type: string
-        display_additional_tax_total:
-          type: string
-        included_tax_total:
-          type: string
-        display_included_tax_total:
-          type: string
-        discount_total:
-          type: string
-        display_discount_total:
-          type: string
-        pre_tax_amount:
-          type: string
-        display_pre_tax_amount:
-          type: string
-        discounted_amount:
-          type: string
-        display_discounted_amount:
-          type: string
-        display_compare_at_amount:
-          type: string
-          nullable: true
-        compare_at_amount:
-          type: string
-          nullable: true
-        thumbnail_url:
-          type: string
-          nullable: true
-        option_values:
-          type: array
-          items:
-            $ref: '#/components/schemas/OptionValue'
-        digital_links:
-          type: array
-          items:
-            $ref: '#/components/schemas/DigitalLink'
-      required:
-      - id
-      - variant_id
-      - quantity
-      - currency
-      - name
-      - slug
-      - options_text
-      - price
-      - display_price
-      - total
-      - display_total
-      - adjustment_total
-      - display_adjustment_total
-      - additional_tax_total
-      - display_additional_tax_total
-      - included_tax_total
-      - display_included_tax_total
-      - discount_total
-      - display_discount_total
-      - pre_tax_amount
-      - display_pre_tax_amount
-      - discounted_amount
-      - display_discounted_amount
-      - display_compare_at_amount
-      - compare_at_amount
-      - thumbnail_url
-      - option_values
-      - digital_links
-      x-typelizer: true
-    DigitalLink:
-      type: object
-      properties:
-        id:
-          type: string
-        access_counter:
-          type: number
-        filename:
-          type: string
-        content_type:
-          type: string
-        download_url:
-          type: string
-        authorizable:
-          type: boolean
-        expired:
-          type: boolean
-        access_limit_exceeded:
-          type: boolean
-      required:
-      - id
-      - access_counter
-      - filename
-      - content_type
-      - download_url
-      - authorizable
-      - expired
-      - access_limit_exceeded
-      x-typelizer: true
-    Country:
-      type: object
-      properties:
-        iso:
-          type: string
-        iso3:
-          type: string
-        name:
-          type: string
-        states_required:
-          type: boolean
-        zipcode_required:
-          type: boolean
-        states:
-          type: array
-          items:
-            $ref: '#/components/schemas/State'
-        market:
-          allOf:
-          - $ref: '#/components/schemas/Market'
-          nullable: true
-      required:
-      - iso
-      - iso3
-      - name
-      - states_required
-      - zipcode_required
-      x-typelizer: true
-    CreditCard:
-      type: object
-      properties:
-        id:
-          type: string
-        brand:
-          type: string
-        last4:
-          type: string
-        month:
-          type: number
-        year:
-          type: number
-        name:
-          type: string
-          nullable: true
-        default:
-          type: boolean
-        gateway_payment_profile_id:
-          type: string
-          nullable: true
-      required:
-      - id
-      - brand
-      - last4
-      - month
-      - year
-      - name
-      - default
-      - gateway_payment_profile_id
-      x-typelizer: true
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
     ErrorResponse:
       type: object
       properties:
@@ -5257,9 +5058,10 @@ components:
               type: string
               example: Record not found
             details:
-              type: object
+              type:
+              - object
+              - 'null'
               description: Field-specific validation errors
-              nullable: true
               example:
                 name:
                 - is too short
@@ -5280,35 +5082,225 @@ components:
             - is too short
             email:
             - is invalid
-    StoreCredit:
+    coupon_code_param:
+      type: object
+      properties:
+        coupon_code:
+          type: string
+      x-internal: false
+    resource_properties:
       type: object
       properties:
         id:
           type: string
-        amount:
+        type:
           type: string
-        amount_used:
-          type: string
-        amount_remaining:
-          type: string
-        display_amount:
-          type: string
-        display_amount_used:
-          type: string
-        display_amount_remaining:
-          type: string
-        currency:
-          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
       required:
       - id
-      - amount
-      - amount_used
-      - amount_remaining
-      - display_amount
-      - display_amount_used
-      - display_amount_remaining
-      - currency
-      x-typelizer: true
+      - type
+      - attributes
+      x-internal: false
+    update_order_params:
+      type: object
+      properties:
+        order:
+          type: object
+          properties:
+            item_total:
+              type: number
+              example: 170.9
+            total:
+              type: number
+              example: 190.9
+            state:
+              type: string
+              example: complete
+              enum:
+              - cart
+              - address
+              - delivery
+              - payment
+              - confirm
+              - complete
+              - canceled
+            adjustment_total:
+              type: number
+              example: 20.0
+            user_id:
+              type: string
+              example: '1'
+            completed_at:
+              type: string
+              format: date_time
+              example: 2022-11-08 19:33:50 UTC
+            bill_address_id:
+              type: string
+              example: '1'
+            ship_address_id:
+              type: string
+              example: '1'
+            payment_total:
+              type: number
+              example: 190.9
+            shipment_state:
+              type: string
+              example: shipped
+              enum:
+              - backorder
+              - canceled
+              - partial
+              - pending
+              - ready
+              - shipped
+            payment_state:
+              type: string
+              example: paid
+              enum:
+              - balance_due
+              - credit_owed
+              - failed
+              - paid
+              - void
+            email:
+              type: string
+              format: email
+              example: hi@getvendo.com
+            special_instructions:
+              type: string
+              example: I need it ASAP!
+            currency:
+              type: string
+              example: USD
+            last_ip_address:
+              type: string
+              example: 127.0.0.1
+            created_by_id:
+              type: string
+              example: '1'
+            shipment_total:
+              type: number
+              example: 10.0
+            additional_tax_total:
+              type: number
+              example: 10.0
+            promo_total:
+              type: number
+              example: 0.0
+            channel:
+              type: string
+              example: online
+            included_tax_total:
+              type: number
+              example: 0.0
+            item_count:
+              type: integer
+              example: 2
+            approver_id:
+              type: string
+            approved_at:
+              type: string
+              format: date_time
+              example: 2022-11-08 19:33:50 UTC
+            confirmation_delivered:
+              type: boolean
+              example: true
+              default: false
+            considered_risky:
+              type: boolean
+              example: true
+              default: false
+            canceled_at:
+              type: string
+              format: date_time
+            canceler_id:
+              type: string
+            taxable_adjustment_total:
+              type: number
+              example: 170.9
+            non_taxable_adjustment_total:
+              type: number
+              example: 10.0
+            store_owner_notification_delivered:
+              type: boolean
+              example: true
+              default: false
+            bill_address_attributes:
+              $ref: '#/components/schemas/update_address_params'
+            ship_address_attributes:
+              $ref: '#/components/schemas/update_address_params'
+            line_items_attributes:
+              type: array
+              items:
+                $ref: '#/components/schemas/update_line_item_params'
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - order
+      x-internal: false
+    update_address_params:
+      type: object
+      properties:
+        address:
+          type: object
+          properties:
+            country_id:
+              type: string
+              example: '224'
+            state_id:
+              type: string
+              example: '516'
+            state_name:
+              type: string
+              example: New York
+            address1:
+              type: string
+              example: 5th ave
+            address2:
+              type: string
+              example: 1st suite
+            city:
+              type: string
+              example: NY
+            zipcode:
+              type: string
+              example: '10001'
+            phone:
+              type: string
+              example: +1 123 456 789
+            alternative_phone:
+              type: string
+            firstname:
+              type: string
+              example: John
+            lastname:
+              type: string
+              example: Snow
+            label:
+              type: string
+              example: My home address
+            company:
+              type: string
+              example: Vendo Connect Inc
+            user_id:
+              type: string
+            public_metadata:
+              type: object
+              example:
+                distance_from_city_in_km: 10
+                location_type: building
+            private_metadata:
+              type: object
+              example:
+                close_to_shop: true
+      required:
+      - address
+      x-internal: false
     resources_list:
       type: object
       properties:
@@ -5353,6 +5345,31 @@ components:
       - data
       - meta
       - links
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    amount_param:
+      type: object
+      properties:
+        amount:
+          type: number
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     create_order_params:
       type: object
@@ -5493,113 +5510,92 @@ components:
       required:
       - order
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_line_item_params:
+      type: object
+      properties:
+        line_item:
+          type: object
+          properties:
+            variant_id:
+              type: string
+              example: '1'
+            quantity:
+              type: integer
+              example: 2
+      required:
+      - line_item
+      x-internal: false
     PaymentSource:
       type: object
       properties:
         id:
           type: string
         gateway_payment_profile_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       required:
       - id
       - gateway_payment_profile_id
       x-typelizer: true
-    FulfillmentManifestItem:
-      type: object
-      description: An item within a fulfillment — which line item and how many units are in this fulfillment
-      properties:
-        item_id:
-          type: string
-          description: Line item ID
-          example: li_abc123
-        variant_id:
-          type: string
-          description: Variant ID
-          example: variant_abc123
-        quantity:
-          type: integer
-          description: Quantity in this fulfillment
-          example: 2
-      required:
-      - item_id
-      - variant_id
-      - quantity
-    amount_param:
-      type: object
-      properties:
-        amount:
-          type: number
-      x-internal: false
-    Address:
+    Payment:
       type: object
       properties:
         id:
           type: string
-        first_name:
+        payment_method_id:
           type: string
-          nullable: true
-        last_name:
+        response_code:
+          type:
+          - string
+          - 'null'
+        number:
           type: string
-          nullable: true
-        full_name:
+        amount:
           type: string
-        address1:
+        display_amount:
           type: string
-          nullable: true
-        address2:
+        status:
           type: string
-          nullable: true
-        postal_code:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        company:
-          type: string
-          nullable: true
-        country_name:
-          type: string
-        country_iso:
-          type: string
-        state_text:
-          type: string
-          nullable: true
-        state_abbr:
-          type: string
-          nullable: true
-        quick_checkout:
-          type: boolean
-        is_default_billing:
-          type: boolean
-        is_default_shipping:
-          type: boolean
-        state_name:
-          type: string
-          nullable: true
+        source_type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - credit_card
+          - store_credit
+          - payment_source
+        source_id:
+          type:
+          - string
+          - 'null'
+        source:
+          anyOf:
+          - $ref: '#/components/schemas/CreditCard'
+          - $ref: '#/components/schemas/StoreCredit'
+          - $ref: '#/components/schemas/PaymentSource'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
       required:
       - id
-      - first_name
-      - last_name
-      - full_name
-      - address1
-      - address2
-      - postal_code
-      - city
-      - phone
-      - company
-      - country_name
-      - country_iso
-      - state_text
-      - state_abbr
-      - quick_checkout
-      - is_default_billing
-      - is_default_shipping
-      - state_name
+      - payment_method_id
+      - response_code
+      - number
+      - amount
+      - display_amount
+      - status
+      - source_type
+      - source_id
+      - source
+      - payment_method
       x-typelizer: true
     Order:
       type: object
@@ -5607,23 +5603,27 @@ components:
         id:
           type: string
         market_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         channel_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         number:
           type: string
         email:
           type: string
         customer_note:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         currency:
           type: string
         locale:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         total_quantity:
           type: number
         item_total:
@@ -5667,14 +5667,17 @@ components:
         display_delivery_total:
           type: string
         fulfillment_status:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         payment_status:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         completed_at:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         store_credit_total:
           type: string
         display_store_credit_total:
@@ -5700,19 +5703,15 @@ components:
         billing_address:
           allOf:
           - $ref: '#/components/schemas/Address'
-          nullable: true
         shipping_address:
           allOf:
           - $ref: '#/components/schemas/Address'
-          nullable: true
         gift_card:
           allOf:
           - $ref: '#/components/schemas/GiftCard'
-          nullable: true
         market:
           allOf:
           - $ref: '#/components/schemas/Market'
-          nullable: true
       required:
       - id
       - market_id
@@ -5758,241 +5757,119 @@ components:
       - gift_card
       - market
       x-typelizer: true
-    update_order_params:
-      type: object
-      properties:
-        order:
-          type: object
-          properties:
-            item_total:
-              type: number
-              example: 170.9
-            total:
-              type: number
-              example: 190.9
-            state:
-              type: string
-              example: complete
-              enum:
-              - cart
-              - address
-              - delivery
-              - payment
-              - confirm
-              - complete
-              - canceled
-            adjustment_total:
-              type: number
-              example: 20.0
-            user_id:
-              type: string
-              example: '1'
-            completed_at:
-              type: string
-              format: date_time
-              example: 2022-11-08 19:33:50 UTC
-            bill_address_id:
-              type: string
-              example: '1'
-            ship_address_id:
-              type: string
-              example: '1'
-            payment_total:
-              type: number
-              example: 190.9
-            shipment_state:
-              type: string
-              example: shipped
-              enum:
-              - backorder
-              - canceled
-              - partial
-              - pending
-              - ready
-              - shipped
-            payment_state:
-              type: string
-              example: paid
-              enum:
-              - balance_due
-              - credit_owed
-              - failed
-              - paid
-              - void
-            email:
-              type: string
-              format: email
-              example: hi@getvendo.com
-            special_instructions:
-              type: string
-              example: I need it ASAP!
-            currency:
-              type: string
-              example: USD
-            last_ip_address:
-              type: string
-              example: 127.0.0.1
-            created_by_id:
-              type: string
-              example: '1'
-            shipment_total:
-              type: number
-              example: 10.0
-            additional_tax_total:
-              type: number
-              example: 10.0
-            promo_total:
-              type: number
-              example: 0.0
-            channel:
-              type: string
-              example: online
-            included_tax_total:
-              type: number
-              example: 0.0
-            item_count:
-              type: integer
-              example: 2
-            approver_id:
-              type: string
-            approved_at:
-              type: string
-              format: date_time
-              example: 2022-11-08 19:33:50 UTC
-            confirmation_delivered:
-              type: boolean
-              example: true
-              default: false
-            considered_risky:
-              type: boolean
-              example: true
-              default: false
-            canceled_at:
-              type: string
-              format: date_time
-            canceler_id:
-              type: string
-            taxable_adjustment_total:
-              type: number
-              example: 170.9
-            non_taxable_adjustment_total:
-              type: number
-              example: 10.0
-            store_owner_notification_delivered:
-              type: boolean
-              example: true
-              default: false
-            bill_address_attributes:
-              $ref: '#/components/schemas/update_address_params'
-            ship_address_attributes:
-              $ref: '#/components/schemas/update_address_params'
-            line_items_attributes:
-              type: array
-              items:
-                $ref: '#/components/schemas/update_line_item_params'
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
-      required:
-      - order
-      x-internal: false
-    coupon_code_param:
-      type: object
-      properties:
-        coupon_code:
-          type: string
-      x-internal: false
-    Payment:
+    Discount:
       type: object
       properties:
         id:
           type: string
-        payment_method_id:
+        promotion_id:
           type: string
-        response_code:
+        name:
           type: string
-          nullable: true
-        number:
-          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
         amount:
           type: string
         display_amount:
           type: string
-        status:
-          type: string
-        source_type:
-          type: string
-          nullable: true
-          enum:
-          - credit_card
-          - store_credit
-          - payment_source
-        source_id:
-          type: string
-          nullable: true
-        source:
-          anyOf:
-          - $ref: '#/components/schemas/CreditCard'
-          - $ref: '#/components/schemas/StoreCredit'
-          - $ref: '#/components/schemas/PaymentSource'
-          nullable: true
-        payment_method:
-          $ref: '#/components/schemas/PaymentMethod'
       required:
       - id
-      - payment_method_id
-      - response_code
-      - number
+      - promotion_id
+      - name
+      - description
+      - code
       - amount
       - display_amount
-      - status
-      - source_type
-      - source_id
-      - source
-      - payment_method
       x-typelizer: true
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    OptionValue:
+    Fulfillment:
       type: object
       properties:
         id:
           type: string
-        option_type_id:
+        number:
           type: string
-        name:
+        tracking:
+          type:
+          - string
+          - 'null'
+        tracking_url:
+          type:
+          - string
+          - 'null'
+        cost:
           type: string
-        label:
+        display_cost:
           type: string
-        position:
-          type: number
-        color_code:
+        total:
           type: string
-          nullable: true
-        option_type_name:
+        display_total:
           type: string
-        option_type_label:
+        discount_total:
           type: string
-        image_url:
+        display_discount_total:
           type: string
-          nullable: true
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        status:
+          type: string
+        fulfillment_type:
+          type: string
+        fulfilled_at:
+          type:
+          - string
+          - 'null'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FulfillmentManifestItem'
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethod'
+        stock_location:
+          $ref: '#/components/schemas/StockLocation'
+        delivery_rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryRate'
       required:
       - id
-      - option_type_id
-      - name
-      - label
-      - position
-      - color_code
-      - option_type_name
-      - option_type_label
-      - image_url
+      - number
+      - tracking
+      - tracking_url
+      - cost
+      - display_cost
+      - total
+      - display_total
+      - discount_total
+      - display_discount_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - tax_total
+      - display_tax_total
+      - status
+      - fulfillment_type
+      - fulfilled_at
+      - items
+      - delivery_method
+      - stock_location
+      - delivery_rates
       x-typelizer: true
     GiftCard:
       type: object
@@ -6020,11 +5897,13 @@ components:
         display_amount_remaining:
           type: string
         expires_at:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         redeemed_at:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         expired:
           type: boolean
         active:
@@ -6046,17 +5925,114 @@ components:
       - expired
       - active
       x-typelizer: true
-    validation_errors:
+    Address:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
-          type: object
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+        full_name:
+          type: string
+        address1:
+          type:
+          - string
+          - 'null'
+        address2:
+          type:
+          - string
+          - 'null'
+        postal_code:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+        company:
+          type:
+          - string
+          - 'null'
+        country_name:
+          type: string
+        country_iso:
+          type: string
+        state_text:
+          type:
+          - string
+          - 'null'
+        state_abbr:
+          type:
+          - string
+          - 'null'
+        quick_checkout:
+          type: boolean
+        is_default_billing:
+          type: boolean
+        is_default_shipping:
+          type: boolean
+        state_name:
+          type:
+          - string
+          - 'null'
       required:
-      - error
-      - errors
-      x-internal: false
+      - id
+      - first_name
+      - last_name
+      - full_name
+      - address1
+      - address2
+      - postal_code
+      - city
+      - phone
+      - company
+      - country_name
+      - country_iso
+      - state_text
+      - state_abbr
+      - quick_checkout
+      - is_default_billing
+      - is_default_shipping
+      - state_name
+      x-typelizer: true
+    Country:
+      type: object
+      properties:
+        iso:
+          type: string
+        iso3:
+          type: string
+        name:
+          type: string
+        states_required:
+          type: boolean
+        zipcode_required:
+          type: boolean
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/State'
+        market:
+          allOf:
+          - $ref: '#/components/schemas/Market'
+      required:
+      - iso
+      - iso3
+      - name
+      - states_required
+      - zipcode_required
+      x-typelizer: true
     PaymentMethod:
       type: object
       properties:
@@ -6065,8 +6041,9 @@ components:
         name:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         type:
           type: string
         session_required:
@@ -6081,120 +6058,123 @@ components:
       - session_required
       - source_required
       x-typelizer: true
-    Discount:
+    DigitalLink:
       type: object
       properties:
         id:
           type: string
-        promotion_id:
+        access_counter:
+          type: number
+        filename:
           type: string
-        name:
+        content_type:
           type: string
-        description:
+        download_url:
           type: string
-          nullable: true
-        code:
-          type: string
-          nullable: true
-        amount:
-          type: string
-        display_amount:
-          type: string
+        authorizable:
+          type: boolean
+        expired:
+          type: boolean
+        access_limit_exceeded:
+          type: boolean
       required:
       - id
-      - promotion_id
-      - name
-      - description
-      - code
-      - amount
-      - display_amount
+      - access_counter
+      - filename
+      - content_type
+      - download_url
+      - authorizable
+      - expired
+      - access_limit_exceeded
       x-typelizer: true
-    update_address_params:
+    CreditCard:
       type: object
       properties:
-        address:
-          type: object
-          properties:
-            country_id:
-              type: string
-              example: '224'
-            state_id:
-              type: string
-              example: '516'
-            state_name:
-              type: string
-              example: New York
-            address1:
-              type: string
-              example: 5th ave
-            address2:
-              type: string
-              example: 1st suite
-            city:
-              type: string
-              example: NY
-            zipcode:
-              type: string
-              example: '10001'
-            phone:
-              type: string
-              example: +1 123 456 789
-            alternative_phone:
-              type: string
-            firstname:
-              type: string
-              example: John
-            lastname:
-              type: string
-              example: Snow
-            label:
-              type: string
-              example: My home address
-            company:
-              type: string
-              example: Vendo Connect Inc
-            user_id:
-              type: string
-            public_metadata:
-              type: object
-              example:
-                distance_from_city_in_km: 10
-                location_type: building
-            private_metadata:
-              type: object
-              example:
-                close_to_shop: true
+        id:
+          type: string
+        brand:
+          type: string
+        last4:
+          type: string
+        month:
+          type: number
+        year:
+          type: number
+        name:
+          type:
+          - string
+          - 'null'
+        default:
+          type: boolean
+        gateway_payment_profile_id:
+          type:
+          - string
+          - 'null'
       required:
-      - address
-      x-internal: false
+      - id
+      - brand
+      - last4
+      - month
+      - year
+      - name
+      - default
+      - gateway_payment_profile_id
+      x-typelizer: true
+    FulfillmentManifestItem:
+      type: object
+      description: An item within a fulfillment — which line item and how many units are in this fulfillment
+      properties:
+        item_id:
+          type: string
+          description: Line item ID
+          example: li_abc123
+        variant_id:
+          type: string
+          description: Variant ID
+          example: variant_abc123
+        quantity:
+          type: integer
+          description: Quantity in this fulfillment
+          example: 2
+      required:
+      - item_id
+      - variant_id
+      - quantity
     StockLocation:
       type: object
       properties:
         id:
           type: string
         state_abbr:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         name:
           type: string
         address1:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         city:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         zipcode:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         country_iso:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         country_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         state_text:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       required:
       - id
       - state_abbr
@@ -6206,21 +6186,171 @@ components:
       - country_name
       - state_text
       x-typelizer: true
-    update_line_item_params:
+    DeliveryRate:
       type: object
       properties:
-        line_item:
-          type: object
-          properties:
-            variant_id:
-              type: string
-              example: '1'
-            quantity:
-              type: integer
-              example: 2
+        id:
+          type: string
+        delivery_method_id:
+          type: string
+        name:
+          type: string
+        selected:
+          type: boolean
+        cost:
+          type: string
+        total:
+          type: string
+        additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        tax_total:
+          type: string
+        display_cost:
+          type: string
+        display_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethod'
       required:
-      - line_item
-      x-internal: false
+      - id
+      - delivery_method_id
+      - name
+      - selected
+      - cost
+      - total
+      - additional_tax_total
+      - included_tax_total
+      - tax_total
+      - display_cost
+      - display_total
+      - display_additional_tax_total
+      - display_included_tax_total
+      - display_tax_total
+      - delivery_method
+      x-typelizer: true
+    LineItem:
+      type: object
+      properties:
+        id:
+          type: string
+        variant_id:
+          type: string
+        quantity:
+          type: number
+        currency:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        options_text:
+          type: string
+        price:
+          type: string
+        display_price:
+          type: string
+        total:
+          type: string
+        display_total:
+          type: string
+        adjustment_total:
+          type: string
+        display_adjustment_total:
+          type: string
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        discount_total:
+          type: string
+        display_discount_total:
+          type: string
+        pre_tax_amount:
+          type: string
+        display_pre_tax_amount:
+          type: string
+        discounted_amount:
+          type: string
+        display_discounted_amount:
+          type: string
+        display_compare_at_amount:
+          type:
+          - string
+          - 'null'
+        compare_at_amount:
+          type:
+          - string
+          - 'null'
+        thumbnail_url:
+          type:
+          - string
+          - 'null'
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue'
+        digital_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitalLink'
+      required:
+      - id
+      - variant_id
+      - quantity
+      - currency
+      - name
+      - slug
+      - options_text
+      - price
+      - display_price
+      - total
+      - display_total
+      - adjustment_total
+      - display_adjustment_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - discount_total
+      - display_discount_total
+      - pre_tax_amount
+      - display_pre_tax_amount
+      - discounted_amount
+      - display_discounted_amount
+      - display_compare_at_amount
+      - compare_at_amount
+      - thumbnail_url
+      - option_values
+      - digital_links
+      x-typelizer: true
+    DeliveryMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - name
+      - code
+      x-typelizer: true
     Market:
       type: object
       properties:
@@ -6253,6 +6383,82 @@ components:
       - default
       - supported_locales
       x-typelizer: true
+    OptionValue:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
+          type:
+          - string
+          - 'null'
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
+      x-typelizer: true
+    StoreCredit:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        amount_used:
+          type: string
+        amount_remaining:
+          type: string
+        display_amount:
+          type: string
+        display_amount_used:
+          type: string
+        display_amount_remaining:
+          type: string
+        currency:
+          type: string
+      required:
+      - id
+      - amount
+      - amount_used
+      - amount_remaining
+      - display_amount
+      - display_amount_used
+      - display_amount_remaining
+      - currency
+      x-typelizer: true
+    State:
+      type: object
+      properties:
+        abbr:
+          type: string
+        name:
+          type: string
+      required:
+      - abbr
+      - name
+      x-typelizer: true
   securitySchemes:
     api_key:
       type: apiKey
@@ -6264,6 +6470,10 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: JWT token for admin user authentication
+x-refined-from:
+- spree-commerce-admin-api-openapi.yml
+- spree-commerce-platform-api-openapi.yml
+- spree-commerce-store-api-openapi.yml
 x-tagGroups:
 - name: Authentication
   tags:

@@ -1,17 +1,23 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Stores API
+  version: 2.0.0
+  title: Storefront Stores API
+  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+
+
+    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
   contact:
-    name: Spree Commerce
+    name: Vendo Connect Inc.
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  license:
+    name: BSD-3-Clause
+    url: https://github.com/spree/spree/blob/main/LICENSE.md
 servers:
-- url: http://{defaultHost}
-  variables:
-    defaultHost:
-      default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Stores
 paths:
@@ -32,82 +38,11 @@ paths:
           $ref: '#/components/responses/403Forbidden'
 components:
   schemas:
-    Country:
-      title: Country
-      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
-      type: object
+    StoreIncludes:
       x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: country
-        attributes:
-          type: object
-          properties:
-            iso:
-              type: string
-              example: US
-            iso3:
-              type: string
-              example: USA
-            iso_name:
-              type: string
-              example: UNITED STATES
-            name:
-              type: string
-              example: United States
-            states_required:
-              type: boolean
-            zipcode_required:
-              type: boolean
-            default:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            states:
-              type: object
-              description: States associated with this Country
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/State'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    State:
-      type: object
-      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
-      title: State
-      properties:
-        abbr:
-          type: string
-          example: NY
-          description: State abbreviation
-        name:
-          type: string
-          example: New York
-          description: State name
-      x-internal: false
-    Relation:
-      type: object
-      nullable: true
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
+      title: Store Includes
+      anyOf:
+      - $ref: '#/components/schemas/Country'
     Store:
       type: object
       description: Stores are the center of the Spree ecosystem. Each Spree installation can have multiple Stores. Each Store operates on a different domain or subdomain.
@@ -208,36 +143,83 @@ components:
       - type
       - attributes
       - relationships
-    StoreIncludes:
+    Country:
+      title: Country
+      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
+      type: object
       x-internal: false
-      title: Store Includes
-      anyOf:
-      - $ref: '#/components/schemas/Country'
-  parameters:
-    SparseFieldsStore:
-      name: fields[store]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: name,url,supported_locales
-    StoreIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: 'Specify what related resources (relationships) you would like to receive in the response body. Eg.
-
-
-        ```
-
-        default_country
-
-        ```
-
-
-        [More information](https://jsonapi.org/format/#fetching-includes)'
-      example: default_country
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: country
+        attributes:
+          type: object
+          properties:
+            iso:
+              type: string
+              example: US
+            iso3:
+              type: string
+              example: USA
+            iso_name:
+              type: string
+              example: UNITED STATES
+            name:
+              type: string
+              example: United States
+            states_required:
+              type: boolean
+            zipcode_required:
+              type: boolean
+            default:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            states:
+              type: object
+              description: States associated with this Country
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/State'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    State:
+      type: object
+      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
+      title: State
+      properties:
+        abbr:
+          type: string
+          example: NY
+          description: State abbreviation
+        name:
+          type: string
+          example: New York
+          description: State name
+      x-internal: false
   responses:
     403Forbidden:
       description: 403 Forbidden - You are not authorized to access this page.
@@ -341,30 +323,44 @@ components:
                   relationships:
                     checkout_zone_applicable_states:
                       data: []
+  parameters:
+    SparseFieldsStore:
+      name: fields[store]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,url,supported_locales
+    StoreIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: 'Specify what related resources (relationships) you would like to receive in the response body. Eg.
+
+
+        ```
+
+        default_country
+
+        ```
+
+
+        [More information](https://jsonapi.org/format/#fetching-includes)'
+      example: default_country
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
-    bearer_auth:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
-x-tagGroups:
-- name: Authentication
-  tags:
-  - Authentication
-- name: Product Catalog
-  tags:
-  - Product Catalog
-- name: Orders
-  tags:
-  - Orders
-- name: Customers
-  tags:
-  - Customers
-- name: Configuration
-  tags:
-  - Configuration
+      description: 'User token to authorize Cart and Checkout requests.
+
+
+        It is required to associate Cart with the User.'
+    orderToken:
+      type: apiKey
+      in: header
+      description: 'Order token to authorize Cart and Checkout requests.
+
+
+        [How to obtain X-Spree-Order-Token](../authentication#for-guest-users)'
+      name: X-Spree-Order-Token

@@ -1,17 +1,23 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Cart / Other API
+  version: 2.0.0
+  title: Storefront Cart / Other API
+  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+
+
+    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
   contact:
-    name: Spree Commerce
+    name: Vendo Connect Inc.
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  license:
+    name: BSD-3-Clause
+    url: https://github.com/spree/spree/blob/main/LICENSE.md
 servers:
-- url: http://{defaultHost}
-  variables:
-    defaultHost:
-      default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Cart / Other
 paths:
@@ -112,7 +118,1089 @@ paths:
       tags:
       - Cart / Other
 components:
+  schemas:
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+    Payment:
+      title: Payment
+      type: object
+      description: ''
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: payment
+        attributes:
+          type: object
+          properties:
+            amount:
+              type: string
+              default: '200.57'
+            response_code:
+              type: integer
+              default: 192
+            number:
+              type: string
+              default: PV7B4YH0
+            cvv_response_code:
+              type: integer
+              default: 200
+            cvv_response_message:
+              type: string
+              default: authorized
+            payment_method_id:
+              type: integer
+              default: 1
+            payment_method_name:
+              type: string
+              default: Credit Card
+            state:
+              type: string
+              default: paid
+        relationships:
+          type: object
+          properties:
+            source:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            payment_method:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Shipment:
+      type: object
+      title: Shipment
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: shipment
+        attributes:
+          type: object
+          properties:
+            number:
+              type: string
+              example: H121354
+              description: Unique Shipment identifier
+            free:
+              type: boolean
+              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
+            final_price:
+              type: string
+              example: '10.0'
+              description: Price to be presented for the Customer
+            display_final_price:
+              type: string
+              example: $10.00
+            tracking_url:
+              type:
+              - string
+              - 'null'
+              example: https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=4123412434%2C
+              description: Tracking URL to the service provider website
+            state:
+              type: string
+              example: shipped
+              enum:
+              - pending
+              - ready
+              - shipped
+              - canceled
+              description: "Status of the Shipment. For a list of all available statuses please refer: <a href=\"/developer/core-concepts/shipments\" target=\"_blank\" rel=\"noopener\">\n  Shipment section in Spree Guides\n</a>"
+            shipped_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: '2021-01-02 13:42:12'
+              description: Date when Shipment was being sent from the warehouse
+        relationships:
+          type: object
+          properties:
+            stock_location:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            shipping_rates:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    allOf:
+                    - $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Product:
+      type: object
+      title: Product
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: product
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Example product
+            description:
+              type:
+              - string
+              - 'null'
+              example: Example description
+            available_on:
+              type:
+              - string
+              - 'null'
+              example: '2012-10-17T03:43:57Z'
+            slug:
+              type: string
+              example: example-product
+            price:
+              type:
+              - string
+              - 'null'
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type:
+              - string
+              - 'null'
+              example: $15.99
+            purchasable:
+              type: boolean
+              description: Indicates if any of Variants are in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if any of Variants are in stock
+            backorderable:
+              type: boolean
+              description: Indicates if any of Variants are backeorderable
+            meta_description:
+              type:
+              - string
+              - 'null'
+              example: Example product
+            meta_keywords:
+              type:
+              - string
+              - 'null'
+              example: example, product
+            updated_at:
+              $ref: '#/components/schemas/Timestamp'
+            sku:
+              type: string
+              example: 9238-WS
+            available:
+              type: boolean
+            compare_at_price:
+              type:
+              - string
+              - 'null'
+              example: '49.99'
+            display_compare_at_price:
+              type:
+              - string
+              - 'null'
+              example: $49.99
+            localized_slugs:
+              type: object
+              description: Provides product's slugs in other locales
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the product
+            labels:
+              type: array
+              items:
+                type: string
+              description: List of labels associated with the product
+        relationships:
+          type: object
+          properties:
+            variants:
+              type: object
+              description: List of Product Variants, excluding Master Variant
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_types:
+              type: object
+              description: List of Product Option Types
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            product_properties:
+              type: object
+              description: List of Product Properties
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            taxons:
+              type: object
+              description: List of Taxons associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              description: List of Images associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            default_variant:
+              type: object
+              description: The default Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            primary_variant:
+              type: object
+              description: The Primary Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    CartIncludes:
+      x-internal: false
+      title: Cart Includes
+      anyOf:
+      - $ref: '#/components/schemas/LineItem'
+      - $ref: '#/components/schemas/Promotion'
+      - $ref: '#/components/schemas/Variant'
+      - $ref: '#/components/schemas/Payment'
+      - $ref: '#/components/schemas/User'
+      - $ref: '#/components/schemas/Shipment'
+      - $ref: '#/components/schemas/DigitalLink'
+      - $ref: '#/components/schemas/Product'
+      description: ''
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: variant
+        attributes:
+          type: object
+          properties:
+            sku:
+              type: string
+              example: SKU-1001
+            price:
+              type: string
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            height:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            width:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            depth:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    User:
+      type: object
+      title: User
+      description: ' '
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: user
+        attributes:
+          type: object
+          properties:
+            email:
+              type: string
+              example: spree@example.com
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            selected_locale:
+              type: string
+              example: fr
+            store_credits:
+              type: number
+              example: 150.75
+            completed_orders:
+              type: number
+              example: 3
+              description: Number of placed Orders by this User
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the user
+            public_metadata:
+              type: object
+              example:
+                user_segment: supplier
+              description: The public metadata for this User
+        relationships:
+          type: object
+          properties:
+            default_billing_address:
+              type: object
+              description: Default billing address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            default_shipping_address:
+              type: object
+              description: Default shipping address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    DigitalLink:
+      title: Digital Link
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: digital_link
+        attributes:
+          type: object
+          properties:
+            token:
+              type: string
+              example: Gn6srBmmR4KrWy73LRtrBKYw
+        relationships:
+          type: object
+          properties:
+            line_item:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      description: Digital links are accessible in the order includes line_items.digital_links
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+    Promotion:
+      type: object
+      title: Promotion
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: promotion
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: 10% Discount
+            description:
+              type: string
+              example: Super discount for you
+            amount:
+              type: string
+              example: '-10.0'
+            display_amount:
+              type: string
+              example: -$10.00
+            code:
+              type: string
+              example: BLK-FRI
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    ShippingRate:
+      type: object
+      title: Shipping Rate
+      description: ''
+      x-internal: false
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          example: '1'
+        type:
+          type: string
+          default: shipping_rate
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: USPS Ground
+            selected:
+              type: boolean
+              example: true
+            cost:
+              type: string
+              example: '10.0'
+              description: Price of the service without discounts applied
+            tax_amount:
+              type: string
+              example: '0.0'
+              description: Eligible tax for service (if any)
+            shipping_method_id:
+              type: integer
+              example: 1
+              description: ID of a Shipping Method. You will need this for the Checkout Update action
+            final_price:
+              type: string
+              example: '10.0'
+              description: Price to be presented for the Customer
+            display_cost:
+              type: string
+              example: $10.00
+            display_final_price:
+              type: string
+              example: $10.00
+            display_tax_amount:
+              type: string
+              example: $0.00
+            free:
+              type: boolean
+              example: true
+              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
+        relationships:
+          type: object
+          properties:
+            shipping_method:
+              type: object
+              description: Shipping method for which this shipping rate belongs to
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    LineItem:
+      title: Line Item
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: line_item
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Sample product
+            quantity:
+              type: integer
+              example: 1
+            slug:
+              type: string
+              example: sample-product
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            price:
+              type: string
+              example: '125.0'
+              description: Price of Product per quantity
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $125.00
+              description: Price of Product per quantity
+            total:
+              type: string
+              example: '250.0'
+              description: Total price of Line Item including adjastments, promotions and taxes
+            display_total:
+              type: string
+              example: $250.00
+              description: Total price of Line Item including adjastments, promotions and taxes
+            adjustment_total:
+              type: string
+              example: '10.0'
+              description: TBD
+            display_adjustment_total:
+              type: string
+              example: $10.00
+              description: TBD
+            additional_tax_total:
+              type: string
+              example: '5.0'
+            display_additional_tax_total:
+              type: string
+              example: $5.00
+            discounted_amount:
+              type: string
+              example: '125.0'
+            display_discounted_amount:
+              type: string
+              example: $125.00
+            pre_tax_amount:
+              type: string
+              example: '125.0'
+            display_pre_tax_amount:
+              type: string
+              example: $125.00
+            promo_total:
+              type: string
+              example: '-5.0'
+            display_promo_total:
+              type: string
+            included_tax_total:
+              type: string
+              example: '0.0'
+              description: Taxes included in the price, eg. VAT
+            display_inluded_tax_total:
+              type: string
+              example: $0.00
+            compare_at_amount:
+              type: string
+              example: '290.99'
+              description: Compare at price of the Line Item
+            display_compare_at_amount:
+              type: string
+              example: $290.99
+              description: Display compare at price of the Line Item
+            public_metadata:
+              type: object
+              example:
+                recommended_by_us: true
+              description: The public metadata for the Line Item.
+        relationships:
+          type: object
+          properties:
+            variant:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            digital_links:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      description: ''
+    Cart:
+      description: The Cart provides a central place to collect information about an order, including line items, adjustments, payments, addresses, and shipments. [Read more in Spree docs](/developer/core-concepts/orders)
+      type: object
+      title: Cart
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: cart
+        attributes:
+          type: object
+          properties:
+            number:
+              type: string
+              example: R123456789
+              description: Used as the **{order_number}** value in the URI to identify a completed order.
+            token:
+              type: string
+              example: eL0nVxe1Aum-Qr9-UkryPA1633360128076
+              description: Used for authorizing actions through the `X-Spree-Order-Token` API Key.
+            item_total:
+              type: string
+              example: '19.99'
+            subtotal_cents:
+              type: integer
+              example: 1999
+            store_credit_total_cents:
+              type: integer
+              example: 0
+            total:
+              type: string
+              example: '29.99'
+            total_cents:
+              type: integer
+              example: 2999
+            total_minus_store_credits:
+              type: string
+              example: '29.99'
+            total_minus_store_credits_cents:
+              type: integer
+              example: 2999
+            ship_total:
+              type: string
+              example: '5.0'
+            ship_total_cents:
+              type: integer
+              example: 500
+            adjustment_total:
+              type: string
+              example: '10.0'
+            created_at:
+              $ref: '#/components/schemas/Timestamp'
+            updated_at:
+              $ref: '#/components/schemas/Timestamp'
+            completed_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            included_tax_total:
+              type: string
+              example: '5.00'
+            additional_tax_total:
+              type: string
+              example: '5.0'
+            display_additional_tax_total:
+              type: string
+              example: $5.00
+            tax_total:
+              type: string
+              example: '10.0'
+            tax_total_cents:
+              type: integer
+              example: 1000
+            currency:
+              type: string
+              example: USD
+            state:
+              type: string
+              example: cart
+              enum:
+              - cart
+              - address
+              - delivery
+              - payment
+              - confirm
+              - complete
+              description: "State of the Cart in the Checkout flow. Please see <a href=\"/developer/core-concepts/orders#the-order-state-machine\">\n  The Order State machine\n</a> for a full list with description."
+            email:
+              type:
+              - string
+              - 'null'
+              format: email
+              example: spree@example.com
+            display_item_total:
+              type: string
+              example: $19.99
+            display_ship_total:
+              type: string
+              example: $19.99
+            display_adjustment_total:
+              type: string
+              example: $10.00
+            display_included_tax_total:
+              type: string
+              example: $5.00
+            promo_total:
+              type: string
+              example: '-10.0'
+            promo_total_cents:
+              type: integer
+              example: -1000
+            display_promo_total:
+              type: string
+              example: -$10.00
+            item_count:
+              type: number
+              description: Total quantity number of all items added to the Cart
+              example: 2
+              minimum: 0
+            special_instructions:
+              type:
+              - string
+              - 'null'
+              example: Please wrap it as a gift
+              description: Message added by the Customer
+            display_total:
+              type: string
+              example: $29.99
+            display_total_minus_store_credits:
+              type: string
+              example: $29.99
+            pre_tax_item_amount:
+              type: string
+              example: '17.00'
+            display_pre_tax_item_amount:
+              type: string
+              example: $17.00
+            pre_tax_total:
+              type: string
+              example: '20.00'
+            display_tax_total:
+              type: string
+              example: $10.00
+            display_pre_tax_total:
+              type: string
+              example: $20.00
+            shipment_state:
+              type:
+              - string
+              - 'null'
+              enum:
+              - pending
+              - backorder
+              - canceled
+              - partial
+              - ready
+              - shipped
+              - null
+              description: "Overall state of the Shipments. Please see <a href=\"/developer/core-concepts/orders#order-shipment-states-1\">\n  Order Shipments states\n</a> for a full list with description."
+            payment_state:
+              type:
+              - string
+              - 'null'
+              enum:
+              - balance_due
+              - credit_owed
+              - failed
+              - paid
+              - void
+              - null
+              description: "Overall state of the Payments. Please see <a href=\"/developer/core-concepts/orders#order-payment-states\">\n  Order Payments states\n</a> for a full list with description."
+        relationships:
+          type: object
+          properties:
+            line_items:
+              type: object
+              description: ''
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            variants:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            promotions:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            payments:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            shipments:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            user:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            billing_address:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            shipping_address:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+  parameters:
+    SparseFieldsCart:
+      name: fields[cart]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: token,currency,number
+    SparseFieldsShippingRate:
+      in: query
+      name: fields[shipping_rate]
+      example: name,selected,final_price,display_final_price,cost,display_cost,tax_amount,display_tax_amount,shipping_method_id
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+    CartIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card
   responses:
+    EstimatedShippingRates:
+      description: 200 Success - Returns an array of `shipping_rate` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShippingRate'
+            required:
+            - data
+          examples:
+            Estimated Shipping Rates:
+              value:
+                data:
+                - id: null
+                  type: shipping_rate
+                  attributes:
+                    name: UPS Ground (USD)
+                    selected: true
+                    cost: '5.0'
+                    tax_amount: '0.0'
+                    final_price: '5.0'
+                    shipping_method_id: '1'
+                    display_cost: $5.00
+                    display_final_price: $5.00
+                    display_tax_amount: $0.00
+                    free: false
+                  relationships:
+                    shipping_method:
+                      data:
+                        type: shipping_method
+                        id: '1'
+                - id: null
+                  type: shipping_rate
+                  attributes:
+                    name: UPS Two Day (USD)
+                    selected: false
+                    cost: '10.0'
+                    tax_amount: '0.0'
+                    final_price: '10.0'
+                    shipping_method_id: '2'
+                    display_cost: $10.00
+                    display_final_price: $10.00
+                    display_tax_amount: $0.00
+                    free: false
+                  relationships:
+                    shipping_method:
+                      data:
+                        id: '2'
+                        type: shipping_method
+                - id: null
+                  type: shipping_rate
+                  attributes:
+                    name: UPS One Day (USD)
+                    selected: false
+                    cost: '15.0'
+                    tax_amount: '0.0'
+                    final_price: '15.0'
+                    shipping_method_id: '3'
+                    display_cost: $15.00
+                    display_final_price: $15.00
+                    display_tax_amount: $0.00
+                    free: false
+                  relationships:
+                    shipping_method:
+                      data:
+                        id: '3'
+                        type: shipping_method
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
     Cart:
       description: 200 Success - Returns the `cart` object.
       content:
@@ -626,20 +1714,6 @@ components:
                       data:
                         id: '1'
                         type: stock_location
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     403Forbidden:
       description: 403 Forbidden - You are not authorized to access this page.
       content:
@@ -654,1077 +1728,19 @@ components:
             403 Example:
               value:
                 error: You are not authorized to access this page.
-    EstimatedShippingRates:
-      description: 200 Success - Returns an array of `shipping_rate` objects.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ShippingRate'
-            required:
-            - data
-          examples:
-            Estimated Shipping Rates:
-              value:
-                data:
-                - id: null
-                  type: shipping_rate
-                  attributes:
-                    name: UPS Ground (USD)
-                    selected: true
-                    cost: '5.0'
-                    tax_amount: '0.0'
-                    final_price: '5.0'
-                    shipping_method_id: '1'
-                    display_cost: $5.00
-                    display_final_price: $5.00
-                    display_tax_amount: $0.00
-                    free: false
-                  relationships:
-                    shipping_method:
-                      data:
-                        type: shipping_method
-                        id: '1'
-                - id: null
-                  type: shipping_rate
-                  attributes:
-                    name: UPS Two Day (USD)
-                    selected: false
-                    cost: '10.0'
-                    tax_amount: '0.0'
-                    final_price: '10.0'
-                    shipping_method_id: '2'
-                    display_cost: $10.00
-                    display_final_price: $10.00
-                    display_tax_amount: $0.00
-                    free: false
-                  relationships:
-                    shipping_method:
-                      data:
-                        id: '2'
-                        type: shipping_method
-                - id: null
-                  type: shipping_rate
-                  attributes:
-                    name: UPS One Day (USD)
-                    selected: false
-                    cost: '15.0'
-                    tax_amount: '0.0'
-                    final_price: '15.0'
-                    shipping_method_id: '3'
-                    display_cost: $15.00
-                    display_final_price: $15.00
-                    display_tax_amount: $0.00
-                    free: false
-                  relationships:
-                    shipping_method:
-                      data:
-                        id: '3'
-                        type: shipping_method
-    422UnprocessableEntity:
-      description: 422 Unprocessable Entity
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            422 Example:
-              value:
-                error: Example is invalid
-                errors:
-                  example:
-                  - Example is invalid
-  parameters:
-    CartIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
-      example: line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card
-    SparseFieldsShippingRate:
-      in: query
-      name: fields[shipping_rate]
-      example: name,selected,final_price,display_final_price,cost,display_cost,tax_amount,display_tax_amount,shipping_method_id
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-    SparseFieldsCart:
-      name: fields[cart]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: token,currency,number
-  schemas:
-    LineItem:
-      title: Line Item
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: line_item
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Sample product
-            quantity:
-              type: integer
-              example: 1
-            slug:
-              type: string
-              example: sample-product
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            price:
-              type: string
-              example: '125.0'
-              description: Price of Product per quantity
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $125.00
-              description: Price of Product per quantity
-            total:
-              type: string
-              example: '250.0'
-              description: Total price of Line Item including adjastments, promotions and taxes
-            display_total:
-              type: string
-              example: $250.00
-              description: Total price of Line Item including adjastments, promotions and taxes
-            adjustment_total:
-              type: string
-              example: '10.0'
-              description: TBD
-            display_adjustment_total:
-              type: string
-              example: $10.00
-              description: TBD
-            additional_tax_total:
-              type: string
-              example: '5.0'
-            display_additional_tax_total:
-              type: string
-              example: $5.00
-            discounted_amount:
-              type: string
-              example: '125.0'
-            display_discounted_amount:
-              type: string
-              example: $125.00
-            pre_tax_amount:
-              type: string
-              example: '125.0'
-            display_pre_tax_amount:
-              type: string
-              example: $125.00
-            promo_total:
-              type: string
-              example: '-5.0'
-            display_promo_total:
-              type: string
-            included_tax_total:
-              type: string
-              example: '0.0'
-              description: Taxes included in the price, eg. VAT
-            display_inluded_tax_total:
-              type: string
-              example: $0.00
-            compare_at_amount:
-              type: string
-              example: '290.99'
-              description: Compare at price of the Line Item
-            display_compare_at_amount:
-              type: string
-              example: $290.99
-              description: Display compare at price of the Line Item
-            public_metadata:
-              type: object
-              example:
-                recommended_by_us: true
-              description: The public metadata for the Line Item.
-        relationships:
-          type: object
-          properties:
-            variant:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            digital_links:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-      description: ''
-    Error:
-      x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
-    DigitalLink:
-      title: Digital Link
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: digital_link
-        attributes:
-          type: object
-          properties:
-            token:
-              type: string
-              example: Gn6srBmmR4KrWy73LRtrBKYw
-        relationships:
-          type: object
-          properties:
-            line_item:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      description: Digital links are accessible in the order includes line_items.digital_links
-    CartIncludes:
-      x-internal: false
-      title: Cart Includes
-      anyOf:
-      - $ref: '#/components/schemas/LineItem'
-      - $ref: '#/components/schemas/Promotion'
-      - $ref: '#/components/schemas/Variant'
-      - $ref: '#/components/schemas/Payment'
-      - $ref: '#/components/schemas/User'
-      - $ref: '#/components/schemas/Shipment'
-      - $ref: '#/components/schemas/DigitalLink'
-      - $ref: '#/components/schemas/Product'
-      description: ''
-    Product:
-      type: object
-      title: Product
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: product
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Example product
-            description:
-              type: string
-              example: Example description
-              nullable: true
-            available_on:
-              type: string
-              example: '2012-10-17T03:43:57Z'
-              nullable: true
-            slug:
-              type: string
-              example: example-product
-            price:
-              type: string
-              example: '15.99'
-              nullable: true
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $15.99
-              nullable: true
-            purchasable:
-              type: boolean
-              description: Indicates if any of Variants are in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if any of Variants are in stock
-            backorderable:
-              type: boolean
-              description: Indicates if any of Variants are backeorderable
-            meta_description:
-              type: string
-              example: Example product
-              nullable: true
-            meta_keywords:
-              type: string
-              example: example, product
-              nullable: true
-            updated_at:
-              $ref: '#/components/schemas/Timestamp'
-            sku:
-              type: string
-              example: 9238-WS
-            available:
-              type: boolean
-            compare_at_price:
-              type: string
-              example: '49.99'
-              nullable: true
-            display_compare_at_price:
-              type: string
-              example: $49.99
-              nullable: true
-            localized_slugs:
-              type: object
-              description: Provides product's slugs in other locales
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of tags associated with the product
-            labels:
-              type: array
-              items:
-                type: string
-              description: List of labels associated with the product
-        relationships:
-          type: object
-          properties:
-            variants:
-              type: object
-              description: List of Product Variants, excluding Master Variant
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_types:
-              type: object
-              description: List of Product Option Types
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            product_properties:
-              type: object
-              description: List of Product Properties
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            taxons:
-              type: object
-              description: List of Taxons associated with this Product
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              description: List of Images associated with this Product
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            default_variant:
-              type: object
-              description: The default Variant for this product
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            primary_variant:
-              type: object
-              description: The Primary Variant for this product
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Promotion:
-      type: object
-      title: Promotion
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: promotion
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: 10% Discount
-            description:
-              type: string
-              example: Super discount for you
-            amount:
-              type: string
-              example: '-10.0'
-            display_amount:
-              type: string
-              example: -$10.00
-            code:
-              type: string
-              example: BLK-FRI
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    Shipment:
-      type: object
-      title: Shipment
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: shipment
-        attributes:
-          type: object
-          properties:
-            number:
-              type: string
-              example: H121354
-              description: Unique Shipment identifier
-            free:
-              type: boolean
-              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
-            final_price:
-              type: string
-              example: '10.0'
-              description: Price to be presented for the Customer
-            display_final_price:
-              type: string
-              example: $10.00
-            tracking_url:
-              type: string
-              example: https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=4123412434%2C
-              description: Tracking URL to the service provider website
-              nullable: true
-            state:
-              type: string
-              example: shipped
-              enum:
-              - pending
-              - ready
-              - shipped
-              - canceled
-              description: "Status of the Shipment. For a list of all available statuses please refer: <a href=\"/developer/core-concepts/shipments\" target=\"_blank\" rel=\"noopener\">\n  Shipment section in Spree Guides\n</a>"
-            shipped_at:
-              type: string
-              format: date-time
-              example: '2021-01-02 13:42:12'
-              description: Date when Shipment was being sent from the warehouse
-              nullable: true
-        relationships:
-          type: object
-          properties:
-            stock_location:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            shipping_rates:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    allOf:
-                    - $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Relation:
-      type: object
-      nullable: true
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    Payment:
-      title: Payment
-      type: object
-      description: ''
-      x-internal: false
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          default: payment
-        attributes:
-          type: object
-          properties:
-            amount:
-              type: string
-              default: '200.57'
-            response_code:
-              type: integer
-              default: 192
-            number:
-              type: string
-              default: PV7B4YH0
-            cvv_response_code:
-              type: integer
-              default: 200
-            cvv_response_message:
-              type: string
-              default: authorized
-            payment_method_id:
-              type: integer
-              default: 1
-            payment_method_name:
-              type: string
-              default: Credit Card
-            state:
-              type: string
-              default: paid
-        relationships:
-          type: object
-          properties:
-            source:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            payment_method:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    User:
-      type: object
-      title: User
-      description: ' '
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: user
-        attributes:
-          type: object
-          properties:
-            email:
-              type: string
-              example: spree@example.com
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            selected_locale:
-              type: string
-              example: fr
-            store_credits:
-              type: number
-              example: 150.75
-            completed_orders:
-              type: number
-              example: 3
-              description: Number of placed Orders by this User
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of tags associated with the user
-            public_metadata:
-              type: object
-              example:
-                user_segment: supplier
-              description: The public metadata for this User
-        relationships:
-          type: object
-          properties:
-            default_billing_address:
-              type: object
-              description: Default billing address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            default_shipping_address:
-              type: object
-              description: Default shipping address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    ShippingRate:
-      type: object
-      title: Shipping Rate
-      description: ''
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-          nullable: true
-        type:
-          type: string
-          default: shipping_rate
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: USPS Ground
-            selected:
-              type: boolean
-              example: true
-            cost:
-              type: string
-              example: '10.0'
-              description: Price of the service without discounts applied
-            tax_amount:
-              type: string
-              example: '0.0'
-              description: Eligible tax for service (if any)
-            shipping_method_id:
-              type: integer
-              example: 1
-              description: ID of a Shipping Method. You will need this for the Checkout Update action
-            final_price:
-              type: string
-              example: '10.0'
-              description: Price to be presented for the Customer
-            display_cost:
-              type: string
-              example: $10.00
-            display_final_price:
-              type: string
-              example: $10.00
-            display_tax_amount:
-              type: string
-              example: $0.00
-            free:
-              type: boolean
-              example: true
-              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
-        relationships:
-          type: object
-          properties:
-            shipping_method:
-              type: object
-              description: Shipping method for which this shipping rate belongs to
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
-    Cart:
-      description: The Cart provides a central place to collect information about an order, including line items, adjustments, payments, addresses, and shipments. [Read more in Spree docs](/developer/core-concepts/orders)
-      type: object
-      title: Cart
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: cart
-        attributes:
-          type: object
-          properties:
-            number:
-              type: string
-              example: R123456789
-              description: Used as the **{order_number}** value in the URI to identify a completed order.
-            token:
-              type: string
-              example: eL0nVxe1Aum-Qr9-UkryPA1633360128076
-              description: Used for authorizing actions through the `X-Spree-Order-Token` API Key.
-            item_total:
-              type: string
-              example: '19.99'
-            subtotal_cents:
-              type: integer
-              example: 1999
-            store_credit_total_cents:
-              type: integer
-              example: 0
-            total:
-              type: string
-              example: '29.99'
-            total_cents:
-              type: integer
-              example: 2999
-            total_minus_store_credits:
-              type: string
-              example: '29.99'
-            total_minus_store_credits_cents:
-              type: integer
-              example: 2999
-            ship_total:
-              type: string
-              example: '5.0'
-            ship_total_cents:
-              type: integer
-              example: 500
-            adjustment_total:
-              type: string
-              example: '10.0'
-            created_at:
-              $ref: '#/components/schemas/Timestamp'
-            updated_at:
-              $ref: '#/components/schemas/Timestamp'
-            completed_at:
-              type: string
-              format: date-time
-              nullable: true
-            included_tax_total:
-              type: string
-              example: '5.00'
-            additional_tax_total:
-              type: string
-              example: '5.0'
-            display_additional_tax_total:
-              type: string
-              example: $5.00
-            tax_total:
-              type: string
-              example: '10.0'
-            tax_total_cents:
-              type: integer
-              example: 1000
-            currency:
-              type: string
-              example: USD
-            state:
-              type: string
-              example: cart
-              enum:
-              - cart
-              - address
-              - delivery
-              - payment
-              - confirm
-              - complete
-              description: "State of the Cart in the Checkout flow. Please see <a href=\"/developer/core-concepts/orders#the-order-state-machine\">\n  The Order State machine\n</a> for a full list with description."
-            email:
-              type: string
-              format: email
-              example: spree@example.com
-              nullable: true
-            display_item_total:
-              type: string
-              example: $19.99
-            display_ship_total:
-              type: string
-              example: $19.99
-            display_adjustment_total:
-              type: string
-              example: $10.00
-            display_included_tax_total:
-              type: string
-              example: $5.00
-            promo_total:
-              type: string
-              example: '-10.0'
-            promo_total_cents:
-              type: integer
-              example: -1000
-            display_promo_total:
-              type: string
-              example: -$10.00
-            item_count:
-              type: number
-              description: Total quantity number of all items added to the Cart
-              example: 2
-              minimum: 0
-            special_instructions:
-              type: string
-              example: Please wrap it as a gift
-              description: Message added by the Customer
-              nullable: true
-            display_total:
-              type: string
-              example: $29.99
-            display_total_minus_store_credits:
-              type: string
-              example: $29.99
-            pre_tax_item_amount:
-              type: string
-              example: '17.00'
-            display_pre_tax_item_amount:
-              type: string
-              example: $17.00
-            pre_tax_total:
-              type: string
-              example: '20.00'
-            display_tax_total:
-              type: string
-              example: $10.00
-            display_pre_tax_total:
-              type: string
-              example: $20.00
-            shipment_state:
-              type: string
-              enum:
-              - pending
-              - backorder
-              - canceled
-              - partial
-              - ready
-              - shipped
-              - null
-              description: "Overall state of the Shipments. Please see <a href=\"/developer/core-concepts/orders#order-shipment-states-1\">\n  Order Shipments states\n</a> for a full list with description."
-              nullable: true
-            payment_state:
-              type: string
-              enum:
-              - balance_due
-              - credit_owed
-              - failed
-              - paid
-              - void
-              - null
-              description: "Overall state of the Payments. Please see <a href=\"/developer/core-concepts/orders#order-payment-states\">\n  Order Payments states\n</a> for a full list with description."
-              nullable: true
-        relationships:
-          type: object
-          properties:
-            line_items:
-              type: object
-              description: ''
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            variants:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            promotions:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            payments:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            shipments:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            user:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            billing_address:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            shipping_address:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Variant:
-      title: Variant
-      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
-      x-examples: {}
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: variant
-        attributes:
-          type: object
-          properties:
-            sku:
-              type: string
-              example: SKU-1001
-            price:
-              type: string
-              example: '15.99'
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $15.99
-            weight:
-              type: string
-              example: '10'
-              nullable: true
-            height:
-              type: string
-              example: '10'
-              nullable: true
-            width:
-              type: string
-              example: '10'
-              nullable: true
-            depth:
-              type: string
-              example: '10'
-              nullable: true
-            is_master:
-              type: boolean
-              description: Indicates if Variant is the master Variant
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            options:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  value:
-                    type: string
-                  presentation:
-                    type: string
-            purchasable:
-              type: boolean
-              description: Indicates if Variant is in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if Variant is in stock
-            backorderable:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            product:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_values:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
-    bearer_auth:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
-x-tagGroups:
-- name: Authentication
-  tags:
-  - Authentication
-- name: Product Catalog
-  tags:
-  - Product Catalog
-- name: Orders
-  tags:
-  - Orders
-- name: Customers
-  tags:
-  - Customers
-- name: Configuration
-  tags:
-  - Configuration
+      description: 'User token to authorize Cart and Checkout requests.
+
+
+        It is required to associate Cart with the User.'
+    orderToken:
+      type: apiKey
+      in: header
+      description: 'Order token to authorize Cart and Checkout requests.
+
+
+        [How to obtain X-Spree-Order-Token](../authentication#for-guest-users)'
+      name: X-Spree-Order-Token

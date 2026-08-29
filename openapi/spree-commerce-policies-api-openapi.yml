@@ -1,17 +1,17 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Policies API
-  contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  title: Spree Commerce Policies API
+  version: '1.0'
+  description: 'Operations tagged Policies across 2 of this provider''s published API definitions: spree-commerce-store-api-openapi.yml, spree-commerce-storefront-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: http://{defaultHost}
   variables:
     defaultHost:
       default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Policies
   description: Store policies (return policy, privacy policy, terms of service)
@@ -110,6 +110,11 @@ paths:
                   message: Valid API key required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/store/policies/{id}:
     get:
       summary: Get a policy
@@ -163,6 +168,11 @@ paths:
                   message: Policy not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/storefront/policies:
     get:
       summary: List all Store Policies
@@ -173,6 +183,11 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PolicyList'
+    servers:
+    - url: https://demo.spreecommerce.org
+      description: demo
+    - url: http://localhost:3000
+      description: localhost
   /api/v2/storefront/policies/{policy_slug}:
     get:
       summary: Retrieve a Policy
@@ -185,32 +200,130 @@ paths:
           $ref: '#/components/responses/Policy'
         '404':
           $ref: '#/components/responses/404NotFound'
+    servers:
+    - url: https://demo.spreecommerce.org
+      description: demo
+    - url: http://localhost:3000
+      description: localhost
 components:
-  responses:
+  schemas:
     Policy:
-      description: 200 Success - Returns the `policy` object.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Policy_2'
-            required:
-            - data
-          examples:
-            Policy:
-              value:
-                data:
-                  id: '1'
-                  type: policy
-                  attributes:
-                    name: Terms and Conditions
-                    slug: terms-and-conditions
-                    created_at: '2025-08-12T12:13:09.183Z'
-                    updated_at: '2025-08-12T13:27:59.470Z'
-                    body: asdrdfas
-                    body_html: "<div class=\"trix-content\">\n  <div>asdrdfas</div>\n</div>\n"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        body:
+          type:
+          - string
+          - 'null'
+        body_html:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - name
+      - slug
+      - body
+      - body_html
+      x-typelizer: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type:
+              - object
+              - 'null'
+              description: Field-specific validation errors
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
+    Policy_2:
+      type: object
+      title: Policy
+      description: Policy represents terms and conditions, privacy policies, and other legal documents that can be displayed on the storefront.
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: policy
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Terms and Conditions
+              description: Display name of the policy
+            slug:
+              type: string
+              example: terms-and-conditions
+              description: URL-friendly identifier for the policy
+            created_at:
+              $ref: '#/components/schemas/Timestamp'
+            updated_at:
+              $ref: '#/components/schemas/Timestamp'
+            body:
+              type:
+              - string
+              - 'null'
+              example: asdrdfas
+              description: Raw text content of the policy
+            body_html:
+              type:
+              - string
+              - 'null'
+              example: "<div class=\"trix-content\">\n  <div>asdrdfas</div>\n</div>\n"
+              description: HTML formatted content of the policy
+          required:
+          - name
+          - slug
+          - created_at
+          - updated_at
+      required:
+      - id
+      - type
+      - attributes
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+  responses:
     PolicyList:
       description: 200 Success - Returns an array of `policy` objects.
       content:
@@ -260,129 +373,59 @@ components:
             404 Example:
               value:
                 error: The resource you were looking for could not be found.
-  schemas:
-    Policy_2:
-      type: object
-      title: Policy
-      description: Policy represents terms and conditions, privacy policies, and other legal documents that can be displayed on the storefront.
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: policy
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Terms and Conditions
-              description: Display name of the policy
-            slug:
-              type: string
-              example: terms-and-conditions
-              description: URL-friendly identifier for the policy
-            created_at:
-              $ref: '#/components/schemas/Timestamp'
-            updated_at:
-              $ref: '#/components/schemas/Timestamp'
-            body:
-              type: string
-              example: asdrdfas
-              description: Raw text content of the policy
-              nullable: true
-            body_html:
-              type: string
-              example: "<div class=\"trix-content\">\n  <div>asdrdfas</div>\n</div>\n"
-              description: HTML formatted content of the policy
-              nullable: true
-          required:
-          - name
-          - slug
-          - created_at
-          - updated_at
-      required:
-      - id
-      - type
-      - attributes
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: record_not_found
-            message:
-              type: string
-              example: Record not found
-            details:
-              type: object
-              description: Field-specific validation errors
-              nullable: true
-              example:
-                name:
-                - is too short
-                - is required
-                email:
-                - is invalid
-          required:
-          - code
-          - message
-      required:
-      - error
-      example:
-        error:
-          code: validation_error
-          message: Validation failed
-          details:
-            name:
-            - is too short
-            email:
-            - is invalid
     Policy:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        body:
-          type: string
-          nullable: true
-        body_html:
-          type: string
-          nullable: true
-      required:
-      - id
-      - name
-      - slug
-      - body
-      - body_html
-      x-typelizer: true
+      description: 200 Success - Returns the `policy` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Policy_2'
+            required:
+            - data
+          examples:
+            Policy:
+              value:
+                data:
+                  id: '1'
+                  type: policy
+                  attributes:
+                    name: Terms and Conditions
+                    slug: terms-and-conditions
+                    created_at: '2025-08-12T12:13:09.183Z'
+                    updated_at: '2025-08-12T13:27:59.470Z'
+                    body: asdrdfas
+                    body_html: "<div class=\"trix-content\">\n  <div>asdrdfas</div>\n</div>\n"
   securitySchemes:
     api_key:
       type: apiKey
       name: x-spree-api-key
       in: header
-      description: Secret API key for admin access
+      description: Publishable API key for store access
     bearer_auth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token for admin user authentication
+      description: JWT token for authenticated customers
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'User token to authorize Cart and Checkout requests.
+
+
+        It is required to associate Cart with the User.'
+    orderToken:
+      type: apiKey
+      in: header
+      description: 'Order token to authorize Cart and Checkout requests.
+
+
+        [How to obtain X-Spree-Order-Token](../authentication#for-guest-users)'
+      name: X-Spree-Order-Token
+x-refined-from:
+- spree-commerce-store-api-openapi.yml
+- spree-commerce-storefront-api-openapi.yml
 x-tagGroups:
 - name: Authentication
   tags:

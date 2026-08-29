@@ -1,12 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Promotions API
-  contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  title: Spree Commerce Promotions API
+  version: '1.0'
+  description: 'Operations tagged Promotions across 2 of this provider''s published API definitions: spree-commerce-admin-api-openapi.yml, spree-commerce-platform-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: http://{defaultHost}
   variables:
@@ -79,6 +75,11 @@ paths:
                   in: 2
                   previous: null
                   next: null
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotions/{promotion_id}/promotion_actions:
     parameters:
     - name: promotion_id
@@ -200,6 +201,11 @@ paths:
                   additionalProperties: true
               required:
               - type
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotions/{promotion_id}/promotion_actions/{id}:
     parameters:
     - name: promotion_id
@@ -234,6 +240,11 @@ paths:
       responses:
         '204':
           description: action deleted
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotions/{promotion_id}/promotion_rules:
     parameters:
     - name: promotion_id
@@ -365,6 +376,11 @@ paths:
                   additionalProperties: true
               required:
               - type
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotions/{promotion_id}/promotion_rules/{id}:
     parameters:
     - name: promotion_id
@@ -448,6 +464,11 @@ paths:
       responses:
         '204':
           description: rule deleted
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotions:
     get:
       summary: List promotions
@@ -603,22 +624,27 @@ paths:
                 name:
                   type: string
                 code:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 description:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 starts_at:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: date-time
-                  nullable: true
                 expires_at:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: date-time
-                  nullable: true
                 usage_limit:
-                  type: integer
-                  nullable: true
+                  type:
+                  - integer
+                  - 'null'
                 match_policy:
                   type: string
                   enum:
@@ -632,14 +658,17 @@ paths:
                 multi_codes:
                   type: boolean
                 number_of_codes:
-                  type: integer
-                  nullable: true
+                  type:
+                  - integer
+                  - 'null'
                 code_prefix:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 promotion_category_id:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 rules:
                   type: array
                   items:
@@ -689,6 +718,11 @@ paths:
                     - type
               required:
               - name
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotions/{id}:
     get:
       summary: Show a promotion
@@ -815,22 +849,27 @@ paths:
                 name:
                   type: string
                 description:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 code:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 starts_at:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: date-time
-                  nullable: true
                 expires_at:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: date-time
-                  nullable: true
                 usage_limit:
-                  type: integer
-                  nullable: true
+                  type:
+                  - integer
+                  - 'null'
                 match_policy:
                   type: string
                   enum:
@@ -842,16 +881,18 @@ paths:
                   - coupon_code
                   - automatic
                 promotion_category_id:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                 rules:
                   type: array
                   items:
                     type: object
                     properties:
                       id:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                         description: Pass to update an existing rule; omit to build a new one
                       type:
                         type: string
@@ -879,8 +920,9 @@ paths:
                     type: object
                     properties:
                       id:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                       type:
                         type: string
                         example: free_shipping
@@ -925,6 +967,11 @@ paths:
       responses:
         '204':
           description: promotion deleted
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotion_actions/types:
     get:
       summary: List available promotion action types
@@ -975,6 +1022,11 @@ paths:
                   label: Free shipping
                   description: null
                   preference_schema: []
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/admin/promotion_rules/types:
     get:
       summary: List available promotion rule types
@@ -1092,6 +1144,11 @@ paths:
                   - key: match_policy
                     type: string
                     default: any
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/promotions:
     get:
       summary: Return a list of Promotions
@@ -1365,6 +1422,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/create_promotion_params'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/promotions/{id}:
     get:
       summary: Return a Promotion
@@ -1598,8 +1660,91 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
 components:
   schemas:
+    update_promotion_add_action_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    type:
+                      type: string
+                      example: Spree::Promotion::Actions::CreateAdjustment
+                      enum:
+                      - Spree::Promotion::Actions::CreateAdjustment
+                      - Spree::Promotion::Actions::CreateItemAdjustments
+                      - Spree::Promotion::Actions::FreeShipping
+                      - Spree::Promotion::Actions::CreateLineItems
+                      description: Set the Promotion Action Type.
+      required:
+      - promotion
+      title: Add an Action to a Promotion
+      x-internal: false
+    create_promotion_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Promotions Used in 2021
+              description: Give the promotion a name.
+            code:
+              type:
+              - string
+              - 'null'
+              example: BLK-FRI
+              description: Set the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
+            description:
+              type:
+              - string
+              - 'null'
+              example: Save today with discount code XYZ at checkout.
+              description: Give the promotion a description.
+            usage_limit:
+              type:
+              - integer
+              - 'null'
+              example: 100
+              description: If you wish you can set a usage limit for this promotion.
+            advertise:
+              type: boolean
+            starts_at:
+              type:
+              - string
+              - 'null'
+              format: date_time
+              description: Set a date and time that this promotion begins.
+            ends_at:
+              type:
+              - string
+              - 'null'
+              format: date_time
+              description: Set a date and time that this promotion ends.
+            store_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+      required:
+      - promotion
+      title: Create a Promotion
+      x-internal: false
     update_promotion_update_rule_params:
       type: object
       properties:
@@ -1636,6 +1781,55 @@ components:
       required:
       - promotion
       title: Update an existing Rule
+      x-internal: false
+    update_promotion_add_rule_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_rules_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    type:
+                      type: string
+                      example: Spree::Promotion::Rules::Country
+                      enum:
+                      - Spree::Promotion::Rules::Country
+                      - Spree::Promotion::Rules::ItemTotal
+                      - Spree::Promotion::Rules::Product
+                      - Spree::Promotion::Rules::User
+                      - Spree::Promotion::Rules::FirstOrder
+                      - Spree::Promotion::Rules::UserLoggedIn
+                      - Spree::Promotion::Rules::OneUsePerUser
+                      - Spree::Promotion::Rules::Taxon
+                      - Spree::Promotion::Rules::OptionValue
+                      description: Set the Promotion Rule type.
+                    preferred_country_id:
+                      type: integer
+                      example: 122
+                      description: 'Each rule type has its own preferred attributes. In this example we are setting the ID of the Country this rule applies to. To learn more about Spree preferences visit TODO: [LINK].'
+      required:
+      - promotion
+      title: Add a Rule to a Promotion
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
       x-internal: false
     resources_list:
       type: object
@@ -1682,6 +1876,66 @@ components:
       - meta
       - links
       x-internal: false
+    update_promotion_change_calculator_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
+                    calculator_attributes:
+                      properties:
+                        type:
+                          type: string
+                          example: Spree::Calculator::FlatPercentItemTotal
+                          enum:
+                          - Spree::Calculator::FlatPercentItemTotal
+                          - Spree::Calculator::FlatRate
+                          - Spree::Calculator::FlexiRate
+                          - Spree::Calculator::TieredPercent
+                          - Spree::Calculator::TieredFlatRate
+                          - Spree::Calculator::PercentOnLineItem
+                          description: 'To set the Promotion Action Calculator pass the calculator type. Each Promotion action has certain Calculators available, to learn more visit TODO: [LINK]'
+      required:
+      - promotion
+      title: Change an Action Calculator
+      x-internal: false
+    update_promotion_change_action_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
+                    type:
+                      type: string
+                      example: Spree::Promotion::Actions::CreateAdjustment
+                      enum:
+                      - Spree::Promotion::Actions::CreateAdjustment
+                      - Spree::Promotion::Actions::CreateItemAdjustments
+                      - Spree::Promotion::Actions::CreateLineItems
+                      - Spree::Promotion::Actions::FreeShipping
+                      description: Set the Type of Promotion Action you wish to use.
+      required:
+      - promotion
+      title: Change an Action Type
+      x-internal: false
     validation_errors:
       type: object
       properties:
@@ -1692,6 +1946,74 @@ components:
       required:
       - error
       - errors
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_promotion_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Promotions Used in 2021
+              description: Change the promotion a name.
+            code:
+              type:
+              - string
+              - 'null'
+              example: CYB-MON
+              description: Change or remove the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
+            description:
+              type:
+              - string
+              - 'null'
+              example: Save today with discount code XYZ at checkout.
+              description: Update the promotion a description.
+            usage_limit:
+              type:
+              - integer
+              - 'null'
+              example: 100
+              description: If you wish you can set a usage limit for this promotion.
+            advertise:
+              type: boolean
+            starts_at:
+              type:
+              - string
+              - 'null'
+              format: date_time
+              description: Set a date and time that this promotion begins.
+            ends_at:
+              type:
+              - string
+              - 'null'
+              format: date_time
+              description: Set a date and time that this promotion ends.
+            store_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+      required:
+      - promotion
+      title: Update a Promotion
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     update_promotion_action_calculator_params:
       type: object
@@ -1731,251 +2053,6 @@ components:
       - promotion
       title: Update an Action Calculator
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    update_promotion_change_calculator_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_actions_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    id:
-                      type: string
-                      example: '22'
-                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
-                    calculator_attributes:
-                      properties:
-                        type:
-                          type: string
-                          example: Spree::Calculator::FlatPercentItemTotal
-                          enum:
-                          - Spree::Calculator::FlatPercentItemTotal
-                          - Spree::Calculator::FlatRate
-                          - Spree::Calculator::FlexiRate
-                          - Spree::Calculator::TieredPercent
-                          - Spree::Calculator::TieredFlatRate
-                          - Spree::Calculator::PercentOnLineItem
-                          description: 'To set the Promotion Action Calculator pass the calculator type. Each Promotion action has certain Calculators available, to learn more visit TODO: [LINK]'
-      required:
-      - promotion
-      title: Change an Action Calculator
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    update_promotion_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Promotions Used in 2021
-              description: Change the promotion a name.
-            code:
-              type: string
-              example: CYB-MON
-              nullable: true
-              description: Change or remove the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
-            description:
-              type: string
-              example: Save today with discount code XYZ at checkout.
-              nullable: true
-              description: Update the promotion a description.
-            usage_limit:
-              type: integer
-              example: 100
-              nullable: true
-              description: If you wish you can set a usage limit for this promotion.
-            advertise:
-              type: boolean
-            starts_at:
-              type: string
-              format: date_time
-              nullable: true
-              description: Set a date and time that this promotion begins.
-            ends_at:
-              type: string
-              format: date_time
-              nullable: true
-              description: Set a date and time that this promotion ends.
-            store_ids:
-              type: array
-              items:
-                allOf:
-                - type: string
-                  example: '2'
-      required:
-      - promotion
-      title: Update a Promotion
-      x-internal: false
-    create_promotion_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Promotions Used in 2021
-              description: Give the promotion a name.
-            code:
-              type: string
-              example: BLK-FRI
-              nullable: true
-              description: Set the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
-            description:
-              type: string
-              example: Save today with discount code XYZ at checkout.
-              nullable: true
-              description: Give the promotion a description.
-            usage_limit:
-              type: integer
-              example: 100
-              nullable: true
-              description: If you wish you can set a usage limit for this promotion.
-            advertise:
-              type: boolean
-            starts_at:
-              type: string
-              format: date_time
-              nullable: true
-              description: Set a date and time that this promotion begins.
-            ends_at:
-              type: string
-              format: date_time
-              nullable: true
-              description: Set a date and time that this promotion ends.
-            store_ids:
-              type: array
-              items:
-                allOf:
-                - type: string
-                  example: '2'
-      required:
-      - promotion
-      title: Create a Promotion
-      x-internal: false
-    update_promotion_add_rule_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_rules_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    type:
-                      type: string
-                      example: Spree::Promotion::Rules::Country
-                      enum:
-                      - Spree::Promotion::Rules::Country
-                      - Spree::Promotion::Rules::ItemTotal
-                      - Spree::Promotion::Rules::Product
-                      - Spree::Promotion::Rules::User
-                      - Spree::Promotion::Rules::FirstOrder
-                      - Spree::Promotion::Rules::UserLoggedIn
-                      - Spree::Promotion::Rules::OneUsePerUser
-                      - Spree::Promotion::Rules::Taxon
-                      - Spree::Promotion::Rules::OptionValue
-                      description: Set the Promotion Rule type.
-                    preferred_country_id:
-                      type: integer
-                      example: 122
-                      description: 'Each rule type has its own preferred attributes. In this example we are setting the ID of the Country this rule applies to. To learn more about Spree preferences visit TODO: [LINK].'
-      required:
-      - promotion
-      title: Add a Rule to a Promotion
-      x-internal: false
-    update_promotion_add_action_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_actions_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    type:
-                      type: string
-                      example: Spree::Promotion::Actions::CreateAdjustment
-                      enum:
-                      - Spree::Promotion::Actions::CreateAdjustment
-                      - Spree::Promotion::Actions::CreateItemAdjustments
-                      - Spree::Promotion::Actions::FreeShipping
-                      - Spree::Promotion::Actions::CreateLineItems
-                      description: Set the Promotion Action Type.
-      required:
-      - promotion
-      title: Add an Action to a Promotion
-      x-internal: false
-    update_promotion_change_action_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_actions_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    id:
-                      type: string
-                      example: '22'
-                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
-                    type:
-                      type: string
-                      example: Spree::Promotion::Actions::CreateAdjustment
-                      enum:
-                      - Spree::Promotion::Actions::CreateAdjustment
-                      - Spree::Promotion::Actions::CreateItemAdjustments
-                      - Spree::Promotion::Actions::CreateLineItems
-                      - Spree::Promotion::Actions::FreeShipping
-                      description: Set the Type of Promotion Action you wish to use.
-      required:
-      - promotion
-      title: Change an Action Type
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
   securitySchemes:
     api_key:
       type: apiKey
@@ -1987,6 +2064,9 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: JWT token for admin user authentication
+x-refined-from:
+- spree-commerce-admin-api-openapi.yml
+- spree-commerce-platform-api-openapi.yml
 x-tagGroups:
 - name: Authentication
   tags:

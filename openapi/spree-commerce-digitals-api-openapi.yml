@@ -1,11 +1,11 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Digitals API
+  title: Store Digitals API
   contact:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  description: "Spree Store API v3 - Customer-facing storefront API for building headless commerce experiences.\n\n## Authentication\n\nThe Store API uses two authentication methods:\n\n### API Key (Required)\nAll requests must include a publishable API key in the `x-spree-api-key` header.\n\n### JWT Bearer Token (For authenticated customers)\nAfter login, include the JWT token in the `Authorization: Bearer <token>` header.\n\n### Order Token (For guest checkout)\nWhen creating an order, a `token` is returned. Include this in the `x-spree-token` header\nfor guest access to that specific order.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"record_not_found\",\n    \"message\": \"Product not found\"\n  }\n}\n```\n"
   version: v3
 servers:
 - url: http://{defaultHost}
@@ -83,9 +83,10 @@ components:
               type: string
               example: Record not found
             details:
-              type: object
+              type:
+              - object
+              - 'null'
               description: Field-specific validation errors
-              nullable: true
               example:
                 name:
                 - is too short
@@ -111,12 +112,12 @@ components:
       type: apiKey
       name: x-spree-api-key
       in: header
-      description: Secret API key for admin access
+      description: Publishable API key for store access
     bearer_auth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token for admin user authentication
+      description: JWT token for authenticated customers
 x-tagGroups:
 - name: Authentication
   tags:
@@ -124,12 +125,27 @@ x-tagGroups:
 - name: Product Catalog
   tags:
   - Product Catalog
+- name: Carts
+  tags:
+  - Carts
 - name: Orders
   tags:
   - Orders
 - name: Customers
   tags:
   - Customers
-- name: Configuration
+- name: Markets
   tags:
-  - Configuration
+  - Markets
+- name: Wishlists
+  tags:
+  - Wishlists
+- name: Newsletter Subscribers
+  tags:
+  - Newsletter Subscribers
+- name: Policies
+  tags:
+  - Policies
+- name: Digitals
+  tags:
+  - Digitals

@@ -1,17 +1,17 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Countries API
-  contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  title: Spree Commerce Countries API
+  version: '1.0'
+  description: 'Operations tagged Countries across 2 of this provider''s published API definitions: spree-commerce-platform-api-openapi.yml, spree-commerce-storefront-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: http://{defaultHost}
   variables:
     defaultHost:
       default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Countries
 paths:
@@ -100,6 +100,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/countries/{id}:
     get:
       summary: Returns a Country
@@ -161,6 +166,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/storefront/countries:
     get:
       description: Returns a list of all countries.
@@ -171,6 +181,11 @@ paths:
         '200':
           $ref: '#/components/responses/CountryList'
       summary: List all Countries
+    servers:
+    - url: https://demo.spreecommerce.org
+      description: demo
+    - url: http://localhost:3000
+      description: localhost
   /api/v2/storefront/countries/{iso}:
     get:
       description: Returns the details of a specific country.
@@ -187,6 +202,11 @@ paths:
         '404':
           $ref: '#/components/responses/404NotFound'
       summary: Retrieve a Country
+    servers:
+    - url: https://demo.spreecommerce.org
+      description: demo
+    - url: http://localhost:3000
+      description: localhost
   /api/v2/storefront/countries/default:
     get:
       description: Returns the default country for the current store. By default this will be the US.
@@ -200,8 +220,225 @@ paths:
         '200':
           $ref: '#/components/responses/Country'
       summary: Get Default Country
+    servers:
+    - url: https://demo.spreecommerce.org
+      description: demo
+    - url: http://localhost:3000
+      description: localhost
 components:
+  schemas:
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    CountryIncludes:
+      x-internal: false
+      title: Country Includes
+      oneOf:
+      - $ref: '#/components/schemas/State'
+    Country:
+      title: Country
+      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: country
+        attributes:
+          type: object
+          properties:
+            iso:
+              type: string
+              example: US
+            iso3:
+              type: string
+              example: USA
+            iso_name:
+              type: string
+              example: UNITED STATES
+            name:
+              type: string
+              example: United States
+            states_required:
+              type: boolean
+            zipcode_required:
+              type: boolean
+            default:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            states:
+              type: object
+              description: States associated with this Country
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/State'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    State:
+      type: object
+      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
+      title: State
+      properties:
+        abbr:
+          type: string
+          example: NY
+          description: State abbreviation
+        name:
+          type: string
+          example: New York
+          description: State name
+      x-internal: false
   responses:
+    Country:
+      description: 200 Success - Returns the `country` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Country'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountryIncludes'
+            required:
+            - data
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
     CountryList:
       description: 200 Success - Returns an array of `country` objects.
       content:
@@ -3493,219 +3730,21 @@ components:
                   prev: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
                   last: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
                   first: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
-    Country:
-      description: 200 Success - Returns the `country` object.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Country'
-              included:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CountryIncludes'
-            required:
-            - data
-  schemas:
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
-    Country:
-      title: Country
-      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: country
-        attributes:
-          type: object
-          properties:
-            iso:
-              type: string
-              example: US
-            iso3:
-              type: string
-              example: USA
-            iso_name:
-              type: string
-              example: UNITED STATES
-            name:
-              type: string
-              example: United States
-            states_required:
-              type: boolean
-            zipcode_required:
-              type: boolean
-            default:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            states:
-              type: object
-              description: States associated with this Country
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/State'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    State:
-      type: object
-      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
-      title: State
-      properties:
-        abbr:
-          type: string
-          example: NY
-          description: State abbreviation
-        name:
-          type: string
-          example: New York
-          description: State name
-      x-internal: false
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
-    resources_list:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
-      required:
-      - data
-      - meta
-      - links
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    CountryIncludes:
-      x-internal: false
-      title: Country Includes
-      oneOf:
-      - $ref: '#/components/schemas/State'
   parameters:
+    CountryIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: states
+    SparseFieldsCountry:
+      name: fields[country]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: iso_name,name,states_required
     IsoOrIso3:
       name: iso
       in: path
@@ -3714,31 +3753,28 @@ components:
       schema:
         type: string
         example: GB
-    SparseFieldsCountry:
-      name: fields[country]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: iso_name,name,states_required
-    CountryIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
-      example: states
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
     bearer_auth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'User token to authorize Cart and Checkout requests.
+
+
+        It is required to associate Cart with the User.'
+    orderToken:
+      type: apiKey
+      in: header
+      description: 'Order token to authorize Cart and Checkout requests.
+
+
+        [How to obtain X-Spree-Order-Token](../authentication#for-guest-users)'
+      name: X-Spree-Order-Token
+x-refined-from:
+- spree-commerce-platform-api-openapi.yml
+- spree-commerce-storefront-api-openapi.yml
 x-tagGroups:
 - name: Authentication
   tags:

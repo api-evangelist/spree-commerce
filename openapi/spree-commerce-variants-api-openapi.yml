@@ -1,17 +1,17 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Variants API
-  contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  title: Spree Commerce Variants API
+  version: '1.0'
+  description: 'Operations tagged Variants across 2 of this provider''s published API definitions: spree-commerce-platform-api-openapi.yml, spree-commerce-storefront-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: http://{defaultHost}
   variables:
     defaultHost:
       default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Variants
 paths:
@@ -244,6 +244,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/platform/variants/{id}:
     get:
       summary: Return a Variant
@@ -387,6 +392,11 @@ paths:
                     error: The access token is invalid
               schema:
                 $ref: '#/components/schemas/error'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v2/storefront/products/{product_slug}/variants:
     get:
       description: 'Returns a list of product variants. You can use product permalink:
@@ -429,25 +439,21 @@ paths:
         '200':
           $ref: '#/components/responses/VariantList'
       summary: List all Product Variants
+    servers:
+    - url: https://demo.spreecommerce.org
+      description: demo
+    - url: http://localhost:3000
+      description: localhost
 components:
   schemas:
-    ListMeta:
+    resource:
       type: object
-      x-internal: false
-      title: Pagination Meta
       properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -464,6 +470,166 @@ components:
       - type
       - attributes
       x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    VariantIncludes:
+      x-internal: true
+      title: Product Includes
+      anyOf:
+      - $ref: '#/components/schemas/Product'
+      - $ref: '#/components/schemas/Image'
+      - $ref: '#/components/schemas/OptionValue'
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: variant
+        attributes:
+          type: object
+          properties:
+            sku:
+              type: string
+              example: SKU-1001
+            price:
+              type: string
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            height:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            width:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            depth:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
     ImageStyle:
       x-internal: false
       title: Image Style
@@ -481,6 +647,138 @@ components:
           type: integer
           example: 1080
           description: Actual height of image
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    OptionValue:
+      title: Option Value
+      type: object
+      x-internal: true
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: option_value
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: color
+            presentation:
+              type: string
+              example: Color
+            position:
+              type: integer
+              example: 1
+        relationships:
+          type: object
+          properties:
+            option_type:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            filter_value:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: image
+        attributes:
+          type: object
+          properties:
+            position:
+              type: integer
+              description: Sort order of images set in the Admin Panel
+              example: 0
+              minimum: 0
+            styles:
+              type: array
+              description: An array of pre-scaled image styles
+              items:
+                $ref: '#/components/schemas/ImageStyle'
+      required:
+      - id
+      - type
+      - attributes
+      title: Image
+      x-internal: false
     Product:
       type: object
       title: Product
@@ -499,27 +797,31 @@ components:
               type: string
               example: Example product
             description:
-              type: string
+              type:
+              - string
+              - 'null'
               example: Example description
-              nullable: true
             available_on:
-              type: string
+              type:
+              - string
+              - 'null'
               example: '2012-10-17T03:43:57Z'
-              nullable: true
             slug:
               type: string
               example: example-product
             price:
-              type: string
+              type:
+              - string
+              - 'null'
               example: '15.99'
-              nullable: true
             currency:
               type: string
               example: USD
             display_price:
-              type: string
+              type:
+              - string
+              - 'null'
               example: $15.99
-              nullable: true
             purchasable:
               type: boolean
               description: Indicates if any of Variants are in stock or backorderable
@@ -530,13 +832,15 @@ components:
               type: boolean
               description: Indicates if any of Variants are backeorderable
             meta_description:
-              type: string
+              type:
+              - string
+              - 'null'
               example: Example product
-              nullable: true
             meta_keywords:
-              type: string
+              type:
+              - string
+              - 'null'
               example: example, product
-              nullable: true
             updated_at:
               $ref: '#/components/schemas/Timestamp'
             sku:
@@ -545,13 +849,15 @@ components:
             available:
               type: boolean
             compare_at_price:
-              type: string
+              type:
+              - string
+              - 'null'
               example: '49.99'
-              nullable: true
             display_compare_at_price:
-              type: string
+              type:
+              - string
+              - 'null'
               example: $49.99
-              nullable: true
             localized_slugs:
               type: object
               description: Provides product's slugs in other locales
@@ -625,285 +931,14 @@ components:
       - type
       - attributes
       - relationships
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
-    resources_list:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
-      required:
-      - data
-      - meta
-      - links
-      x-internal: false
-    Image:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: image
-        attributes:
-          type: object
-          properties:
-            position:
-              type: integer
-              description: Sort order of images set in the Admin Panel
-              example: 0
-              minimum: 0
-            styles:
-              type: array
-              description: An array of pre-scaled image styles
-              items:
-                $ref: '#/components/schemas/ImageStyle'
-      required:
-      - id
-      - type
-      - attributes
-      title: Image
-      x-internal: false
-    VariantIncludes:
-      x-internal: true
-      title: Product Includes
-      anyOf:
-      - $ref: '#/components/schemas/Product'
-      - $ref: '#/components/schemas/Image'
-      - $ref: '#/components/schemas/OptionValue'
-    Relation:
-      type: object
-      nullable: true
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    OptionValue:
-      title: Option Value
-      type: object
-      x-internal: true
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: option_value
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: color
-            presentation:
-              type: string
-              example: Color
-            position:
-              type: integer
-              example: 1
-        relationships:
-          type: object
-          properties:
-            option_type:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            filter_value:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
-    Variant:
-      title: Variant
-      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
-      x-examples: {}
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: variant
-        attributes:
-          type: object
-          properties:
-            sku:
-              type: string
-              example: SKU-1001
-            price:
-              type: string
-              example: '15.99'
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $15.99
-            weight:
-              type: string
-              example: '10'
-              nullable: true
-            height:
-              type: string
-              example: '10'
-              nullable: true
-            width:
-              type: string
-              example: '10'
-              nullable: true
-            depth:
-              type: string
-              example: '10'
-              nullable: true
-            is_master:
-              type: boolean
-              description: Indicates if Variant is the master Variant
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            options:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  value:
-                    type: string
-                  presentation:
-                    type: string
-            purchasable:
-              type: boolean
-              description: Indicates if Variant is in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if Variant is in stock
-            backorderable:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            product:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_values:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
   parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
     ProductSlug:
       name: product_slug
       in: path
@@ -912,27 +947,6 @@ components:
       schema:
         type: string
       example: knitted-high-neck-sweater
-    SparseFieldsVariant:
-      name: fields[variant]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: price,currency,options,options_text
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
     VariantIncludeParam:
       name: include
       in: query
@@ -950,6 +964,20 @@ components:
 
         [More information](https://jsonapi.org/format/#fetching-includes)'
       example: product,option_values,images,filter_values
+    SparseFieldsVariant:
+      name: fields[variant]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: price,currency,options,options_text
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
   responses:
     VariantList:
       description: 200 Success - Returns an array of `variant` objects.
@@ -975,16 +1003,27 @@ components:
             - meta
             - links
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
     bearer_auth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'User token to authorize Cart and Checkout requests.
+
+
+        It is required to associate Cart with the User.'
+    orderToken:
+      type: apiKey
+      in: header
+      description: 'Order token to authorize Cart and Checkout requests.
+
+
+        [How to obtain X-Spree-Order-Token](../authentication#for-guest-users)'
+      name: X-Spree-Order-Token
+x-refined-from:
+- spree-commerce-platform-api-openapi.yml
+- spree-commerce-storefront-api-openapi.yml
 x-tagGroups:
 - name: Authentication
   tags:

@@ -1,17 +1,23 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Posts API
+  version: 2.0.0
+  title: Storefront Posts API
+  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+
+
+    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
   contact:
-    name: Spree Commerce
+    name: Vendo Connect Inc.
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  license:
+    name: BSD-3-Clause
+    url: https://github.com/spree/spree/blob/main/LICENSE.md
 servers:
-- url: http://{defaultHost}
-  variables:
-    defaultHost:
-      default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Posts
 paths:
@@ -183,32 +189,29 @@ paths:
         '404':
           $ref: '#/components/responses/404NotFound'
 components:
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    FilterByIds:
+      in: query
+      name: filter[ids]
+      schema:
+        type: string
+      example: 1,2,3
+      description: Fetch only resources with corresponding IDs
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
   schemas:
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
     Post:
       type: object
       title: Post
@@ -232,60 +235,70 @@ components:
               example: hello-world
               description: URL-friendly identifier for the post
             published_at:
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
               example: '2025-08-11T21:03:00.000Z'
               description: Date and time when the post was published
-              nullable: true
             meta_title:
-              type: string
+              type:
+              - string
+              - 'null'
               example: ''
               description: SEO meta title
-              nullable: true
             meta_description:
-              type: string
+              type:
+              - string
+              - 'null'
               example: ''
               description: SEO meta description
-              nullable: true
             created_at:
               $ref: '#/components/schemas/Timestamp'
             updated_at:
               $ref: '#/components/schemas/Timestamp'
             excerpt:
-              type: string
+              type:
+              - string
+              - 'null'
               example: null
               description: Short excerpt of the post content
-              nullable: true
             content:
-              type: string
+              type:
+              - string
+              - 'null'
               example: This is a test post
               description: Plain text content of the post
-              nullable: true
             content_html:
-              type: string
+              type:
+              - string
+              - 'null'
               example: "<div class=\"trix-content\">\n  <div>This is a test post</div>\n</div>\n"
               description: HTML formatted content of the post
-              nullable: true
             description:
-              type: string
+              type:
+              - string
+              - 'null'
               example: This is a test post
               description: Description of the post
-              nullable: true
             shortened_description:
-              type: string
+              type:
+              - string
+              - 'null'
               example: This is a test post
               description: Shortened description of the post
-              nullable: true
             author_name:
-              type: string
+              type:
+              - string
+              - 'null'
               example: Spree Admin
               description: Name of the post author
-              nullable: true
             post_category_title:
-              type: string
+              type:
+              - string
+              - 'null'
               example: News
               description: Title of the associated post category
-              nullable: true
             tags:
               type: array
               items:
@@ -293,10 +306,11 @@ components:
               example: []
               description: List of tags associated with the post
             image_url:
-              type: string
+              type:
+              - string
+              - 'null'
               example: null
               description: URL of the post's featured image
-              nullable: true
         relationships:
           type: object
           properties:
@@ -321,6 +335,31 @@ components:
       - id
       - type
       - attributes
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
     ListLinks:
       x-internal: false
       type: object
@@ -356,52 +395,19 @@ components:
             404 Example:
               value:
                 error: The resource you were looking for could not be found.
-  parameters:
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
-    FilterByIds:
-      in: query
-      name: filter[ids]
-      schema:
-        type: string
-      example: 1,2,3
-      description: Fetch only resources with corresponding IDs
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
-    bearer_auth:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
-x-tagGroups:
-- name: Authentication
-  tags:
-  - Authentication
-- name: Product Catalog
-  tags:
-  - Product Catalog
-- name: Orders
-  tags:
-  - Orders
-- name: Customers
-  tags:
-  - Customers
-- name: Configuration
-  tags:
-  - Configuration
+      description: 'User token to authorize Cart and Checkout requests.
+
+
+        It is required to associate Cart with the User.'
+    orderToken:
+      type: apiKey
+      in: header
+      description: 'Order token to authorize Cart and Checkout requests.
+
+
+        [How to obtain X-Spree-Order-Token](../authentication#for-guest-users)'
+      name: X-Spree-Order-Token

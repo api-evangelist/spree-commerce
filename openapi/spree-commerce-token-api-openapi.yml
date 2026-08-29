@@ -1,17 +1,20 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Token API
+  version: 1.0.0
+  title: Authentication Token API
+  description: Spree uses oAuth based Authentication via short-lived Bearer tokens. You can either create a new one or refresh existing token.
   contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+    name: Vendo Connect Inc.
+    url: https://getvendo.com
+    email: sales@getvendo.com
+  license:
+    url: https://github.com/spree/spree/blob/main/LICENSE.md
+    name: BSD-3-Clause
 servers:
-- url: http://{defaultHost}
-  variables:
-    defaultHost:
-      default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Token
 paths:
@@ -122,6 +125,47 @@ components:
       - grant_type
       - client_id
       - client_secret
+    CreateTokenBody:
+      type: object
+      x-examples:
+        User Token:
+          grant_type: password
+          username: spree@example.com
+          password: spree123
+        Application Token:
+          grant_type: password
+          username: spree@example.com
+          password: spree123
+          scope: admin
+      x-internal: false
+      title: 'Create a new token (grant_type: password)'
+      description: ''
+      properties:
+        grant_type:
+          type: string
+          description: ''
+          example: password
+          enum:
+          - password
+        username:
+          type: string
+          description: User email address
+          example: spree@example.com
+        password:
+          type: string
+          description: User password
+          example: spree123
+        scope:
+          type:
+          - string
+          - 'null'
+          enum:
+          - admin
+          description: Pass the value `admin` to create a Platform User Token, allowing access to the Platform API.
+      required:
+      - grant_type
+      - username
+      - password
     Token:
       x-examples:
         create token:
@@ -188,70 +232,3 @@ components:
       required:
       - grant_type
       - refresh_token
-    CreateTokenBody:
-      type: object
-      x-examples:
-        User Token:
-          grant_type: password
-          username: spree@example.com
-          password: spree123
-        Application Token:
-          grant_type: password
-          username: spree@example.com
-          password: spree123
-          scope: admin
-      x-internal: false
-      title: 'Create a new token (grant_type: password)'
-      description: ''
-      properties:
-        grant_type:
-          type: string
-          description: ''
-          example: password
-          enum:
-          - password
-        username:
-          type: string
-          description: User email address
-          example: spree@example.com
-        password:
-          type: string
-          description: User password
-          example: spree123
-        scope:
-          type: string
-          enum:
-          - admin
-          description: Pass the value `admin` to create a Platform User Token, allowing access to the Platform API.
-          nullable: true
-      required:
-      - grant_type
-      - username
-      - password
-  securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
-    bearer_auth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
-x-tagGroups:
-- name: Authentication
-  tags:
-  - Authentication
-- name: Product Catalog
-  tags:
-  - Product Catalog
-- name: Orders
-  tags:
-  - Orders
-- name: Customers
-  tags:
-  - Customers
-- name: Configuration
-  tags:
-  - Configuration

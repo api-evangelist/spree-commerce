@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Stock Locations API
+  title: Platform Stock Locations API
   contact:
-    name: Spree Commerce
-    url: https://spreecommerce.org
-    email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+    name: Vendo Connect Inc.
+    url: https://getvendo.com
+    email: sales@getvendo.com
+  description: Spree Platform API
+  version: v2
 servers:
 - url: http://{defaultHost}
   variables:
@@ -386,73 +386,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    update_stock_location_params:
-      type: object
-      properties:
-        stock_location:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Warehouse 3
-            default:
-              type: boolean
-            address1:
-              type: string
-              example: South St. 8
-            address2:
-              type: string
-              example: South St. 109
-            country_id:
-              type: string
-              example: '2'
-            state_id:
-              type: string
-              example: '4'
-            city:
-              type: string
-              example: Los Angeles
-            state_name:
-              type: string
-              example: California
-            zipcode:
-              type: string
-              example: '90005'
-            phone:
-              type: string
-              example: '23333456'
-            active:
-              type: boolean
-            backorderable_default:
-              type: boolean
-            propagate_all_variants:
-              type: boolean
-            admin_name:
-              type: string
-      required:
-      - stock_location
-      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -468,51 +401,6 @@ components:
       - id
       - type
       - attributes
-      x-internal: false
-    resources_list:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
-      required:
-      - data
-      - meta
-      - links
       x-internal: false
     create_stock_location_params:
       type: object
@@ -562,6 +450,118 @@ components:
       required:
       - stock_location
       x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    update_stock_location_params:
+      type: object
+      properties:
+        stock_location:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Warehouse 3
+            default:
+              type: boolean
+            address1:
+              type: string
+              example: South St. 8
+            address2:
+              type: string
+              example: South St. 109
+            country_id:
+              type: string
+              example: '2'
+            state_id:
+              type: string
+              example: '4'
+            city:
+              type: string
+              example: Los Angeles
+            state_name:
+              type: string
+              example: California
+            zipcode:
+              type: string
+              example: '90005'
+            phone:
+              type: string
+              example: '23333456'
+            active:
+              type: boolean
+            backorderable_default:
+              type: boolean
+            propagate_all_variants:
+              type: boolean
+            admin_name:
+              type: string
+      required:
+      - stock_location
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     error:
       type: object
       properties:
@@ -571,29 +571,6 @@ components:
       - error
       x-internal: false
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
     bearer_auth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
-x-tagGroups:
-- name: Authentication
-  tags:
-  - Authentication
-- name: Product Catalog
-  tags:
-  - Product Catalog
-- name: Orders
-  tags:
-  - Orders
-- name: Customers
-  tags:
-  - Customers
-- name: Configuration
-  tags:
-  - Configuration

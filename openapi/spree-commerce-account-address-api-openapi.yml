@@ -1,17 +1,23 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address API
+  version: 2.0.0
+  title: Storefront Account / Address API
+  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+
+
+    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
   contact:
-    name: Spree Commerce
+    name: Vendo Connect Inc.
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  license:
+    name: BSD-3-Clause
+    url: https://github.com/spree/spree/blob/main/LICENSE.md
 servers:
-- url: http://{defaultHost}
-  variables:
-    defaultHost:
-      default: localhost:3000
+- url: https://demo.spreecommerce.org
+  description: demo
+- url: http://localhost:3000
+  description: localhost
 tags:
 - name: Account / Address
 paths:
@@ -138,225 +144,7 @@ paths:
       tags:
       - Account / Address
 components:
-  schemas:
-    AddressPayload:
-      example:
-        firstname: John
-        lastname: Snow
-        address1: 7735 Old Georgetown Road
-        address2: 2nd Floor
-        city: Bethesda
-        phone: '3014445002'
-        zipcode: '20814'
-        state_name: MD
-        country_iso: US
-      type: object
-      x-internal: false
-      title: ''
-      x-examples: {}
-      description: ''
-      properties:
-        firstname:
-          type: string
-        lastname:
-          type: string
-        address1:
-          type: string
-          description: Street address
-        address2:
-          type: string
-          description: Additional address information, floor no etc
-        city:
-          type: string
-          description: City, town
-        phone:
-          type: string
-        zipcode:
-          type: string
-          description: Valid zipcode, will be validated against the selected Country
-        state_name:
-          type: string
-          description: State/region/province 2 letter abbreviation
-        country_iso:
-          type: string
-          description: Country ISO (2-chars) or ISO3 (3-chars) code. [List of all codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes)
-        company:
-          type: string
-          example: Paper Street Soap Co.
-          description: Company name
-        label:
-          type: string
-          example: Work
-          description: The internal name for this address (Work, Home)
-      required:
-      - firstname
-      - lastname
-      - address1
-      - city
-      - country_iso
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
-    Address:
-      type: object
-      title: Address
-      description: The Address model holds the customer details, such as name, address, and phone number.
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: address
-        attributes:
-          type: object
-          properties:
-            firstname:
-              type: string
-              example: John
-            lastname:
-              type: string
-              example: Doe
-            address1:
-              type: string
-              example: 1600 Amphitheatre Pkwy
-            address2:
-              type: string
-              example: Suite 1
-              nullable: true
-            city:
-              type: string
-              example: Mountain View
-            zipcode:
-              type: string
-              example: '94043'
-            phone:
-              type: string
-              example: (+1) 123 456 789
-              nullable: true
-            state_name:
-              type: string
-              example: California
-            state_code:
-              type: string
-              example: CA
-              description: State abbreviation
-              nullable: true
-            country_name:
-              type: string
-              example: United States of America
-            country_iso3:
-              type: string
-              example: USA
-              description: Country ISO3 code
-            company:
-              type: string
-              example: Google Inc.
-              description: Company name
-              nullable: true
-            label:
-              type: string
-              description: The internal name for this address (Work, Home)
-              example: Home
-              nullable: true
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
   responses:
-    Address:
-      description: 200 Success - Returns the `address` object.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Address'
-          examples:
-            Standard response:
-              value:
-                data:
-                  id: '29'
-                  type: address
-                  attributes:
-                    firstname: Mark
-                    lastname: Winterburn
-                    address1: 775645 Old Georgetown Road
-                    address2: 3rd Floor
-                    city: Qethesda
-                    zipcode: '90210'
-                    phone: '3488545445002'
-                    state_name: California
-                    company: Paper Street Soap Co.
-                    country_name: United States
-                    country_iso3: USA
-                    country_iso: US
-                    label: Work
-                    state_code: CA
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
     AddressList:
       description: 200 Success - Returns an array of `address` objects.
       content:
@@ -441,6 +229,229 @@ components:
                   prev: http://localhost:3000/api/v2/storefront/account/addresses?page=1
                   last: http://localhost:3000/api/v2/storefront/account/addresses?page=1
                   first: http://localhost:3000/api/v2/storefront/account/addresses?page=1
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    Address:
+      description: 200 Success - Returns the `address` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Address'
+          examples:
+            Standard response:
+              value:
+                data:
+                  id: '29'
+                  type: address
+                  attributes:
+                    firstname: Mark
+                    lastname: Winterburn
+                    address1: 775645 Old Georgetown Road
+                    address2: 3rd Floor
+                    city: Qethesda
+                    zipcode: '90210'
+                    phone: '3488545445002'
+                    state_name: California
+                    company: Paper Street Soap Co.
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    label: Work
+                    state_code: CA
+  schemas:
+    Address:
+      type: object
+      title: Address
+      description: The Address model holds the customer details, such as name, address, and phone number.
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: address
+        attributes:
+          type: object
+          properties:
+            firstname:
+              type: string
+              example: John
+            lastname:
+              type: string
+              example: Doe
+            address1:
+              type: string
+              example: 1600 Amphitheatre Pkwy
+            address2:
+              type:
+              - string
+              - 'null'
+              example: Suite 1
+            city:
+              type: string
+              example: Mountain View
+            zipcode:
+              type: string
+              example: '94043'
+            phone:
+              type:
+              - string
+              - 'null'
+              example: (+1) 123 456 789
+            state_name:
+              type: string
+              example: California
+            state_code:
+              type:
+              - string
+              - 'null'
+              example: CA
+              description: State abbreviation
+            country_name:
+              type: string
+              example: United States of America
+            country_iso3:
+              type: string
+              example: USA
+              description: Country ISO3 code
+            company:
+              type:
+              - string
+              - 'null'
+              example: Google Inc.
+              description: Company name
+            label:
+              type:
+              - string
+              - 'null'
+              description: The internal name for this address (Work, Home)
+              example: Home
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    AddressPayload:
+      example:
+        firstname: John
+        lastname: Snow
+        address1: 7735 Old Georgetown Road
+        address2: 2nd Floor
+        city: Bethesda
+        phone: '3014445002'
+        zipcode: '20814'
+        state_name: MD
+        country_iso: US
+      type: object
+      x-internal: false
+      title: ''
+      x-examples: {}
+      description: ''
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        address1:
+          type: string
+          description: Street address
+        address2:
+          type: string
+          description: Additional address information, floor no etc
+        city:
+          type: string
+          description: City, town
+        phone:
+          type: string
+        zipcode:
+          type: string
+          description: Valid zipcode, will be validated against the selected Country
+        state_name:
+          type: string
+          description: State/region/province 2 letter abbreviation
+        country_iso:
+          type: string
+          description: Country ISO (2-chars) or ISO3 (3-chars) code. [List of all codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes)
+        company:
+          type: string
+          example: Paper Street Soap Co.
+          description: Company name
+        label:
+          type: string
+          example: Work
+          description: The internal name for this address (Work, Home)
+      required:
+      - firstname
+      - lastname
+      - address1
+      - city
+      - country_iso
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
   parameters:
     SparseFieldsAddress:
       in: query
@@ -450,29 +461,18 @@ components:
       schema:
         type: string
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: x-spree-api-key
-      in: header
-      description: Secret API key for admin access
-    bearer_auth:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: JWT token for admin user authentication
-x-tagGroups:
-- name: Authentication
-  tags:
-  - Authentication
-- name: Product Catalog
-  tags:
-  - Product Catalog
-- name: Orders
-  tags:
-  - Orders
-- name: Customers
-  tags:
-  - Customers
-- name: Configuration
-  tags:
-  - Configuration
+      description: 'User token to authorize Cart and Checkout requests.
+
+
+        It is required to associate Cart with the User.'
+    orderToken:
+      type: apiKey
+      in: header
+      description: 'Order token to authorize Cart and Checkout requests.
+
+
+        [How to obtain X-Spree-Order-Token](../authentication#for-guest-users)'
+      name: X-Spree-Order-Token

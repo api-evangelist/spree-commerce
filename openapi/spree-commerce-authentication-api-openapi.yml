@@ -1,12 +1,12 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Admin Account / Address Authentication API
+  title: Spree Commerce Authentication API
+  version: v3
   contact:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
-  version: v3
+  description: 'Operations tagged Authentication across 2 of this provider''s published API definitions: spree-commerce-admin-api-openapi.yml, spree-commerce-store-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: http://{defaultHost}
   variables:
@@ -122,6 +122,11 @@ paths:
                   message: Authentication required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/store/auth/login:
     post:
       summary: Login
@@ -193,6 +198,11 @@ paths:
               required:
               - email
               - password
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/store/auth/refresh:
     post:
       summary: Refresh token
@@ -255,6 +265,11 @@ paths:
                   description: Refresh token from login response
               required:
               - refresh_token
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/store/auth/logout:
     post:
       summary: Logout
@@ -291,6 +306,11 @@ paths:
                 refresh_token:
                   type: string
                   description: Refresh token to revoke
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/store/password_resets:
     post:
       summary: Request a password reset
@@ -349,6 +369,11 @@ paths:
                   description: URL to redirect the user to after clicking the reset link. Validated against the store's allowed origins.
               required:
               - email
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
   /api/v3/store/password_resets/{token}:
     patch:
       summary: Reset password with token
@@ -435,192 +460,13 @@ paths:
               required:
               - password
               - password_confirmation
+    servers:
+    - url: http://{defaultHost}
+      variables:
+        defaultHost:
+          default: localhost:3000
 components:
   schemas:
-    AdminUser:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-          nullable: true
-        last_name:
-          type: string
-          nullable: true
-        full_name:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminUserRoleAssignment'
-      required:
-      - id
-      - email
-      - first_name
-      - last_name
-      - full_name
-      - created_at
-      - updated_at
-      - roles
-      x-typelizer: true
-    AuthResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT access token
-        refresh_token:
-          type: string
-          description: Refresh token for obtaining new access tokens
-        user:
-          $ref: '#/components/schemas/Customer'
-      required:
-      - token
-      - refresh_token
-      - user
-    AdminUserRoleAssignment:
-      type: object
-      description: A role assignment for the current store on a staff member
-      properties:
-        id:
-          type: string
-          description: Prefixed role ID
-          example: role_abc123
-        name:
-          type: string
-          description: Role name
-          example: admin
-      required:
-      - id
-      - name
-    Address:
-      type: object
-      properties:
-        id:
-          type: string
-        first_name:
-          type: string
-          nullable: true
-        last_name:
-          type: string
-          nullable: true
-        full_name:
-          type: string
-        address1:
-          type: string
-          nullable: true
-        address2:
-          type: string
-          nullable: true
-        postal_code:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        company:
-          type: string
-          nullable: true
-        country_name:
-          type: string
-        country_iso:
-          type: string
-        state_text:
-          type: string
-          nullable: true
-        state_abbr:
-          type: string
-          nullable: true
-        quick_checkout:
-          type: boolean
-        is_default_billing:
-          type: boolean
-        is_default_shipping:
-          type: boolean
-        state_name:
-          type: string
-          nullable: true
-      required:
-      - id
-      - first_name
-      - last_name
-      - full_name
-      - address1
-      - address2
-      - postal_code
-      - city
-      - phone
-      - company
-      - country_name
-      - country_iso
-      - state_text
-      - state_abbr
-      - quick_checkout
-      - is_default_billing
-      - is_default_shipping
-      - state_name
-      x-typelizer: true
-    Customer:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type: string
-          nullable: true
-        last_name:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        accepts_email_marketing:
-          type: boolean
-        full_name:
-          type: string
-        available_store_credit_total:
-          type: string
-        display_available_store_credit_total:
-          type: string
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Address'
-        default_billing_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-          nullable: true
-        default_shipping_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-          nullable: true
-      required:
-      - id
-      - email
-      - first_name
-      - last_name
-      - phone
-      - accepts_email_marketing
-      - full_name
-      - available_store_credit_total
-      - display_available_store_credit_total
-      - addresses
-      - default_billing_address
-      - default_shipping_address
-      x-typelizer: true
     PermissionRule:
       type: object
       description: A single permission rule (CanCanCan rule). Rules are applied in order, last-matching-wins.
@@ -646,6 +492,56 @@ components:
       - actions
       - subjects
       - has_conditions
+    AdminUser:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+        full_name:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminUserRoleAssignment'
+      required:
+      - id
+      - email
+      - first_name
+      - last_name
+      - full_name
+      - created_at
+      - updated_at
+      - roles
+      x-typelizer: true
+    MeResponse:
+      type: object
+      description: Current admin user profile and serialized permissions
+      properties:
+        user:
+          $ref: '#/components/schemas/AdminUser'
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionRule'
+      required:
+      - user
+      - permissions
     ErrorResponse:
       type: object
       properties:
@@ -659,9 +555,10 @@ components:
               type: string
               example: Record not found
             details:
-              type: object
+              type:
+              - object
+              - 'null'
               description: Field-specific validation errors
-              nullable: true
               example:
                 name:
                 - is too short
@@ -682,19 +579,168 @@ components:
             - is too short
             email:
             - is invalid
-    MeResponse:
+    AdminUserRoleAssignment:
       type: object
-      description: Current admin user profile and serialized permissions
+      description: A role assignment for the current store on a staff member
       properties:
+        id:
+          type: string
+          description: Prefixed role ID
+          example: role_abc123
+        name:
+          type: string
+          description: Role name
+          example: admin
+      required:
+      - id
+      - name
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+        full_name:
+          type: string
+        address1:
+          type:
+          - string
+          - 'null'
+        address2:
+          type:
+          - string
+          - 'null'
+        postal_code:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+        company:
+          type:
+          - string
+          - 'null'
+        country_name:
+          type: string
+        country_iso:
+          type: string
+        state_text:
+          type:
+          - string
+          - 'null'
+        state_abbr:
+          type:
+          - string
+          - 'null'
+        quick_checkout:
+          type: boolean
+        is_default_billing:
+          type: boolean
+        is_default_shipping:
+          type: boolean
+        state_name:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - first_name
+      - last_name
+      - full_name
+      - address1
+      - address2
+      - postal_code
+      - city
+      - phone
+      - company
+      - country_name
+      - country_iso
+      - state_text
+      - state_abbr
+      - quick_checkout
+      - is_default_billing
+      - is_default_shipping
+      - state_name
+      x-typelizer: true
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+        refresh_token:
+          type: string
+          description: Refresh token for obtaining new access tokens
         user:
-          $ref: '#/components/schemas/AdminUser'
-        permissions:
+          $ref: '#/components/schemas/Customer'
+      required:
+      - token
+      - refresh_token
+      - user
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+        accepts_email_marketing:
+          type: boolean
+        full_name:
+          type: string
+        available_store_credit_total:
+          type: string
+        display_available_store_credit_total:
+          type: string
+        addresses:
           type: array
           items:
-            $ref: '#/components/schemas/PermissionRule'
+            $ref: '#/components/schemas/Address'
+        default_billing_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        default_shipping_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
       required:
-      - user
-      - permissions
+      - id
+      - email
+      - first_name
+      - last_name
+      - phone
+      - accepts_email_marketing
+      - full_name
+      - available_store_credit_total
+      - display_available_store_credit_total
+      - addresses
+      - default_billing_address
+      - default_shipping_address
+      x-typelizer: true
   securitySchemes:
     api_key:
       type: apiKey
@@ -706,6 +752,9 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: JWT token for admin user authentication
+x-refined-from:
+- spree-commerce-admin-api-openapi.yml
+- spree-commerce-store-api-openapi.yml
 x-tagGroups:
 - name: Authentication
   tags:
