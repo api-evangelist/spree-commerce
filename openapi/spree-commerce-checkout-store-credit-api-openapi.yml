@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Checkout / Store Credit API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -19,7 +19,7 @@ servers:
 - url: http://localhost:3000
   description: localhost
 tags:
-- name: Checkout / Store Credit
+- name: Checkout Store Credit
 paths:
   /api/v2/storefront/checkout/add_store_credit:
     post:
@@ -49,7 +49,7 @@ paths:
       - $ref: '#/components/parameters/SparseFieldsCart'
       summary: Add Store Credit
       tags:
-      - Checkout / Store Credit
+      - Checkout Store Credit
   /api/v2/storefront/checkout/remove_store_credit:
     post:
       description: Removes store credit from the cart if any had previously been applied.
@@ -69,9 +69,194 @@ paths:
       - $ref: '#/components/parameters/SparseFieldsCart'
       summary: Remove Store Credit
       tags:
-      - Checkout / Store Credit
+      - Checkout Store Credit
 components:
   schemas:
+    Promotion:
+      type: object
+      title: Promotion
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: promotion
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: 10% Discount
+            description:
+              type: string
+              example: Super discount for you
+            amount:
+              type: string
+              example: '-10.0'
+            display_amount:
+              type: string
+              example: -$10.00
+            code:
+              type: string
+              example: BLK-FRI
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    Product:
+      type: object
+      title: Product
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: product
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Example product
+            description:
+              type:
+              - string
+              - 'null'
+              example: Example description
+            available_on:
+              type:
+              - string
+              - 'null'
+              example: '2012-10-17T03:43:57Z'
+            slug:
+              type: string
+              example: example-product
+            price:
+              type:
+              - string
+              - 'null'
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type:
+              - string
+              - 'null'
+              example: $15.99
+            purchasable:
+              type: boolean
+              description: Indicates if any of Variants are in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if any of Variants are in stock
+            backorderable:
+              type: boolean
+              description: Indicates if any of Variants are backeorderable
+            meta_description:
+              type:
+              - string
+              - 'null'
+              example: Example product
+            meta_keywords:
+              type:
+              - string
+              - 'null'
+              example: example, product
+            updated_at:
+              $ref: '#/components/schemas/Timestamp'
+            sku:
+              type: string
+              example: 9238-WS
+            available:
+              type: boolean
+            compare_at_price:
+              type:
+              - string
+              - 'null'
+              example: '49.99'
+            display_compare_at_price:
+              type:
+              - string
+              - 'null'
+              example: $49.99
+            localized_slugs:
+              type: object
+              description: Provides product's slugs in other locales
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the product
+            labels:
+              type: array
+              items:
+                type: string
+              description: List of labels associated with the product
+        relationships:
+          type: object
+          properties:
+            variants:
+              type: object
+              description: List of Product Variants, excluding Master Variant
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_types:
+              type: object
+              description: List of Product Option Types
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            product_properties:
+              type: object
+              description: List of Product Properties
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            taxons:
+              type: object
+              description: List of Taxons associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              description: List of Images associated with this Product
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            default_variant:
+              type: object
+              description: The default Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            primary_variant:
+              type: object
+              description: The Primary Variant for this product
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
     CartIncludes:
       x-internal: false
       title: Cart Includes
@@ -85,106 +270,6 @@ components:
       - $ref: '#/components/schemas/DigitalLink'
       - $ref: '#/components/schemas/Product'
       description: ''
-    Variant:
-      title: Variant
-      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
-      x-examples: {}
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: variant
-        attributes:
-          type: object
-          properties:
-            sku:
-              type: string
-              example: SKU-1001
-            price:
-              type: string
-              example: '15.99'
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $15.99
-            weight:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            height:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            width:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            depth:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            is_master:
-              type: boolean
-              description: Indicates if Variant is the master Variant
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            options:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  value:
-                    type: string
-                  presentation:
-                    type: string
-            purchasable:
-              type: boolean
-              description: Indicates if Variant is in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if Variant is in stock
-            backorderable:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            product:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_values:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
     LineItem:
       title: Line Item
       type: object
@@ -302,13 +387,323 @@ components:
       - attributes
       - relationships
       description: ''
-    Error:
-      x-internal: false
-      title: Error
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
       type: object
+      x-internal: false
       properties:
-        error:
+        id:
           type: string
+          example: '1'
+        type:
+          type: string
+          default: variant
+        attributes:
+          type: object
+          properties:
+            sku:
+              type: string
+              example: SKU-1001
+            price:
+              type: string
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            height:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            width:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            depth:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    User:
+      type: object
+      title: User
+      description: ' '
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: user
+        attributes:
+          type: object
+          properties:
+            email:
+              type: string
+              example: spree@example.com
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            selected_locale:
+              type: string
+              example: fr
+            store_credits:
+              type: number
+              example: 150.75
+            completed_orders:
+              type: number
+              example: 3
+              description: Number of placed Orders by this User
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the user
+            public_metadata:
+              type: object
+              example:
+                user_segment: supplier
+              description: The public metadata for this User
+        relationships:
+          type: object
+          properties:
+            default_billing_address:
+              type: object
+              description: Default billing address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            default_shipping_address:
+              type: object
+              description: Default shipping address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Shipment:
+      type: object
+      title: Shipment
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: shipment
+        attributes:
+          type: object
+          properties:
+            number:
+              type: string
+              example: H121354
+              description: Unique Shipment identifier
+            free:
+              type: boolean
+              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
+            final_price:
+              type: string
+              example: '10.0'
+              description: Price to be presented for the Customer
+            display_final_price:
+              type: string
+              example: $10.00
+            tracking_url:
+              type:
+              - string
+              - 'null'
+              example: https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=4123412434%2C
+              description: Tracking URL to the service provider website
+            state:
+              type: string
+              example: shipped
+              enum:
+              - pending
+              - ready
+              - shipped
+              - canceled
+              description: "Status of the Shipment. For a list of all available statuses please refer: <a href=\"/developer/core-concepts/shipments\" target=\"_blank\" rel=\"noopener\">\n  Shipment section in Spree Guides\n</a>"
+            shipped_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: '2021-01-02 13:42:12'
+              description: Date when Shipment was being sent from the warehouse
+        relationships:
+          type: object
+          properties:
+            stock_location:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            shipping_rates:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    allOf:
+                    - $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Payment:
+      title: Payment
+      type: object
+      description: ''
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: payment
+        attributes:
+          type: object
+          properties:
+            amount:
+              type: string
+              default: '200.57'
+            response_code:
+              type: integer
+              default: 192
+            number:
+              type: string
+              default: PV7B4YH0
+            cvv_response_code:
+              type: integer
+              default: 200
+            cvv_response_message:
+              type: string
+              default: authorized
+            payment_method_id:
+              type: integer
+              default: 1
+            payment_method_name:
+              type: string
+              default: Credit Card
+            state:
+              type: string
+              default: paid
+        relationships:
+          type: object
+          properties:
+            source:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            payment_method:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    DigitalLink:
+      title: Digital Link
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: digital_link
+        attributes:
+          type: object
+          properties:
+            token:
+              type: string
+              example: Gn6srBmmR4KrWy73LRtrBKYw
+        relationships:
+          type: object
+          properties:
+            line_item:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      description: Digital links are accessible in the order includes line_items.digital_links
     Timestamp:
       type: string
       format: date-time
@@ -551,6 +946,13 @@ components:
       - type
       - attributes
       - relationships
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
     Relation:
       type:
       - object
@@ -565,436 +967,7 @@ components:
       - type
       x-internal: false
       description: ''
-    User:
-      type: object
-      title: User
-      description: ' '
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: user
-        attributes:
-          type: object
-          properties:
-            email:
-              type: string
-              example: spree@example.com
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            selected_locale:
-              type: string
-              example: fr
-            store_credits:
-              type: number
-              example: 150.75
-            completed_orders:
-              type: number
-              example: 3
-              description: Number of placed Orders by this User
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of tags associated with the user
-            public_metadata:
-              type: object
-              example:
-                user_segment: supplier
-              description: The public metadata for this User
-        relationships:
-          type: object
-          properties:
-            default_billing_address:
-              type: object
-              description: Default billing address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            default_shipping_address:
-              type: object
-              description: Default shipping address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Payment:
-      title: Payment
-      type: object
-      description: ''
-      x-internal: false
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          default: payment
-        attributes:
-          type: object
-          properties:
-            amount:
-              type: string
-              default: '200.57'
-            response_code:
-              type: integer
-              default: 192
-            number:
-              type: string
-              default: PV7B4YH0
-            cvv_response_code:
-              type: integer
-              default: 200
-            cvv_response_message:
-              type: string
-              default: authorized
-            payment_method_id:
-              type: integer
-              default: 1
-            payment_method_name:
-              type: string
-              default: Credit Card
-            state:
-              type: string
-              default: paid
-        relationships:
-          type: object
-          properties:
-            source:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            payment_method:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Promotion:
-      type: object
-      title: Promotion
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: promotion
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: 10% Discount
-            description:
-              type: string
-              example: Super discount for you
-            amount:
-              type: string
-              example: '-10.0'
-            display_amount:
-              type: string
-              example: -$10.00
-            code:
-              type: string
-              example: BLK-FRI
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    DigitalLink:
-      title: Digital Link
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: digital_link
-        attributes:
-          type: object
-          properties:
-            token:
-              type: string
-              example: Gn6srBmmR4KrWy73LRtrBKYw
-        relationships:
-          type: object
-          properties:
-            line_item:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      description: Digital links are accessible in the order includes line_items.digital_links
-    Shipment:
-      type: object
-      title: Shipment
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: shipment
-        attributes:
-          type: object
-          properties:
-            number:
-              type: string
-              example: H121354
-              description: Unique Shipment identifier
-            free:
-              type: boolean
-              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
-            final_price:
-              type: string
-              example: '10.0'
-              description: Price to be presented for the Customer
-            display_final_price:
-              type: string
-              example: $10.00
-            tracking_url:
-              type:
-              - string
-              - 'null'
-              example: https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=4123412434%2C
-              description: Tracking URL to the service provider website
-            state:
-              type: string
-              example: shipped
-              enum:
-              - pending
-              - ready
-              - shipped
-              - canceled
-              description: "Status of the Shipment. For a list of all available statuses please refer: <a href=\"/developer/core-concepts/shipments\" target=\"_blank\" rel=\"noopener\">\n  Shipment section in Spree Guides\n</a>"
-            shipped_at:
-              type:
-              - string
-              - 'null'
-              format: date-time
-              example: '2021-01-02 13:42:12'
-              description: Date when Shipment was being sent from the warehouse
-        relationships:
-          type: object
-          properties:
-            stock_location:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            shipping_rates:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    allOf:
-                    - $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Product:
-      type: object
-      title: Product
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: product
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Example product
-            description:
-              type:
-              - string
-              - 'null'
-              example: Example description
-            available_on:
-              type:
-              - string
-              - 'null'
-              example: '2012-10-17T03:43:57Z'
-            slug:
-              type: string
-              example: example-product
-            price:
-              type:
-              - string
-              - 'null'
-              example: '15.99'
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type:
-              - string
-              - 'null'
-              example: $15.99
-            purchasable:
-              type: boolean
-              description: Indicates if any of Variants are in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if any of Variants are in stock
-            backorderable:
-              type: boolean
-              description: Indicates if any of Variants are backeorderable
-            meta_description:
-              type:
-              - string
-              - 'null'
-              example: Example product
-            meta_keywords:
-              type:
-              - string
-              - 'null'
-              example: example, product
-            updated_at:
-              $ref: '#/components/schemas/Timestamp'
-            sku:
-              type: string
-              example: 9238-WS
-            available:
-              type: boolean
-            compare_at_price:
-              type:
-              - string
-              - 'null'
-              example: '49.99'
-            display_compare_at_price:
-              type:
-              - string
-              - 'null'
-              example: $49.99
-            localized_slugs:
-              type: object
-              description: Provides product's slugs in other locales
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of tags associated with the product
-            labels:
-              type: array
-              items:
-                type: string
-              description: List of labels associated with the product
-        relationships:
-          type: object
-          properties:
-            variants:
-              type: object
-              description: List of Product Variants, excluding Master Variant
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_types:
-              type: object
-              description: List of Product Option Types
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            product_properties:
-              type: object
-              description: List of Product Properties
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            taxons:
-              type: object
-              description: List of Taxons associated with this Product
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              description: List of Images associated with this Product
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            default_variant:
-              type: object
-              description: The default Variant for this product
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            primary_variant:
-              type: object
-              description: The Primary Variant for this product
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
   responses:
-    422UnprocessableEntity:
-      description: 422 Unprocessable Entity
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            422 Example:
-              value:
-                error: Example is invalid
-                errors:
-                  example:
-                  - Example is invalid
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     Cart:
       description: 200 Success - Returns the `cart` object.
       content:
@@ -1508,6 +1481,33 @@ components:
                       data:
                         id: '1'
                         type: stock_location
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
   parameters:
     SparseFieldsCart:
       name: fields[cart]

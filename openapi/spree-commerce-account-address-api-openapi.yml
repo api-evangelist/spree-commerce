@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Account / Address API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -145,6 +145,34 @@ paths:
       - Account / Address
 components:
   responses:
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
     AddressList:
       description: 200 Success - Returns an array of `address` objects.
       content:
@@ -229,34 +257,6 @@ components:
                   prev: http://localhost:3000/api/v2/storefront/account/addresses?page=1
                   last: http://localhost:3000/api/v2/storefront/account/addresses?page=1
                   first: http://localhost:3000/api/v2/storefront/account/addresses?page=1
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     Address:
       description: 200 Success - Returns the `address` object.
       content:
@@ -287,6 +287,14 @@ components:
                     country_iso: US
                     label: Work
                     state_code: CA
+  parameters:
+    SparseFieldsAddress:
+      in: query
+      name: fields[address]
+      example: firstname,lastname,country_name
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
   schemas:
     Address:
       type: object
@@ -452,14 +460,6 @@ components:
         first:
           type: string
           description: URL to the first page of the listing
-  parameters:
-    SparseFieldsAddress:
-      in: query
-      name: fields[address]
-      example: firstname,lastname,country_name
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

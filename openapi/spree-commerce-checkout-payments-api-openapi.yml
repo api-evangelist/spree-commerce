@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Checkout / Payments API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -35,7 +35,7 @@ paths:
         System will automatically invalidate previous (non-finalized) payments (excluding store credit / gift card payments).
 
 
-        [More details on payment system](/developer/core-concepts/payments)'
+        More details on payment system'
       operationId: create-payment
       responses:
         '200':
@@ -130,72 +130,22 @@ paths:
       summary: List Payment Methods
 components:
   schemas:
-    Error:
+    CartIncludes:
       x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
-    Payment:
-      title: Payment
-      type: object
+      title: Cart Includes
+      anyOf:
+      - $ref: '#/components/schemas/LineItem'
+      - $ref: '#/components/schemas/Promotion'
+      - $ref: '#/components/schemas/Variant'
+      - $ref: '#/components/schemas/Payment'
+      - $ref: '#/components/schemas/User'
+      - $ref: '#/components/schemas/Shipment'
+      - $ref: '#/components/schemas/DigitalLink'
+      - $ref: '#/components/schemas/Product'
       description: ''
-      x-internal: false
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          default: payment
-        attributes:
-          type: object
-          properties:
-            amount:
-              type: string
-              default: '200.57'
-            response_code:
-              type: integer
-              default: 192
-            number:
-              type: string
-              default: PV7B4YH0
-            cvv_response_code:
-              type: integer
-              default: 200
-            cvv_response_message:
-              type: string
-              default: authorized
-            payment_method_id:
-              type: integer
-              default: 1
-            payment_method_name:
-              type: string
-              default: Credit Card
-            state:
-              type: string
-              default: paid
-        relationships:
-          type: object
-          properties:
-            source:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            payment_method:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Shipment:
+    LineItem:
+      title: Line Item
       type: object
-      title: Shipment
       x-internal: false
       properties:
         id:
@@ -203,67 +153,160 @@ components:
           example: '1'
         type:
           type: string
-          default: shipment
+          default: line_item
         attributes:
           type: object
           properties:
-            number:
+            name:
               type: string
-              example: H121354
-              description: Unique Shipment identifier
-            free:
-              type: boolean
-              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
-            final_price:
+              example: Sample product
+            quantity:
+              type: integer
+              example: 1
+            slug:
+              type: string
+              example: sample-product
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            price:
+              type: string
+              example: '125.0'
+              description: Price of Product per quantity
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $125.00
+              description: Price of Product per quantity
+            total:
+              type: string
+              example: '250.0'
+              description: Total price of Line Item including adjastments, promotions and taxes
+            display_total:
+              type: string
+              example: $250.00
+              description: Total price of Line Item including adjastments, promotions and taxes
+            adjustment_total:
               type: string
               example: '10.0'
-              description: Price to be presented for the Customer
-            display_final_price:
+              description: TBD
+            display_adjustment_total:
               type: string
               example: $10.00
-            tracking_url:
-              type:
-              - string
-              - 'null'
-              example: https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=4123412434%2C
-              description: Tracking URL to the service provider website
-            state:
+              description: TBD
+            additional_tax_total:
               type: string
-              example: shipped
-              enum:
-              - pending
-              - ready
-              - shipped
-              - canceled
-              description: "Status of the Shipment. For a list of all available statuses please refer: <a href=\"/developer/core-concepts/shipments\" target=\"_blank\" rel=\"noopener\">\n  Shipment section in Spree Guides\n</a>"
-            shipped_at:
-              type:
-              - string
-              - 'null'
-              format: date-time
-              example: '2021-01-02 13:42:12'
-              description: Date when Shipment was being sent from the warehouse
+              example: '5.0'
+            display_additional_tax_total:
+              type: string
+              example: $5.00
+            discounted_amount:
+              type: string
+              example: '125.0'
+            display_discounted_amount:
+              type: string
+              example: $125.00
+            pre_tax_amount:
+              type: string
+              example: '125.0'
+            display_pre_tax_amount:
+              type: string
+              example: $125.00
+            promo_total:
+              type: string
+              example: '-5.0'
+            display_promo_total:
+              type: string
+            included_tax_total:
+              type: string
+              example: '0.0'
+              description: Taxes included in the price, eg. VAT
+            display_inluded_tax_total:
+              type: string
+              example: $0.00
+            compare_at_amount:
+              type: string
+              example: '290.99'
+              description: Compare at price of the Line Item
+            display_compare_at_amount:
+              type: string
+              example: $290.99
+              description: Display compare at price of the Line Item
+            public_metadata:
+              type: object
+              example:
+                recommended_by_us: true
+              description: The public metadata for the Line Item.
         relationships:
           type: object
           properties:
-            stock_location:
+            variant:
               type: object
               properties:
                 data:
                   $ref: '#/components/schemas/Relation'
-            shipping_rates:
+            digital_links:
               type: object
               properties:
                 data:
                   type: array
                   items:
-                    allOf:
-                    - $ref: '#/components/schemas/Relation'
+                    $ref: '#/components/schemas/Relation'
       required:
       - id
       - type
       - attributes
       - relationships
+      description: ''
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    Promotion:
+      type: object
+      title: Promotion
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: promotion
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: 10% Discount
+            description:
+              type: string
+              example: Super discount for you
+            amount:
+              type: string
+              example: '-10.0'
+            display_amount:
+              type: string
+              example: -$10.00
+            code:
+              type: string
+              example: BLK-FRI
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
     Product:
       type: object
       title: Product
@@ -416,19 +459,110 @@ components:
       - type
       - attributes
       - relationships
-    CartIncludes:
+    User:
+      type: object
+      title: User
+      description: ' '
       x-internal: false
-      title: Cart Includes
-      anyOf:
-      - $ref: '#/components/schemas/LineItem'
-      - $ref: '#/components/schemas/Promotion'
-      - $ref: '#/components/schemas/Variant'
-      - $ref: '#/components/schemas/Payment'
-      - $ref: '#/components/schemas/User'
-      - $ref: '#/components/schemas/Shipment'
-      - $ref: '#/components/schemas/DigitalLink'
-      - $ref: '#/components/schemas/Product'
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: user
+        attributes:
+          type: object
+          properties:
+            email:
+              type: string
+              example: spree@example.com
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            selected_locale:
+              type: string
+              example: fr
+            store_credits:
+              type: number
+              example: 150.75
+            completed_orders:
+              type: number
+              example: 3
+              description: Number of placed Orders by this User
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the user
+            public_metadata:
+              type: object
+              example:
+                user_segment: supplier
+              description: The public metadata for this User
+        relationships:
+          type: object
+          properties:
+            default_billing_address:
+              type: object
+              description: Default billing address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            default_shipping_address:
+              type: object
+              description: Default shipping address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    PaymentMethod:
+      title: Payment Method
       description: ''
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: payment_method
+        attributes:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Gateway::StripeGateway
+            name:
+              type: string
+              example: Stripe
+            description:
+              type:
+              - string
+              - 'null'
+              example: Stripe Payments
+            preferences:
+              type: object
+      required:
+      - id
+      - type
+      - attributes
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
     Variant:
       title: Variant
       description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
@@ -529,76 +663,54 @@ components:
       - type
       - attributes
       - relationships
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    User:
+    Payment:
+      title: Payment
       type: object
-      title: User
-      description: ' '
+      description: ''
       x-internal: false
       properties:
         id:
           type: string
-          example: '1'
         type:
           type: string
-          default: user
+          default: payment
         attributes:
           type: object
           properties:
-            email:
+            amount:
               type: string
-              example: spree@example.com
-            first_name:
+              default: '200.57'
+            response_code:
+              type: integer
+              default: 192
+            number:
               type: string
-              example: John
-            last_name:
+              default: PV7B4YH0
+            cvv_response_code:
+              type: integer
+              default: 200
+            cvv_response_message:
               type: string
-              example: Doe
-            selected_locale:
+              default: authorized
+            payment_method_id:
+              type: integer
+              default: 1
+            payment_method_name:
               type: string
-              example: fr
-            store_credits:
-              type: number
-              example: 150.75
-            completed_orders:
-              type: number
-              example: 3
-              description: Number of placed Orders by this User
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of tags associated with the user
-            public_metadata:
-              type: object
-              example:
-                user_segment: supplier
-              description: The public metadata for this User
+              default: Credit Card
+            state:
+              type: string
+              default: paid
         relationships:
           type: object
           properties:
-            default_billing_address:
+            source:
               type: object
-              description: Default billing address associated with this Account
               properties:
                 data:
                   $ref: '#/components/schemas/Relation'
-            default_shipping_address:
+            payment_method:
               type: object
-              description: Default shipping address associated with this Account
               properties:
                 data:
                   $ref: '#/components/schemas/Relation'
@@ -607,38 +719,6 @@ components:
       - type
       - attributes
       - relationships
-    PaymentMethod:
-      title: Payment Method
-      description: ''
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: payment_method
-        attributes:
-          type: object
-          properties:
-            type:
-              type: string
-              example: Spree::Gateway::StripeGateway
-            name:
-              type: string
-              example: Stripe
-            description:
-              type:
-              - string
-              - 'null'
-              example: Stripe Payments
-            preferences:
-              type: object
-      required:
-      - id
-      - type
-      - attributes
     DigitalLink:
       title: Digital Link
       type: object
@@ -665,164 +745,6 @@ components:
                 data:
                   $ref: '#/components/schemas/Relation'
       description: Digital links are accessible in the order includes line_items.digital_links
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
-    Promotion:
-      type: object
-      title: Promotion
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: promotion
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: 10% Discount
-            description:
-              type: string
-              example: Super discount for you
-            amount:
-              type: string
-              example: '-10.0'
-            display_amount:
-              type: string
-              example: -$10.00
-            code:
-              type: string
-              example: BLK-FRI
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    LineItem:
-      title: Line Item
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: line_item
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Sample product
-            quantity:
-              type: integer
-              example: 1
-            slug:
-              type: string
-              example: sample-product
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            price:
-              type: string
-              example: '125.0'
-              description: Price of Product per quantity
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $125.00
-              description: Price of Product per quantity
-            total:
-              type: string
-              example: '250.0'
-              description: Total price of Line Item including adjastments, promotions and taxes
-            display_total:
-              type: string
-              example: $250.00
-              description: Total price of Line Item including adjastments, promotions and taxes
-            adjustment_total:
-              type: string
-              example: '10.0'
-              description: TBD
-            display_adjustment_total:
-              type: string
-              example: $10.00
-              description: TBD
-            additional_tax_total:
-              type: string
-              example: '5.0'
-            display_additional_tax_total:
-              type: string
-              example: $5.00
-            discounted_amount:
-              type: string
-              example: '125.0'
-            display_discounted_amount:
-              type: string
-              example: $125.00
-            pre_tax_amount:
-              type: string
-              example: '125.0'
-            display_pre_tax_amount:
-              type: string
-              example: $125.00
-            promo_total:
-              type: string
-              example: '-5.0'
-            display_promo_total:
-              type: string
-            included_tax_total:
-              type: string
-              example: '0.0'
-              description: Taxes included in the price, eg. VAT
-            display_inluded_tax_total:
-              type: string
-              example: $0.00
-            compare_at_amount:
-              type: string
-              example: '290.99'
-              description: Compare at price of the Line Item
-            display_compare_at_amount:
-              type: string
-              example: $290.99
-              description: Display compare at price of the Line Item
-            public_metadata:
-              type: object
-              example:
-                recommended_by_us: true
-              description: The public metadata for the Line Item.
-        relationships:
-          type: object
-          properties:
-            variant:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            digital_links:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-      description: ''
     Cart:
       description: The Cart provides a central place to collect information about an order, including line items, adjustments, payments, addresses, and shipments. [Read more in Spree docs](/developer/core-concepts/orders)
       type: object
@@ -1057,81 +979,85 @@ components:
       - type
       - attributes
       - relationships
-  parameters:
-    SparseFieldsCart:
-      name: fields[cart]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: token,currency,number
-    CartIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
-      example: line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card
-  responses:
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
-    422UnprocessableEntity:
-      description: 422 Unprocessable Entity
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            422 Example:
-              value:
-                error: Example is invalid
-                errors:
-                  example:
-                  - Example is invalid
-    PaymentMethodList:
-      description: 200 Success - Returns an array of `payment_method` objects.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PaymentMethod'
-            required:
-            - data
-          examples:
-            List of Payment Methods:
-              value:
+    Shipment:
+      type: object
+      title: Shipment
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: shipment
+        attributes:
+          type: object
+          properties:
+            number:
+              type: string
+              example: H121354
+              description: Unique Shipment identifier
+            free:
+              type: boolean
+              description: Indicates if the Shipping Rate is free, eg. when Free shipping promo applied to Cart
+            final_price:
+              type: string
+              example: '10.0'
+              description: Price to be presented for the Customer
+            display_final_price:
+              type: string
+              example: $10.00
+            tracking_url:
+              type:
+              - string
+              - 'null'
+              example: https://tools.usps.com/go/TrackConfirmAction?tRef=fullpage&tLc=2&text28777=&tLabels=4123412434%2C
+              description: Tracking URL to the service provider website
+            state:
+              type: string
+              example: shipped
+              enum:
+              - pending
+              - ready
+              - shipped
+              - canceled
+              description: "Status of the Shipment. For a list of all available statuses please refer: <a href=\"/developer/core-concepts/shipments\" target=\"_blank\" rel=\"noopener\">\n  Shipment section in Spree Guides\n</a>"
+            shipped_at:
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: '2021-01-02 13:42:12'
+              description: Date when Shipment was being sent from the warehouse
+        relationships:
+          type: object
+          properties:
+            stock_location:
+              type: object
+              properties:
                 data:
-                - id: '1'
-                  type: payment_method
-                  attributes:
-                    type: Spree::Gateway::Bogus
-                    name: Credit Card
-                    description: Bogus payment gateway.
-                    preferences:
-                      dummy_key: PUBLICKEY123
-                - id: '2'
-                  type: payment_method
-                  attributes:
-                    type: Spree::PaymentMethod::Check
-                    name: Check
-                    description: Pay by check.
-                    preferences: {}
+                  $ref: '#/components/schemas/Relation'
+            shipping_rates:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    allOf:
+                    - $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+  responses:
     Cart:
       description: 200 Success - Returns the `cart` object.
       content:
@@ -1645,6 +1571,80 @@ components:
                       data:
                         id: '1'
                         type: stock_location
+    PaymentMethodList:
+      description: 200 Success - Returns an array of `payment_method` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentMethod'
+            required:
+            - data
+          examples:
+            List of Payment Methods:
+              value:
+                data:
+                - id: '1'
+                  type: payment_method
+                  attributes:
+                    type: Spree::Gateway::Bogus
+                    name: Credit Card
+                    description: Bogus payment gateway.
+                    preferences:
+                      dummy_key: PUBLICKEY123
+                - id: '2'
+                  type: payment_method
+                  attributes:
+                    type: Spree::PaymentMethod::Check
+                    name: Check
+                    description: Pay by check.
+                    preferences: {}
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
+  parameters:
+    SparseFieldsCart:
+      name: fields[cart]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: token,currency,number
+    CartIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card
   securitySchemes:
     bearerAuth:
       type: http

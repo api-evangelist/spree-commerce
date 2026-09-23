@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Stripe API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -134,14 +134,6 @@ paths:
         '422':
           $ref: '#/components/responses/422UnprocessableEntity'
 components:
-  schemas:
-    Error:
-      x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
   responses:
     403Forbidden:
       description: 403 Forbidden - You are not authorized to access this page.
@@ -157,6 +149,38 @@ components:
             403 Example:
               value:
                 error: You are not authorized to access this page.
+    StripeSetupIntent:
+      description: 200 Success - Returns the `customer_id` of the authenticated user, created ephemeral key's secret and client secret of the created setup intent.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              customer_id:
+                type: string
+                description: 'Stripe''s customer ID of the authenticated user (or new one if unauthenticated).
+
+                  '
+              ephemeral_key_secret:
+                type: string
+                description: 'Secret of the created ephemeral key.
+
+                  '
+              setup_intent_client_secret:
+                type: string
+                description: 'Client secret of the created setup intent
+
+                  '
+            required:
+            - customer_id
+            - ephemeral_key_secret
+            - setup_intent_client_secret
+          examples:
+            Stripe Setup Intent:
+              value:
+                customer_id: cus_Q9uqUz6gVQFku2
+                ephemeral_key_secret: ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA
+                setup_intent_client_secret: seti_1PJb0hIhR0gIegIeZYQQuxpH_secret_Q9uqLuTAvIJQSK1SFS6OaxJMRpe9s7R
     404NotFound:
       description: 404 Not Found - Resource not found.
       content:
@@ -171,19 +195,6 @@ components:
             404 Example:
               value:
                 error: The resource you were looking for could not be found.
-    422UnprocessableEntity:
-      description: 422 Unprocessable Entity
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            422 Example:
-              value:
-                error: Example is invalid
-                errors:
-                  example:
-                  - Example is invalid
     StripePaymentIntent:
       description: 200 Success - Returns the Stripe Payment Intent with the Stripe ID, client key, ephemeral_key, customer_id, amount and Stripe Payment Method ID.
       content:
@@ -242,38 +253,27 @@ components:
                     customer_id: cus_Q9uqUz6gVQFku2
                     amount: '44.0'
                     stripe_payment_method_id: pm_1Qedd42ESifGlJez0IOx5AZ3
-    StripeSetupIntent:
-      description: 200 Success - Returns the `customer_id` of the authenticated user, created ephemeral key's secret and client secret of the created setup intent.
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
       content:
         application/vnd.api+json:
           schema:
-            type: object
-            properties:
-              customer_id:
-                type: string
-                description: 'Stripe''s customer ID of the authenticated user (or new one if unauthenticated).
-
-                  '
-              ephemeral_key_secret:
-                type: string
-                description: 'Secret of the created ephemeral key.
-
-                  '
-              setup_intent_client_secret:
-                type: string
-                description: 'Client secret of the created setup intent
-
-                  '
-            required:
-            - customer_id
-            - ephemeral_key_secret
-            - setup_intent_client_secret
+            $ref: '#/components/schemas/Error'
           examples:
-            Stripe Setup Intent:
+            422 Example:
               value:
-                customer_id: cus_Q9uqUz6gVQFku2
-                ephemeral_key_secret: ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA
-                setup_intent_client_secret: seti_1PJb0hIhR0gIegIeZYQQuxpH_secret_Q9uqLuTAvIJQSK1SFS6OaxJMRpe9s7R
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
+  schemas:
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

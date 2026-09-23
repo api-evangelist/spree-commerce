@@ -75,6 +75,8 @@ paths:
                   in: 2
                   previous: null
                   next: null
+      operationId: getApiV3AdminPromotionsByPromotionIdCouponCodes
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -137,6 +139,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminPromotionsByPromotionIdPromotionActions
+      x-operation-id-source: derived
     post:
       summary: Create an action on a promotion
       tags:
@@ -201,6 +205,8 @@ paths:
                   additionalProperties: true
               required:
               - type
+      operationId: postApiV3AdminPromotionsByPromotionIdPromotionActions
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -240,6 +246,8 @@ paths:
       responses:
         '204':
           description: action deleted
+      operationId: deleteApiV3AdminPromotionsByPromotionIdPromotionActionsById
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -307,6 +315,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminPromotionsByPromotionIdPromotionRules
+      x-operation-id-source: derived
     post:
       summary: Create a rule on a promotion
       tags:
@@ -376,6 +386,8 @@ paths:
                   additionalProperties: true
               required:
               - type
+      operationId: postApiV3AdminPromotionsByPromotionIdPromotionRules
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -442,6 +454,8 @@ paths:
                 preferences:
                   type: object
                   additionalProperties: true
+      operationId: patchApiV3AdminPromotionsByPromotionIdPromotionRulesById
+      x-operation-id-source: derived
     delete:
       summary: Delete a rule from a promotion
       tags:
@@ -464,6 +478,8 @@ paths:
       responses:
         '204':
           description: rule deleted
+      operationId: deleteApiV3AdminPromotionsByPromotionIdPromotionRulesById
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -534,6 +550,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminPromotions
+      x-operation-id-source: derived
     post:
       summary: Create a promotion
       tags:
@@ -551,7 +569,6 @@ paths:
         `{ type, preferences, ... }` rows. The server reconciles to the desired set:
 
         new rows are built, existing rows (by `id`) are updated, omitted rows are removed.
-
 
 
         **Required scope:** `write_promotions` (for API-key authentication).'
@@ -718,6 +735,8 @@ paths:
                     - type
               required:
               - name
+      operationId: postApiV3AdminPromotions
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -775,6 +794,8 @@ paths:
                 - store_UkLWZg9DAJ
                 action_ids: []
                 rule_ids: []
+      operationId: getApiV3AdminPromotionsById
+      x-operation-id-source: derived
     patch:
       summary: Update a promotion
       tags:
@@ -789,7 +810,6 @@ paths:
         built fresh, and any existing row not present in the array is destroyed.
 
         Pass `rules: []` or `actions: []` to clear them.
-
 
 
         **Required scope:** `write_promotions` (for API-key authentication).'
@@ -940,6 +960,8 @@ paths:
                             additionalProperties: true
                     required:
                     - type
+      operationId: patchApiV3AdminPromotionsById
+      x-operation-id-source: derived
     delete:
       summary: Delete a promotion
       tags:
@@ -967,6 +989,8 @@ paths:
       responses:
         '204':
           description: promotion deleted
+      operationId: deleteApiV3AdminPromotionsById
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -1022,6 +1046,8 @@ paths:
                   label: Free shipping
                   description: null
                   preference_schema: []
+      operationId: getApiV3AdminPromotionActionsTypes
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -1144,6 +1170,8 @@ paths:
                   - key: match_policy
                     type: string
                     default: any
+      operationId: getApiV3AdminPromotionRulesTypes
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -1691,6 +1719,266 @@ components:
       - promotion
       title: Add an Action to a Promotion
       x-internal: false
+    update_promotion_change_calculator_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
+                    calculator_attributes:
+                      properties:
+                        type:
+                          type: string
+                          example: Spree::Calculator::FlatPercentItemTotal
+                          enum:
+                          - Spree::Calculator::FlatPercentItemTotal
+                          - Spree::Calculator::FlatRate
+                          - Spree::Calculator::FlexiRate
+                          - Spree::Calculator::TieredPercent
+                          - Spree::Calculator::TieredFlatRate
+                          - Spree::Calculator::PercentOnLineItem
+                          description: 'To set the Promotion Action Calculator pass the calculator type. Each Promotion action has certain Calculators available, to learn more visit TODO: [LINK]'
+      required:
+      - promotion
+      title: Change an Action Calculator
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_promotion_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Promotions Used in 2021
+              description: Change the promotion a name.
+            code:
+              type:
+              - string
+              - 'null'
+              example: CYB-MON
+              description: Change or remove the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
+            description:
+              type:
+              - string
+              - 'null'
+              example: Save today with discount code XYZ at checkout.
+              description: Update the promotion a description.
+            usage_limit:
+              type:
+              - integer
+              - 'null'
+              example: 100
+              description: If you wish you can set a usage limit for this promotion.
+            advertise:
+              type: boolean
+            starts_at:
+              type:
+              - string
+              - 'null'
+              format: date_time
+              description: Set a date and time that this promotion begins.
+            ends_at:
+              type:
+              - string
+              - 'null'
+              format: date_time
+              description: Set a date and time that this promotion ends.
+            store_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+      required:
+      - promotion
+      title: Update a Promotion
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_promotion_add_rule_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_rules_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    type:
+                      type: string
+                      example: Spree::Promotion::Rules::Country
+                      enum:
+                      - Spree::Promotion::Rules::Country
+                      - Spree::Promotion::Rules::ItemTotal
+                      - Spree::Promotion::Rules::Product
+                      - Spree::Promotion::Rules::User
+                      - Spree::Promotion::Rules::FirstOrder
+                      - Spree::Promotion::Rules::UserLoggedIn
+                      - Spree::Promotion::Rules::OneUsePerUser
+                      - Spree::Promotion::Rules::Taxon
+                      - Spree::Promotion::Rules::OptionValue
+                      description: Set the Promotion Rule type.
+                    preferred_country_id:
+                      type: integer
+                      example: 122
+                      description: 'Each rule type has its own preferred attributes. In this example we are setting the ID of the Country this rule applies to. To learn more about Spree preferences visit TODO: [LINK].'
+      required:
+      - promotion
+      title: Add a Rule to a Promotion
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    update_promotion_change_action_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
+                    type:
+                      type: string
+                      example: Spree::Promotion::Actions::CreateAdjustment
+                      enum:
+                      - Spree::Promotion::Actions::CreateAdjustment
+                      - Spree::Promotion::Actions::CreateItemAdjustments
+                      - Spree::Promotion::Actions::CreateLineItems
+                      - Spree::Promotion::Actions::FreeShipping
+                      description: Set the Type of Promotion Action you wish to use.
+      required:
+      - promotion
+      title: Change an Action Type
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    update_promotion_action_calculator_params:
+      type: object
+      properties:
+        promotion:
+          type: object
+          properties:
+            promotion_actions_attributes:
+              type: array
+              items:
+                allOf:
+                - properties:
+                    id:
+                      type: string
+                      example: '22'
+                      description: To update an existing Promotion Action, you are required to pass the ID of the action you wish to update.
+                    calculator_attributes:
+                      properties:
+                        id:
+                          type: string
+                          example: '19'
+                          description: To update an existing Action Calculator, you are required to pass the ID of the calculator.
+                        type:
+                          type: string
+                          example: Spree::Promotion::Actions::CreateAdjustment
+                          enum:
+                          - Spree::Promotion::Actions::CreateAdjustment
+                          - Spree::Promotion::Actions::CreateItemAdjustments
+                          - Spree::Promotion::Actions::CreateLineItems
+                          - Spree::Promotion::Actions::FreeShipping
+                          description: Set the Type of Promotion Action you wish to use.
+                        preferred_flat_percent:
+                          type: integer
+                          example: 10
+                          description: In this example we are setting the preferred flat percentage to `10`.
+      required:
+      - promotion
+      title: Update an Action Calculator
+      x-internal: false
     create_promotion_params:
       type: object
       properties:
@@ -1782,160 +2070,6 @@ components:
       - promotion
       title: Update an existing Rule
       x-internal: false
-    update_promotion_add_rule_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_rules_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    type:
-                      type: string
-                      example: Spree::Promotion::Rules::Country
-                      enum:
-                      - Spree::Promotion::Rules::Country
-                      - Spree::Promotion::Rules::ItemTotal
-                      - Spree::Promotion::Rules::Product
-                      - Spree::Promotion::Rules::User
-                      - Spree::Promotion::Rules::FirstOrder
-                      - Spree::Promotion::Rules::UserLoggedIn
-                      - Spree::Promotion::Rules::OneUsePerUser
-                      - Spree::Promotion::Rules::Taxon
-                      - Spree::Promotion::Rules::OptionValue
-                      description: Set the Promotion Rule type.
-                    preferred_country_id:
-                      type: integer
-                      example: 122
-                      description: 'Each rule type has its own preferred attributes. In this example we are setting the ID of the Country this rule applies to. To learn more about Spree preferences visit TODO: [LINK].'
-      required:
-      - promotion
-      title: Add a Rule to a Promotion
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    resources_list:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
-      required:
-      - data
-      - meta
-      - links
-      x-internal: false
-    update_promotion_change_calculator_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_actions_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    id:
-                      type: string
-                      example: '22'
-                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
-                    calculator_attributes:
-                      properties:
-                        type:
-                          type: string
-                          example: Spree::Calculator::FlatPercentItemTotal
-                          enum:
-                          - Spree::Calculator::FlatPercentItemTotal
-                          - Spree::Calculator::FlatRate
-                          - Spree::Calculator::FlexiRate
-                          - Spree::Calculator::TieredPercent
-                          - Spree::Calculator::TieredFlatRate
-                          - Spree::Calculator::PercentOnLineItem
-                          description: 'To set the Promotion Action Calculator pass the calculator type. Each Promotion action has certain Calculators available, to learn more visit TODO: [LINK]'
-      required:
-      - promotion
-      title: Change an Action Calculator
-      x-internal: false
-    update_promotion_change_action_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_actions_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    id:
-                      type: string
-                      example: '22'
-                      description: To update an existing Promotion Action, you are required to pass the ID of the Promotion Action.
-                    type:
-                      type: string
-                      example: Spree::Promotion::Actions::CreateAdjustment
-                      enum:
-                      - Spree::Promotion::Actions::CreateAdjustment
-                      - Spree::Promotion::Actions::CreateItemAdjustments
-                      - Spree::Promotion::Actions::CreateLineItems
-                      - Spree::Promotion::Actions::FreeShipping
-                      description: Set the Type of Promotion Action you wish to use.
-      required:
-      - promotion
-      title: Change an Action Type
-      x-internal: false
     validation_errors:
       type: object
       properties:
@@ -1946,112 +2080,6 @@ components:
       required:
       - error
       - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    update_promotion_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Promotions Used in 2021
-              description: Change the promotion a name.
-            code:
-              type:
-              - string
-              - 'null'
-              example: CYB-MON
-              description: Change or remove the promotion code. Promotions without a code are automatically applied if the order meets the Promotion Rule requirements.
-            description:
-              type:
-              - string
-              - 'null'
-              example: Save today with discount code XYZ at checkout.
-              description: Update the promotion a description.
-            usage_limit:
-              type:
-              - integer
-              - 'null'
-              example: 100
-              description: If you wish you can set a usage limit for this promotion.
-            advertise:
-              type: boolean
-            starts_at:
-              type:
-              - string
-              - 'null'
-              format: date_time
-              description: Set a date and time that this promotion begins.
-            ends_at:
-              type:
-              - string
-              - 'null'
-              format: date_time
-              description: Set a date and time that this promotion ends.
-            store_ids:
-              type: array
-              items:
-                allOf:
-                - type: string
-                  example: '2'
-      required:
-      - promotion
-      title: Update a Promotion
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    update_promotion_action_calculator_params:
-      type: object
-      properties:
-        promotion:
-          type: object
-          properties:
-            promotion_actions_attributes:
-              type: array
-              items:
-                allOf:
-                - properties:
-                    id:
-                      type: string
-                      example: '22'
-                      description: To update an existing Promotion Action, you are required to pass the ID of the action you wish to update.
-                    calculator_attributes:
-                      properties:
-                        id:
-                          type: string
-                          example: '19'
-                          description: To update an existing Action Calculator, you are required to pass the ID of the calculator.
-                        type:
-                          type: string
-                          example: Spree::Promotion::Actions::CreateAdjustment
-                          enum:
-                          - Spree::Promotion::Actions::CreateAdjustment
-                          - Spree::Promotion::Actions::CreateItemAdjustments
-                          - Spree::Promotion::Actions::CreateLineItems
-                          - Spree::Promotion::Actions::FreeShipping
-                          description: Set the Type of Promotion Action you wish to use.
-                        preferred_flat_percent:
-                          type: integer
-                          example: 10
-                          description: In this example we are setting the preferred flat percentage to `10`.
-      required:
-      - promotion
-      title: Update an Action Calculator
       x-internal: false
   securitySchemes:
     api_key:

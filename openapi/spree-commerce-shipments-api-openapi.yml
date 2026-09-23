@@ -975,7 +975,6 @@ paths:
       - Shipments
       security:
       - bearer_auth: []
-      description: Cancels the Shipment
       operationId: cancel-shipment
       parameters:
       - name: id
@@ -1187,7 +1186,6 @@ paths:
       - Shipments
       security:
       - bearer_auth: []
-      description: Moves Shipment back to pending state
       operationId: pend-shipment
       parameters:
       - name: id
@@ -1288,7 +1286,7 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    remove_item_shipment_params:
+    add_item_shipment_params:
       type: object
       properties:
         shipment:
@@ -1302,6 +1300,26 @@ components:
             quantity:
               type: integer
               example: 2
+      required:
+      - shipping_category
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_shipment_params:
+      type: object
+      properties:
+        shipment:
+          type: object
+          properties:
+            tracking:
+              type: string
+              example: MY-TRACKING-REF-12324
       required:
       - shipping_category
       x-internal: false
@@ -1321,14 +1339,22 @@ components:
       - type
       - attributes
       x-internal: false
-    add_item_shipment_params:
+    create_shipment_params:
       type: object
       properties:
         shipment:
           type: object
           required:
+          - stock_location_id
+          - order_id
           - variant_id
           properties:
+            stock_location_id:
+              type: string
+              example: '101'
+            order_id:
+              type: string
+              example: '101'
             variant_id:
               type: string
               example: '101'
@@ -1337,6 +1363,14 @@ components:
               example: 2
       required:
       - shipping_category
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -1383,22 +1417,14 @@ components:
       - meta
       - links
       x-internal: false
-    create_shipment_params:
+    remove_item_shipment_params:
       type: object
       properties:
         shipment:
           type: object
           required:
-          - stock_location_id
-          - order_id
           - variant_id
           properties:
-            stock_location_id:
-              type: string
-              example: '101'
-            order_id:
-              type: string
-              example: '101'
             variant_id:
               type: string
               example: '101'
@@ -1418,34 +1444,6 @@ components:
       required:
       - error
       - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    update_shipment_params:
-      type: object
-      properties:
-        shipment:
-          type: object
-          properties:
-            tracking:
-              type: string
-              example: MY-TRACKING-REF-12324
-      required:
-      - shipping_category
       x-internal: false
   securitySchemes:
     bearer_auth:

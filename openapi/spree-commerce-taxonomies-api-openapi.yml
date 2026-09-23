@@ -373,28 +373,13 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    update_taxonomy_params:
+    resource:
       type: object
       properties:
-        taxonomy:
-          type: object
-          properties:
-            name:
-              type: string
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this Taxonomy to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            public_metadata:
-              type: object
-              example:
-                ability_to_recycle: 90%
-            private_metadata:
-              type: object
-              example:
-                profitability: 2
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - taxonomy
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -412,30 +397,13 @@ components:
       - type
       - attributes
       x-internal: false
-    create_taxonomy_params:
+    error:
       type: object
       properties:
-        taxonomy:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this Taxonomy to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            public_metadata:
-              type: object
-              example:
-                ability_to_recycle: 90%
-            private_metadata:
-              type: object
-              example:
-                profitability: 2
+        error:
+          type: string
       required:
-      - taxonomy
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -482,6 +450,54 @@ components:
       - meta
       - links
       x-internal: false
+    update_taxonomy_params:
+      type: object
+      properties:
+        taxonomy:
+          type: object
+          properties:
+            name:
+              type: string
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this Taxonomy to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            public_metadata:
+              type: object
+              example:
+                ability_to_recycle: 90%
+            private_metadata:
+              type: object
+              example:
+                profitability: 2
+      required:
+      - taxonomy
+      x-internal: false
+    create_taxonomy_params:
+      type: object
+      properties:
+        taxonomy:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this Taxonomy to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            public_metadata:
+              type: object
+              example:
+                ability_to_recycle: 90%
+            private_metadata:
+              type: object
+              example:
+                profitability: 2
+      required:
+      - taxonomy
+      x-internal: false
     validation_errors:
       type: object
       properties:
@@ -492,22 +508,6 @@ components:
       required:
       - error
       - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
   securitySchemes:
     bearer_auth:

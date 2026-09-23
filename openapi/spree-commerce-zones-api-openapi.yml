@@ -347,6 +347,14 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -363,28 +371,13 @@ components:
       - type
       - attributes
       x-internal: false
-    update_zone_params:
+    error:
       type: object
       properties:
-        address:
-          type: object
-          properties:
-            name:
-              type: string
-              example: EU
-            description:
-              type: string
-              example: All countries in the EU
-            default_tax:
-              type: boolean
-            kind:
-              type: string
-              example: state
-              enum:
-              - state
-              - country
+        error:
+          type: string
       required:
-      - zone
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -431,16 +424,28 @@ components:
       - meta
       - links
       x-internal: false
-    validation_errors:
+    update_zone_params:
       type: object
       properties:
-        error:
-          type: string
-        errors:
+        address:
           type: object
+          properties:
+            name:
+              type: string
+              example: EU
+            description:
+              type: string
+              example: All countries in the EU
+            default_tax:
+              type: boolean
+            kind:
+              type: string
+              example: state
+              enum:
+              - state
+              - country
       required:
-      - error
-      - errors
+      - zone
       x-internal: false
     create_zone_params:
       type: object
@@ -467,21 +472,16 @@ components:
       required:
       - zone
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
+    validation_errors:
       type: object
       properties:
         error:
           type: string
+        errors:
+          type: object
       required:
       - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

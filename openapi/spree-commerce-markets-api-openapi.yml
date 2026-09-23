@@ -5,7 +5,7 @@ info:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Store API v3 - Customer-facing storefront API for building headless commerce experiences.\n\n## Authentication\n\nThe Store API uses two authentication methods:\n\n### API Key (Required)\nAll requests must include a publishable API key in the `x-spree-api-key` header.\n\n### JWT Bearer Token (For authenticated customers)\nAfter login, include the JWT token in the `Authorization: Bearer <token>` header.\n\n### Order Token (For guest checkout)\nWhen creating an order, a `token` is returned. Include this in the `x-spree-token` header\nfor guest access to that specific order.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"record_not_found\",\n    \"message\": \"Product not found\"\n  }\n}\n```\n"
+  description: Spree Store API v3 - Customer-facing storefront API for building headless commerce experiences.
   version: v3
 servers:
 - url: http://{defaultHost}
@@ -76,6 +76,8 @@ paths:
                   message: Valid API key required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreCountries
+      x-operation-id-source: derived
   /api/v3/store/countries/{iso}:
     get:
       summary: Get a country
@@ -146,6 +148,8 @@ paths:
                   message: Country not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreCountriesByIso
+      x-operation-id-source: derived
   /api/v3/store/currencies:
     get:
       summary: List supported currencies
@@ -202,6 +206,8 @@ paths:
                   message: Valid API key required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreCurrencies
+      x-operation-id-source: derived
   /api/v3/store/locales:
     get:
       summary: List supported locales
@@ -256,6 +262,8 @@ paths:
                   message: Valid API key required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreLocales
+      x-operation-id-source: derived
   /api/v3/store/markets:
     get:
       summary: List markets
@@ -340,6 +348,8 @@ paths:
                   message: Valid API key required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreMarkets
+      x-operation-id-source: derived
   /api/v3/store/markets/{id}:
     get:
       summary: Get a market
@@ -409,6 +419,8 @@ paths:
                   message: Market not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreMarketsById
+      x-operation-id-source: derived
   /api/v3/store/markets/resolve:
     get:
       summary: Resolve market by country
@@ -478,6 +490,8 @@ paths:
                   message: Country not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreMarketsResolve
+      x-operation-id-source: derived
   /api/v3/store/markets/{market_id}/countries:
     get:
       summary: List countries in a market
@@ -532,6 +546,8 @@ paths:
                     type: array
                 required:
                 - data
+      operationId: getApiV3StoreMarketsByMarketIdCountries
+      x-operation-id-source: derived
   /api/v3/store/markets/{market_id}/countries/{id}:
     get:
       summary: Get a country in a market
@@ -591,6 +607,8 @@ paths:
                   message: Country not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreMarketsByMarketIdCountriesById
+      x-operation-id-source: derived
 components:
   schemas:
     Market:
@@ -624,47 +642,6 @@ components:
       - tax_inclusive
       - default
       - supported_locales
-      x-typelizer: true
-    Currency:
-      type: object
-      properties:
-        iso_code:
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
-      required:
-      - iso_code
-      - name
-      - symbol
-      x-typelizer: true
-    Country:
-      type: object
-      properties:
-        iso:
-          type: string
-        iso3:
-          type: string
-        name:
-          type: string
-        states_required:
-          type: boolean
-        zipcode_required:
-          type: boolean
-        states:
-          type: array
-          items:
-            $ref: '#/components/schemas/State'
-        market:
-          allOf:
-          - $ref: '#/components/schemas/Market'
-      required:
-      - iso
-      - iso3
-      - name
-      - states_required
-      - zipcode_required
       x-typelizer: true
     Locale:
       type: object
@@ -714,6 +691,20 @@ components:
             - is too short
             email:
             - is invalid
+    Currency:
+      type: object
+      properties:
+        iso_code:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+      required:
+      - iso_code
+      - name
+      - symbol
+      x-typelizer: true
     State:
       type: object
       properties:
@@ -724,6 +715,33 @@ components:
       required:
       - abbr
       - name
+      x-typelizer: true
+    Country:
+      type: object
+      properties:
+        iso:
+          type: string
+        iso3:
+          type: string
+        name:
+          type: string
+        states_required:
+          type: boolean
+        zipcode_required:
+          type: boolean
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/State'
+        market:
+          allOf:
+          - $ref: '#/components/schemas/Market'
+      required:
+      - iso
+      - iso3
+      - name
+      - states_required
+      - zipcode_required
       x-typelizer: true
   securitySchemes:
     api_key:

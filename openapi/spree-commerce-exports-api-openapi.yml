@@ -5,7 +5,7 @@ info:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  description: Spree Admin API v3 - Administrative API for managing products, orders, and store settings.
   version: v3
 servers:
 - url: http://{defaultHost}
@@ -70,6 +70,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminExports
+      x-operation-id-source: derived
     post:
       summary: Create an export
       tags:
@@ -89,7 +91,6 @@ paths:
         Generation is asynchronous. Poll `GET /admin/exports/{id}` until `done` is `true`,
 
         then redirect the browser to `download_url` to fetch the file.
-
 
 
         **Required scope:** `write_exports` (for API-key authentication).'
@@ -157,6 +158,8 @@ paths:
                   example:
                     name_cont: shirt
                   additionalProperties: true
+      operationId: postApiV3AdminExports
+      x-operation-id-source: derived
   /api/v3/admin/exports/{id}:
     get:
       summary: Show an export
@@ -206,6 +209,8 @@ paths:
                 filename: null
                 byte_size: null
                 download_url: null
+      operationId: getApiV3AdminExportsById
+      x-operation-id-source: derived
     delete:
       summary: Delete an export
       tags:
@@ -240,6 +245,8 @@ paths:
       responses:
         '204':
           description: export deleted
+      operationId: deleteApiV3AdminExportsById
+      x-operation-id-source: derived
   /api/v3/admin/exports/{id}/download:
     get:
       summary: Download an export
@@ -281,6 +288,8 @@ paths:
               schema:
                 type: string
                 format: binary
+      operationId: getApiV3AdminExportsByIdDownload
+      x-operation-id-source: derived
 components:
   securitySchemes:
     api_key:

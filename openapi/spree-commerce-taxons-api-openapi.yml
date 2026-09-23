@@ -568,7 +568,6 @@ paths:
       security:
       - bearer_auth: []
       operationId: reposition-taxon
-      description: Reposition a Taxon
       parameters:
       - name: id
         in: path
@@ -655,7 +654,7 @@ paths:
           default: localhost:3000
   /api/v2/storefront/taxons:
     get:
-      description: Returns a list of Taxons. [Read more about Taxons](/developer/core-concepts/products#taxons-and-taxonomies)
+      description: Returns a list of Taxons. Read more about Taxons
       tags:
       - Taxons
       operationId: taxons-list
@@ -728,31 +727,13 @@ paths:
       description: localhost
 components:
   schemas:
-    create_taxon_params:
+    resource:
       type: object
       properties:
-        taxon:
-          type: object
-          required:
-          - name
-          - taxonomy_id
-          properties:
-            taxonomy_id:
-              type: string
-            parent_id:
-              type: string
-            name:
-              type: string
-            public_metadata:
-              type: object
-              example:
-                ability_to_recycle: 90%
-            private_metadata:
-              type: object
-              example:
-                profitability: 2
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - taxon
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -769,6 +750,35 @@ components:
       - id
       - type
       - attributes
+      x-internal: false
+    taxon_reposition:
+      type: object
+      properties:
+        taxon:
+          type: object
+          required:
+          - new_parent_id
+          - new_position_idx
+          properties:
+            new_parent_id:
+              type: integer
+              example: 1
+              description: The ID of the new target parent Taxon.
+            new_position_idx:
+              type: integer
+              example: 1
+              description: The new index position of the Taxon within the parent Taxon.
+      required:
+      - taxon
+      title: Reposition a Taxon
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     update_taxon_params:
       type: object
@@ -834,6 +844,32 @@ components:
       - meta
       - links
       x-internal: false
+    create_taxon_params:
+      type: object
+      properties:
+        taxon:
+          type: object
+          required:
+          - name
+          - taxonomy_id
+          properties:
+            taxonomy_id:
+              type: string
+            parent_id:
+              type: string
+            name:
+              type: string
+            public_metadata:
+              type: object
+              example:
+                ability_to_recycle: 90%
+            private_metadata:
+              type: object
+              example:
+                profitability: 2
+      required:
+      - taxon
+      x-internal: false
     validation_errors:
       type: object
       properties:
@@ -845,43 +881,44 @@ components:
       - error
       - errors
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
+    TaxonIncludes:
       x-internal: false
-    error:
+      title: Taxon Includes
+      anyOf:
+      - $ref: '#/components/schemas/Product'
+      - $ref: '#/components/schemas/TaxonImage'
+      - $ref: '#/components/schemas/Taxonomy'
+    ImageStyle:
+      x-internal: false
+      title: Image Style
       type: object
       properties:
-        error:
+        url:
+          type: string
+          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
+          description: Absolute URL of the uploaded image in selected style (width/height)
+        width:
+          type: integer
+          example: 1920
+          description: Actual width of image
+        height:
+          type: integer
+          example: 1080
+          description: Actual height of image
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
           type: string
       required:
-      - error
+      - id
+      - type
       x-internal: false
-    taxon_reposition:
-      type: object
-      properties:
-        taxon:
-          type: object
-          required:
-          - new_parent_id
-          - new_position_idx
-          properties:
-            new_parent_id:
-              type: integer
-              example: 1
-              description: The ID of the new target parent Taxon.
-            new_position_idx:
-              type: integer
-              example: 1
-              description: The new index position of the Taxon within the parent Taxon.
-      required:
-      - taxon
-      title: Reposition a Taxon
-      x-internal: false
+      description: ''
     Product:
       type: object
       title: Product
@@ -1034,27 +1071,30 @@ components:
       - type
       - attributes
       - relationships
-    TaxonIncludes:
+    Taxonomy:
+      type: object
+      title: Taxonomy
       x-internal: false
-      title: Taxon Includes
-      anyOf:
-      - $ref: '#/components/schemas/Product'
-      - $ref: '#/components/schemas/TaxonImage'
-      - $ref: '#/components/schemas/Taxonomy'
-    Relation:
-      type:
-      - object
-      - 'null'
       properties:
         id:
           type: string
+          example: '1'
         type:
           type: string
+          default: taxonomy
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Categories
+            position:
+              type: integer
+              example: 0
       required:
       - id
       - type
-      x-internal: false
-      description: ''
+      - attributes
     Timestamp:
       type: string
       format: date-time
@@ -1100,74 +1140,6 @@ components:
         first:
           type: string
           description: URL to the first page of the listing
-    Taxonomy:
-      type: object
-      title: Taxonomy
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: taxonomy
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Categories
-            position:
-              type: integer
-              example: 0
-      required:
-      - id
-      - type
-      - attributes
-    ImageStyle:
-      x-internal: false
-      title: Image Style
-      type: object
-      properties:
-        url:
-          type: string
-          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
-          description: Absolute URL of the uploaded image in selected style (width/height)
-        width:
-          type: integer
-          example: 1920
-          description: Actual width of image
-        height:
-          type: integer
-          example: 1080
-          description: Actual height of image
-    TaxonImage:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: taxon_image
-        attributes:
-          type: object
-          properties:
-            position:
-              type: integer
-              example: 0
-              description: Sort order of images set in the Admin Panel
-            styles:
-              type: array
-              description: An array of pre-scaled image styles
-              items:
-                $ref: '#/components/schemas/ImageStyle'
-      required:
-      - id
-      - type
-      - attributes
-      title: Taxon Image
-      x-internal: false
     Taxon:
       title: Taxon
       type: object
@@ -1283,72 +1255,907 @@ components:
       - type
       - attributes
       - relationships
-  parameters:
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
-    FilterByIds:
-      in: query
-      name: filter[ids]
-      schema:
-        type: string
-      example: 1,2,3
-      description: Fetch only resources with corresponding IDs
-    SparseFieldsTaxon:
-      in: query
-      name: fields[taxon]
-      example: name,pretty_name,permalink
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
-    TaxonIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
-      example: parent,taxonomy,children,image,products
-    FilterByName:
-      in: query
-      name: filter[name]
-      schema:
-        type: string
-      example: rails
-      description: Find resources with matching name (supports wild-card, partial-word match search)
-    TaxonPermalink:
-      name: taxon_permalink
-      in: path
-      required: true
-      description: Specify the taxon using the permalink or taxon ID.
-      schema:
-        type: string
-      example: categories/women
+    TaxonImage:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: taxon_image
+        attributes:
+          type: object
+          properties:
+            position:
+              type: integer
+              example: 0
+              description: Sort order of images set in the Admin Panel
+            styles:
+              type: array
+              description: An array of pre-scaled image styles
+              items:
+                $ref: '#/components/schemas/ImageStyle'
+      required:
+      - id
+      - type
+      - attributes
+      title: Taxon Image
+      x-internal: false
   responses:
-    404NotFound:
-      description: 404 Not Found - Resource not found.
+    TaxonList:
+      description: 200 Success - Returns an array of `taxon` objects.
       content:
         application/vnd.api+json:
           schema:
+            type: object
             properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taxon'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonIncludes'
+              meta:
+                $ref: '#/components/schemas/ListMeta'
+              links:
+                $ref: '#/components/schemas/ListLinks'
+            required:
+            - data
+            - meta
+            - links
           examples:
-            404 Example:
+            Standard Response:
               value:
-                error: The resource you were looking for could not be found.
+                data:
+                - id: '22'
+                  type: taxon
+                  attributes:
+                    name: Summer Sale
+                    pretty_name: Categories -> Summer Sale
+                    permalink: categories/summer-sale
+                    seo_title: Summer Sale
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 42
+                    right: 43
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '17'
+                  type: taxon
+                  attributes:
+                    name: Pants
+                    pretty_name: Categories -> Sportswear -> Pants
+                    permalink: categories/sportswear/pants
+                    seo_title: Pants
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 31
+                    right: 32
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '4'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '19'
+                  type: taxon
+                  attributes:
+                    name: Bestsellers
+                    pretty_name: Categories -> Bestsellers
+                    permalink: categories/bestsellers
+                    seo_title: Bestsellers
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 36
+                    right: 37
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.082Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '16'
+                  type: taxon
+                  attributes:
+                    name: Sweatshirts
+                    pretty_name: Categories -> Sportswear -> Sweatshirts
+                    permalink: categories/sportswear/sweatshirts
+                    seo_title: Sweatshirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 29
+                    right: 30
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.054Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '4'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '6'
+                  type: taxon
+                  attributes:
+                    name: T-shirts
+                    pretty_name: Categories -> Men -> T-shirts
+                    permalink: categories/men/t-shirts
+                    seo_title: T-shirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 5
+                    right: 6
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:12.242Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '4'
+                  type: taxon
+                  attributes:
+                    name: Sportswear
+                    pretty_name: Categories -> Sportswear
+                    permalink: categories/sportswear
+                    seo_title: Sportswear
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 26
+                    right: 33
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '15'
+                        type: taxon
+                      - id: '16'
+                        type: taxon
+                      - id: '17'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '9'
+                  type: taxon
+                  attributes:
+                    name: Skirts
+                    pretty_name: Categories -> Women -> Skirts
+                    permalink: categories/women/skirts
+                    seo_title: Skirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 13
+                    right: 14
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:13.076Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '12'
+                  type: taxon
+                  attributes:
+                    name: Sweaters
+                    pretty_name: Categories -> Women -> Sweaters
+                    permalink: categories/women/sweaters
+                    seo_title: Sweaters
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 19
+                    right: 20
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.071Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '15'
+                  type: taxon
+                  attributes:
+                    name: Tops
+                    pretty_name: Categories -> Sportswear -> Tops
+                    permalink: categories/sportswear/tops
+                    seo_title: Tops
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 27
+                    right: 28
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.916Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '4'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '5'
+                  type: taxon
+                  attributes:
+                    name: Shirts
+                    pretty_name: Categories -> Men -> Shirts
+                    permalink: categories/men/shirts
+                    seo_title: Shirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 3
+                    right: 4
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:11.998Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '20'
+                  type: taxon
+                  attributes:
+                    name: Trending
+                    pretty_name: Categories -> Trending
+                    permalink: categories/trending
+                    seo_title: Trending
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 38
+                    right: 39
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.054Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '18'
+                  type: taxon
+                  attributes:
+                    name: New
+                    pretty_name: Categories -> New
+                    permalink: categories/new
+                    seo_title: New
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 34
+                    right: 35
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.082Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '2'
+                  type: taxon
+                  attributes:
+                    name: Men
+                    pretty_name: Categories -> Men
+                    permalink: categories/men
+                    seo_title: Men
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 2
+                    right: 11
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:12.728Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '5'
+                        type: taxon
+                      - id: '6'
+                        type: taxon
+                      - id: '7'
+                        type: taxon
+                      - id: '8'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '8'
+                  type: taxon
+                  attributes:
+                    name: Jackets and Coats
+                    pretty_name: Categories -> Men -> Jackets and Coats
+                    permalink: categories/men/jackets-and-coats
+                    seo_title: Jackets and Coats
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 9
+                    right: 10
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:12.728Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '7'
+                  type: taxon
+                  attributes:
+                    name: Sweaters
+                    pretty_name: Categories -> Men -> Sweaters
+                    permalink: categories/men/sweaters
+                    seo_title: Sweaters
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 7
+                    right: 8
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:12.486Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '2'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '11'
+                  type: taxon
+                  attributes:
+                    name: Shirts and Blouses
+                    pretty_name: Categories -> Women -> Shirts and Blouses
+                    permalink: categories/women/shirts-and-blouses
+                    seo_title: Shirts and Blouses
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 17
+                    right: 18
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:13.767Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '13'
+                  type: taxon
+                  attributes:
+                    name: Tops and T-shirts
+                    pretty_name: Categories -> Women -> Tops and T-shirts
+                    permalink: categories/women/tops-and-t-shirts
+                    seo_title: Tops and T-shirts
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 21
+                    right: 22
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.340Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '10'
+                  type: taxon
+                  attributes:
+                    name: Dresses
+                    pretty_name: Categories -> Women -> Dresses
+                    permalink: categories/women/dresses
+                    seo_title: Dresses
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 15
+                    right: 16
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:13.434Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '14'
+                  type: taxon
+                  attributes:
+                    name: Jackets and Coats
+                    pretty_name: Categories -> Women -> Jackets and Coats
+                    permalink: categories/women/jackets-and-coats
+                    seo_title: Jackets and Coats
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 23
+                    right: 24
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.688Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '23'
+                  type: taxon
+                  attributes:
+                    name: New Collection
+                    pretty_name: Categories -> New Collection
+                    permalink: categories/new-collection
+                    seo_title: New Collection
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 44
+                    right: 47
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.001Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '24'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '24'
+                  type: taxon
+                  attributes:
+                    name: Summer 2021
+                    pretty_name: Categories -> New Collection -> Summer 2021
+                    permalink: categories/new-collection/summer-2021
+                    seo_title: Summer 2021
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 45
+                    right: 46
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.001Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '23'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '26'
+                  type: taxon
+                  attributes:
+                    name: 30% Off
+                    pretty_name: Categories -> Special Offers -> 30% Off
+                    permalink: categories/special-offers/30-percent-off
+                    seo_title: 30% Off
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 49
+                    right: 50
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '25'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '25'
+                  type: taxon
+                  attributes:
+                    name: Special Offers
+                    pretty_name: Categories -> Special Offers
+                    permalink: categories/special-offers
+                    seo_title: Special Offers
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 48
+                    right: 51
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.118Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '26'
+                        type: taxon
+                    image:
+                      data: null
+                - id: '21'
+                  type: taxon
+                  attributes:
+                    name: Streetstyle
+                    pretty_name: Categories -> Streetstyle
+                    permalink: categories/streetstyle
+                    seo_title: Streetstyle
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 40
+                    right: 41
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '1'
+                  type: taxon
+                  attributes:
+                    name: Categories
+                    pretty_name: Categories
+                    permalink: categories
+                    seo_title: Categories
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 1
+                    right: 52
+                    position: 0
+                    depth: 0
+                    updated_at: '2021-10-02T11:03:15.146Z'
+                    is_root: true
+                    is_child: false
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data: null
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '2'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                      - id: '4'
+                        type: taxon
+                      - id: '18'
+                        type: taxon
+                      - id: '19'
+                        type: taxon
+                      - id: '20'
+                        type: taxon
+                      - id: '21'
+                        type: taxon
+                      - id: '22'
+                        type: taxon
+                      - id: '23'
+                        type: taxon
+                      - id: '25'
+                        type: taxon
+                    image:
+                      data: null
+                meta:
+                  count: 25
+                  total_count: 26
+                  total_pages: 2
+                links:
+                  self: http://localhost:3000/api/v2/storefront/taxons
+                  next: http://localhost:3000/api/v2/storefront/taxons?page=2
+                  prev: http://localhost:3000/api/v2/storefront/taxons?page=1
+                  last: http://localhost:3000/api/v2/storefront/taxons?page=2
+                  first: http://localhost:3000/api/v2/storefront/taxons?page=1
     Taxon:
       description: 200 Success - Returns the `taxon` object.
       content:
@@ -3706,879 +4513,71 @@ components:
                       data:
                         id: '64'
                         type: variant
-    TaxonList:
-      description: 200 Success - Returns an array of `taxon` objects.
+    404NotFound:
+      description: 404 Not Found - Resource not found.
       content:
         application/vnd.api+json:
           schema:
-            type: object
             properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Taxon'
-              included:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TaxonIncludes'
-              meta:
-                $ref: '#/components/schemas/ListMeta'
-              links:
-                $ref: '#/components/schemas/ListLinks'
-            required:
-            - data
-            - meta
-            - links
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
           examples:
-            Standard Response:
+            404 Example:
               value:
-                data:
-                - id: '22'
-                  type: taxon
-                  attributes:
-                    name: Summer Sale
-                    pretty_name: Categories -> Summer Sale
-                    permalink: categories/summer-sale
-                    seo_title: Summer Sale
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 42
-                    right: 43
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.118Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '17'
-                  type: taxon
-                  attributes:
-                    name: Pants
-                    pretty_name: Categories -> Sportswear -> Pants
-                    permalink: categories/sportswear/pants
-                    seo_title: Pants
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 31
-                    right: 32
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:15.146Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '4'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '19'
-                  type: taxon
-                  attributes:
-                    name: Bestsellers
-                    pretty_name: Categories -> Bestsellers
-                    permalink: categories/bestsellers
-                    seo_title: Bestsellers
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 36
-                    right: 37
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.082Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '16'
-                  type: taxon
-                  attributes:
-                    name: Sweatshirts
-                    pretty_name: Categories -> Sportswear -> Sweatshirts
-                    permalink: categories/sportswear/sweatshirts
-                    seo_title: Sweatshirts
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 29
-                    right: 30
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:15.054Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '4'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '6'
-                  type: taxon
-                  attributes:
-                    name: T-shirts
-                    pretty_name: Categories -> Men -> T-shirts
-                    permalink: categories/men/t-shirts
-                    seo_title: T-shirts
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 5
-                    right: 6
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:12.242Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '2'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '4'
-                  type: taxon
-                  attributes:
-                    name: Sportswear
-                    pretty_name: Categories -> Sportswear
-                    permalink: categories/sportswear
-                    seo_title: Sportswear
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 26
-                    right: 33
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.146Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: false
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data:
-                      - id: '15'
-                        type: taxon
-                      - id: '16'
-                        type: taxon
-                      - id: '17'
-                        type: taxon
-                    image:
-                      data: null
-                - id: '9'
-                  type: taxon
-                  attributes:
-                    name: Skirts
-                    pretty_name: Categories -> Women -> Skirts
-                    permalink: categories/women/skirts
-                    seo_title: Skirts
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 13
-                    right: 14
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:13.076Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '3'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '12'
-                  type: taxon
-                  attributes:
-                    name: Sweaters
-                    pretty_name: Categories -> Women -> Sweaters
-                    permalink: categories/women/sweaters
-                    seo_title: Sweaters
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 19
-                    right: 20
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:14.071Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '3'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '15'
-                  type: taxon
-                  attributes:
-                    name: Tops
-                    pretty_name: Categories -> Sportswear -> Tops
-                    permalink: categories/sportswear/tops
-                    seo_title: Tops
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 27
-                    right: 28
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:14.916Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '4'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '5'
-                  type: taxon
-                  attributes:
-                    name: Shirts
-                    pretty_name: Categories -> Men -> Shirts
-                    permalink: categories/men/shirts
-                    seo_title: Shirts
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 3
-                    right: 4
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:11.998Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '2'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '20'
-                  type: taxon
-                  attributes:
-                    name: Trending
-                    pretty_name: Categories -> Trending
-                    permalink: categories/trending
-                    seo_title: Trending
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 38
-                    right: 39
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.054Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '18'
-                  type: taxon
-                  attributes:
-                    name: New
-                    pretty_name: Categories -> New
-                    permalink: categories/new
-                    seo_title: New
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 34
-                    right: 35
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.082Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '2'
-                  type: taxon
-                  attributes:
-                    name: Men
-                    pretty_name: Categories -> Men
-                    permalink: categories/men
-                    seo_title: Men
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 2
-                    right: 11
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:12.728Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: false
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data:
-                      - id: '5'
-                        type: taxon
-                      - id: '6'
-                        type: taxon
-                      - id: '7'
-                        type: taxon
-                      - id: '8'
-                        type: taxon
-                    image:
-                      data: null
-                - id: '8'
-                  type: taxon
-                  attributes:
-                    name: Jackets and Coats
-                    pretty_name: Categories -> Men -> Jackets and Coats
-                    permalink: categories/men/jackets-and-coats
-                    seo_title: Jackets and Coats
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 9
-                    right: 10
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:12.728Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '2'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '7'
-                  type: taxon
-                  attributes:
-                    name: Sweaters
-                    pretty_name: Categories -> Men -> Sweaters
-                    permalink: categories/men/sweaters
-                    seo_title: Sweaters
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 7
-                    right: 8
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:12.486Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '2'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '11'
-                  type: taxon
-                  attributes:
-                    name: Shirts and Blouses
-                    pretty_name: Categories -> Women -> Shirts and Blouses
-                    permalink: categories/women/shirts-and-blouses
-                    seo_title: Shirts and Blouses
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 17
-                    right: 18
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:13.767Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '3'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '13'
-                  type: taxon
-                  attributes:
-                    name: Tops and T-shirts
-                    pretty_name: Categories -> Women -> Tops and T-shirts
-                    permalink: categories/women/tops-and-t-shirts
-                    seo_title: Tops and T-shirts
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 21
-                    right: 22
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:14.340Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '3'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '10'
-                  type: taxon
-                  attributes:
-                    name: Dresses
-                    pretty_name: Categories -> Women -> Dresses
-                    permalink: categories/women/dresses
-                    seo_title: Dresses
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 15
-                    right: 16
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:13.434Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '3'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '14'
-                  type: taxon
-                  attributes:
-                    name: Jackets and Coats
-                    pretty_name: Categories -> Women -> Jackets and Coats
-                    permalink: categories/women/jackets-and-coats
-                    seo_title: Jackets and Coats
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 23
-                    right: 24
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:14.688Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '3'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '23'
-                  type: taxon
-                  attributes:
-                    name: New Collection
-                    pretty_name: Categories -> New Collection
-                    permalink: categories/new-collection
-                    seo_title: New Collection
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 44
-                    right: 47
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.001Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: false
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data:
-                      - id: '24'
-                        type: taxon
-                    image:
-                      data: null
-                - id: '24'
-                  type: taxon
-                  attributes:
-                    name: Summer 2021
-                    pretty_name: Categories -> New Collection -> Summer 2021
-                    permalink: categories/new-collection/summer-2021
-                    seo_title: Summer 2021
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 45
-                    right: 46
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:15.001Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '23'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '26'
-                  type: taxon
-                  attributes:
-                    name: 30% Off
-                    pretty_name: Categories -> Special Offers -> 30% Off
-                    permalink: categories/special-offers/30-percent-off
-                    seo_title: 30% Off
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 49
-                    right: 50
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:15.118Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '25'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '25'
-                  type: taxon
-                  attributes:
-                    name: Special Offers
-                    pretty_name: Categories -> Special Offers
-                    permalink: categories/special-offers
-                    seo_title: Special Offers
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 48
-                    right: 51
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.118Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: false
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data:
-                      - id: '26'
-                        type: taxon
-                    image:
-                      data: null
-                - id: '21'
-                  type: taxon
-                  attributes:
-                    name: Streetstyle
-                    pretty_name: Categories -> Streetstyle
-                    permalink: categories/streetstyle
-                    seo_title: Streetstyle
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 40
-                    right: 41
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.146Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '1'
-                  type: taxon
-                  attributes:
-                    name: Categories
-                    pretty_name: Categories
-                    permalink: categories
-                    seo_title: Categories
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 1
-                    right: 52
-                    position: 0
-                    depth: 0
-                    updated_at: '2021-10-02T11:03:15.146Z'
-                    is_root: true
-                    is_child: false
-                    is_leaf: false
-                  relationships:
-                    parent:
-                      data: null
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data:
-                      - id: '2'
-                        type: taxon
-                      - id: '3'
-                        type: taxon
-                      - id: '4'
-                        type: taxon
-                      - id: '18'
-                        type: taxon
-                      - id: '19'
-                        type: taxon
-                      - id: '20'
-                        type: taxon
-                      - id: '21'
-                        type: taxon
-                      - id: '22'
-                        type: taxon
-                      - id: '23'
-                        type: taxon
-                      - id: '25'
-                        type: taxon
-                    image:
-                      data: null
-                meta:
-                  count: 25
-                  total_count: 26
-                  total_pages: 2
-                links:
-                  self: http://localhost:3000/api/v2/storefront/taxons
-                  next: http://localhost:3000/api/v2/storefront/taxons?page=2
-                  prev: http://localhost:3000/api/v2/storefront/taxons?page=1
-                  last: http://localhost:3000/api/v2/storefront/taxons?page=2
-                  first: http://localhost:3000/api/v2/storefront/taxons?page=1
+                error: The resource you were looking for could not be found.
+  parameters:
+    SparseFieldsTaxon:
+      in: query
+      name: fields[taxon]
+      example: name,pretty_name,permalink
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+    FilterByIds:
+      in: query
+      name: filter[ids]
+      schema:
+        type: string
+      example: 1,2,3
+      description: Fetch only resources with corresponding IDs
+    TaxonPermalink:
+      name: taxon_permalink
+      in: path
+      required: true
+      description: Specify the taxon using the permalink or taxon ID.
+      schema:
+        type: string
+      example: categories/women
+    FilterByName:
+      in: query
+      name: filter[name]
+      schema:
+        type: string
+      example: rails
+      description: Find resources with matching name (supports wild-card, partial-word match search)
+    TaxonIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: parent,taxonomy,children,image,products
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
   securitySchemes:
     bearer_auth:
       type: http

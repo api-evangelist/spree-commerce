@@ -454,22 +454,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     create_address_params:
       type: object
       properties:
@@ -535,6 +519,38 @@ components:
                 close_to_shop: true
       required:
       - address
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     update_address_params:
       type: object
@@ -649,22 +665,6 @@ components:
       required:
       - error
       - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
   securitySchemes:
     bearer_auth:

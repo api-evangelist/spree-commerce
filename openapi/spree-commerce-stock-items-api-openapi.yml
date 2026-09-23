@@ -378,6 +378,40 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    create_stock_item_params:
+      type: object
+      properties:
+        stock_item:
+          type: object
+          required:
+          - variant_id
+          - stock_location_id
+          - count_on_hand
+          properties:
+            variant_id:
+              type: string
+              example: '2'
+            stock_location_id:
+              type: string
+              example: '2'
+            count_on_hand:
+              type: number
+              example: 200
+            backorderable:
+              type: boolean
+              example: true
+              default: false
+      required:
+      - stock_item
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -393,6 +427,14 @@ components:
       - id
       - type
       - attributes
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     update_stock_item_params:
       type: object
@@ -475,48 +517,6 @@ components:
       required:
       - error
       - errors
-      x-internal: false
-    create_stock_item_params:
-      type: object
-      properties:
-        stock_item:
-          type: object
-          required:
-          - variant_id
-          - stock_location_id
-          - count_on_hand
-          properties:
-            variant_id:
-              type: string
-              example: '2'
-            stock_location_id:
-              type: string
-              example: '2'
-            count_on_hand:
-              type: number
-              example: 200
-            backorderable:
-              type: boolean
-              example: true
-              default: false
-      required:
-      - stock_item
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
   securitySchemes:
     bearer_auth:

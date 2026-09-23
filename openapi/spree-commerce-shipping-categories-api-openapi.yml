@@ -288,19 +288,13 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    create_shipping_category_params:
+    resource:
       type: object
       properties:
-        shipping_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Another Category
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - shipping_category
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -318,19 +312,13 @@ components:
       - type
       - attributes
       x-internal: false
-    update_shipping_category_params:
+    error:
       type: object
       properties:
-        shipping_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Another Category
+        error:
+          type: string
       required:
-      - shipping_category
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -377,6 +365,34 @@ components:
       - meta
       - links
       x-internal: false
+    create_shipping_category_params:
+      type: object
+      properties:
+        shipping_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Another Category
+      required:
+      - shipping_category
+      x-internal: false
+    update_shipping_category_params:
+      type: object
+      properties:
+        shipping_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Another Category
+      required:
+      - shipping_category
+      x-internal: false
     validation_errors:
       type: object
       properties:
@@ -387,22 +403,6 @@ components:
       required:
       - error
       - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
   securitySchemes:
     bearer_auth:

@@ -122,6 +122,8 @@ paths:
                   message: Authentication required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3AdminMe
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -198,6 +200,8 @@ paths:
               required:
               - email
               - password
+      operationId: postApiV3StoreAuthLogin
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -265,6 +269,8 @@ paths:
                   description: Refresh token from login response
               required:
               - refresh_token
+      operationId: postApiV3StoreAuthRefresh
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -306,6 +312,8 @@ paths:
                 refresh_token:
                   type: string
                   description: Refresh token to revoke
+      operationId: postApiV3StoreAuthLogout
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -369,6 +377,8 @@ paths:
                   description: URL to redirect the user to after clicking the reset link. Validated against the store's allowed origins.
               required:
               - email
+      operationId: postApiV3StorePasswordResets
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -460,6 +470,8 @@ paths:
               required:
               - password
               - password_confirmation
+      operationId: patchApiV3StorePasswordResetsByToken
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -467,6 +479,71 @@ paths:
           default: localhost:3000
 components:
   schemas:
+    AdminUserRoleAssignment:
+      type: object
+      description: A role assignment for the current store on a staff member
+      properties:
+        id:
+          type: string
+          description: Prefixed role ID
+          example: role_abc123
+        name:
+          type: string
+          description: Role name
+          example: admin
+      required:
+      - id
+      - name
+    MeResponse:
+      type: object
+      description: Current admin user profile and serialized permissions
+      properties:
+        user:
+          $ref: '#/components/schemas/AdminUser'
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionRule'
+      required:
+      - user
+      - permissions
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type:
+              - object
+              - 'null'
+              description: Field-specific validation errors
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
     PermissionRule:
       type: object
       description: A single permission rule (CanCanCan rule). Rules are applied in order, last-matching-wins.
@@ -529,71 +606,6 @@ components:
       - updated_at
       - roles
       x-typelizer: true
-    MeResponse:
-      type: object
-      description: Current admin user profile and serialized permissions
-      properties:
-        user:
-          $ref: '#/components/schemas/AdminUser'
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PermissionRule'
-      required:
-      - user
-      - permissions
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: record_not_found
-            message:
-              type: string
-              example: Record not found
-            details:
-              type:
-              - object
-              - 'null'
-              description: Field-specific validation errors
-              example:
-                name:
-                - is too short
-                - is required
-                email:
-                - is invalid
-          required:
-          - code
-          - message
-      required:
-      - error
-      example:
-        error:
-          code: validation_error
-          message: Validation failed
-          details:
-            name:
-            - is too short
-            email:
-            - is invalid
-    AdminUserRoleAssignment:
-      type: object
-      description: A role assignment for the current store on a staff member
-      properties:
-        id:
-          type: string
-          description: Prefixed role ID
-          example: role_abc123
-        name:
-          type: string
-          description: Role name
-          example: admin
-      required:
-      - id
-      - name
     Address:
       type: object
       properties:
@@ -675,21 +687,6 @@ components:
       - is_default_shipping
       - state_name
       x-typelizer: true
-    AuthResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT access token
-        refresh_token:
-          type: string
-          description: Refresh token for obtaining new access tokens
-        user:
-          $ref: '#/components/schemas/Customer'
-      required:
-      - token
-      - refresh_token
-      - user
     Customer:
       type: object
       properties:
@@ -741,6 +738,21 @@ components:
       - default_billing_address
       - default_shipping_address
       x-typelizer: true
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+        refresh_token:
+          type: string
+          description: Refresh token for obtaining new access tokens
+        user:
+          $ref: '#/components/schemas/Customer'
+      required:
+      - token
+      - refresh_token
+      - user
   securitySchemes:
     api_key:
       type: apiKey

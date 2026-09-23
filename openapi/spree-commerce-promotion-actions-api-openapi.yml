@@ -321,6 +321,33 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_promotion_action_params:
+      type: object
+      properties:
+        promotion_action:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Promotion::Actions::CreateAdjustment
+              enum:
+              - Spree::Promotion::Actions::CreateAdjustment
+              - Spree::Promotion::Actions::CreateItemAdjustments
+              - Spree::Promotion::Actions::CreateLineItems
+              - Spree::Promotion::Actions::FreeShipping
+              description: Set the Type of Promotion Action you wish to use.
+      required:
+      - promotion_action
+      title: Create a Promotion Action
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -337,31 +364,13 @@ components:
       - type
       - attributes
       x-internal: false
-    create_promotion_action_params:
+    error:
       type: object
       properties:
-        promotion_action:
-          type: object
-          required:
-          - type
-          - promotion_id
-          properties:
-            type:
-              type: string
-              example: Spree::Promotion::Actions::CreateAdjustment
-              enum:
-              - Spree::Promotion::Actions::CreateAdjustment
-              - Spree::Promotion::Actions::CreateItemAdjustments
-              - Spree::Promotion::Actions::CreateLineItems
-              - Spree::Promotion::Actions::FreeShipping
-              description: Set the Type of Promotion Action you wish to use.
-            promotion_id:
-              type: string
-              example: '22'
-              description: Set the ID of the promotion this action belongs to.
+        error:
+          type: string
       required:
-      - promotion_action
-      title: Create a Promotion Action
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -408,27 +417,14 @@ components:
       - meta
       - links
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    update_promotion_action_params:
+    create_promotion_action_params:
       type: object
       properties:
         promotion_action:
           type: object
+          required:
+          - type
+          - promotion_id
           properties:
             type:
               type: string
@@ -439,6 +435,10 @@ components:
               - Spree::Promotion::Actions::CreateLineItems
               - Spree::Promotion::Actions::FreeShipping
               description: Set the Type of Promotion Action you wish to use.
+            promotion_id:
+              type: string
+              example: '22'
+              description: Set the ID of the promotion this action belongs to.
       required:
       - promotion_action
       title: Create a Promotion Action

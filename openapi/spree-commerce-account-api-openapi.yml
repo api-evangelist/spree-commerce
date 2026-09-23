@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Account API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -136,179 +136,6 @@ paths:
       security:
       - bearerAuth: []
 components:
-  parameters:
-    SparseFieldsUser:
-      name: fields[user]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: email,completed_orders
-    AccountIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information
-      example: default_billing_address,default_shipping_address
-  schemas:
-    Error:
-      x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
-    Address:
-      type: object
-      title: Address
-      description: The Address model holds the customer details, such as name, address, and phone number.
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: address
-        attributes:
-          type: object
-          properties:
-            firstname:
-              type: string
-              example: John
-            lastname:
-              type: string
-              example: Doe
-            address1:
-              type: string
-              example: 1600 Amphitheatre Pkwy
-            address2:
-              type:
-              - string
-              - 'null'
-              example: Suite 1
-            city:
-              type: string
-              example: Mountain View
-            zipcode:
-              type: string
-              example: '94043'
-            phone:
-              type:
-              - string
-              - 'null'
-              example: (+1) 123 456 789
-            state_name:
-              type: string
-              example: California
-            state_code:
-              type:
-              - string
-              - 'null'
-              example: CA
-              description: State abbreviation
-            country_name:
-              type: string
-              example: United States of America
-            country_iso3:
-              type: string
-              example: USA
-              description: Country ISO3 code
-            company:
-              type:
-              - string
-              - 'null'
-              example: Google Inc.
-              description: Company name
-            label:
-              type:
-              - string
-              - 'null'
-              description: The internal name for this address (Work, Home)
-              example: Home
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    User:
-      type: object
-      title: User
-      description: ' '
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: user
-        attributes:
-          type: object
-          properties:
-            email:
-              type: string
-              example: spree@example.com
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            selected_locale:
-              type: string
-              example: fr
-            store_credits:
-              type: number
-              example: 150.75
-            completed_orders:
-              type: number
-              example: 3
-              description: Number of placed Orders by this User
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of tags associated with the user
-            public_metadata:
-              type: object
-              example:
-                user_segment: supplier
-              description: The public metadata for this User
-        relationships:
-          type: object
-          properties:
-            default_billing_address:
-              type: object
-              description: Default billing address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            default_shipping_address:
-              type: object
-              description: Default shipping address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
   responses:
     403Forbidden:
       description: 403 Forbidden - You are not authorized to access this page.
@@ -431,6 +258,179 @@ components:
                 errors:
                   example:
                   - Example is invalid
+  schemas:
+    User:
+      type: object
+      title: User
+      description: ' '
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: user
+        attributes:
+          type: object
+          properties:
+            email:
+              type: string
+              example: spree@example.com
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            selected_locale:
+              type: string
+              example: fr
+            store_credits:
+              type: number
+              example: 150.75
+            completed_orders:
+              type: number
+              example: 3
+              description: Number of placed Orders by this User
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the user
+            public_metadata:
+              type: object
+              example:
+                user_segment: supplier
+              description: The public metadata for this User
+        relationships:
+          type: object
+          properties:
+            default_billing_address:
+              type: object
+              description: Default billing address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            default_shipping_address:
+              type: object
+              description: Default shipping address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Address:
+      type: object
+      title: Address
+      description: The Address model holds the customer details, such as name, address, and phone number.
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: address
+        attributes:
+          type: object
+          properties:
+            firstname:
+              type: string
+              example: John
+            lastname:
+              type: string
+              example: Doe
+            address1:
+              type: string
+              example: 1600 Amphitheatre Pkwy
+            address2:
+              type:
+              - string
+              - 'null'
+              example: Suite 1
+            city:
+              type: string
+              example: Mountain View
+            zipcode:
+              type: string
+              example: '94043'
+            phone:
+              type:
+              - string
+              - 'null'
+              example: (+1) 123 456 789
+            state_name:
+              type: string
+              example: California
+            state_code:
+              type:
+              - string
+              - 'null'
+              example: CA
+              description: State abbreviation
+            country_name:
+              type: string
+              example: United States of America
+            country_iso3:
+              type: string
+              example: USA
+              description: Country ISO3 code
+            company:
+              type:
+              - string
+              - 'null'
+              example: Google Inc.
+              description: Company name
+            label:
+              type:
+              - string
+              - 'null'
+              description: The internal name for this address (Work, Home)
+              example: Home
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+  parameters:
+    AccountIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information
+      example: default_billing_address,default_shipping_address
+    SparseFieldsUser:
+      name: fields[user]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: email,completed_orders
   securitySchemes:
     bearerAuth:
       type: http

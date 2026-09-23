@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Account / Credit Cards API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -85,6 +85,34 @@ paths:
       - Account / Credit Cards
 components:
   responses:
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
     CreditCard:
       description: 200 Success - Returns the `credit_card` object.
       content:
@@ -127,34 +155,6 @@ components:
                     name: Stripe
                     description: Stripe Payments
                     preferences: {}
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     CreditCardList:
       description: 200 Success - Returns an array of `credit_card` objects.
       content:
@@ -249,23 +249,6 @@ components:
       - type
       x-internal: false
       description: ''
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
     PaymentMethod:
       title: Payment Method
       description: ''
@@ -298,26 +281,23 @@ components:
       - id
       - type
       - attributes
-    ListLinks:
-      x-internal: false
+    ListMeta:
       type: object
-      title: Pagination Links
+      x-internal: false
+      title: Pagination Meta
       properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
     CreditCard:
       title: Credit Card
       type: object
@@ -377,6 +357,26 @@ components:
       - type
       - attributes
       - relationships
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
   parameters:
     SparseFieldsCreditCard:
       name: fields[credit_card]

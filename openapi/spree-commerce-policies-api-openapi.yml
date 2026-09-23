@@ -25,9 +25,7 @@ paths:
       - api_key: []
       description: 'Returns all policies for the current store (e.g., return policy, privacy policy, terms of service).
 
-        Policies are managed in Spree Admin and contain rich text content.
-
-        '
+        Policies are managed in Spree Admin and contain rich text content.'
       x-codeSamples:
       - lang: javascript
         label: Spree SDK
@@ -110,6 +108,8 @@ paths:
                   message: Valid API key required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StorePolicies
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -168,6 +168,8 @@ paths:
                   message: Policy not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StorePoliciesById
+      x-operation-id-source: derived
     servers:
     - url: http://{defaultHost}
       variables:
@@ -207,30 +209,6 @@ paths:
       description: localhost
 components:
   schemas:
-    Policy:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        body:
-          type:
-          - string
-          - 'null'
-        body_html:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - name
-      - slug
-      - body
-      - body_html
-      x-typelizer: true
     ErrorResponse:
       type: object
       properties:
@@ -268,6 +246,30 @@ components:
             - is too short
             email:
             - is invalid
+    Policy:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        body:
+          type:
+          - string
+          - 'null'
+        body_html:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - name
+      - slug
+      - body
+      - body_html
+      x-typelizer: true
     Policy_2:
       type: object
       title: Policy
@@ -324,6 +326,20 @@ components:
       x-examples:
         example-1: '2020-02-16T07:14:54.617Z'
   responses:
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
     PolicyList:
       description: 200 Success - Returns an array of `policy` objects.
       content:
@@ -359,20 +375,6 @@ components:
                     updated_at: '2025-08-12T10:00:00.000Z'
                     body: Privacy policy content
                     body_html: "<div class=\"trix-content\">\n  <div>Privacy policy content</div>\n</div>\n"
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     Policy:
       description: 200 Success - Returns the `policy` object.
       content:

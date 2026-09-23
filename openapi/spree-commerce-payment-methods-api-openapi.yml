@@ -469,6 +469,14 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -485,49 +493,13 @@ components:
       - type
       - attributes
       x-internal: false
-    create_payment_method_params:
+    error:
       type: object
       properties:
-        payment_method:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Test Payment Method
-            active:
-              type: boolean
-            auto_capture:
-              type: boolean
-            description:
-              type: string
-              example: This is a test payment method
-            type:
-              type: string
-              example: Spree::Gateway::Bogus
-              enum:
-              - Spree::Gateway::Bogus
-              - Spree::PaymentMethod::Check
-            display_on:
-              type: string
-              example: both
-              enum:
-              - both
-              - back_end
-              - front_end
-            store_ids:
-              type: array
-              items:
-                allOf:
-                - type: string
-                  example: '2'
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
+        error:
+          type: string
       required:
-      - payment_method
+      - error
       x-internal: false
     update_payment_method_params:
       type: object
@@ -617,32 +589,49 @@ components:
       - meta
       - links
       x-internal: false
-    validation_errors:
+    create_payment_method_params:
       type: object
       properties:
-        error:
-          type: string
-        errors:
+        payment_method:
           type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Test Payment Method
+            active:
+              type: boolean
+            auto_capture:
+              type: boolean
+            description:
+              type: string
+              example: This is a test payment method
+            type:
+              type: string
+              example: Spree::Gateway::Bogus
+              enum:
+              - Spree::Gateway::Bogus
+              - Spree::PaymentMethod::Check
+            display_on:
+              type: string
+              example: both
+              enum:
+              - both
+              - back_end
+              - front_end
+            store_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
       required:
-      - error
-      - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
+      - payment_method
       x-internal: false
     update_payment_method_params_bogus_gateway:
       type: object
@@ -662,6 +651,17 @@ components:
       - payment_method
       x-internal: false
       title: Update Bogus Gateway
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
   securitySchemes:
     bearer_auth:
       type: http

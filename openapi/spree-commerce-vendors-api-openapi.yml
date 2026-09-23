@@ -22,7 +22,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Returns a list of Vendors. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Returns a list of Vendors. Only available in Enterprise Edition
       operationId: vendors-list
       parameters:
       - name: page
@@ -52,7 +52,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Creates a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Creates a Vendor. Only available in Enterprise Edition
       operationId: create-vendor
       parameters:
       - name: include
@@ -83,7 +83,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Returns a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Returns a Vendor. Only available in Enterprise Edition
       operationId: show-vendor
       parameters:
       - name: id
@@ -110,7 +110,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Updates a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Updates a Vendor. Only available in Enterprise Edition
       operationId: update-vendor
       parameters:
       - name: id
@@ -144,7 +144,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Deletes a Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Deletes a Vendor. Only available in Enterprise Edition
       operationId: delete-vendor
       parameters:
       - name: id
@@ -171,7 +171,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Also triggers an invitation email send out to the vendor's contact person. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Also triggers an invitation email send out to the vendor's contact person. Only available in Enterprise Edition
       operationId: invite-vendor
       parameters:
       - name: id
@@ -204,7 +204,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Marks Vendor as onboarding in progress. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Marks Vendor as onboarding in progress. Only available in Enterprise Edition
       operationId: start-onboarding-vendor
       parameters:
       - name: id
@@ -237,7 +237,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Marks Vendor as onboarding complete. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Marks Vendor as onboarding complete. Only available in Enterprise Edition
       operationId: complete-onboarding-vendor
       parameters:
       - name: id
@@ -270,7 +270,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Marks Vendor as approved, and triggers an approval email send out to the vendor's contact person. Also activated Vendor products will become available for purchase. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Marks Vendor as approved, and triggers an approval email send out to the vendor's contact person. Also activated Vendor products will become available for purchase. Only available in Enterprise Edition
       operationId: approve-vendor
       parameters:
       - name: id
@@ -303,7 +303,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Marks Vendor as rejected, and triggers an approval email send out to the vendor's contact person. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Marks Vendor as rejected, and triggers an approval email send out to the vendor's contact person. Only available in Enterprise Edition
       operationId: reject-vendor
       parameters:
       - name: id
@@ -336,7 +336,7 @@ paths:
       - Vendors
       security:
       - bearer_auth: []
-      description: Marks Vendor as suspended, and triggers an approval email send out to the vendor's contact person. Also the vendor's products will become unavailable for purchase and will be hidden from the storefront. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Marks Vendor as suspended, and triggers an approval email send out to the vendor's contact person. Also the vendor's products will become unavailable for purchase and will be hidden from the storefront. Only available in Enterprise Edition
       operationId: suspend-vendor
       parameters:
       - name: id
@@ -365,7 +365,7 @@ paths:
   /api/v2/storefront/vendors:
     get:
       summary: List all Vendors
-      description: Returns a list of Vendors. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Returns a list of Vendors. Only available in Enterprise Edition
       tags:
       - Vendors
       operationId: vendors-list
@@ -383,7 +383,7 @@ paths:
       description: localhost
   /api/v2/storefront/vendors/{vendor_slug}:
     get:
-      description: Returns the details of a specified Vendor. Only available in [Enterprise Edition](https://spreecommerce.org/pricing)
+      description: Returns the details of a specified Vendor. Only available in Enterprise Edition
       summary: Retrieve a Vendor
       tags:
       - Vendors
@@ -403,6 +403,9 @@ paths:
       description: localhost
 components:
   schemas:
+    update_vendor_params:
+      $ref: '#/components/schemas/create_vendor_params'
+      x-internal: true
     create_vendor_params:
       type: object
       properties:
@@ -432,60 +435,6 @@ components:
       - contact_person_email
       - name
       x-internal: true
-    update_vendor_params:
-      $ref: '#/components/schemas/create_vendor_params'
-      x-internal: true
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
     Vendor:
       title: Vendor
       description: Vendors are Sellers in the marketplace.
@@ -538,6 +487,57 @@ components:
       - type
       - attributes
       - relationships
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
   responses:
     VendorList:
       description: 200 Success - Returns an array of `vendor` objects.
@@ -625,20 +625,6 @@ components:
                     logo_url: https://assets.com/images/logo_name
                     cover_photo_url: https://assets.com/images/wide_tree_wzxgak
   parameters:
-    SparseFieldsVendor:
-      name: fields[vendor]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: name,slug,about_us,facebook
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
     PerPageParam:
       name: per_page
       in: query
@@ -646,6 +632,13 @@ components:
       schema:
         type: integer
       example: 25
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
     VendorSlug:
       name: vendor_slug
       in: path
@@ -654,6 +647,13 @@ components:
       schema:
         type: string
       example: acme-co
+    SparseFieldsVendor:
+      name: fields[vendor]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,slug,about_us,facebook
   securitySchemes:
     bearer_auth:
       type: http

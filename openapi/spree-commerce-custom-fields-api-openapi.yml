@@ -5,7 +5,7 @@ info:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  description: Spree Admin API v3 - Administrative API for managing products, orders, and store settings.
   version: v3
 servers:
 - url: http://{defaultHost}
@@ -89,6 +89,8 @@ paths:
                   in: 2
                   previous: null
                   next: null
+      operationId: getApiV3AdminCustomFieldDefinitions
+      x-operation-id-source: derived
     post:
       summary: Create a custom field definition
       tags:
@@ -154,6 +156,8 @@ paths:
                 storefront_visible:
                   type: boolean
                   description: 'When false, definition is admin-only (was `display_on: back_end`)'
+      operationId: postApiV3AdminCustomFieldDefinitions
+      x-operation-id-source: derived
   /api/v3/admin/custom_field_definitions/{id}:
     get:
       summary: Show a custom field definition
@@ -206,6 +210,8 @@ paths:
                 storefront_visible: true
                 created_at: '2026-05-24T17:36:37.410Z'
                 updated_at: '2026-05-24T17:36:37.410Z'
+      operationId: getApiV3AdminCustomFieldDefinitionsById
+      x-operation-id-source: derived
     patch:
       summary: Update a custom field definition
       tags:
@@ -255,6 +261,8 @@ paths:
                   type: string
                 storefront_visible:
                   type: boolean
+      operationId: patchApiV3AdminCustomFieldDefinitionsById
+      x-operation-id-source: derived
     delete:
       summary: Delete a custom field definition
       tags:
@@ -285,6 +293,8 @@ paths:
       responses:
         '204':
           description: definition deleted
+      operationId: deleteApiV3AdminCustomFieldDefinitionsById
+      x-operation-id-source: derived
 components:
   securitySchemes:
     api_key:

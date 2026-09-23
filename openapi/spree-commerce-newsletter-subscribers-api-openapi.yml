@@ -5,7 +5,7 @@ info:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Store API v3 - Customer-facing storefront API for building headless commerce experiences.\n\n## Authentication\n\nThe Store API uses two authentication methods:\n\n### API Key (Required)\nAll requests must include a publishable API key in the `x-spree-api-key` header.\n\n### JWT Bearer Token (For authenticated customers)\nAfter login, include the JWT token in the `Authorization: Bearer <token>` header.\n\n### Order Token (For guest checkout)\nWhen creating an order, a `token` is returned. Include this in the `x-spree-token` header\nfor guest access to that specific order.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"record_not_found\",\n    \"message\": \"Product not found\"\n  }\n}\n```\n"
+  description: Spree Store API v3 - Customer-facing storefront API for building headless commerce experiences.
   version: v3
 servers:
 - url: http://{defaultHost}
@@ -23,7 +23,55 @@ paths:
       - Newsletter Subscribers
       security:
       - api_key: []
-      description: "Subscribes an email address to the newsletter for the current store.\n\nBehavior:\n\n- If the email is already verified for this store, the existing subscription is returned unchanged.\n- If the request is unauthenticated (guest), the subscription is created in an unverified state\n  and two events are published: `newsletter_subscriber.subscription_requested` (carrying the\n  `verification_token` and the validated `redirect_url`, intended for headless storefronts that\n  want to send the confirmation email themselves via a webhook handler) and the legacy\n  `newsletter_subscriber.subscribed` lifecycle event (which the bundled `spree_emails` package\n  listens to and uses to send a default confirmation email). The confirmation link should point\n  at `redirect_url?token=<verification_token>` and call `POST /newsletter_subscribers/verify`\n  when the user clicks it.\n- If the request is authenticated via JWT and the customer's email matches the subscribed email,\n  the subscription is auto-verified and no events are fired — the JWT already proves email\n  ownership, so no confirmation email is needed.\n\nThe optional `redirect_url` is where the verification token should land on the storefront. The\nserver does not return a validation error when the URL is outside the store's\n[Allowed Origins](/developer/core-concepts/allowed-origins); instead, the URL is silently\nomitted from the webhook payload (secure-by-default). When no allow-list is configured on the\nstore, the URL is also omitted. Callers therefore receive the same 201 regardless, and the\nwebhook handler should fall back to the store's storefront URL when `redirect_url` is missing\nfrom the payload.\n\nNewsletter consent is preserved across registration: if a guest subscribes and later registers\nwith the same email, the existing subscriber record is reused.\n"
+      description: 'Subscribes an email address to the newsletter for the current store.
+
+
+        Behavior:
+
+
+        - If the email is already verified for this store, the existing subscription is returned unchanged.
+
+        - If the request is unauthenticated (guest), the subscription is created in an unverified state
+
+        and two events are published: `newsletter_subscriber.subscription_requested` (carrying the
+
+        `verification_token` and the validated `redirect_url`, intended for headless storefronts that
+
+        want to send the confirmation email themselves via a webhook handler) and the legacy
+
+        `newsletter_subscriber.subscribed` lifecycle event (which the bundled `spree_emails` package
+
+        listens to and uses to send a default confirmation email). The confirmation link should point
+
+        at `redirect_url?token=` and call `POST /newsletter_subscribers/verify`
+
+        when the user clicks it.
+
+        - If the request is authenticated via JWT and the customer''s email matches the subscribed email,
+
+        the subscription is auto-verified and no events are fired — the JWT already proves email
+
+        ownership, so no confirmation email is needed.
+
+
+        The optional `redirect_url` is where the verification token should land on the storefront. The
+
+        server does not return a validation error when the URL is outside the store''s
+
+        Allowed Origins; instead, the URL is silently
+
+        omitted from the webhook payload (secure-by-default). When no allow-list is configured on the
+
+        store, the URL is also omitted. Callers therefore receive the same 201 regardless, and the
+
+        webhook handler should fall back to the store''s storefront URL when `redirect_url` is missing
+
+        from the payload.
+
+
+        Newsletter consent is preserved across registration: if a guest subscribes and later registers
+
+        with the same email, the existing subscriber record is reused.'
       x-codeSamples:
       - lang: javascript
         label: Spree SDK
@@ -85,6 +133,8 @@ paths:
                   description: Storefront URL the verification token should be appended to. Silently omitted from the webhook payload when the store has allowed origins configured and this URL does not match one of them, or when no allowed origins are configured at all.
               required:
               - email
+      operationId: postApiV3StoreNewsletterSubscribers
+      x-operation-id-source: derived
   /api/v3/store/newsletter_subscribers/verify:
     post:
       summary: Verify a newsletter subscription
@@ -92,7 +142,16 @@ paths:
       - Newsletter Subscribers
       security:
       - api_key: []
-      description: "Confirms a pending newsletter subscription using the verification token sent by email.\n\nAfter successful verification:\n- The subscriber record is marked verified.\n- If the subscription is associated with a customer, that customer's `accepts_email_marketing`\n  flag is set to `true`.\n"
+      description: 'Confirms a pending newsletter subscription using the verification token sent by email.
+
+
+        After successful verification:
+
+        - The subscriber record is marked verified.
+
+        - If the subscription is associated with a customer, that customer''s `accepts_email_marketing`
+
+        flag is set to `true`.'
       x-codeSamples:
       - lang: javascript
         label: Spree SDK
@@ -140,6 +199,8 @@ paths:
                   description: Verification token from the confirmation email
               required:
               - token
+      operationId: postApiV3StoreNewsletterSubscribersVerify
+      x-operation-id-source: derived
 components:
   schemas:
     ErrorResponse:

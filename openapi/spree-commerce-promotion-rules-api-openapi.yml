@@ -352,6 +352,14 @@ components:
       - promotion_rule
       title: Create a Promotion Rule
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -367,6 +375,14 @@ components:
       - id
       - type
       - attributes
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -436,22 +452,6 @@ components:
       required:
       - promotion_rule
       title: Create a Promotion Rule
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
   securitySchemes:
     bearer_auth:

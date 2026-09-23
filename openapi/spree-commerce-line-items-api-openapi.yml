@@ -526,21 +526,20 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    update_line_item_params:
       type: object
       properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
+        line_item:
           type: object
-        relationships:
-          type: object
+          properties:
+            variant_id:
+              type: string
+              example: '1'
+            quantity:
+              type: integer
+              example: 2
       required:
-      - id
-      - type
-      - attributes
+      - line_item
       x-internal: false
     create_line_item_params:
       type: object
@@ -567,6 +566,38 @@ components:
               type: object
       required:
       - line_item
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -623,37 +654,6 @@ components:
       required:
       - error
       - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    update_line_item_params:
-      type: object
-      properties:
-        line_item:
-          type: object
-          properties:
-            variant_id:
-              type: string
-              example: '1'
-            quantity:
-              type: integer
-              example: 2
-      required:
-      - line_item
       x-internal: false
   securitySchemes:
     bearer_auth:

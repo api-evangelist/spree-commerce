@@ -5,7 +5,7 @@ info:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Store API v3 - Customer-facing storefront API for building headless commerce experiences.\n\n## Authentication\n\nThe Store API uses two authentication methods:\n\n### API Key (Required)\nAll requests must include a publishable API key in the `x-spree-api-key` header.\n\n### JWT Bearer Token (For authenticated customers)\nAfter login, include the JWT token in the `Authorization: Bearer <token>` header.\n\n### Order Token (For guest checkout)\nWhen creating an order, a `token` is returned. Include this in the `x-spree-token` header\nfor guest access to that specific order.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"record_not_found\",\n    \"message\": \"Product not found\"\n  }\n}\n```\n"
+  description: Spree Store API v3 - Customer-facing storefront API for building headless commerce experiences.
   version: v3
 servers:
 - url: http://{defaultHost}
@@ -31,9 +31,7 @@ paths:
 
         Each download increments the access counter. Downloads may be limited by
 
-        store settings (number of downloads and/or time-based expiration).
-
-        '
+        store settings (number of downloads and/or time-based expiration).'
       parameters:
       - name: token
         in: path
@@ -68,6 +66,8 @@ paths:
             application/octet-stream:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3StoreDigitalsByToken
+      x-operation-id-source: derived
 components:
   schemas:
     ErrorResponse:

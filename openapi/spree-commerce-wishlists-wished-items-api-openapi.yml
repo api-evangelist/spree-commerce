@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Wishlists / Wished Items API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -229,6 +229,204 @@ paths:
       tags:
       - Wishlists / Wished Items
 components:
+  parameters:
+    ItemId:
+      name: item_id
+      in: path
+      required: true
+      description: The wished item id
+      schema:
+        type: string
+      example: '3'
+    Token:
+      name: token
+      in: path
+      required: true
+      description: The token is a unique string used to identify the target resource.
+      schema:
+        type: string
+      example: vmJtMiMozBdFtn1VkdJ8dYen
+  responses:
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    WishedItem:
+      description: 200 Success - Returns an array of `wished_item` objects.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/WishedItem'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishedItemIncludes'
+            required:
+            - data
+          examples:
+            Wished Item:
+              value:
+                data:
+                  id: '1'
+                  type: wished_item
+                  attributes:
+                    quantity: 3
+                    price: '55.99'
+                    total: '167.97'
+                    display_price: $55.99
+                    display_total: $167.97
+                  relationships:
+                    variant:
+                      data:
+                        id: '149'
+                        type: variant
+            Wished Item including Variant:
+              value:
+                data:
+                  id: '2'
+                  type: wished_item
+                  attributes:
+                    quantity: 3
+                    price: '52.99'
+                    total: '158.97'
+                    display_price: $52.99
+                    display_total: $158.97
+                  relationships:
+                    variant:
+                      data:
+                        id: '150'
+                        type: variant
+                included:
+                - id: '150'
+                  type: variant
+                  attributes:
+                    sku: JacketsandCoats_wool-blendcoat_52.99_beige_xs
+                    weight: '0.0'
+                    height: null
+                    width: null
+                    depth: null
+                    is_master: false
+                    options_text: 'Color: beige, Size: XS'
+                    options:
+                    - name: Color
+                      value: beige
+                      presentation: Beige
+                    - name: Size
+                      value: XS
+                      presentation: XS
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    currency: USD
+                    price: '52.99'
+                    display_price: $52.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    product:
+                      data:
+                        id: '34'
+                        type: product
+                    images:
+                      data: []
+                    option_values:
+                      data:
+                      - id: '10'
+                        type: option_value
+                      - id: '23'
+                        type: option_value
+    Wishlist:
+      description: 200 Success - Returns the `wishlist` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Wishlist'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WishlistIncludes'
+            required:
+            - data
+          examples:
+            Wishlist:
+              value:
+                data:
+                  id: '28'
+                  type: wishlist
+                  attributes:
+                    token: 1inBHcJnxBrVEMAZb9esRqZP
+                    name: My Wishlist
+                    is_private: false
+                    is_default: true
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '14'
+                        type: wished_item
+            Wishlist including Wished Items:
+              value:
+                data:
+                  id: '28'
+                  type: wishlist
+                  attributes:
+                    token: 1inBHcJnxBrVEMAZb9esRqZP
+                    name: My Wishlist
+                    is_private: false
+                    is_default: true
+                    variant_included: false
+                  relationships:
+                    wished_items:
+                      data:
+                      - id: '14'
+                        type: wished_item
+                included:
+                - id: '14'
+                  type: wished_item
+                  attributes:
+                    quantity: 7
+                    price: '26.99'
+                    total: '188.93'
+                    display_price: $26.99
+                    display_total: $188.93
+                  relationships:
+                    variant:
+                      data:
+                        id: '149'
+                        type: variant
+                    wishlist:
+                      data:
+                        id: '28'
+                        type: wishlist
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
   schemas:
     Variant:
       title: Variant
@@ -330,62 +528,11 @@ components:
       - type
       - attributes
       - relationships
-    Error:
+    WishlistIncludes:
       x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
-    WishedItem:
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          default: wished_item
-        attributes:
-          type: object
-          properties:
-            quantity:
-              type: integer
-            price:
-              type: string
-            total:
-              type: string
-            display_price:
-              type: string
-            display_total:
-              type: string
-        relationships:
-          type: object
-          properties:
-            variant:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
+      title: Wishlist Includes
+      allOf:
+      - $ref: '#/components/schemas/WishedItem'
     Wishlist:
       description: ''
       type: object
@@ -432,209 +579,62 @@ components:
       title: Wished Item Includes
       allOf:
       - $ref: '#/components/schemas/Variant'
-    WishlistIncludes:
-      x-internal: false
-      title: Wishlist Includes
-      allOf:
-      - $ref: '#/components/schemas/WishedItem'
-  responses:
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
-    422UnprocessableEntity:
-      description: 422 Unprocessable Entity
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            422 Example:
-              value:
-                error: Example is invalid
-                errors:
-                  example:
-                  - Example is invalid
-    Wishlist:
-      description: 200 Success - Returns the `wishlist` object.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Wishlist'
-              included:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WishlistIncludes'
-            required:
-            - data
-          examples:
-            Wishlist:
-              value:
-                data:
-                  id: '28'
-                  type: wishlist
-                  attributes:
-                    token: 1inBHcJnxBrVEMAZb9esRqZP
-                    name: My Wishlist
-                    is_private: false
-                    is_default: true
-                    variant_included: false
-                  relationships:
-                    wished_items:
-                      data:
-                      - id: '14'
-                        type: wished_item
-            Wishlist including Wished Items:
-              value:
-                data:
-                  id: '28'
-                  type: wishlist
-                  attributes:
-                    token: 1inBHcJnxBrVEMAZb9esRqZP
-                    name: My Wishlist
-                    is_private: false
-                    is_default: true
-                    variant_included: false
-                  relationships:
-                    wished_items:
-                      data:
-                      - id: '14'
-                        type: wished_item
-                included:
-                - id: '14'
-                  type: wished_item
-                  attributes:
-                    quantity: 7
-                    price: '26.99'
-                    total: '188.93'
-                    display_price: $26.99
-                    display_total: $188.93
-                  relationships:
-                    variant:
-                      data:
-                        id: '149'
-                        type: variant
-                    wishlist:
-                      data:
-                        id: '28'
-                        type: wishlist
     WishedItem:
-      description: 200 Success - Returns an array of `wished_item` objects.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/WishedItem'
-              included:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WishedItemIncludes'
-            required:
-            - data
-          examples:
-            Wished Item:
-              value:
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: wished_item
+        attributes:
+          type: object
+          properties:
+            quantity:
+              type: integer
+            price:
+              type: string
+            total:
+              type: string
+            display_price:
+              type: string
+            display_total:
+              type: string
+        relationships:
+          type: object
+          properties:
+            variant:
+              type: object
+              properties:
                 data:
-                  id: '1'
-                  type: wished_item
-                  attributes:
-                    quantity: 3
-                    price: '55.99'
-                    total: '167.97'
-                    display_price: $55.99
-                    display_total: $167.97
-                  relationships:
-                    variant:
-                      data:
-                        id: '149'
-                        type: variant
-            Wished Item including Variant:
-              value:
-                data:
-                  id: '2'
-                  type: wished_item
-                  attributes:
-                    quantity: 3
-                    price: '52.99'
-                    total: '158.97'
-                    display_price: $52.99
-                    display_total: $158.97
-                  relationships:
-                    variant:
-                      data:
-                        id: '150'
-                        type: variant
-                included:
-                - id: '150'
-                  type: variant
-                  attributes:
-                    sku: JacketsandCoats_wool-blendcoat_52.99_beige_xs
-                    weight: '0.0'
-                    height: null
-                    width: null
-                    depth: null
-                    is_master: false
-                    options_text: 'Color: beige, Size: XS'
-                    options:
-                    - name: Color
-                      value: beige
-                      presentation: Beige
-                    - name: Size
-                      value: XS
-                      presentation: XS
-                    purchasable: true
-                    in_stock: true
-                    backorderable: false
-                    currency: USD
-                    price: '52.99'
-                    display_price: $52.99
-                    compare_at_price: null
-                    display_compare_at_price: null
-                  relationships:
-                    product:
-                      data:
-                        id: '34'
-                        type: product
-                    images:
-                      data: []
-                    option_values:
-                      data:
-                      - id: '10'
-                        type: option_value
-                      - id: '23'
-                        type: option_value
-  parameters:
-    ItemId:
-      name: item_id
-      in: path
-      required: true
-      description: The wished item id
-      schema:
-        type: string
-      example: '3'
-    Token:
-      name: token
-      in: path
-      required: true
-      description: The token is a unique string used to identify the target resource.
-      schema:
-        type: string
-      example: vmJtMiMozBdFtn1VkdJ8dYen
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
   securitySchemes:
     bearerAuth:
       type: http

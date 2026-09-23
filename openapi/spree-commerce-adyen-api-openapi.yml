@@ -2,10 +2,10 @@ openapi: 3.2.0
 info:
   version: 2.0.0
   title: Storefront Adyen API
-  description: 'Storefront API is a modern REST API based on the [JSON API spec](https://jsonapi.org/) which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
+  description: 'Storefront API is a modern REST API based on the JSON API spec which provides you with all the necessary endpoints to build amazing user interfaces either in JavaScript frameworks or native mobile libraries.
 
 
-    Import to [Postman](https://raw.githubusercontent.com/spree/spree/main/docs/api-reference/storefront.yaml)'
+    Import to Postman'
   contact:
     name: Vendo Connect Inc.
     url: https://spreecommerce.org
@@ -24,7 +24,7 @@ paths:
   /api/v2/storefront/adyen/payment_sessions:
     post:
       summary: Create an Adyen Payment Session
-      description: Create a new Adyen payment session with the specified amount. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access.
+      description: Create a new Adyen payment session with the specified amount. Adyen support is currently in private beta. Please contact us to get access.
       tags:
       - Adyen
       requestBody:
@@ -72,7 +72,7 @@ paths:
   /api/v2/storefront/adyen/payment_sessions/{id}/complete:
     post:
       summary: Complete an Adyen payment session and order
-      description: Complete an Adyen payment session and order. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access.
+      description: Complete an Adyen payment session and order. Adyen support is currently in private beta. Please contact us to get access.
       tags:
       - Adyen
       requestBody:
@@ -100,7 +100,7 @@ paths:
   /api/v2/storefront/adyen/payment_sessions/{id}:
     get:
       summary: Get Adyen Payment Session
-      description: Retrieve An Adyen payment session information. Adyen support is currently in private beta. [Please contact us](https://spreecommerce.org/contact) to get access.
+      description: Retrieve An Adyen payment session information. Adyen support is currently in private beta. Please contact us to get access.
       tags:
       - Adyen
       operationId: get-adyen-payment-session
@@ -114,14 +114,6 @@ paths:
       security:
       - orderToken: []
 components:
-  schemas:
-    Error:
-      x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
   responses:
     403Forbidden:
       description: 403 Forbidden - You are not authorized to access this page.
@@ -137,6 +129,20 @@ components:
             403 Example:
               value:
                 error: You are not authorized to access this page.
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
     AdyenPaymentSession:
       description: 200 Success - Returns the Adyen Payment Session with session data and payment amount.
       content:
@@ -255,20 +261,6 @@ components:
                         type: payment_method
                     user:
                       data: null
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     422UnprocessableEntity:
       description: 422 Unprocessable Entity
       content:
@@ -282,6 +274,14 @@ components:
                 errors:
                   example:
                   - Example is invalid
+  schemas:
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

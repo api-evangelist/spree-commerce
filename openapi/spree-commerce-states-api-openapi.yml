@@ -23,7 +23,6 @@ paths:
       security:
       - bearer_auth: []
       operationId: states-list
-      description: Returns a list of States
       parameters:
       - name: page
         in: query
@@ -110,7 +109,6 @@ paths:
       security:
       - bearer_auth: []
       operationId: show-state
-      description: Returns a State
       parameters:
       - name: id
         in: path
@@ -162,14 +160,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -193,6 +183,14 @@ components:
           type: string
       required:
       - error
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     resources_list:
       type: object

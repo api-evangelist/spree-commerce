@@ -5,7 +5,7 @@ info:
     name: Spree Commerce
     url: https://spreecommerce.org
     email: hello@spreecommerce.org
-  description: "Spree Admin API v3 - Administrative API for managing products, orders, and store settings.\n\n## Authentication\n\nThe Admin API requires a secret API key passed in the `x-spree-api-key` header.\nSecret API keys can be generated in the Spree admin dashboard.\n\n## Response Format\n\nAll responses are JSON. List endpoints return paginated responses with `data` and `meta` keys.\nSingle resource endpoints return a flat JSON object.\n\n## Resource IDs\n\nEvery resource is identified by an opaque string ID (e.g. `prod_86Rf07xd4z`,\n`variant_k5nR8xLq`, `or_UkLWZg9DAJ`). Use these IDs everywhere — URL paths,\nrequest bodies, and Ransack filters all accept them directly.\n\n## Error Handling\n\nErrors return a consistent format:\n```json\n{\n  \"error\": {\n    \"code\": \"validation_error\",\n    \"message\": \"Validation failed\",\n    \"details\": { \"name\": [\"can't be blank\"] }\n  }\n}\n```\n"
+  description: Spree Admin API v3 - Administrative API for managing products, orders, and store settings.
   version: v3
 servers:
 - url: http://{defaultHost}
@@ -70,6 +70,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminAdminUsers
+      x-operation-id-source: derived
   /api/v3/admin/admin_users/{id}:
     get:
       summary: Show a staff member
@@ -115,6 +117,8 @@ paths:
                 roles:
                 - id: role_UkLWZg9DAJ
                   name: admin
+      operationId: getApiV3AdminAdminUsersById
+      x-operation-id-source: derived
     patch:
       summary: Update a staff member
       tags:
@@ -178,6 +182,8 @@ paths:
                   type: array
                   items:
                     type: string
+      operationId: patchApiV3AdminAdminUsersById
+      x-operation-id-source: derived
     delete:
       summary: Remove a staff member from this store
       tags:
@@ -212,6 +218,8 @@ paths:
       responses:
         '204':
           description: staff removed from store
+      operationId: deleteApiV3AdminAdminUsersById
+      x-operation-id-source: derived
   /api/v3/admin/api_keys:
     get:
       summary: List API keys
@@ -291,6 +299,8 @@ paths:
                   in: 3
                   previous: null
                   next: null
+      operationId: getApiV3AdminApiKeys
+      x-operation-id-source: derived
     post:
       summary: Create an API key
       tags:
@@ -372,6 +382,8 @@ paths:
                   example:
                   - read_orders
                   - write_orders
+      operationId: postApiV3AdminApiKeys
+      x-operation-id-source: derived
   /api/v3/admin/api_keys/{id}:
     get:
       summary: Show an API key
@@ -418,6 +430,8 @@ paths:
                 last_used_at: null
                 plaintext_token: pk_yXJtU7SvnfLbkPvuuiUnKaEo
                 created_by_email: null
+      operationId: getApiV3AdminApiKeysById
+      x-operation-id-source: derived
     delete:
       summary: Delete an API key
       tags:
@@ -449,6 +463,8 @@ paths:
       responses:
         '204':
           description: API key deleted
+      operationId: deleteApiV3AdminApiKeysById
+      x-operation-id-source: derived
   /api/v3/admin/api_keys/{id}/revoke:
     patch:
       summary: Revoke an API key
@@ -499,6 +515,8 @@ paths:
                 last_used_at: null
                 plaintext_token: null
                 created_by_email: null
+      operationId: patchApiV3AdminApiKeysByIdRevoke
+      x-operation-id-source: derived
   /api/v3/admin/invitations:
     get:
       summary: List invitations
@@ -557,6 +575,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminInvitations
+      x-operation-id-source: derived
     post:
       summary: Create an invitation
       tags:
@@ -618,6 +638,8 @@ paths:
                 role_id:
                   type: string
                   example: role_xxx
+      operationId: postApiV3AdminInvitations
+      x-operation-id-source: derived
   /api/v3/admin/invitations/{id}:
     delete:
       summary: Revoke an invitation
@@ -650,6 +672,8 @@ paths:
       responses:
         '204':
           description: invitation revoked
+      operationId: deleteApiV3AdminInvitationsById
+      x-operation-id-source: derived
   /api/v3/admin/invitations/{id}/resend:
     patch:
       summary: Resend an invitation
@@ -702,6 +726,8 @@ paths:
                 store:
                   id: store_UkLWZg9DAJ
                   name: Spree Test Store
+      operationId: patchApiV3AdminInvitationsByIdResend
+      x-operation-id-source: derived
   /api/v3/admin/payment_methods:
     get:
       summary: List payment methods
@@ -773,6 +799,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminPaymentMethods
+      x-operation-id-source: derived
   /api/v3/admin/payment_methods/types:
     get:
       summary: List available payment provider types
@@ -821,6 +849,8 @@ paths:
                   label: Custom Payment Source Method
                   description: null
                   preference_schema: []
+      operationId: getApiV3AdminPaymentMethodsTypes
+      x-operation-id-source: derived
   /api/v3/admin/payment_methods/{id}:
     get:
       summary: Show a payment method
@@ -886,6 +916,8 @@ paths:
                 updated_at: '2026-05-24T17:37:31.754Z'
                 preferences: {}
                 preference_schema: []
+      operationId: getApiV3AdminPaymentMethodsById
+      x-operation-id-source: derived
   /api/v3/admin/roles:
     get:
       summary: List roles
@@ -934,6 +966,8 @@ paths:
                   in: 1
                   previous: null
                   next: null
+      operationId: getApiV3AdminRoles
+      x-operation-id-source: derived
   /api/v3/admin/stock_locations:
     get:
       summary: List stock locations
@@ -960,7 +994,6 @@ paths:
         customers can collect orders from any active location with
 
         `pickup_enabled: true`.
-
 
 
         **Required scope:** `read_settings` (for API-key authentication).'
@@ -1092,6 +1125,8 @@ paths:
                   message: Authentication required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3AdminStockLocations
+      x-operation-id-source: derived
     post:
       summary: Create a stock location
       tags:
@@ -1105,7 +1140,6 @@ paths:
         Setting `default: true` automatically demotes the previous default
 
         location.
-
 
 
         **Required scope:** `write_settings` (for API-key authentication).'
@@ -1261,6 +1295,8 @@ paths:
                   - 'null'
               required:
               - name
+      operationId: postApiV3AdminStockLocations
+      x-operation-id-source: derived
   /api/v3/admin/stock_locations/{id}:
     parameters:
     - name: id
@@ -1345,6 +1381,8 @@ paths:
                   message: Stock location not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3AdminStockLocationsById
+      x-operation-id-source: derived
     patch:
       summary: Update a stock location
       tags:
@@ -1358,7 +1396,6 @@ paths:
 
 
         Setting `default: true` automatically demotes the previous default.
-
 
 
         **Required scope:** `write_settings` (for API-key authentication).'
@@ -1502,6 +1539,8 @@ paths:
                   type:
                   - string
                   - 'null'
+      operationId: patchApiV3AdminStockLocationsById
+      x-operation-id-source: derived
     delete:
       summary: Delete a stock location
       tags:
@@ -1514,7 +1553,6 @@ paths:
         fulfillments that referenced it keep the historical record via
 
         `Spree::StockLocation.with_deleted`.
-
 
 
         **Required scope:** `write_settings` (for API-key authentication).'
@@ -1537,6 +1575,8 @@ paths:
       responses:
         '204':
           description: stock location deleted
+      operationId: deleteApiV3AdminStockLocationsById
+      x-operation-id-source: derived
   /api/v3/admin/store_credit_categories:
     get:
       summary: List store credit categories
@@ -1554,7 +1594,6 @@ paths:
         credit. Category names matching `Spree::Config[:non_expiring_credit_types]`
 
         are flagged via `non_expiring: true`.
-
 
 
         **Required scope:** `read_settings` (for API-key authentication).'
@@ -1648,6 +1687,8 @@ paths:
                   message: Authentication required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3AdminStoreCreditCategories
+      x-operation-id-source: derived
   /api/v3/admin/store_credit_categories/{id}:
     parameters:
     - name: id
@@ -1712,6 +1753,8 @@ paths:
                   message: Store credit category not found
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3AdminStoreCreditCategoriesById
+      x-operation-id-source: derived
   /api/v3/admin/store:
     get:
       summary: Get the current store
@@ -1775,6 +1818,8 @@ paths:
                   message: Authentication required
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getApiV3AdminStore
+      x-operation-id-source: derived
     patch:
       summary: Update the current store
       tags:
@@ -1861,6 +1906,8 @@ paths:
                 preferred_unit_system:
                   type: string
                   example: metric
+      operationId: patchApiV3AdminStore
+      x-operation-id-source: derived
   /api/v3/admin/tags:
     get:
       summary: List tags
@@ -1914,8 +1961,30 @@ paths:
                 error:
                   code: invalid_taggable_type
                   message: taggable_type must be one of Spree::Product, Spree::Order, Spree::LegacyUser
+      operationId: getApiV3AdminTags
+      x-operation-id-source: derived
 components:
   schemas:
+    StoreCreditCategory:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        non_expiring:
+          type: boolean
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      - non_expiring
+      x-typelizer: true
     Store:
       type: object
       properties:
@@ -1974,55 +2043,43 @@ components:
       - supported_locales
       - logo_url
       x-typelizer: true
-    PaginationMeta:
+    ErrorResponse:
       type: object
       properties:
-        page:
-          type: integer
-          example: 1
-        limit:
-          type: integer
-          example: 25
-        count:
-          type: integer
-          example: 100
-          description: Total number of records
-        pages:
-          type: integer
-          example: 4
-          description: Total number of pages
-        from:
-          type: integer
-          example: 1
-          description: Index of first record on this page
-        to:
-          type: integer
-          example: 25
-          description: Index of last record on this page
-        in:
-          type: integer
-          example: 25
-          description: Number of records on this page
-        previous:
-          type:
-          - integer
-          - 'null'
-          example: null
-          description: Previous page number
-        next:
-          type:
-          - integer
-          - 'null'
-          example: 2
-          description: Next page number
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type:
+              - object
+              - 'null'
+              description: Field-specific validation errors
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
       required:
-      - page
-      - limit
-      - count
-      - pages
-      - from
-      - to
-      - in
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
     StockLocation:
       type: object
       properties:
@@ -2131,63 +2188,55 @@ components:
       - created_at
       - updated_at
       x-typelizer: true
-    StoreCreditCategory:
+    PaginationMeta:
       type: object
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        non_expiring:
-          type: boolean
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 25
+        count:
+          type: integer
+          example: 100
+          description: Total number of records
+        pages:
+          type: integer
+          example: 4
+          description: Total number of pages
+        from:
+          type: integer
+          example: 1
+          description: Index of first record on this page
+        to:
+          type: integer
+          example: 25
+          description: Index of last record on this page
+        in:
+          type: integer
+          example: 25
+          description: Number of records on this page
+        previous:
+          type:
+          - integer
+          - 'null'
+          example: null
+          description: Previous page number
+        next:
+          type:
+          - integer
+          - 'null'
+          example: 2
+          description: Next page number
       required:
-      - id
-      - name
-      - created_at
-      - updated_at
-      - non_expiring
-      x-typelizer: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: record_not_found
-            message:
-              type: string
-              example: Record not found
-            details:
-              type:
-              - object
-              - 'null'
-              description: Field-specific validation errors
-              example:
-                name:
-                - is too short
-                - is required
-                email:
-                - is invalid
-          required:
-          - code
-          - message
-      required:
-      - error
-      example:
-        error:
-          code: validation_error
-          message: Validation failed
-          details:
-            name:
-            - is too short
-            email:
-            - is invalid
+      - page
+      - limit
+      - count
+      - pages
+      - from
+      - to
+      - in
   securitySchemes:
     api_key:
       type: apiKey
