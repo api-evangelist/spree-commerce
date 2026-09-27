@@ -386,30 +386,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     error:
       type: object
       properties:
@@ -511,6 +487,22 @@ components:
       required:
       - stock_location
       x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
     create_stock_location_params:
       type: object
       properties:
@@ -558,6 +550,14 @@ components:
               type: string
       required:
       - stock_location
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     validation_errors:
       type: object

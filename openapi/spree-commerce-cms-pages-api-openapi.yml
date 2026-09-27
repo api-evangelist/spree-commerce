@@ -389,7 +389,76 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    update_feature_cms_page_params:
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_homepage_cms_page_params:
       type: object
       properties:
         cms_page:
@@ -397,7 +466,7 @@ components:
           properties:
             title:
               type: string
-              example: Featured Product
+              example: Our Flash Homepage
               description: Update the page title.
             type:
               type: string
@@ -410,13 +479,13 @@ components:
               type:
               - string
               - 'null'
-              example: Learn More About This Featured Product
+              example: Visit Our Store - Great Deals
               description: Update the meta title for this page, this appears in the title bar of the browser.
             meta_description:
               type:
               - string
               - 'null'
-              example: Learn more about us this amazing product that we sell right here...
+              example: Discover great new products that we sell in this store...
               description: Update the meta description, used for SEO and displayed in search results.
             visible:
               type: boolean
@@ -424,27 +493,13 @@ components:
               - true
               - false
               description: This page is publicly visible when set to `true`.
-            slug:
-              type:
-              - string
-              - 'null'
-              example: about-us
-              description: Update the slug for this page.
             locale:
               type: string
               example: en-US
               description: Update the language of this page.
       required:
       - cms_page
-      title: Update a Feature Page
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
+      title: Update a Homepage
       x-internal: false
     update_standard_cms_page_params:
       type: object
@@ -500,81 +555,6 @@ components:
       required:
       - cms_page
       title: Update a Standard Page
-      x-internal: false
-    create_feature_cms_page_params:
-      type: object
-      properties:
-        cms_page:
-          type: object
-          required:
-          - title
-          - locale
-          - type
-          properties:
-            title:
-              type: string
-              example: Featured Product
-              description: Give your page a title.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Pages::FeaturePage
-              description: Set the type of page.
-            meta_title:
-              type:
-              - string
-              - 'null'
-              example: Learn More About This Featured Product
-              description: Set the meta title for this page, this appears in the title bar of the browser.
-            meta_description:
-              type:
-              - string
-              - 'null'
-              example: Learn more about us this amazing product that we sell right here...
-              description: Set a meta description, used for SEO and displayed in search results.
-            visible:
-              type: boolean
-              enum:
-              - true
-              - false
-              description: This page is publicly visible when set to `true`.
-            slug:
-              type:
-              - string
-              - 'null'
-              example: about-us
-              description: Set a slug for this page.
-            locale:
-              type: string
-              example: en-US
-              description: The language this page is written in.
-      required:
-      - cms_page
-      title: Create a Feature Page
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
     create_standard_cms_page_params:
       type: object
@@ -633,7 +613,7 @@ components:
       - cms_page
       title: Create a Standard Page
       x-internal: false
-    update_homepage_cms_page_params:
+    update_feature_cms_page_params:
       type: object
       properties:
         cms_page:
@@ -641,7 +621,7 @@ components:
           properties:
             title:
               type: string
-              example: Our Flash Homepage
+              example: Featured Product
               description: Update the page title.
             type:
               type: string
@@ -654,13 +634,13 @@ components:
               type:
               - string
               - 'null'
-              example: Visit Our Store - Great Deals
+              example: Learn More About This Featured Product
               description: Update the meta title for this page, this appears in the title bar of the browser.
             meta_description:
               type:
               - string
               - 'null'
-              example: Discover great new products that we sell in this store...
+              example: Learn more about us this amazing product that we sell right here...
               description: Update the meta description, used for SEO and displayed in search results.
             visible:
               type: boolean
@@ -668,13 +648,19 @@ components:
               - true
               - false
               description: This page is publicly visible when set to `true`.
+            slug:
+              type:
+              - string
+              - 'null'
+              example: about-us
+              description: Update the slug for this page.
             locale:
               type: string
               example: en-US
               description: Update the language of this page.
       required:
       - cms_page
-      title: Update a Homepage
+      title: Update a Feature Page
       x-internal: false
     create_homepage_cms_page_params:
       type: object
@@ -721,50 +707,64 @@ components:
       - cms_page
       title: Create a Homepage
       x-internal: false
-    resources_list:
+    create_feature_cms_page_params:
+      type: object
+      properties:
+        cms_page:
+          type: object
+          required:
+          - title
+          - locale
+          - type
+          properties:
+            title:
+              type: string
+              example: Featured Product
+              description: Give your page a title.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Pages::FeaturePage
+              description: Set the type of page.
+            meta_title:
+              type:
+              - string
+              - 'null'
+              example: Learn More About This Featured Product
+              description: Set the meta title for this page, this appears in the title bar of the browser.
+            meta_description:
+              type:
+              - string
+              - 'null'
+              example: Learn more about us this amazing product that we sell right here...
+              description: Set a meta description, used for SEO and displayed in search results.
+            visible:
+              type: boolean
+              enum:
+              - true
+              - false
+              description: This page is publicly visible when set to `true`.
+            slug:
+              type:
+              - string
+              - 'null'
+              example: about-us
+              description: Set a slug for this page.
+            locale:
+              type: string
+              example: en-US
+              description: The language this page is written in.
+      required:
+      - cms_page
+      title: Create a Feature Page
+      x-internal: false
+    resource:
       type: object
       properties:
         data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
+          $ref: '#/components/schemas/resource_properties'
       required:
       - data
-      - meta
-      - links
       x-internal: false
     validation_errors:
       type: object

@@ -293,30 +293,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     error:
       type: object
       properties:
@@ -324,6 +300,27 @@ components:
           type: string
       required:
       - error
+      x-internal: false
+    create_data_feed_params:
+      type: object
+      properties:
+        data_feed:
+          type: object
+          required:
+          - name
+          - type
+          properties:
+            name:
+              type: string
+              example: First data feed
+            slug:
+              type: string
+              example: first-data-feed
+            type:
+              type: string
+              example: Spree::DataFeed::Google
+            active:
+              type: boolean
       x-internal: false
     resources_list:
       type: object
@@ -370,6 +367,22 @@ components:
       - meta
       - links
       x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
     update_data_feed_params:
       type: object
       properties:
@@ -391,26 +404,13 @@ components:
             active:
               type: boolean
       x-internal: false
-    create_data_feed_params:
+    resource:
       type: object
       properties:
-        data_feed:
-          type: object
-          required:
-          - name
-          - type
-          properties:
-            name:
-              type: string
-              example: First data feed
-            slug:
-              type: string
-              example: first-data-feed
-            type:
-              type: string
-              example: Spree::DataFeed::Google
-            active:
-              type: boolean
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     validation_errors:
       type: object

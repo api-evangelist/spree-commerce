@@ -229,38 +229,7 @@ paths:
       tags:
       - Wishlists / Wished Items
 components:
-  parameters:
-    ItemId:
-      name: item_id
-      in: path
-      required: true
-      description: The wished item id
-      schema:
-        type: string
-      example: '3'
-    Token:
-      name: token
-      in: path
-      required: true
-      description: The token is a unique string used to identify the target resource.
-      schema:
-        type: string
-      example: vmJtMiMozBdFtn1VkdJ8dYen
   responses:
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
     WishedItem:
       description: 200 Success - Returns an array of `wished_item` objects.
       content:
@@ -427,7 +396,62 @@ components:
                 errors:
                   example:
                   - Example is invalid
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
   schemas:
+    Wishlist:
+      description: ''
+      type: object
+      title: Wishlist
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: wishlist
+        attributes:
+          type: object
+          properties:
+            token:
+              type: string
+            name:
+              type: string
+            is_private:
+              type: boolean
+            is_default:
+              type: boolean
+            variant_included:
+              type: boolean
+              description: Returns `true` or `false` depending on the variant ID passed in through the `is_variant_included` query param.
+        relationships:
+          type: object
+          properties:
+            wished_items:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    allOf:
+                    - $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
     Variant:
       title: Variant
       description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
@@ -528,57 +552,20 @@ components:
       - type
       - attributes
       - relationships
-    WishlistIncludes:
-      x-internal: false
-      title: Wishlist Includes
-      allOf:
-      - $ref: '#/components/schemas/WishedItem'
-    Wishlist:
-      description: ''
-      type: object
-      title: Wishlist
-      x-internal: false
+    Relation:
+      type:
+      - object
+      - 'null'
       properties:
         id:
           type: string
         type:
           type: string
-          default: wishlist
-        attributes:
-          type: object
-          properties:
-            token:
-              type: string
-            name:
-              type: string
-            is_private:
-              type: boolean
-            is_default:
-              type: boolean
-            variant_included:
-              type: boolean
-              description: Returns `true` or `false` depending on the variant ID passed in through the `is_variant_included` query param.
-        relationships:
-          type: object
-          properties:
-            wished_items:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    allOf:
-                    - $ref: '#/components/schemas/Relation'
       required:
       - id
       - type
-      - attributes
-      - relationships
-    WishedItemIncludes:
       x-internal: false
-      title: Wished Item Includes
-      allOf:
-      - $ref: '#/components/schemas/Variant'
+      description: ''
     WishedItem:
       type: object
       x-internal: false
@@ -614,6 +601,11 @@ components:
       - type
       - attributes
       - relationships
+    WishlistIncludes:
+      x-internal: false
+      title: Wishlist Includes
+      allOf:
+      - $ref: '#/components/schemas/WishedItem'
     Error:
       x-internal: false
       title: Error
@@ -621,20 +613,28 @@ components:
       properties:
         error:
           type: string
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
+    WishedItemIncludes:
       x-internal: false
-      description: ''
+      title: Wished Item Includes
+      allOf:
+      - $ref: '#/components/schemas/Variant'
+  parameters:
+    Token:
+      name: token
+      in: path
+      required: true
+      description: The token is a unique string used to identify the target resource.
+      schema:
+        type: string
+      example: vmJtMiMozBdFtn1VkdJ8dYen
+    ItemId:
+      name: item_id
+      in: path
+      required: true
+      description: The wished item id
+      schema:
+        type: string
+      example: '3'
   securitySchemes:
     bearerAuth:
       type: http

@@ -402,47 +402,11 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    create_user_params:
+    update_user_params:
       type: object
       properties:
         user:
           type: object
-          required:
-          - email
-          - password
-          - password_confirmation
           properties:
             email:
               type: string
@@ -466,6 +430,14 @@ components:
               type: object
       required:
       - user
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -512,11 +484,31 @@ components:
       - meta
       - links
       x-internal: false
-    update_user_params:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_user_params:
       type: object
       properties:
         user:
           type: object
+          required:
+          - email
+          - password
+          - password_confirmation
           properties:
             email:
               type: string
@@ -540,6 +532,14 @@ components:
               type: object
       required:
       - user
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     validation_errors:
       type: object

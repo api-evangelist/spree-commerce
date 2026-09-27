@@ -369,57 +369,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    create_menu_params:
-      type: object
-      properties:
-        menu:
-          type: object
-          required:
-          - name
-          - location
-          - locale
-          properties:
-            name:
-              type: string
-              example: Main Menu
-              description: Give this Menu a name.
-            location:
-              type: string
-              enum:
-              - header
-              - footer
-              description: Set the location this menu appears in the website.
-            locale:
-              type: string
-              example: en-US
-              description: Set the language of this menu.
-      required:
-      - menu
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     error:
       type: object
       properties:
@@ -473,6 +422,22 @@ components:
       - meta
       - links
       x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
     update_menu_params:
       type: object
       properties:
@@ -495,6 +460,41 @@ components:
               description: Change the language of this menu.
       required:
       - menu
+      x-internal: false
+    create_menu_params:
+      type: object
+      properties:
+        menu:
+          type: object
+          required:
+          - name
+          - location
+          - locale
+          properties:
+            name:
+              type: string
+              example: Main Menu
+              description: Give this Menu a name.
+            location:
+              type: string
+              enum:
+              - header
+              - footer
+              description: Set the location this menu appears in the website.
+            locale:
+              type: string
+              example: en-US
+              description: Set the language of this menu.
+      required:
+      - menu
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     validation_errors:
       type: object

@@ -174,11 +174,13 @@ paths:
       description: Returns a list of all countries.
       tags:
       - Countries
-      operationId: countries-list
+      operationId: getApiV2StorefrontCountries
       responses:
         '200':
           $ref: '#/components/responses/CountryList'
       summary: List all Countries
+      x-operation-id-source: normalized
+      x-operation-id-original: countries-list
     servers:
     - url: https://demo.spreecommerce.org
       description: demo
@@ -189,7 +191,7 @@ paths:
       description: Returns the details of a specific country.
       tags:
       - Countries
-      operationId: show-country
+      operationId: getApiV2StorefrontCountriesByIso
       parameters:
       - $ref: '#/components/parameters/IsoOrIso3'
       - $ref: '#/components/parameters/CountryIncludeParam'
@@ -200,6 +202,8 @@ paths:
         '404':
           $ref: '#/components/responses/404NotFound'
       summary: Retrieve a Country
+      x-operation-id-source: normalized
+      x-operation-id-original: show-country
     servers:
     - url: https://demo.spreecommerce.org
       description: demo
@@ -225,6 +229,14 @@ paths:
       description: localhost
 components:
   schemas:
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -240,14 +252,6 @@ components:
       - id
       - type
       - attributes
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
     resource:
       type: object
@@ -302,25 +306,26 @@ components:
       - meta
       - links
       x-internal: false
-    CountryIncludes:
+    ListLinks:
       x-internal: false
-      title: Country Includes
-      oneOf:
-      - $ref: '#/components/schemas/State'
-    State:
       type: object
-      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
-      title: State
+      title: Pagination Links
       properties:
-        abbr:
+        self:
           type: string
-          example: NY
-          description: State abbreviation
-        name:
+          description: URL to the current page of the listing
+        next:
           type: string
-          example: New York
-          description: State name
-      x-internal: false
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
     Country:
       title: Country
       description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
@@ -370,6 +375,20 @@ components:
       - type
       - attributes
       - relationships
+    State:
+      type: object
+      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
+      title: State
+      properties:
+        abbr:
+          type: string
+          example: NY
+          description: State abbreviation
+        name:
+          type: string
+          example: New York
+          description: State name
+      x-internal: false
     ListMeta:
       type: object
       x-internal: false
@@ -387,26 +406,11 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
-    ListLinks:
+    CountryIncludes:
       x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
+      title: Country Includes
+      oneOf:
+      - $ref: '#/components/schemas/State'
   responses:
     Country:
       description: 200 Success - Returns the `country` object.
@@ -3729,13 +3733,6 @@ components:
                   last: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
                   first: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
   parameters:
-    SparseFieldsCountry:
-      name: fields[country]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: iso_name,name,states_required
     CountryIncludeParam:
       name: include
       in: query
@@ -3743,6 +3740,13 @@ components:
         type: string
       description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
       example: states
+    SparseFieldsCountry:
+      name: fields[country]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: iso_name,name,states_required
     IsoOrIso3:
       name: iso
       in: path

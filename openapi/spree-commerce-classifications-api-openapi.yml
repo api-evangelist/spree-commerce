@@ -359,30 +359,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     error:
       type: object
       properties:
@@ -436,6 +412,40 @@ components:
       - meta
       - links
       x-internal: false
+    update_classification_params:
+      type: object
+      properties:
+        classification:
+          type: object
+          properties:
+            product_id:
+              type: string
+              example: '1'
+            taxon_id:
+              type: string
+              example: '1'
+            position:
+              type: integer
+              example: 1
+      required:
+      - classification
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
     create_classification_params:
       type: object
       properties:
@@ -458,23 +468,13 @@ components:
       required:
       - classification
       x-internal: false
-    update_classification_params:
+    resource:
       type: object
       properties:
-        classification:
-          type: object
-          properties:
-            product_id:
-              type: string
-              example: '1'
-            taxon_id:
-              type: string
-              example: '1'
-            position:
-              type: integer
-              example: 1
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - classification
+      - data
       x-internal: false
     validation_errors:
       type: object

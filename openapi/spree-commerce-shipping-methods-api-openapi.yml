@@ -426,73 +426,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    update_shipping_method_params:
-      type: object
-      properties:
-        shipping_method:
-          type: object
-          properties:
-            name:
-              type: string
-              example: DHL Express
-            admin_name:
-              type: string
-              example: DHL Area Code D
-            code:
-              type: string
-              example: DHL-A-D
-            tracking_url:
-              type: string
-              example: dhlexpress.com?tracking=
-            display_on:
-              type: string
-              example: both
-              enum:
-              - both
-              - back_end
-              - front_end
-            tax_category_id:
-              type: string
-              example: '1'
-            shipping_category_ids:
-              type: array
-              items:
-                allOf:
-                - type: string
-                  example: '2'
-            calculator_attributes:
-              $ref: '#/components/schemas/shipping_calculator_params'
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
-      required:
-      - shipping_method
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     error:
       type: object
       properties:
@@ -500,6 +433,22 @@ components:
           type: string
       required:
       - error
+      x-internal: false
+    shipping_calculator_params:
+      type: object
+      properties:
+        type:
+          type: string
+          example: Spree::Calculator::Shipping::FlatPercentItemTotal
+          enum:
+          - Spree::Calculator::Shipping::DigitalDelivery
+          - Spree::Calculator::Shipping::FlatPercentItemTotal
+          - Spree::Calculator::Shipping::FlatRate
+          - Spree::Calculator::Shipping::FlexiRate
+          - Spree::Calculator::Shipping::PerItem
+          - Spree::Calculator::Shipping::PriceSack
+      required:
+      - type
       x-internal: false
     resources_list:
       type: object
@@ -546,21 +495,21 @@ components:
       - meta
       - links
       x-internal: false
-    shipping_calculator_params:
+    resource_properties:
       type: object
       properties:
+        id:
+          type: string
         type:
           type: string
-          example: Spree::Calculator::Shipping::FlatPercentItemTotal
-          enum:
-          - Spree::Calculator::Shipping::DigitalDelivery
-          - Spree::Calculator::Shipping::FlatPercentItemTotal
-          - Spree::Calculator::Shipping::FlatRate
-          - Spree::Calculator::Shipping::FlexiRate
-          - Spree::Calculator::Shipping::PerItem
-          - Spree::Calculator::Shipping::PriceSack
+        attributes:
+          type: object
+        relationships:
+          type: object
       required:
+      - id
       - type
+      - attributes
       x-internal: false
     create_shipping_method_params:
       type: object
@@ -609,6 +558,14 @@ components:
       required:
       - shipping_method
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     validation_errors:
       type: object
       properties:
@@ -619,6 +576,49 @@ components:
       required:
       - error
       - errors
+      x-internal: false
+    update_shipping_method_params:
+      type: object
+      properties:
+        shipping_method:
+          type: object
+          properties:
+            name:
+              type: string
+              example: DHL Express
+            admin_name:
+              type: string
+              example: DHL Area Code D
+            code:
+              type: string
+              example: DHL-A-D
+            tracking_url:
+              type: string
+              example: dhlexpress.com?tracking=
+            display_on:
+              type: string
+              example: both
+              enum:
+              - both
+              - back_end
+              - front_end
+            tax_category_id:
+              type: string
+              example: '1'
+            shipping_category_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+            calculator_attributes:
+              $ref: '#/components/schemas/shipping_calculator_params'
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - shipping_method
       x-internal: false
   securitySchemes:
     bearer_auth:

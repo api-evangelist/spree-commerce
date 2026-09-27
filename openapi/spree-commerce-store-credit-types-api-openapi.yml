@@ -287,30 +287,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     error:
       type: object
       properties:
@@ -319,13 +295,11 @@ components:
       required:
       - error
       x-internal: false
-    create_store_credit_type_params:
+    update_store_credit_type_params:
       type: object
       properties:
         store_credit_type:
           type: object
-          required:
-          - name
           properties:
             name:
               type: string
@@ -381,11 +355,29 @@ components:
       - meta
       - links
       x-internal: false
-    update_store_credit_type_params:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_store_credit_type_params:
       type: object
       properties:
         store_credit_type:
           type: object
+          required:
+          - name
           properties:
             name:
               type: string
@@ -395,6 +387,14 @@ components:
               example: 1
       required:
       - store_credit_type
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     validation_errors:
       type: object

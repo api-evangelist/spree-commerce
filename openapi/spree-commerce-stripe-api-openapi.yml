@@ -135,52 +135,6 @@ paths:
           $ref: '#/components/responses/422UnprocessableEntity'
 components:
   responses:
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
-    StripeSetupIntent:
-      description: 200 Success - Returns the `customer_id` of the authenticated user, created ephemeral key's secret and client secret of the created setup intent.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              customer_id:
-                type: string
-                description: 'Stripe''s customer ID of the authenticated user (or new one if unauthenticated).
-
-                  '
-              ephemeral_key_secret:
-                type: string
-                description: 'Secret of the created ephemeral key.
-
-                  '
-              setup_intent_client_secret:
-                type: string
-                description: 'Client secret of the created setup intent
-
-                  '
-            required:
-            - customer_id
-            - ephemeral_key_secret
-            - setup_intent_client_secret
-          examples:
-            Stripe Setup Intent:
-              value:
-                customer_id: cus_Q9uqUz6gVQFku2
-                ephemeral_key_secret: ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA
-                setup_intent_client_secret: seti_1PJb0hIhR0gIegIeZYQQuxpH_secret_Q9uqLuTAvIJQSK1SFS6OaxJMRpe9s7R
     404NotFound:
       description: 404 Not Found - Resource not found.
       content:
@@ -266,6 +220,52 @@ components:
                 errors:
                   example:
                   - Example is invalid
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    StripeSetupIntent:
+      description: 200 Success - Returns the `customer_id` of the authenticated user, created ephemeral key's secret and client secret of the created setup intent.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              customer_id:
+                type: string
+                description: 'Stripe''s customer ID of the authenticated user (or new one if unauthenticated).
+
+                  '
+              ephemeral_key_secret:
+                type: string
+                description: 'Secret of the created ephemeral key.
+
+                  '
+              setup_intent_client_secret:
+                type: string
+                description: 'Client secret of the created setup intent
+
+                  '
+            required:
+            - customer_id
+            - ephemeral_key_secret
+            - setup_intent_client_secret
+          examples:
+            Stripe Setup Intent:
+              value:
+                customer_id: cus_Q9uqUz6gVQFku2
+                ephemeral_key_secret: ek_test_YWNjdF8xTGtSb1lJaFIwZ0llZ0llyG1LbFhsVU9XWHY1SlNyMXRKVzNJb0hyQ2JZam1HY28_007lGgvGaA
+                setup_intent_client_secret: seti_1PJb0hIhR0gIegIeZYQQuxpH_secret_Q9uqLuTAvIJQSK1SFS6OaxJMRpe9s7R
   schemas:
     Error:
       x-internal: false

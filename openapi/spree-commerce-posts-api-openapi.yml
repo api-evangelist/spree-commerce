@@ -190,13 +190,6 @@ paths:
           $ref: '#/components/responses/404NotFound'
 components:
   parameters:
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
     PageParam:
       name: page
       in: query
@@ -204,6 +197,13 @@ components:
       schema:
         type: integer
       example: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
     FilterByIds:
       in: query
       name: filter[ids]
@@ -227,23 +227,26 @@ components:
               value:
                 error: The resource you were looking for could not be found.
   schemas:
-    ListMeta:
-      type: object
+    ListLinks:
       x-internal: false
-      title: Pagination Meta
+      type: object
+      title: Pagination Links
       properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
     Post:
       type: object
       title: Post
@@ -375,26 +378,23 @@ components:
       title: Time Stamp
       x-examples:
         example-1: '2020-02-16T07:14:54.617Z'
-    ListLinks:
-      x-internal: false
+    ListMeta:
       type: object
-      title: Pagination Links
+      x-internal: false
+      title: Pagination Meta
       properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
   securitySchemes:
     bearerAuth:
       type: http

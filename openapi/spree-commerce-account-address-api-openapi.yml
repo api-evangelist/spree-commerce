@@ -145,20 +145,6 @@ paths:
       - Account / Address
 components:
   responses:
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
     404NotFound:
       description: 404 Not Found - Resource not found.
       content:
@@ -287,14 +273,20 @@ components:
                     country_iso: US
                     label: Work
                     state_code: CA
-  parameters:
-    SparseFieldsAddress:
-      in: query
-      name: fields[address]
-      example: firstname,lastname,country_name
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
   schemas:
     Address:
       type: object
@@ -368,6 +360,26 @@ components:
       - type
       - attributes
       x-internal: false
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
     AddressPayload:
       example:
         firstname: John
@@ -440,26 +452,14 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
+  parameters:
+    SparseFieldsAddress:
+      in: query
+      name: fields[address]
+      example: firstname,lastname,country_name
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

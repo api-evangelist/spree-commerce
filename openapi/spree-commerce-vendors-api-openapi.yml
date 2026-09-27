@@ -368,7 +368,7 @@ paths:
       description: Returns a list of Vendors. Only available in Enterprise Edition
       tags:
       - Vendors
-      operationId: vendors-list
+      operationId: getApiV2StorefrontVendors
       parameters:
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
@@ -376,6 +376,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VendorList'
+      x-operation-id-source: normalized
+      x-operation-id-original: vendors-list
     servers:
     - url: https://demo.spreecommerce.org
       description: demo
@@ -387,7 +389,7 @@ paths:
       summary: Retrieve a Vendor
       tags:
       - Vendors
-      operationId: show-vendor
+      operationId: getApiV2StorefrontVendorsByVendorSlug
       parameters:
       - $ref: '#/components/parameters/VendorSlug'
       - $ref: '#/components/parameters/SparseFieldsVendor'
@@ -396,6 +398,8 @@ paths:
           $ref: '#/components/responses/Vendor'
         '404':
           $ref: '#/components/responses/404NotFound'
+      x-operation-id-source: normalized
+      x-operation-id-original: show-vendor
     servers:
     - url: https://demo.spreecommerce.org
       description: demo
@@ -435,6 +439,40 @@ components:
       - contact_person_email
       - name
       x-internal: true
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
     Vendor:
       title: Vendor
       description: Vendors are Sellers in the marketplace.
@@ -504,41 +542,51 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    VendorSlug:
+      name: vendor_slug
+      in: path
+      required: true
+      description: Look for Vendor by ID or their slug
+      schema:
+        type: string
+      example: acme-co
+    SparseFieldsVendor:
+      name: fields[vendor]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,slug,about_us,facebook
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
   responses:
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
     VendorList:
       description: 200 Success - Returns an array of `vendor` objects.
       content:
@@ -584,20 +632,6 @@ components:
                       <p>Follow us on social media.</p>'
                     logo_url: https://assets.com/images/logo_name34553
                     cover_photo_url: https://assets.com/images/coverfn5ig
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     Vendor:
       description: 200 Success - Returns the `vendor` object.
       content:
@@ -624,36 +658,6 @@ components:
                       <p>Follow us on social media.</p>'
                     logo_url: https://assets.com/images/logo_name
                     cover_photo_url: https://assets.com/images/wide_tree_wzxgak
-  parameters:
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
-    VendorSlug:
-      name: vendor_slug
-      in: path
-      required: true
-      description: Look for Vendor by ID or their slug
-      schema:
-        type: string
-      example: acme-co
-    SparseFieldsVendor:
-      name: fields[vendor]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: name,slug,about_us,facebook
   securitySchemes:
     bearer_auth:
       type: http

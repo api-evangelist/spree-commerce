@@ -363,52 +363,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    create_option_value_params:
-      type: object
-      properties:
-        option_value:
-          type: object
-          required:
-          - name
-          - presentation
-          properties:
-            name:
-              type: string
-              example: red
-            presentation:
-              type: string
-              example: Red
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
-      required:
-      - option_value
-      x-internal: false
     error:
       type: object
       properties:
@@ -480,6 +434,52 @@ components:
               type: object
       required:
       - option_value
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_option_value_params:
+      type: object
+      properties:
+        option_value:
+          type: object
+          required:
+          - name
+          - presentation
+          properties:
+            name:
+              type: string
+              example: red
+            presentation:
+              type: string
+              example: Red
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - option_value
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     validation_errors:
       type: object

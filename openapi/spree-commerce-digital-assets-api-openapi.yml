@@ -350,6 +350,14 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
     update_digital_params:
       type: object
       properties:
@@ -363,37 +371,18 @@ components:
       - digital[attachment]
       - digital[variant_id]
       x-internal: false
-    resource:
+    create_digital_params:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
+        digital[attachment]:
           type: string
-        type:
+          format: binary
+        digital[variant_id]:
           type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
+          example: '123'
       required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
+      - digital[attachment]
+      - digital[variant_id]
       x-internal: false
     resources_list:
       type: object
@@ -440,18 +429,29 @@ components:
       - meta
       - links
       x-internal: false
-    create_digital_params:
+    resource_properties:
       type: object
       properties:
-        digital[attachment]:
+        id:
           type: string
-          format: binary
-        digital[variant_id]:
+        type:
           type: string
-          example: '123'
+        attributes:
+          type: object
+        relationships:
+          type: object
       required:
-      - digital[attachment]
-      - digital[variant_id]
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     validation_errors:
       type: object

@@ -611,6 +611,69 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    Currency:
+      type: object
+      properties:
+        iso_code:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+      required:
+      - iso_code
+      - name
+      - symbol
+      x-typelizer: true
+    Country:
+      type: object
+      properties:
+        iso:
+          type: string
+        iso3:
+          type: string
+        name:
+          type: string
+        states_required:
+          type: boolean
+        zipcode_required:
+          type: boolean
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/State'
+        market:
+          allOf:
+          - $ref: '#/components/schemas/Market'
+      required:
+      - iso
+      - iso3
+      - name
+      - states_required
+      - zipcode_required
+      x-typelizer: true
+    State:
+      type: object
+      properties:
+        abbr:
+          type: string
+        name:
+          type: string
+      required:
+      - abbr
+      - name
+      x-typelizer: true
+    Locale:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+      required:
+      - code
+      - name
+      x-typelizer: true
     Market:
       type: object
       properties:
@@ -642,17 +705,6 @@ components:
       - tax_inclusive
       - default
       - supported_locales
-      x-typelizer: true
-    Locale:
-      type: object
-      properties:
-        code:
-          type: string
-        name:
-          type: string
-      required:
-      - code
-      - name
       x-typelizer: true
     ErrorResponse:
       type: object
@@ -691,58 +743,6 @@ components:
             - is too short
             email:
             - is invalid
-    Currency:
-      type: object
-      properties:
-        iso_code:
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
-      required:
-      - iso_code
-      - name
-      - symbol
-      x-typelizer: true
-    State:
-      type: object
-      properties:
-        abbr:
-          type: string
-        name:
-          type: string
-      required:
-      - abbr
-      - name
-      x-typelizer: true
-    Country:
-      type: object
-      properties:
-        iso:
-          type: string
-        iso3:
-          type: string
-        name:
-          type: string
-        states_required:
-          type: boolean
-        zipcode_required:
-          type: boolean
-        states:
-          type: array
-          items:
-            $ref: '#/components/schemas/State'
-        market:
-          allOf:
-          - $ref: '#/components/schemas/Market'
-      required:
-      - iso
-      - iso3
-      - name
-      - states_required
-      - zipcode_required
-      x-typelizer: true
   securitySchemes:
     api_key:
       type: apiKey

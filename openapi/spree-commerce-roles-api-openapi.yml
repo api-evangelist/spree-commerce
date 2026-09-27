@@ -288,41 +288,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     error:
       type: object
       properties:
@@ -330,6 +295,32 @@ components:
           type: string
       required:
       - error
+      x-internal: false
+    update_role_params:
+      type: object
+      properties:
+        role:
+          type: object
+          properties:
+            name:
+              type: string
+              example: vendor
+      required:
+      - zone
+      x-internal: false
+    create_role_params:
+      type: object
+      properties:
+        role:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: vendor
+      required:
+      - zone
       x-internal: false
     resources_list:
       type: object
@@ -376,31 +367,40 @@ components:
       - meta
       - links
       x-internal: false
-    create_role_params:
+    resource_properties:
       type: object
       properties:
-        role:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
           type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: vendor
+        relationships:
+          type: object
       required:
-      - zone
+      - id
+      - type
+      - attributes
       x-internal: false
-    update_role_params:
+    resource:
       type: object
       properties:
-        role:
-          type: object
-          properties:
-            name:
-              type: string
-              example: vendor
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - zone
+      - data
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

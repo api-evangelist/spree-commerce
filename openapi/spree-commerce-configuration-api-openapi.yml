@@ -1985,101 +1985,6 @@ components:
       - updated_at
       - non_expiring
       x-typelizer: true
-    Store:
-      type: object
-      properties:
-        id:
-          type: string
-        metadata:
-          type: object
-        name:
-          type: string
-        default_currency:
-          type: string
-        default_locale:
-          type: string
-        preferred_admin_locale:
-          type:
-          - string
-          - 'null'
-        preferred_timezone:
-          type: string
-        preferred_weight_unit:
-          type: string
-        preferred_unit_system:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        url:
-          type: string
-        supported_currencies:
-          type: array
-          items:
-            type: string
-        supported_locales:
-          type: array
-          items:
-            type: string
-        logo_url:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - metadata
-      - name
-      - default_currency
-      - default_locale
-      - preferred_admin_locale
-      - preferred_timezone
-      - preferred_weight_unit
-      - preferred_unit_system
-      - created_at
-      - updated_at
-      - url
-      - supported_currencies
-      - supported_locales
-      - logo_url
-      x-typelizer: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: record_not_found
-            message:
-              type: string
-              example: Record not found
-            details:
-              type:
-              - object
-              - 'null'
-              description: Field-specific validation errors
-              example:
-                name:
-                - is too short
-                - is required
-                email:
-                - is invalid
-          required:
-          - code
-          - message
-      required:
-      - error
-      example:
-        error:
-          code: validation_error
-          message: Validation failed
-          details:
-            name:
-            - is too short
-            email:
-            - is invalid
     StockLocation:
       type: object
       properties:
@@ -2237,6 +2142,101 @@ components:
       - from
       - to
       - in
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+        metadata:
+          type: object
+        name:
+          type: string
+        default_currency:
+          type: string
+        default_locale:
+          type: string
+        preferred_admin_locale:
+          type:
+          - string
+          - 'null'
+        preferred_timezone:
+          type: string
+        preferred_weight_unit:
+          type: string
+        preferred_unit_system:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        url:
+          type: string
+        supported_currencies:
+          type: array
+          items:
+            type: string
+        supported_locales:
+          type: array
+          items:
+            type: string
+        logo_url:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - metadata
+      - name
+      - default_currency
+      - default_locale
+      - preferred_admin_locale
+      - preferred_timezone
+      - preferred_weight_unit
+      - preferred_unit_system
+      - created_at
+      - updated_at
+      - url
+      - supported_currencies
+      - supported_locales
+      - logo_url
+      x-typelizer: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type:
+              - object
+              - 'null'
+              description: Field-specific validation errors
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
   securitySchemes:
     api_key:
       type: apiKey

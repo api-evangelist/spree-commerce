@@ -844,7 +844,7 @@ paths:
       summary: Create a Wishlist
       tags:
       - Wishlists
-      operationId: create-wishlist
+      operationId: postApiV2StorefrontWishlists
       responses:
         '200':
           $ref: '#/components/responses/Wishlist'
@@ -879,6 +879,8 @@ paths:
                   is_default: true
       parameters:
       - $ref: '#/components/parameters/SparseFieldsWishlist'
+      x-operation-id-source: normalized
+      x-operation-id-original: create-wishlist
     servers:
     - url: https://demo.spreecommerce.org
       description: demo
@@ -909,7 +911,7 @@ paths:
       summary: Update a Wishlist
       tags:
       - Wishlists
-      operationId: update-wishlist
+      operationId: patchApiV2StorefrontWishlistsByToken
       requestBody:
         required: true
         content:
@@ -955,12 +957,14 @@ paths:
           $ref: '#/components/responses/422UnprocessableEntity'
       security:
       - bearerAuth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: update-wishlist
     delete:
       description: This operation deletes the wishlist identified in the URI `token`.
       summary: Delete a Wishlist
       tags:
       - Wishlists
-      operationId: delete-wishlist
+      operationId: deleteApiV2StorefrontWishlistsByToken
       parameters:
       - $ref: '#/components/parameters/Token'
       responses:
@@ -970,6 +974,8 @@ paths:
           $ref: '#/components/responses/403Forbidden'
       security:
       - bearerAuth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: delete-wishlist
     servers:
     - url: https://demo.spreecommerce.org
       description: demo
@@ -1000,58 +1006,6 @@ paths:
       description: localhost
 components:
   schemas:
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    create_wishlist_params:
-      type: object
-      properties:
-        wishlist:
-          type: object
-          required:
-          - name
-          - user_id
-          properties:
-            name:
-              type: string
-            user_id:
-              type: string
-            is_default:
-              type: boolean
-            is_private:
-              type: boolean
-      required:
-      - wishlist
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
     update_wishlist_params:
       type: object
       properties:
@@ -1068,6 +1022,14 @@ components:
               type: boolean
       required:
       - wishlist
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -1114,6 +1076,50 @@ components:
       - meta
       - links
       x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    create_wishlist_params:
+      type: object
+      properties:
+        wishlist:
+          type: object
+          required:
+          - name
+          - user_id
+          properties:
+            name:
+              type: string
+            user_id:
+              type: string
+            is_default:
+              type: boolean
+            is_private:
+              type: boolean
+      required:
+      - wishlist
+      x-internal: false
     validation_errors:
       type: object
       properties:
@@ -1125,96 +1131,72 @@ components:
       - error
       - errors
       x-internal: false
-    PriceHistory:
+    CustomField:
       type: object
       properties:
         id:
           type: string
-        amount:
+        label:
           type: string
-        amount_in_cents:
-          type: number
-        currency:
+        type:
           type: string
-        display_amount:
+          deprecated: true
+        field_type:
           type: string
-        recorded_at:
-          type: string
-      required:
-      - id
-      - amount
-      - amount_in_cents
-      - currency
-      - display_amount
-      - recorded_at
-      x-typelizer: true
-    Price:
-      type: object
-      properties:
-        id:
-          type: string
-        amount:
-          type:
-          - string
-          - 'null'
-        amount_in_cents:
-          type:
+          enum:
+          - short_text
+          - long_text
+          - rich_text
           - number
-          - 'null'
-        compare_at_amount:
-          type:
-          - string
-          - 'null'
-        compare_at_amount_in_cents:
-          type:
-          - number
-          - 'null'
-        currency:
-          type:
-          - string
-          - 'null'
-        display_amount:
-          type:
-          - string
-          - 'null'
-        display_compare_at_amount:
-          type:
-          - string
-          - 'null'
-        price_list_id:
-          type:
-          - string
-          - 'null'
+          - boolean
+          - json
+        key:
+          type: string
+        value:
+          type: object
       required:
       - id
-      - amount
-      - amount_in_cents
-      - compare_at_amount
-      - compare_at_amount_in_cents
-      - currency
-      - display_amount
-      - display_compare_at_amount
-      - price_list_id
+      - label
+      - type
+      - field_type
+      - key
+      - value
       x-typelizer: true
-    WishlistItem:
+    OptionValue:
       type: object
       properties:
         id:
           type: string
-        variant_id:
+        option_type_id:
           type: string
-        wishlist_id:
+        name:
           type: string
-        quantity:
+        label:
+          type: string
+        position:
           type: number
-        variant:
-          $ref: '#/components/schemas/Variant'
+        color_code:
+          type:
+          - string
+          - 'null'
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type:
+          - string
+          - 'null'
       required:
       - id
-      - variant_id
-      - wishlist_id
-      - quantity
-      - variant
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
       x-typelizer: true
     Variant:
       type: object
@@ -1300,6 +1282,73 @@ components:
       - original_price
       - option_values
       x-typelizer: true
+    Wishlist:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+        is_default:
+          type: boolean
+        is_private:
+          type: boolean
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WishlistItem'
+      required:
+      - id
+      - name
+      - token
+      - is_default
+      - is_private
+      x-typelizer: true
+    WishlistItem:
+      type: object
+      properties:
+        id:
+          type: string
+        variant_id:
+          type: string
+        wishlist_id:
+          type: string
+        quantity:
+          type: number
+        variant:
+          $ref: '#/components/schemas/Variant'
+      required:
+      - id
+      - variant_id
+      - wishlist_id
+      - quantity
+      - variant
+      x-typelizer: true
+    PriceHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        amount_in_cents:
+          type: number
+        currency:
+          type: string
+        display_amount:
+          type: string
+        recorded_at:
+          type: string
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - currency
+      - display_amount
+      - recorded_at
+      x-typelizer: true
     Media:
       type: object
       properties:
@@ -1379,134 +1428,54 @@ components:
       - xlarge_url
       - og_image_url
       x-typelizer: true
-    Wishlist:
+    Price:
       type: object
       properties:
         id:
           type: string
-        name:
-          type: string
-        token:
-          type: string
-        is_default:
-          type: boolean
-        is_private:
-          type: boolean
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/WishlistItem'
-      required:
-      - id
-      - name
-      - token
-      - is_default
-      - is_private
-      x-typelizer: true
-    OptionValue:
-      type: object
-      properties:
-        id:
-          type: string
-        option_type_id:
-          type: string
-        name:
-          type: string
-        label:
-          type: string
-        position:
-          type: number
-        color_code:
+        amount:
           type:
           - string
           - 'null'
-        option_type_name:
-          type: string
-        option_type_label:
-          type: string
-        image_url:
+        amount_in_cents:
           type:
-          - string
-          - 'null'
-      required:
-      - id
-      - option_type_id
-      - name
-      - label
-      - position
-      - color_code
-      - option_type_name
-      - option_type_label
-      - image_url
-      x-typelizer: true
-    CustomField:
-      type: object
-      properties:
-        id:
-          type: string
-        label:
-          type: string
-        type:
-          type: string
-          deprecated: true
-        field_type:
-          type: string
-          enum:
-          - short_text
-          - long_text
-          - rich_text
           - number
-          - boolean
-          - json
-        key:
-          type: string
-        value:
-          type: object
+          - 'null'
+        compare_at_amount:
+          type:
+          - string
+          - 'null'
+        compare_at_amount_in_cents:
+          type:
+          - number
+          - 'null'
+        currency:
+          type:
+          - string
+          - 'null'
+        display_amount:
+          type:
+          - string
+          - 'null'
+        display_compare_at_amount:
+          type:
+          - string
+          - 'null'
+        price_list_id:
+          type:
+          - string
+          - 'null'
       required:
       - id
-      - label
-      - type
-      - field_type
-      - key
-      - value
+      - amount
+      - amount_in_cents
+      - compare_at_amount
+      - compare_at_amount_in_cents
+      - currency
+      - display_amount
+      - display_compare_at_amount
+      - price_list_id
       x-typelizer: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: record_not_found
-            message:
-              type: string
-              example: Record not found
-            details:
-              type:
-              - object
-              - 'null'
-              description: Field-specific validation errors
-              example:
-                name:
-                - is too short
-                - is required
-                email:
-                - is invalid
-          required:
-          - code
-          - message
-      required:
-      - error
-      example:
-        error:
-          code: validation_error
-          message: Validation failed
-          details:
-            name:
-            - is too short
-            email:
-            - is invalid
     PaginationMeta:
       type: object
       properties:
@@ -1556,11 +1525,43 @@ components:
       - from
       - to
       - in
-    WishlistIncludes:
-      x-internal: false
-      title: Wishlist Includes
-      allOf:
-      - $ref: '#/components/schemas/WishedItem'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type:
+              - object
+              - 'null'
+              description: Field-specific validation errors
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
     Wishlist_2:
       description: ''
       type: object
@@ -1602,6 +1603,40 @@ components:
       - type
       - attributes
       - relationships
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
     WishedItem:
       type: object
       x-internal: false
@@ -1637,6 +1672,18 @@ components:
       - type
       - attributes
       - relationships
+    WishlistIncludes:
+      x-internal: false
+      title: Wishlist Includes
+      allOf:
+      - $ref: '#/components/schemas/WishedItem'
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
     ListMeta:
       type: object
       x-internal: false
@@ -1654,62 +1701,44 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
-    Error:
-      x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
+  parameters:
+    SparseFieldsWishlist:
+      in: query
+      name: fields[wishlist]
+      example: name,token,is_default,is_private,variant_included
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+    WishlistIsVariantIncludedParam:
+      name: is_variant_included
+      in: query
+      schema:
+        type: string
+      example: '150'
+      description: Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`
+    Token:
+      name: token
+      in: path
+      required: true
+      description: The token is a unique string used to identify the target resource.
+      schema:
+        type: string
+      example: vmJtMiMozBdFtn1VkdJ8dYen
+    WishlistIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      example: wished_items.variant
+      description: Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes).
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
   responses:
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
     WishlistList:
       description: 200 Success - Returns an array of `wishlist` objects.
       content:
@@ -1865,43 +1894,20 @@ components:
                 errors:
                   example:
                   - Example is invalid
-  parameters:
-    WishlistIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      example: wished_items.variant
-      description: Specify the related resources you would like to receive in the `included` section of the response body. You can also retrieve related resources of included resources by using the dot notation, eg. `wished_items.variant`. [More information](https://jsonapi.org/format/#fetching-includes).
-    Token:
-      name: token
-      in: path
-      required: true
-      description: The token is a unique string used to identify the target resource.
-      schema:
-        type: string
-      example: vmJtMiMozBdFtn1VkdJ8dYen
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
-    SparseFieldsWishlist:
-      in: query
-      name: fields[wishlist]
-      example: name,token,is_default,is_private,variant_included
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-    WishlistIsVariantIncludedParam:
-      name: is_variant_included
-      in: query
-      schema:
-        type: string
-      example: '150'
-      description: Check for the presence of a variant in a wishlist by passing the variant ID, if the variant is present in the wishlist, the `variant_included` attribute will return `true`
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
   securitySchemes:
     bearer_auth:
       type: http
