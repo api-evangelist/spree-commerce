@@ -338,7 +338,7 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    create_promotion_category_params:
+    update_promotion_category_params:
       type: object
       properties:
         promotion_category:
@@ -349,15 +349,26 @@ components:
             name:
               type: string
               example: Promotions Used in 2021
-              description: Give this Promotion Category a name.
+              description: Update the name of this Promotion Category.
             code:
               type:
               - string
               - 'null'
               example: 2021-PROMOS
-              description: Give this promotion category a code.
+              description: Change or remove the code for this Promotion Category.
       required:
       - promotion_category
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
       x-internal: false
     error:
       type: object
@@ -412,6 +423,14 @@ components:
       - meta
       - links
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -428,15 +447,7 @@ components:
       - type
       - attributes
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    update_promotion_category_params:
+    create_promotion_category_params:
       type: object
       properties:
         promotion_category:
@@ -447,26 +458,15 @@ components:
             name:
               type: string
               example: Promotions Used in 2021
-              description: Update the name of this Promotion Category.
+              description: Give this Promotion Category a name.
             code:
               type:
               - string
               - 'null'
               example: 2021-PROMOS
-              description: Change or remove the code for this Promotion Category.
+              description: Give this promotion category a code.
       required:
       - promotion_category
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

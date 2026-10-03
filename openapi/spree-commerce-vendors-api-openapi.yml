@@ -407,9 +407,6 @@ paths:
       description: localhost
 components:
   schemas:
-    update_vendor_params:
-      $ref: '#/components/schemas/create_vendor_params'
-      x-internal: true
     create_vendor_params:
       type: object
       properties:
@@ -439,40 +436,9 @@ components:
       - contact_person_email
       - name
       x-internal: true
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
+    update_vendor_params:
+      $ref: '#/components/schemas/create_vendor_params'
+      x-internal: true
     Vendor:
       title: Vendor
       description: Vendors are Sellers in the marketplace.
@@ -542,6 +508,40 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
   parameters:
     PageParam:
       name: page
@@ -573,20 +573,32 @@ components:
         type: integer
       example: 25
   responses:
-    404NotFound:
-      description: 404 Not Found - Resource not found.
+    Vendor:
+      description: 200 Success - Returns the `vendor` object.
       content:
         application/vnd.api+json:
           schema:
+            type: object
             properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
+              data:
+                $ref: '#/components/schemas/Vendor'
+            required:
+            - data
           examples:
-            404 Example:
+            Single Vendor:
               value:
-                error: The resource you were looking for could not be found.
+                data:
+                  id: e1171601-a4ce-47d2-a795-c96fbdf20029
+                  type: vendor
+                  attributes:
+                    name: Best Shoes
+                    email: contact@example.com
+                    slug: best-shoes
+                    about_us: '<p>We are your #1 shoe store.</p>
+
+                      <p>Follow us on social media.</p>'
+                    logo_url: https://assets.com/images/logo_name
+                    cover_photo_url: https://assets.com/images/wide_tree_wzxgak
     VendorList:
       description: 200 Success - Returns an array of `vendor` objects.
       content:
@@ -632,32 +644,20 @@ components:
                       <p>Follow us on social media.</p>'
                     logo_url: https://assets.com/images/logo_name34553
                     cover_photo_url: https://assets.com/images/coverfn5ig
-    Vendor:
-      description: 200 Success - Returns the `vendor` object.
+    404NotFound:
+      description: 404 Not Found - Resource not found.
       content:
         application/vnd.api+json:
           schema:
-            type: object
             properties:
-              data:
-                $ref: '#/components/schemas/Vendor'
-            required:
-            - data
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
           examples:
-            Single Vendor:
+            404 Example:
               value:
-                data:
-                  id: e1171601-a4ce-47d2-a795-c96fbdf20029
-                  type: vendor
-                  attributes:
-                    name: Best Shoes
-                    email: contact@example.com
-                    slug: best-shoes
-                    about_us: '<p>We are your #1 shoe store.</p>
-
-                      <p>Follow us on social media.</p>'
-                    logo_url: https://assets.com/images/logo_name
-                    cover_photo_url: https://assets.com/images/wide_tree_wzxgak
+                error: The resource you were looking for could not be found.
   securitySchemes:
     bearer_auth:
       type: http

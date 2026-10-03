@@ -731,6 +731,17 @@ paths:
       description: localhost
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -784,24 +795,13 @@ components:
       - meta
       - links
       x-internal: false
-    update_taxon_params:
+    resource:
       type: object
       properties:
-        taxon:
-          type: object
-          properties:
-            taxonomy_id:
-              type: string
-            parent_id:
-              type: string
-            name:
-              type: string
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - taxon
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -819,13 +819,26 @@ components:
       - type
       - attributes
       x-internal: false
-    resource:
+    taxon_reposition:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
+        taxon:
+          type: object
+          required:
+          - new_parent_id
+          - new_position_idx
+          properties:
+            new_parent_id:
+              type: integer
+              example: 1
+              description: The ID of the new target parent Taxon.
+            new_position_idx:
+              type: integer
+              example: 1
+              description: The new index position of the Taxon within the parent Taxon.
       required:
-      - data
+      - taxon
+      title: Reposition a Taxon
       x-internal: false
     create_taxon_params:
       type: object
@@ -853,41 +866,28 @@ components:
       required:
       - taxon
       x-internal: false
-    taxon_reposition:
+    update_taxon_params:
       type: object
       properties:
         taxon:
           type: object
-          required:
-          - new_parent_id
-          - new_position_idx
           properties:
-            new_parent_id:
-              type: integer
-              example: 1
-              description: The ID of the new target parent Taxon.
-            new_position_idx:
-              type: integer
-              example: 1
-              description: The new index position of the Taxon within the parent Taxon.
+            taxonomy_id:
+              type: string
+            parent_id:
+              type: string
+            name:
+              type: string
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
       required:
       - taxon
-      title: Reposition a Taxon
       x-internal: false
-    validation_errors:
+    Taxon:
+      title: Taxon
       type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
-      x-internal: false
-    Taxonomy:
-      type: object
-      title: Taxonomy
       x-internal: false
       properties:
         id:
@@ -895,47 +895,135 @@ components:
           example: '1'
         type:
           type: string
-          default: taxonomy
+          default: taxon
         attributes:
           type: object
           properties:
             name:
               type: string
-              example: Categories
+              example: T-shirts
+            pretty_name:
+              type: string
+              example: Clothes > T-shirts
+            permalink:
+              type: string
+              example: t-shirts
+            seo_title:
+              type: string
+              example: Clothes - T-shirts
+            meta_title:
+              type:
+              - string
+              - 'null'
+              example: T-shirts
+            meta_description:
+              type:
+              - string
+              - 'null'
+              example: 'A list of cool t-shirts '
+            meta_keywords:
+              type:
+              - string
+              - 'null'
+              example: t-shirts, cool
+            left:
+              type: integer
+              example: 1
+            right:
+              type: integer
+              example: 2
             position:
               type: integer
               example: 0
-      required:
-      - id
-      - type
-      - attributes
-    TaxonImage:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: taxon_image
-        attributes:
+            depth:
+              type:
+              - integer
+              - 'null'
+              example: 1
+            is_root:
+              type: boolean
+              example: true
+              description: Indicates if the Taxon is the root node of this Taxonomy tree
+            is_child:
+              type: boolean
+              example: true
+              description: Returns true is this is a child node of this Taxonomy tree
+            is_leaf:
+              type: boolean
+              example: false
+              description: Returns true if this is the end of a branch of this Taxonomy tree
+            updated_at:
+              type: string
+              example: '2018-06-18T10:57:29.704Z'
+            localized_slugs:
+              type: object
+              description: Provides taxon's slugs in other locales
+        relationships:
           type: object
           properties:
-            position:
-              type: integer
-              example: 0
-              description: Sort order of images set in the Admin Panel
-            styles:
-              type: array
-              description: An array of pre-scaled image styles
-              items:
-                $ref: '#/components/schemas/ImageStyle'
+            parent:
+              type: object
+              description: Parent node
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            children:
+              type: object
+              description: List of child nodes
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            taxonomy:
+              type: object
+              description: Taxonomy associated with this Taxon
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            image:
+              type: object
+              description: Image associated with Taxon
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            products:
+              type: object
+              description: List of active and available Products associated with this Taxon
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
       required:
       - id
       - type
       - attributes
-      title: Taxon Image
+      - relationships
+    TaxonIncludes:
       x-internal: false
+      title: Taxon Includes
+      anyOf:
+      - $ref: '#/components/schemas/Product'
+      - $ref: '#/components/schemas/TaxonImage'
+      - $ref: '#/components/schemas/Taxonomy'
+    ImageStyle:
+      x-internal: false
+      title: Image Style
+      type: object
+      properties:
+        url:
+          type: string
+          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
+          description: Absolute URL of the uploaded image in selected style (width/height)
+        width:
+          type: integer
+          example: 1920
+          description: Actual width of image
+        height:
+          type: integer
+          example: 1080
+          description: Actual height of image
     Product:
       type: object
       title: Product
@@ -1088,16 +1176,9 @@ components:
       - type
       - attributes
       - relationships
-    TaxonIncludes:
-      x-internal: false
-      title: Taxon Includes
-      anyOf:
-      - $ref: '#/components/schemas/Product'
-      - $ref: '#/components/schemas/TaxonImage'
-      - $ref: '#/components/schemas/Taxonomy'
-    Taxon:
-      title: Taxon
+    Taxonomy:
       type: object
+      title: Taxonomy
       x-internal: false
       properties:
         id:
@@ -1105,128 +1186,20 @@ components:
           example: '1'
         type:
           type: string
-          default: taxon
+          default: taxonomy
         attributes:
           type: object
           properties:
             name:
               type: string
-              example: T-shirts
-            pretty_name:
-              type: string
-              example: Clothes > T-shirts
-            permalink:
-              type: string
-              example: t-shirts
-            seo_title:
-              type: string
-              example: Clothes - T-shirts
-            meta_title:
-              type:
-              - string
-              - 'null'
-              example: T-shirts
-            meta_description:
-              type:
-              - string
-              - 'null'
-              example: 'A list of cool t-shirts '
-            meta_keywords:
-              type:
-              - string
-              - 'null'
-              example: t-shirts, cool
-            left:
-              type: integer
-              example: 1
-            right:
-              type: integer
-              example: 2
+              example: Categories
             position:
               type: integer
               example: 0
-            depth:
-              type:
-              - integer
-              - 'null'
-              example: 1
-            is_root:
-              type: boolean
-              example: true
-              description: Indicates if the Taxon is the root node of this Taxonomy tree
-            is_child:
-              type: boolean
-              example: true
-              description: Returns true is this is a child node of this Taxonomy tree
-            is_leaf:
-              type: boolean
-              example: false
-              description: Returns true if this is the end of a branch of this Taxonomy tree
-            updated_at:
-              type: string
-              example: '2018-06-18T10:57:29.704Z'
-            localized_slugs:
-              type: object
-              description: Provides taxon's slugs in other locales
-        relationships:
-          type: object
-          properties:
-            parent:
-              type: object
-              description: Parent node
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            children:
-              type: object
-              description: List of child nodes
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            taxonomy:
-              type: object
-              description: Taxonomy associated with this Taxon
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            image:
-              type: object
-              description: Image associated with Taxon
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            products:
-              type: object
-              description: List of active and available Products associated with this Taxon
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
       required:
       - id
       - type
       - attributes
-      - relationships
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
     ListLinks:
       x-internal: false
       type: object
@@ -1247,23 +1220,23 @@ components:
         first:
           type: string
           description: URL to the first page of the listing
-    ImageStyle:
-      x-internal: false
-      title: Image Style
+    ListMeta:
       type: object
+      x-internal: false
+      title: Pagination Meta
       properties:
-        url:
-          type: string
-          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
-          description: Absolute URL of the uploaded image in selected style (width/height)
-        width:
-          type: integer
-          example: 1920
-          description: Actual width of image
-        height:
-          type: integer
-          example: 1080
-          description: Actual height of image
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
     Relation:
       type:
       - object
@@ -1286,14 +1259,34 @@ components:
       title: Time Stamp
       x-examples:
         example-1: '2020-02-16T07:14:54.617Z'
+    TaxonImage:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: taxon_image
+        attributes:
+          type: object
+          properties:
+            position:
+              type: integer
+              example: 0
+              description: Sort order of images set in the Admin Panel
+            styles:
+              type: array
+              description: An array of pre-scaled image styles
+              items:
+                $ref: '#/components/schemas/ImageStyle'
+      required:
+      - id
+      - type
+      - attributes
+      title: Taxon Image
+      x-internal: false
   parameters:
-    SparseFieldsTaxon:
-      in: query
-      name: fields[taxon]
-      example: name,pretty_name,permalink
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
     TaxonPermalink:
       name: taxon_permalink
       in: path
@@ -1302,6 +1295,13 @@ components:
       schema:
         type: string
       example: categories/women
+    SparseFieldsTaxon:
+      in: query
+      name: fields[taxon]
+      example: name,pretty_name,permalink
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
     PageParam:
       name: page
       in: query
@@ -1309,20 +1309,6 @@ components:
       schema:
         type: integer
       example: 1
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
-    FilterByIds:
-      in: query
-      name: filter[ids]
-      schema:
-        type: string
-      example: 1,2,3
-      description: Fetch only resources with corresponding IDs
     TaxonIncludeParam:
       name: include
       in: query
@@ -1330,6 +1316,13 @@ components:
         type: string
       description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
       example: parent,taxonomy,children,image,products
+    FilterByIds:
+      in: query
+      name: filter[ids]
+      schema:
+        type: string
+      example: 1,2,3
+      description: Fetch only resources with corresponding IDs
     FilterByName:
       in: query
       name: filter[name]
@@ -1337,6 +1330,13 @@ components:
         type: string
       example: rails
       description: Find resources with matching name (supports wild-card, partial-word match search)
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
   responses:
     Taxon:
       description: 200 Success - Returns the `taxon` object.

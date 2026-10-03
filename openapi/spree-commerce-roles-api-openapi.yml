@@ -288,6 +288,17 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -295,32 +306,6 @@ components:
           type: string
       required:
       - error
-      x-internal: false
-    update_role_params:
-      type: object
-      properties:
-        role:
-          type: object
-          properties:
-            name:
-              type: string
-              example: vendor
-      required:
-      - zone
-      x-internal: false
-    create_role_params:
-      type: object
-      properties:
-        role:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: vendor
-      required:
-      - zone
       x-internal: false
     resources_list:
       type: object
@@ -367,6 +352,28 @@ components:
       - meta
       - links
       x-internal: false
+    create_role_params:
+      type: object
+      properties:
+        role:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: vendor
+      required:
+      - zone
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -383,24 +390,17 @@ components:
       - type
       - attributes
       x-internal: false
-    resource:
+    update_role_params:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
+        role:
           type: object
+          properties:
+            name:
+              type: string
+              example: vendor
       required:
-      - error
-      - errors
+      - zone
       x-internal: false
   securitySchemes:
     bearer_auth:

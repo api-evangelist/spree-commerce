@@ -502,15 +502,7 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    create_store_credit_params:
+    update_store_credit_params:
       type: object
       properties:
         store_credit:
@@ -567,6 +559,25 @@ components:
       required:
       - store_credit
       x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
     resources_list:
       type: object
       properties:
@@ -612,23 +623,7 @@ components:
       - meta
       - links
       x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    update_store_credit_params:
+    create_store_credit_params:
       type: object
       properties:
         store_credit:
@@ -693,16 +688,21 @@ components:
       required:
       - data
       x-internal: false
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
       x-internal: false
   securitySchemes:
     bearer_auth:

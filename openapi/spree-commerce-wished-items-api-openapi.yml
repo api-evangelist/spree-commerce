@@ -385,13 +385,36 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    error:
+    update_wished_item_params:
+      type: object
+      properties:
+        wished_item:
+          type: object
+          required:
+          - wishlist_id
+          - variant_id
+          - quantity
+          properties:
+            wishlist_id:
+              type: string
+            variant_id:
+              type: string
+            quantity:
+              type: integer
+              description: Must be an integer greater than 0
+      required:
+      - wished_item
+      x-internal: false
+    validation_errors:
       type: object
       properties:
         error:
           type: string
+        errors:
+          type: object
       required:
       - error
+      - errors
       x-internal: false
     create_wished_item_params:
       type: object
@@ -412,6 +435,14 @@ components:
               description: Must be an integer greater than 0
       required:
       - wished_item
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
     resources_list:
       type: object
@@ -458,25 +489,13 @@ components:
       - meta
       - links
       x-internal: false
-    update_wished_item_params:
+    resource:
       type: object
       properties:
-        wished_item:
-          type: object
-          required:
-          - wishlist_id
-          - variant_id
-          - quantity
-          properties:
-            wishlist_id:
-              type: string
-            variant_id:
-              type: string
-            quantity:
-              type: integer
-              description: Must be an integer greater than 0
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - wished_item
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -493,25 +512,6 @@ components:
       - id
       - type
       - attributes
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

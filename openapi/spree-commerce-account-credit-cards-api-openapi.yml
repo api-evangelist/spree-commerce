@@ -84,154 +84,6 @@ paths:
       tags:
       - Account / Credit Cards
 components:
-  schemas:
-    PaymentMethod:
-      title: Payment Method
-      description: ''
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: payment_method
-        attributes:
-          type: object
-          properties:
-            type:
-              type: string
-              example: Spree::Gateway::StripeGateway
-            name:
-              type: string
-              example: Stripe
-            description:
-              type:
-              - string
-              - 'null'
-              example: Stripe Payments
-            preferences:
-              type: object
-      required:
-      - id
-      - type
-      - attributes
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    CreditCardIncludes:
-      x-internal: false
-      title: Credit Card Includes
-      allOf:
-      - $ref: '#/components/schemas/PaymentMethod'
-    CreditCard:
-      title: Credit Card
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          example: credit_card
-          default: credit_card
-        attributes:
-          type: object
-          properties:
-            cc_type:
-              type: string
-              enum:
-              - visa
-              - mastercard
-              - amex
-              example: visa
-            last_digits:
-              type: string
-              example: '1111'
-              description: Last 4 digits of CC number
-            month:
-              type: number
-              description: Expiration date month
-              example: 12
-            year:
-              type: number
-              example: 2026
-              description: Expiration date year
-            name:
-              type: string
-              example: John Doe
-              description: Card holder name
-            gateway_payment_profile_id:
-              type: string
-              example: card_1JqvNB2eZvKYlo2C5OlqLV7S
-              description: ID of a gateway's payment method
-            default:
-              type: boolean
-              example: true
-              description: Defines if this is the default CC for a signed in user
-        relationships:
-          type: object
-          properties:
-            payment_method:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
   responses:
     CreditCard:
       description: 200 Success - Returns the `credit_card` object.
@@ -275,20 +127,6 @@ components:
                     name: Stripe
                     description: Stripe Payments
                     preferences: {}
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     CreditCardList:
       description: 200 Success - Returns an array of `credit_card` objects.
       content:
@@ -377,6 +215,168 @@ components:
             403 Example:
               value:
                 error: You are not authorized to access this page.
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
+  schemas:
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    CreditCard:
+      title: Credit Card
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          example: credit_card
+          default: credit_card
+        attributes:
+          type: object
+          properties:
+            cc_type:
+              type: string
+              enum:
+              - visa
+              - mastercard
+              - amex
+              example: visa
+            last_digits:
+              type: string
+              example: '1111'
+              description: Last 4 digits of CC number
+            month:
+              type: number
+              description: Expiration date month
+              example: 12
+            year:
+              type: number
+              example: 2026
+              description: Expiration date year
+            name:
+              type: string
+              example: John Doe
+              description: Card holder name
+            gateway_payment_profile_id:
+              type: string
+              example: card_1JqvNB2eZvKYlo2C5OlqLV7S
+              description: ID of a gateway's payment method
+            default:
+              type: boolean
+              example: true
+              description: Defines if this is the default CC for a signed in user
+        relationships:
+          type: object
+          properties:
+            payment_method:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    PaymentMethod:
+      title: Payment Method
+      description: ''
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: payment_method
+        attributes:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Gateway::StripeGateway
+            name:
+              type: string
+              example: Stripe
+            description:
+              type:
+              - string
+              - 'null'
+              example: Stripe Payments
+            preferences:
+              type: object
+      required:
+      - id
+      - type
+      - attributes
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    CreditCardIncludes:
+      x-internal: false
+      title: Credit Card Includes
+      allOf:
+      - $ref: '#/components/schemas/PaymentMethod'
   parameters:
     CreditCardIncludeParam:
       name: include

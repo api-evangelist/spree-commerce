@@ -1965,26 +1965,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    StoreCreditCategory:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        non_expiring:
-          type: boolean
-      required:
-      - id
-      - name
-      - created_at
-      - updated_at
-      - non_expiring
-      x-typelizer: true
     StockLocation:
       type: object
       properties:
@@ -2093,6 +2073,26 @@ components:
       - created_at
       - updated_at
       x-typelizer: true
+    StoreCreditCategory:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        non_expiring:
+          type: boolean
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      - non_expiring
+      x-typelizer: true
     PaginationMeta:
       type: object
       properties:
@@ -2142,6 +2142,43 @@ components:
       - from
       - to
       - in
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type:
+              - object
+              - 'null'
+              description: Field-specific validation errors
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
+      required:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
     Store:
       type: object
       properties:
@@ -2200,43 +2237,6 @@ components:
       - supported_locales
       - logo_url
       x-typelizer: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: record_not_found
-            message:
-              type: string
-              example: Record not found
-            details:
-              type:
-              - object
-              - 'null'
-              description: Field-specific validation errors
-              example:
-                name:
-                - is too short
-                - is required
-                email:
-                - is invalid
-          required:
-          - code
-          - message
-      required:
-      - error
-      example:
-        error:
-          code: validation_error
-          message: Validation failed
-          details:
-            name:
-            - is too short
-            email:
-            - is invalid
   securitySchemes:
     api_key:
       type: apiKey

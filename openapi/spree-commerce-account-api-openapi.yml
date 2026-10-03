@@ -136,6 +136,21 @@ paths:
       security:
       - bearerAuth: []
 components:
+  parameters:
+    AccountIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information
+      example: default_billing_address,default_shipping_address
+    SparseFieldsUser:
+      name: fields[user]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: email,completed_orders
   schemas:
     Address:
       type: object
@@ -209,20 +224,6 @@ components:
       - type
       - attributes
       x-internal: false
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
     User:
       type: object
       title: User
@@ -294,49 +295,21 @@ components:
       properties:
         error:
           type: string
-  parameters:
-    SparseFieldsUser:
-      name: fields[user]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: email,completed_orders
-    AccountIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information
-      example: default_billing_address,default_shipping_address
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
   responses:
-    422UnprocessableEntity:
-      description: 422 Unprocessable Entity
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            422 Example:
-              value:
-                error: Example is invalid
-                errors:
-                  example:
-                  - Example is invalid
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
     User:
       description: 200 Success - Returns the `user` object.
       content:
@@ -431,6 +404,33 @@ components:
                     country_iso3: USA
                     country_iso: US
                     state_code: NY
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
   securitySchemes:
     bearerAuth:
       type: http

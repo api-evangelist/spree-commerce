@@ -402,34 +402,16 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    update_user_params:
+    validation_errors:
       type: object
       properties:
-        user:
+        error:
+          type: string
+        errors:
           type: object
-          properties:
-            email:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-            password:
-              type: string
-            password_confirmation:
-              type: string
-            selected_locale:
-              type: string
-            ship_address_id:
-              type: string
-            bill_address_id:
-              type: string
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
       required:
-      - user
+      - error
+      - errors
       x-internal: false
     error:
       type: object
@@ -484,6 +466,14 @@ components:
       - meta
       - links
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -499,6 +489,35 @@ components:
       - id
       - type
       - attributes
+      x-internal: false
+    update_user_params:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            email:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            password:
+              type: string
+            password_confirmation:
+              type: string
+            selected_locale:
+              type: string
+            ship_address_id:
+              type: string
+            bill_address_id:
+              type: string
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - user
       x-internal: false
     create_user_params:
       type: object
@@ -532,25 +551,6 @@ components:
               type: object
       required:
       - user
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

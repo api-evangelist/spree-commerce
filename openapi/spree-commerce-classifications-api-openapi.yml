@@ -359,6 +359,39 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    create_classification_params:
+      type: object
+      properties:
+        classification:
+          type: object
+          required:
+          - product_id
+          - taxon_id
+          - position
+          properties:
+            product_id:
+              type: string
+              example: '1'
+            taxon_id:
+              type: string
+              example: '1'
+            position:
+              type: integer
+              example: 1
+      required:
+      - classification
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -412,23 +445,13 @@ components:
       - meta
       - links
       x-internal: false
-    update_classification_params:
+    resource:
       type: object
       properties:
-        classification:
-          type: object
-          properties:
-            product_id:
-              type: string
-              example: '1'
-            taxon_id:
-              type: string
-              example: '1'
-            position:
-              type: integer
-              example: 1
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - classification
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -446,15 +469,11 @@ components:
       - type
       - attributes
       x-internal: false
-    create_classification_params:
+    update_classification_params:
       type: object
       properties:
         classification:
           type: object
-          required:
-          - product_id
-          - taxon_id
-          - position
           properties:
             product_id:
               type: string
@@ -467,25 +486,6 @@ components:
               example: 1
       required:
       - classification
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

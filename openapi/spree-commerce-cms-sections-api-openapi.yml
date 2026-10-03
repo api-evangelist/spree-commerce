@@ -479,6 +479,170 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    update_side_by_side_images_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            link_type_one:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image one links to.
+            link_type_two:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image two links to.
+            link_one:
+              type:
+              - string
+              - 'null'
+              example: men/shirts
+              description: Update the slug or path that image two links to.
+            link_two:
+              type:
+              - string
+              - 'null'
+              example: white-shirt
+              description: Update the slug or path that image two links to.
+            title_one:
+              type:
+              - string
+              - 'null'
+              example: Shop Men's Shirts
+              description: Update the title used in image one.
+            title_two:
+              type:
+              - string
+              - 'null'
+              example: Buy This Men's Shirt
+              description: Update the title used in image two.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            subtitle_one:
+              type:
+              - string
+              - 'null'
+              example: Save 50% today
+              description: Update the subtitle used in image one.
+            subtitle_two:
+              type:
+              - string
+              - 'null'
+              example: Save 50% today
+              description: Update the subtitle used in image two.
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_two]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Update a Side-by-Side Image Section
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
     create_side_by_side_images_cms_section_params:
       type: object
       properties:
@@ -581,13 +745,443 @@ components:
       - cms_section
       title: Create a Side-by-Side Image Section
       x-internal: false
-    error:
+    update_hero_image_cms_section_params:
       type: object
       properties:
-        error:
-          type: string
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            linked_resource_type:
+              type:
+              - string
+              - 'null'
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              - Spree::CmsPage
+              description: Update the resource type that this section links to.
+            linked_resource_id:
+              type:
+              - string
+              - 'null'
+              example: '1'
+              description: Set the ID of the resource that you would like this section to link to.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            button_text:
+              type: string
+              example: Click Here
+              description: Update the text value of the button used in this section.
+            title:
+              type: string
+              example: Shop Today
+              description: Update the title for this section.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
       required:
-      - error
+      - cms_section
+      title: Update a Hero Image Section
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_image_gallery_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            link_type_one:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image one links to.
+            link_type_two:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image two links to.
+            link_type_three:
+              type: string
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              description: Update the resource type that image three links to.
+            link_one:
+              type:
+              - string
+              - 'null'
+              example: men/shirts
+              description: Update the slug or path that image two links to.
+            link_two:
+              type:
+              - string
+              - 'null'
+              example: white-shirt
+              description: Update the slug or path that image two links to.
+            link_three:
+              type:
+              - string
+              - 'null'
+              example: red-shirt
+              description: Update the slug or path that image three links to.
+            title_one:
+              type:
+              - string
+              - 'null'
+              example: Shop Men's Shirts
+              description: Update the title used in image one.
+            title_two:
+              type:
+              - string
+              - 'null'
+              example: Buy This Men's Shirt
+              description: Update the title used in image two.
+            title_three:
+              type:
+              - string
+              - 'null'
+              example: Buy This Women's Skirt
+              description: Update the title used in image three.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            layout_style:
+              type: string
+              example: Default
+              enum:
+              - Default
+              - Reversed
+              description: This value is used by front end developers for styling the order the images appear.
+            display_labels:
+              type: string
+              example: Show
+              enum:
+              - Show
+              - Hide
+              description: This value is used by front end developers for showing and hiding the label on the images.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_two]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+            cms_section[image_three]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Update an Image Gallery Section
+      x-internal: false
+    update_featured_article_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            linked_resource_type:
+              type:
+              - string
+              - 'null'
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              - Spree::CmsPage
+              description: Set the resource type that this section links to.
+            linked_resource_id:
+              type:
+              - string
+              - 'null'
+              example: '1'
+              description: Change the ID of the resource that you would like this section to link to.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            button_text:
+              type: string
+              example: Click Here
+              description: Update the text value of the button used in this section.
+            title:
+              type: string
+              example: Shop Today
+              description: Update the title for the Section.
+            subtitle:
+              type: string
+              example: Save Big!
+              description: Update the subtitle for the Section.
+            rte_content:
+              type: string
+              example: Lots of text and content goes here.
+              description: Update the content here, this can be rich text editor content.
+      required:
+      - cms_section
+      title: Update a Featured Article Section
+      x-internal: false
+    create_hero_image_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              example: Spree::Cms::Sections::HeroImage
+              description: Set the section type.
+            linked_resource_type:
+              type:
+              - string
+              - 'null'
+              example: Spree::Taxon
+              enum:
+              - Spree::Taxon
+              - Spree::Product
+              - Spree::CmsPage
+              description: Set the resource type that this section links to.
+            linked_resource_id:
+              type:
+              - string
+              - 'null'
+              example: '1'
+              description: Set the ID of the resource that you would like this section to link to.
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            gutters:
+              type: string
+              example: No Gutters
+              enum:
+              - Gutters
+              - No Gutters
+              description: This value is used by front end developers for styling the section padding.
+            button_text:
+              type: string
+              example: Click Here
+              description: Set the text value of the button used in this section.
+            title:
+              type: string
+              example: Shop Today
+              description: Create a title for the Hero Section.
+            cms_section[image_one]:
+              type: string
+              format: binary
+              description: Use a `multipart/form-data` request to upload assets.
+      required:
+      - cms_section
+      title: Create a Hero Image Section
+      x-internal: false
+    create_rich_text_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          required:
+          - name
+          - cms_page_id
+          - type
+          properties:
+            name:
+              type: string
+              description: Give this section a name.
+            cms_page_id:
+              type: string
+              description: Set the `cms_page` ID that this section belongs to.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::RichTextContent
+              description: Set the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            rte_content:
+              type: string
+              example: Lots of text and content goes here.
+              description: Set the content, here, this can be rich text editor content.
+      required:
+      - cms_section
+      title: Create a Rich Text Section
+      x-internal: false
+    update_rich_text_cms_section_params:
+      type: object
+      properties:
+        cms_section:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Update this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            fit:
+              type: string
+              example: Screen
+              enum:
+              - Screen
+              - Container
+              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
+            rte_content:
+              type: string
+              example: Lots of text and content goes here.
+              description: Update the content, here, this can be rich text editor content.
+      required:
+      - cms_section
+      title: Update a Rich Text Section
       x-internal: false
     create_image_gallery_cms_section_params:
       type: object
@@ -745,623 +1339,6 @@ components:
       - cms_section
       title: Create a Product Carousel Section
       x-internal: false
-    update_rich_text_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Update this section name.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::HeroImage
-              - Spree::Cms::Sections::FeaturedArticle
-              - Spree::Cms::Sections::ProductCarousel
-              - Spree::Cms::Sections::ImageGallery
-              - Spree::Cms::Sections::SideBySideImages
-              - Spree::Cms::Sections::RichTextContent
-              example: Spree::Cms::Sections::ProductCarousel
-              description: Change the section type.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            fit:
-              type: string
-              example: Screen
-              enum:
-              - Screen
-              - Container
-              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
-            rte_content:
-              type: string
-              example: Lots of text and content goes here.
-              description: Update the content, here, this can be rich text editor content.
-      required:
-      - cms_section
-      title: Update a Rich Text Section
-      x-internal: false
-    resources_list:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
-      required:
-      - data
-      - meta
-      - links
-      x-internal: false
-    update_side_by_side_images_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Update this section name.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::HeroImage
-              - Spree::Cms::Sections::FeaturedArticle
-              - Spree::Cms::Sections::ProductCarousel
-              - Spree::Cms::Sections::ImageGallery
-              - Spree::Cms::Sections::SideBySideImages
-              - Spree::Cms::Sections::RichTextContent
-              example: Spree::Cms::Sections::ProductCarousel
-              description: Change the section type.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            link_type_one:
-              type: string
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              description: Update the resource type that image one links to.
-            link_type_two:
-              type: string
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              description: Update the resource type that image two links to.
-            link_one:
-              type:
-              - string
-              - 'null'
-              example: men/shirts
-              description: Update the slug or path that image two links to.
-            link_two:
-              type:
-              - string
-              - 'null'
-              example: white-shirt
-              description: Update the slug or path that image two links to.
-            title_one:
-              type:
-              - string
-              - 'null'
-              example: Shop Men's Shirts
-              description: Update the title used in image one.
-            title_two:
-              type:
-              - string
-              - 'null'
-              example: Buy This Men's Shirt
-              description: Update the title used in image two.
-            fit:
-              type: string
-              example: Screen
-              enum:
-              - Screen
-              - Container
-              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
-            subtitle_one:
-              type:
-              - string
-              - 'null'
-              example: Save 50% today
-              description: Update the subtitle used in image one.
-            subtitle_two:
-              type:
-              - string
-              - 'null'
-              example: Save 50% today
-              description: Update the subtitle used in image two.
-            gutters:
-              type: string
-              example: No Gutters
-              enum:
-              - Gutters
-              - No Gutters
-              description: This value is used by front end developers for styling the section padding.
-            cms_section[image_one]:
-              type: string
-              format: binary
-              description: Use a `multipart/form-data` request to upload assets.
-            cms_section[image_two]:
-              type: string
-              format: binary
-              description: Use a `multipart/form-data` request to upload assets.
-      required:
-      - cms_section
-      title: Update a Side-by-Side Image Section
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    create_rich_text_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          required:
-          - name
-          - cms_page_id
-          - type
-          properties:
-            name:
-              type: string
-              description: Give this section a name.
-            cms_page_id:
-              type: string
-              description: Set the `cms_page` ID that this section belongs to.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::RichTextContent
-              example: Spree::Cms::Sections::RichTextContent
-              description: Set the section type.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            fit:
-              type: string
-              example: Screen
-              enum:
-              - Screen
-              - Container
-              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
-            rte_content:
-              type: string
-              example: Lots of text and content goes here.
-              description: Set the content, here, this can be rich text editor content.
-      required:
-      - cms_section
-      title: Create a Rich Text Section
-      x-internal: false
-    create_hero_image_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          required:
-          - name
-          - cms_page_id
-          - type
-          properties:
-            name:
-              type: string
-              description: Give this section a name.
-            cms_page_id:
-              type: string
-              description: Set the `cms_page` ID that this section belongs to.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::HeroImage
-              example: Spree::Cms::Sections::HeroImage
-              description: Set the section type.
-            linked_resource_type:
-              type:
-              - string
-              - 'null'
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              - Spree::CmsPage
-              description: Set the resource type that this section links to.
-            linked_resource_id:
-              type:
-              - string
-              - 'null'
-              example: '1'
-              description: Set the ID of the resource that you would like this section to link to.
-            fit:
-              type: string
-              example: Screen
-              enum:
-              - Screen
-              - Container
-              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            gutters:
-              type: string
-              example: No Gutters
-              enum:
-              - Gutters
-              - No Gutters
-              description: This value is used by front end developers for styling the section padding.
-            button_text:
-              type: string
-              example: Click Here
-              description: Set the text value of the button used in this section.
-            title:
-              type: string
-              example: Shop Today
-              description: Create a title for the Hero Section.
-            cms_section[image_one]:
-              type: string
-              format: binary
-              description: Use a `multipart/form-data` request to upload assets.
-      required:
-      - cms_section
-      title: Create a Hero Image Section
-      x-internal: false
-    update_image_gallery_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Update this section name.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::HeroImage
-              - Spree::Cms::Sections::FeaturedArticle
-              - Spree::Cms::Sections::ProductCarousel
-              - Spree::Cms::Sections::ImageGallery
-              - Spree::Cms::Sections::SideBySideImages
-              - Spree::Cms::Sections::RichTextContent
-              example: Spree::Cms::Sections::ProductCarousel
-              description: Change the section type.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            link_type_one:
-              type: string
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              description: Update the resource type that image one links to.
-            link_type_two:
-              type: string
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              description: Update the resource type that image two links to.
-            link_type_three:
-              type: string
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              description: Update the resource type that image three links to.
-            link_one:
-              type:
-              - string
-              - 'null'
-              example: men/shirts
-              description: Update the slug or path that image two links to.
-            link_two:
-              type:
-              - string
-              - 'null'
-              example: white-shirt
-              description: Update the slug or path that image two links to.
-            link_three:
-              type:
-              - string
-              - 'null'
-              example: red-shirt
-              description: Update the slug or path that image three links to.
-            title_one:
-              type:
-              - string
-              - 'null'
-              example: Shop Men's Shirts
-              description: Update the title used in image one.
-            title_two:
-              type:
-              - string
-              - 'null'
-              example: Buy This Men's Shirt
-              description: Update the title used in image two.
-            title_three:
-              type:
-              - string
-              - 'null'
-              example: Buy This Women's Skirt
-              description: Update the title used in image three.
-            fit:
-              type: string
-              example: Screen
-              enum:
-              - Screen
-              - Container
-              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
-            layout_style:
-              type: string
-              example: Default
-              enum:
-              - Default
-              - Reversed
-              description: This value is used by front end developers for styling the order the images appear.
-            display_labels:
-              type: string
-              example: Show
-              enum:
-              - Show
-              - Hide
-              description: This value is used by front end developers for showing and hiding the label on the images.
-            cms_section[image_one]:
-              type: string
-              format: binary
-              description: Use a `multipart/form-data` request to upload assets.
-            cms_section[image_two]:
-              type: string
-              format: binary
-              description: Use a `multipart/form-data` request to upload assets.
-            cms_section[image_three]:
-              type: string
-              format: binary
-              description: Use a `multipart/form-data` request to upload assets.
-      required:
-      - cms_section
-      title: Update an Image Gallery Section
-      x-internal: false
-    update_hero_image_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Update this section name.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::HeroImage
-              - Spree::Cms::Sections::FeaturedArticle
-              - Spree::Cms::Sections::ProductCarousel
-              - Spree::Cms::Sections::ImageGallery
-              - Spree::Cms::Sections::SideBySideImages
-              - Spree::Cms::Sections::RichTextContent
-              example: Spree::Cms::Sections::ProductCarousel
-              description: Change the section type.
-            linked_resource_type:
-              type:
-              - string
-              - 'null'
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              - Spree::CmsPage
-              description: Update the resource type that this section links to.
-            linked_resource_id:
-              type:
-              - string
-              - 'null'
-              example: '1'
-              description: Set the ID of the resource that you would like this section to link to.
-            fit:
-              type: string
-              example: Screen
-              enum:
-              - Screen
-              - Container
-              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            gutters:
-              type: string
-              example: No Gutters
-              enum:
-              - Gutters
-              - No Gutters
-              description: This value is used by front end developers for styling the section padding.
-            button_text:
-              type: string
-              example: Click Here
-              description: Update the text value of the button used in this section.
-            title:
-              type: string
-              example: Shop Today
-              description: Update the title for this section.
-            cms_section[image_one]:
-              type: string
-              format: binary
-              description: Use a `multipart/form-data` request to upload assets.
-      required:
-      - cms_section
-      title: Update a Hero Image Section
-      x-internal: false
-    update_product_carousel_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Change this section name.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::HeroImage
-              - Spree::Cms::Sections::FeaturedArticle
-              - Spree::Cms::Sections::ProductCarousel
-              - Spree::Cms::Sections::ImageGallery
-              - Spree::Cms::Sections::SideBySideImages
-              - Spree::Cms::Sections::RichTextContent
-              example: Spree::Cms::Sections::ProductCarousel
-              description: Change the section type.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            linked_resource_id:
-              type:
-              - string
-              - 'null'
-              example: '1'
-              description: Update the ID of the Taxon that you would like displayed as a Product Carousel.
-      required:
-      - cms_section
-      title: Update a Product Carousel Section
-      x-internal: false
-    update_featured_article_cms_section_params:
-      type: object
-      properties:
-        cms_section:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Update this section name.
-            type:
-              type: string
-              enum:
-              - Spree::Cms::Sections::HeroImage
-              - Spree::Cms::Sections::FeaturedArticle
-              - Spree::Cms::Sections::ProductCarousel
-              - Spree::Cms::Sections::ImageGallery
-              - Spree::Cms::Sections::SideBySideImages
-              - Spree::Cms::Sections::RichTextContent
-              example: Spree::Cms::Sections::ProductCarousel
-              description: Change the section type.
-            position:
-              type: integer
-              example: 2
-              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
-            linked_resource_type:
-              type:
-              - string
-              - 'null'
-              example: Spree::Taxon
-              enum:
-              - Spree::Taxon
-              - Spree::Product
-              - Spree::CmsPage
-              description: Set the resource type that this section links to.
-            linked_resource_id:
-              type:
-              - string
-              - 'null'
-              example: '1'
-              description: Change the ID of the resource that you would like this section to link to.
-            fit:
-              type: string
-              example: Screen
-              enum:
-              - Screen
-              - Container
-              description: This value is used by front end developers to set CSS classes for content that fits the screen edge-to-edge, or stays within the boundaries of the central container.
-            gutters:
-              type: string
-              example: No Gutters
-              enum:
-              - Gutters
-              - No Gutters
-              description: This value is used by front end developers for styling the section padding.
-            button_text:
-              type: string
-              example: Click Here
-              description: Update the text value of the button used in this section.
-            title:
-              type: string
-              example: Shop Today
-              description: Update the title for the Section.
-            subtitle:
-              type: string
-              example: Save Big!
-              description: Update the subtitle for the Section.
-            rte_content:
-              type: string
-              example: Lots of text and content goes here.
-              description: Update the content here, this can be rich text editor content.
-      required:
-      - cms_section
-      title: Update a Featured Article Section
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
     create_featured_article_cms_section_params:
       type: object
       properties:
@@ -1438,16 +1415,39 @@ components:
       - cms_section
       title: Create a Featured Article Section
       x-internal: false
-    validation_errors:
+    update_product_carousel_cms_section_params:
       type: object
       properties:
-        error:
-          type: string
-        errors:
+        cms_section:
           type: object
+          properties:
+            name:
+              type: string
+              description: Change this section name.
+            type:
+              type: string
+              enum:
+              - Spree::Cms::Sections::HeroImage
+              - Spree::Cms::Sections::FeaturedArticle
+              - Spree::Cms::Sections::ProductCarousel
+              - Spree::Cms::Sections::ImageGallery
+              - Spree::Cms::Sections::SideBySideImages
+              - Spree::Cms::Sections::RichTextContent
+              example: Spree::Cms::Sections::ProductCarousel
+              description: Change the section type.
+            position:
+              type: integer
+              example: 2
+              description: 'Pass the position that you want this section to appear in. (The list is not zero indexed, so the first item is position: `1`)'
+            linked_resource_id:
+              type:
+              - string
+              - 'null'
+              example: '1'
+              description: Update the ID of the Taxon that you would like displayed as a Product Carousel.
       required:
-      - error
-      - errors
+      - cms_section
+      title: Update a Product Carousel Section
       x-internal: false
   securitySchemes:
     bearer_auth:

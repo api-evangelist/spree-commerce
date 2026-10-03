@@ -71,26 +71,9 @@ paths:
       tags:
       - Checkout Store Credit
 components:
-  parameters:
-    SparseFieldsCart:
-      name: fields[cart]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: token,currency,number
-    CartIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
-      example: line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card
   schemas:
-    Variant:
-      title: Variant
-      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
-      x-examples: {}
+    DigitalLink:
+      title: Digital Link
       type: object
       x-internal: false
       properties:
@@ -99,94 +82,22 @@ components:
           example: '1'
         type:
           type: string
-          default: variant
+          default: digital_link
         attributes:
           type: object
           properties:
-            sku:
+            token:
               type: string
-              example: SKU-1001
-            price:
-              type: string
-              example: '15.99'
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $15.99
-            weight:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            height:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            width:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            depth:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            is_master:
-              type: boolean
-              description: Indicates if Variant is the master Variant
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            options:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  value:
-                    type: string
-                  presentation:
-                    type: string
-            purchasable:
-              type: boolean
-              description: Indicates if Variant is in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if Variant is in stock
-            backorderable:
-              type: boolean
+              example: Gn6srBmmR4KrWy73LRtrBKYw
         relationships:
           type: object
           properties:
-            product:
+            line_item:
               type: object
               properties:
                 data:
                   $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_values:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
+      description: Digital links are accessible in the order includes line_items.digital_links
     Cart:
       description: The Cart provides a central place to collect information about an order, including line items, adjustments, payments, addresses, and shipments. [Read more in Spree docs](/developer/core-concepts/orders)
       type: object
@@ -538,20 +449,6 @@ components:
       - attributes
       - relationships
       description: ''
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
     Promotion:
       type: object
       title: Promotion
@@ -585,6 +482,190 @@ components:
       - type
       - attributes
       x-internal: false
+    User:
+      type: object
+      title: User
+      description: ' '
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: user
+        attributes:
+          type: object
+          properties:
+            email:
+              type: string
+              example: spree@example.com
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            selected_locale:
+              type: string
+              example: fr
+            store_credits:
+              type: number
+              example: 150.75
+            completed_orders:
+              type: number
+              example: 3
+              description: Number of placed Orders by this User
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of tags associated with the user
+            public_metadata:
+              type: object
+              example:
+                user_segment: supplier
+              description: The public metadata for this User
+        relationships:
+          type: object
+          properties:
+            default_billing_address:
+              type: object
+              description: Default billing address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            default_shipping_address:
+              type: object
+              description: Default shipping address associated with this Account
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: variant
+        attributes:
+          type: object
+          properties:
+            sku:
+              type: string
+              example: SKU-1001
+            price:
+              type: string
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            height:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            width:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            depth:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    CartIncludes:
+      x-internal: false
+      title: Cart Includes
+      anyOf:
+      - $ref: '#/components/schemas/LineItem'
+      - $ref: '#/components/schemas/Promotion'
+      - $ref: '#/components/schemas/Variant'
+      - $ref: '#/components/schemas/Payment'
+      - $ref: '#/components/schemas/User'
+      - $ref: '#/components/schemas/Shipment'
+      - $ref: '#/components/schemas/DigitalLink'
+      - $ref: '#/components/schemas/Product'
+      description: ''
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
     Product:
       type: object
       title: Product
@@ -737,6 +818,84 @@ components:
       - type
       - attributes
       - relationships
+    Payment:
+      title: Payment
+      type: object
+      description: ''
+      x-internal: false
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          default: payment
+        attributes:
+          type: object
+          properties:
+            amount:
+              type: string
+              default: '200.57'
+            response_code:
+              type: integer
+              default: 192
+            number:
+              type: string
+              default: PV7B4YH0
+            cvv_response_code:
+              type: integer
+              default: 200
+            cvv_response_message:
+              type: string
+              default: authorized
+            payment_method_id:
+              type: integer
+              default: 1
+            payment_method_name:
+              type: string
+              default: Credit Card
+            state:
+              type: string
+              default: paid
+        relationships:
+          type: object
+          properties:
+            source:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            payment_method:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
     Shipment:
       type: object
       title: Shipment
@@ -808,195 +967,22 @@ components:
       - type
       - attributes
       - relationships
-    CartIncludes:
-      x-internal: false
-      title: Cart Includes
-      anyOf:
-      - $ref: '#/components/schemas/LineItem'
-      - $ref: '#/components/schemas/Promotion'
-      - $ref: '#/components/schemas/Variant'
-      - $ref: '#/components/schemas/Payment'
-      - $ref: '#/components/schemas/User'
-      - $ref: '#/components/schemas/Shipment'
-      - $ref: '#/components/schemas/DigitalLink'
-      - $ref: '#/components/schemas/Product'
-      description: ''
-    Error:
-      x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
-    User:
-      type: object
-      title: User
-      description: ' '
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: user
-        attributes:
-          type: object
-          properties:
-            email:
-              type: string
-              example: spree@example.com
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            selected_locale:
-              type: string
-              example: fr
-            store_credits:
-              type: number
-              example: 150.75
-            completed_orders:
-              type: number
-              example: 3
-              description: Number of placed Orders by this User
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of tags associated with the user
-            public_metadata:
-              type: object
-              example:
-                user_segment: supplier
-              description: The public metadata for this User
-        relationships:
-          type: object
-          properties:
-            default_billing_address:
-              type: object
-              description: Default billing address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            default_shipping_address:
-              type: object
-              description: Default shipping address associated with this Account
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    DigitalLink:
-      title: Digital Link
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: digital_link
-        attributes:
-          type: object
-          properties:
-            token:
-              type: string
-              example: Gn6srBmmR4KrWy73LRtrBKYw
-        relationships:
-          type: object
-          properties:
-            line_item:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      description: Digital links are accessible in the order includes line_items.digital_links
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
-    Payment:
-      title: Payment
-      type: object
-      description: ''
-      x-internal: false
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          default: payment
-        attributes:
-          type: object
-          properties:
-            amount:
-              type: string
-              default: '200.57'
-            response_code:
-              type: integer
-              default: 192
-            number:
-              type: string
-              default: PV7B4YH0
-            cvv_response_code:
-              type: integer
-              default: 200
-            cvv_response_message:
-              type: string
-              default: authorized
-            payment_method_id:
-              type: integer
-              default: 1
-            payment_method_name:
-              type: string
-              default: Credit Card
-            state:
-              type: string
-              default: paid
-        relationships:
-          type: object
-          properties:
-            source:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            payment_method:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
+  parameters:
+    CartIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: line_items,variants,variants.images,billing_address,shipping_address,user,payments,shipments,promotions,gift_card
+    SparseFieldsCart:
+      name: fields[cart]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: token,currency,number
   responses:
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     Cart:
       description: 200 Success - Returns the `cart` object.
       content:
@@ -1523,6 +1509,20 @@ components:
                 errors:
                   example:
                   - Example is invalid
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
   securitySchemes:
     bearerAuth:
       type: http

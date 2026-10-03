@@ -5146,72 +5146,6 @@ components:
             - is too short
             email:
             - is invalid
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    update_address_params:
-      type: object
-      properties:
-        address:
-          type: object
-          properties:
-            country_id:
-              type: string
-              example: '224'
-            state_id:
-              type: string
-              example: '516'
-            state_name:
-              type: string
-              example: New York
-            address1:
-              type: string
-              example: 5th ave
-            address2:
-              type: string
-              example: 1st suite
-            city:
-              type: string
-              example: NY
-            zipcode:
-              type: string
-              example: '10001'
-            phone:
-              type: string
-              example: +1 123 456 789
-            alternative_phone:
-              type: string
-            firstname:
-              type: string
-              example: John
-            lastname:
-              type: string
-              example: Snow
-            label:
-              type: string
-              example: My home address
-            company:
-              type: string
-              example: Vendo Connect Inc
-            user_id:
-              type: string
-            public_metadata:
-              type: object
-              example:
-                distance_from_city_in_km: 10
-                location_type: building
-            private_metadata:
-              type: object
-              example:
-                close_to_shop: true
-      required:
-      - address
-      x-internal: false
     update_order_params:
       type: object
       properties:
@@ -5351,86 +5285,24 @@ components:
       required:
       - order
       x-internal: false
-    amount_param:
+    validation_errors:
       type: object
       properties:
-        amount:
-          type: number
-      x-internal: false
-    coupon_code_param:
-      type: object
-      properties:
-        coupon_code:
+        error:
           type: string
-      x-internal: false
-    resources_list:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
-      required:
-      - data
-      - meta
-      - links
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
-    resource:
+    error:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
+        error:
+          type: string
       required:
-      - data
+      - error
       x-internal: false
     create_order_params:
       type: object
@@ -5571,6 +5443,139 @@ components:
       required:
       - order
       x-internal: false
+    resources_list:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
+      required:
+      - data
+      - meta
+      - links
+      x-internal: false
+    update_address_params:
+      type: object
+      properties:
+        address:
+          type: object
+          properties:
+            country_id:
+              type: string
+              example: '224'
+            state_id:
+              type: string
+              example: '516'
+            state_name:
+              type: string
+              example: New York
+            address1:
+              type: string
+              example: 5th ave
+            address2:
+              type: string
+              example: 1st suite
+            city:
+              type: string
+              example: NY
+            zipcode:
+              type: string
+              example: '10001'
+            phone:
+              type: string
+              example: +1 123 456 789
+            alternative_phone:
+              type: string
+            firstname:
+              type: string
+              example: John
+            lastname:
+              type: string
+              example: Snow
+            label:
+              type: string
+              example: My home address
+            company:
+              type: string
+              example: Vendo Connect Inc
+            user_id:
+              type: string
+            public_metadata:
+              type: object
+              example:
+                distance_from_city_in_km: 10
+                location_type: building
+            private_metadata:
+              type: object
+              example:
+                close_to_shop: true
+      required:
+      - address
+      x-internal: false
+    amount_param:
+      type: object
+      properties:
+        amount:
+          type: number
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
     update_line_item_params:
       type: object
       properties:
@@ -5586,123 +5591,124 @@ components:
       required:
       - line_item
       x-internal: false
-    validation_errors:
+    coupon_code_param:
       type: object
       properties:
-        error:
+        coupon_code:
           type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
       x-internal: false
-    StockLocation:
+    DigitalLink:
       type: object
       properties:
         id:
           type: string
-        state_abbr:
-          type:
-          - string
-          - 'null'
-        name:
+        access_counter:
+          type: number
+        filename:
           type: string
-        address1:
-          type:
-          - string
-          - 'null'
-        city:
-          type:
-          - string
-          - 'null'
-        zipcode:
-          type:
-          - string
-          - 'null'
-        country_iso:
-          type:
-          - string
-          - 'null'
-        country_name:
-          type:
-          - string
-          - 'null'
-        state_text:
-          type:
-          - string
-          - 'null'
+        content_type:
+          type: string
+        download_url:
+          type: string
+        authorizable:
+          type: boolean
+        expired:
+          type: boolean
+        access_limit_exceeded:
+          type: boolean
       required:
       - id
-      - state_abbr
-      - name
-      - address1
-      - city
-      - zipcode
-      - country_iso
-      - country_name
-      - state_text
+      - access_counter
+      - filename
+      - content_type
+      - download_url
+      - authorizable
+      - expired
+      - access_limit_exceeded
       x-typelizer: true
-    Market:
+    Fulfillment:
       type: object
       properties:
         id:
           type: string
-        name:
+        number:
           type: string
-        currency:
+        tracking:
+          type:
+          - string
+          - 'null'
+        tracking_url:
+          type:
+          - string
+          - 'null'
+        cost:
           type: string
-        default_locale:
+        display_cost:
           type: string
-        tax_inclusive:
-          type: boolean
-        default:
-          type: boolean
-        supported_locales:
+        total:
+          type: string
+        display_total:
+          type: string
+        discount_total:
+          type: string
+        display_discount_total:
+          type: string
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        status:
+          type: string
+        fulfillment_type:
+          type: string
+        fulfilled_at:
+          type:
+          - string
+          - 'null'
+        items:
           type: array
           items:
-            type: string
-        countries:
+            $ref: '#/components/schemas/FulfillmentManifestItem'
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethod'
+        stock_location:
+          $ref: '#/components/schemas/StockLocation'
+        delivery_rates:
           type: array
           items:
-            $ref: '#/components/schemas/Country'
+            $ref: '#/components/schemas/DeliveryRate'
       required:
       - id
-      - name
-      - currency
-      - default_locale
-      - tax_inclusive
-      - default
-      - supported_locales
-      x-typelizer: true
-    StoreCredit:
-      type: object
-      properties:
-        id:
-          type: string
-        amount:
-          type: string
-        amount_used:
-          type: string
-        amount_remaining:
-          type: string
-        display_amount:
-          type: string
-        display_amount_used:
-          type: string
-        display_amount_remaining:
-          type: string
-        currency:
-          type: string
-      required:
-      - id
-      - amount
-      - amount_used
-      - amount_remaining
-      - display_amount
-      - display_amount_used
-      - display_amount_remaining
-      - currency
+      - number
+      - tracking
+      - tracking_url
+      - cost
+      - display_cost
+      - total
+      - display_total
+      - discount_total
+      - display_discount_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - tax_total
+      - display_tax_total
+      - status
+      - fulfillment_type
+      - fulfilled_at
+      - items
+      - delivery_method
+      - stock_location
+      - delivery_rates
       x-typelizer: true
     DeliveryMethod:
       type: object
@@ -5719,100 +5725,6 @@ components:
       - id
       - name
       - code
-      x-typelizer: true
-    CreditCard:
-      type: object
-      properties:
-        id:
-          type: string
-        brand:
-          type: string
-        last4:
-          type: string
-        month:
-          type: number
-        year:
-          type: number
-        name:
-          type:
-          - string
-          - 'null'
-        default:
-          type: boolean
-        gateway_payment_profile_id:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - brand
-      - last4
-      - month
-      - year
-      - name
-      - default
-      - gateway_payment_profile_id
-      x-typelizer: true
-    PaymentMethod:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        type:
-          type: string
-        session_required:
-          type: boolean
-        source_required:
-          type: boolean
-      required:
-      - id
-      - name
-      - description
-      - type
-      - session_required
-      - source_required
-      x-typelizer: true
-    OptionValue:
-      type: object
-      properties:
-        id:
-          type: string
-        option_type_id:
-          type: string
-        name:
-          type: string
-        label:
-          type: string
-        position:
-          type: number
-        color_code:
-          type:
-          - string
-          - 'null'
-        option_type_name:
-          type: string
-        option_type_label:
-          type: string
-        image_url:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - option_type_id
-      - name
-      - label
-      - position
-      - color_code
-      - option_type_name
-      - option_type_label
-      - image_url
       x-typelizer: true
     Address:
       type: object
@@ -5895,6 +5807,232 @@ components:
       - is_default_shipping
       - state_name
       x-typelizer: true
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        payment_method_id:
+          type: string
+        response_code:
+          type:
+          - string
+          - 'null'
+        number:
+          type: string
+        amount:
+          type: string
+        display_amount:
+          type: string
+        status:
+          type: string
+        source_type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - credit_card
+          - store_credit
+          - payment_source
+        source_id:
+          type:
+          - string
+          - 'null'
+        source:
+          anyOf:
+          - $ref: '#/components/schemas/CreditCard'
+          - $ref: '#/components/schemas/StoreCredit'
+          - $ref: '#/components/schemas/PaymentSource'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+      required:
+      - id
+      - payment_method_id
+      - response_code
+      - number
+      - amount
+      - display_amount
+      - status
+      - source_type
+      - source_id
+      - source
+      - payment_method
+      x-typelizer: true
+    LineItem:
+      type: object
+      properties:
+        id:
+          type: string
+        variant_id:
+          type: string
+        quantity:
+          type: number
+        currency:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        options_text:
+          type: string
+        price:
+          type: string
+        display_price:
+          type: string
+        total:
+          type: string
+        display_total:
+          type: string
+        adjustment_total:
+          type: string
+        display_adjustment_total:
+          type: string
+        additional_tax_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        discount_total:
+          type: string
+        display_discount_total:
+          type: string
+        pre_tax_amount:
+          type: string
+        display_pre_tax_amount:
+          type: string
+        discounted_amount:
+          type: string
+        display_discounted_amount:
+          type: string
+        display_compare_at_amount:
+          type:
+          - string
+          - 'null'
+        compare_at_amount:
+          type:
+          - string
+          - 'null'
+        thumbnail_url:
+          type:
+          - string
+          - 'null'
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue'
+        digital_links:
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitalLink'
+      required:
+      - id
+      - variant_id
+      - quantity
+      - currency
+      - name
+      - slug
+      - options_text
+      - price
+      - display_price
+      - total
+      - display_total
+      - adjustment_total
+      - display_adjustment_total
+      - additional_tax_total
+      - display_additional_tax_total
+      - included_tax_total
+      - display_included_tax_total
+      - discount_total
+      - display_discount_total
+      - pre_tax_amount
+      - display_pre_tax_amount
+      - discounted_amount
+      - display_discounted_amount
+      - display_compare_at_amount
+      - compare_at_amount
+      - thumbnail_url
+      - option_values
+      - digital_links
+      x-typelizer: true
+    CreditCard:
+      type: object
+      properties:
+        id:
+          type: string
+        brand:
+          type: string
+        last4:
+          type: string
+        month:
+          type: number
+        year:
+          type: number
+        name:
+          type:
+          - string
+          - 'null'
+        default:
+          type: boolean
+        gateway_payment_profile_id:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - brand
+      - last4
+      - month
+      - year
+      - name
+      - default
+      - gateway_payment_profile_id
+      x-typelizer: true
+    PaymentSource:
+      type: object
+      properties:
+        id:
+          type: string
+        gateway_payment_profile_id:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - gateway_payment_profile_id
+      x-typelizer: true
+    Discount:
+      type: object
+      properties:
+        id:
+          type: string
+        promotion_id:
+          type: string
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: string
+        display_amount:
+          type: string
+      required:
+      - id
+      - promotion_id
+      - name
+      - description
+      - code
+      - amount
+      - display_amount
+      x-typelizer: true
     State:
       type: object
       properties:
@@ -5905,6 +6043,88 @@ components:
       required:
       - abbr
       - name
+      x-typelizer: true
+    StockLocation:
+      type: object
+      properties:
+        id:
+          type: string
+        state_abbr:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        address1:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        zipcode:
+          type:
+          - string
+          - 'null'
+        country_iso:
+          type:
+          - string
+          - 'null'
+        country_name:
+          type:
+          - string
+          - 'null'
+        state_text:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - state_abbr
+      - name
+      - address1
+      - city
+      - zipcode
+      - country_iso
+      - country_name
+      - state_text
+      x-typelizer: true
+    OptionValue:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
+          type:
+          - string
+          - 'null'
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
       x-typelizer: true
     FulfillmentManifestItem:
       type: object
@@ -5926,18 +6146,64 @@ components:
       - item_id
       - variant_id
       - quantity
-    PaymentSource:
+    Market:
       type: object
       properties:
         id:
           type: string
-        gateway_payment_profile_id:
-          type:
-          - string
-          - 'null'
+        name:
+          type: string
+        currency:
+          type: string
+        default_locale:
+          type: string
+        tax_inclusive:
+          type: boolean
+        default:
+          type: boolean
+        supported_locales:
+          type: array
+          items:
+            type: string
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
       required:
       - id
-      - gateway_payment_profile_id
+      - name
+      - currency
+      - default_locale
+      - tax_inclusive
+      - default
+      - supported_locales
+      x-typelizer: true
+    Country:
+      type: object
+      properties:
+        iso:
+          type: string
+        iso3:
+          type: string
+        name:
+          type: string
+        states_required:
+          type: boolean
+        zipcode_required:
+          type: boolean
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/State'
+        market:
+          allOf:
+          - $ref: '#/components/schemas/Market'
+      required:
+      - iso
+      - iso3
+      - name
+      - states_required
+      - zipcode_required
       x-typelizer: true
     GiftCard:
       type: object
@@ -5993,34 +6259,80 @@ components:
       - expired
       - active
       x-typelizer: true
-    DigitalLink:
+    DeliveryRate:
       type: object
       properties:
         id:
           type: string
-        access_counter:
-          type: number
-        filename:
+        delivery_method_id:
           type: string
-        content_type:
+        name:
           type: string
-        download_url:
-          type: string
-        authorizable:
+        selected:
           type: boolean
-        expired:
+        cost:
+          type: string
+        total:
+          type: string
+        additional_tax_total:
+          type: string
+        included_tax_total:
+          type: string
+        tax_total:
+          type: string
+        display_cost:
+          type: string
+        display_total:
+          type: string
+        display_additional_tax_total:
+          type: string
+        display_included_tax_total:
+          type: string
+        display_tax_total:
+          type: string
+        delivery_method:
+          $ref: '#/components/schemas/DeliveryMethod'
+      required:
+      - id
+      - delivery_method_id
+      - name
+      - selected
+      - cost
+      - total
+      - additional_tax_total
+      - included_tax_total
+      - tax_total
+      - display_cost
+      - display_total
+      - display_additional_tax_total
+      - display_included_tax_total
+      - display_tax_total
+      - delivery_method
+      x-typelizer: true
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+        session_required:
           type: boolean
-        access_limit_exceeded:
+        source_required:
           type: boolean
       required:
       - id
-      - access_counter
-      - filename
-      - content_type
-      - download_url
-      - authorizable
-      - expired
-      - access_limit_exceeded
+      - name
+      - description
+      - type
+      - session_required
+      - source_required
       x-typelizer: true
     Order:
       type: object
@@ -6182,346 +6494,34 @@ components:
       - gift_card
       - market
       x-typelizer: true
-    Payment:
+    StoreCredit:
       type: object
       properties:
         id:
-          type: string
-        payment_method_id:
-          type: string
-        response_code:
-          type:
-          - string
-          - 'null'
-        number:
           type: string
         amount:
           type: string
-        display_amount:
+        amount_used:
           type: string
-        status:
-          type: string
-        source_type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - credit_card
-          - store_credit
-          - payment_source
-        source_id:
-          type:
-          - string
-          - 'null'
-        source:
-          anyOf:
-          - $ref: '#/components/schemas/CreditCard'
-          - $ref: '#/components/schemas/StoreCredit'
-          - $ref: '#/components/schemas/PaymentSource'
-        payment_method:
-          $ref: '#/components/schemas/PaymentMethod'
-      required:
-      - id
-      - payment_method_id
-      - response_code
-      - number
-      - amount
-      - display_amount
-      - status
-      - source_type
-      - source_id
-      - source
-      - payment_method
-      x-typelizer: true
-    Discount:
-      type: object
-      properties:
-        id:
-          type: string
-        promotion_id:
-          type: string
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        code:
-          type:
-          - string
-          - 'null'
-        amount:
+        amount_remaining:
           type: string
         display_amount:
           type: string
-      required:
-      - id
-      - promotion_id
-      - name
-      - description
-      - code
-      - amount
-      - display_amount
-      x-typelizer: true
-    Country:
-      type: object
-      properties:
-        iso:
+        display_amount_used:
           type: string
-        iso3:
+        display_amount_remaining:
           type: string
-        name:
-          type: string
-        states_required:
-          type: boolean
-        zipcode_required:
-          type: boolean
-        states:
-          type: array
-          items:
-            $ref: '#/components/schemas/State'
-        market:
-          allOf:
-          - $ref: '#/components/schemas/Market'
-      required:
-      - iso
-      - iso3
-      - name
-      - states_required
-      - zipcode_required
-      x-typelizer: true
-    LineItem:
-      type: object
-      properties:
-        id:
-          type: string
-        variant_id:
-          type: string
-        quantity:
-          type: number
         currency:
           type: string
-        name:
-          type: string
-        slug:
-          type: string
-        options_text:
-          type: string
-        price:
-          type: string
-        display_price:
-          type: string
-        total:
-          type: string
-        display_total:
-          type: string
-        adjustment_total:
-          type: string
-        display_adjustment_total:
-          type: string
-        additional_tax_total:
-          type: string
-        display_additional_tax_total:
-          type: string
-        included_tax_total:
-          type: string
-        display_included_tax_total:
-          type: string
-        discount_total:
-          type: string
-        display_discount_total:
-          type: string
-        pre_tax_amount:
-          type: string
-        display_pre_tax_amount:
-          type: string
-        discounted_amount:
-          type: string
-        display_discounted_amount:
-          type: string
-        display_compare_at_amount:
-          type:
-          - string
-          - 'null'
-        compare_at_amount:
-          type:
-          - string
-          - 'null'
-        thumbnail_url:
-          type:
-          - string
-          - 'null'
-        option_values:
-          type: array
-          items:
-            $ref: '#/components/schemas/OptionValue'
-        digital_links:
-          type: array
-          items:
-            $ref: '#/components/schemas/DigitalLink'
       required:
       - id
-      - variant_id
-      - quantity
+      - amount
+      - amount_used
+      - amount_remaining
+      - display_amount
+      - display_amount_used
+      - display_amount_remaining
       - currency
-      - name
-      - slug
-      - options_text
-      - price
-      - display_price
-      - total
-      - display_total
-      - adjustment_total
-      - display_adjustment_total
-      - additional_tax_total
-      - display_additional_tax_total
-      - included_tax_total
-      - display_included_tax_total
-      - discount_total
-      - display_discount_total
-      - pre_tax_amount
-      - display_pre_tax_amount
-      - discounted_amount
-      - display_discounted_amount
-      - display_compare_at_amount
-      - compare_at_amount
-      - thumbnail_url
-      - option_values
-      - digital_links
-      x-typelizer: true
-    Fulfillment:
-      type: object
-      properties:
-        id:
-          type: string
-        number:
-          type: string
-        tracking:
-          type:
-          - string
-          - 'null'
-        tracking_url:
-          type:
-          - string
-          - 'null'
-        cost:
-          type: string
-        display_cost:
-          type: string
-        total:
-          type: string
-        display_total:
-          type: string
-        discount_total:
-          type: string
-        display_discount_total:
-          type: string
-        additional_tax_total:
-          type: string
-        display_additional_tax_total:
-          type: string
-        included_tax_total:
-          type: string
-        display_included_tax_total:
-          type: string
-        tax_total:
-          type: string
-        display_tax_total:
-          type: string
-        status:
-          type: string
-        fulfillment_type:
-          type: string
-        fulfilled_at:
-          type:
-          - string
-          - 'null'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/FulfillmentManifestItem'
-        delivery_method:
-          $ref: '#/components/schemas/DeliveryMethod'
-        stock_location:
-          $ref: '#/components/schemas/StockLocation'
-        delivery_rates:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryRate'
-      required:
-      - id
-      - number
-      - tracking
-      - tracking_url
-      - cost
-      - display_cost
-      - total
-      - display_total
-      - discount_total
-      - display_discount_total
-      - additional_tax_total
-      - display_additional_tax_total
-      - included_tax_total
-      - display_included_tax_total
-      - tax_total
-      - display_tax_total
-      - status
-      - fulfillment_type
-      - fulfilled_at
-      - items
-      - delivery_method
-      - stock_location
-      - delivery_rates
-      x-typelizer: true
-    DeliveryRate:
-      type: object
-      properties:
-        id:
-          type: string
-        delivery_method_id:
-          type: string
-        name:
-          type: string
-        selected:
-          type: boolean
-        cost:
-          type: string
-        total:
-          type: string
-        additional_tax_total:
-          type: string
-        included_tax_total:
-          type: string
-        tax_total:
-          type: string
-        display_cost:
-          type: string
-        display_total:
-          type: string
-        display_additional_tax_total:
-          type: string
-        display_included_tax_total:
-          type: string
-        display_tax_total:
-          type: string
-        delivery_method:
-          $ref: '#/components/schemas/DeliveryMethod'
-      required:
-      - id
-      - delivery_method_id
-      - name
-      - selected
-      - cost
-      - total
-      - additional_tax_total
-      - included_tax_total
-      - tax_total
-      - display_cost
-      - display_total
-      - display_additional_tax_total
-      - display_included_tax_total
-      - display_tax_total
-      - delivery_method
       x-typelizer: true
   securitySchemes:
     api_key:

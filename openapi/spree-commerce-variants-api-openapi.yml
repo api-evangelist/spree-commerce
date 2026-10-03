@@ -456,6 +456,14 @@ components:
       required:
       - error
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -471,14 +479,6 @@ components:
       - id
       - type
       - attributes
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
       x-internal: false
     resources_list:
       type: object
@@ -570,50 +570,6 @@ components:
       - type
       - attributes
       - relationships
-    VariantIncludes:
-      x-internal: true
-      title: Product Includes
-      anyOf:
-      - $ref: '#/components/schemas/Product'
-      - $ref: '#/components/schemas/Image'
-      - $ref: '#/components/schemas/OptionValue'
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
-    ImageStyle:
-      x-internal: false
-      title: Image Style
-      type: object
-      properties:
-        url:
-          type: string
-          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
-          description: Absolute URL of the uploaded image in selected style (width/height)
-        width:
-          type: integer
-          example: 1920
-          description: Actual width of image
-        height:
-          type: integer
-          example: 1080
-          description: Actual height of image
     Variant:
       title: Variant
       description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
@@ -714,20 +670,83 @@ components:
       - type
       - attributes
       - relationships
-    Relation:
-      type:
-      - object
-      - 'null'
+    Image:
+      type: object
       properties:
         id:
           type: string
+          example: '1'
         type:
           type: string
+          default: image
+        attributes:
+          type: object
+          properties:
+            position:
+              type: integer
+              description: Sort order of images set in the Admin Panel
+              example: 0
+              minimum: 0
+            styles:
+              type: array
+              description: An array of pre-scaled image styles
+              items:
+                $ref: '#/components/schemas/ImageStyle'
       required:
       - id
       - type
+      - attributes
+      title: Image
       x-internal: false
-      description: ''
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+    VariantIncludes:
+      x-internal: true
+      title: Product Includes
+      anyOf:
+      - $ref: '#/components/schemas/Product'
+      - $ref: '#/components/schemas/Image'
+      - $ref: '#/components/schemas/OptionValue'
+    ImageStyle:
+      x-internal: false
+      title: Image Style
+      type: object
+      properties:
+        url:
+          type: string
+          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
+          description: Absolute URL of the uploaded image in selected style (width/height)
+        width:
+          type: integer
+          example: 1920
+          description: Actual width of image
+        height:
+          type: integer
+          example: 1080
+          description: Actual height of image
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
     Product:
       type: object
       title: Product
@@ -880,60 +899,62 @@ components:
       - type
       - attributes
       - relationships
-    Image:
+    ListLinks:
+      x-internal: false
       type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    Relation:
+      type:
+      - object
+      - 'null'
       properties:
         id:
           type: string
-          example: '1'
         type:
           type: string
-          default: image
-        attributes:
-          type: object
-          properties:
-            position:
-              type: integer
-              description: Sort order of images set in the Admin Panel
-              example: 0
-              minimum: 0
-            styles:
-              type: array
-              description: An array of pre-scaled image styles
-              items:
-                $ref: '#/components/schemas/ImageStyle'
       required:
       - id
       - type
-      - attributes
-      title: Image
       x-internal: false
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
+      description: ''
   parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    SparseFieldsVariant:
+      name: fields[variant]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: price,currency,options,options_text
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
     ProductSlug:
       name: product_slug
       in: path
@@ -942,13 +963,6 @@ components:
       schema:
         type: string
       example: knitted-high-neck-sweater
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
     VariantIncludeParam:
       name: include
       in: query
@@ -966,20 +980,6 @@ components:
 
         [More information](https://jsonapi.org/format/#fetching-includes)'
       example: product,option_values,images,filter_values
-    SparseFieldsVariant:
-      name: fields[variant]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: price,currency,options,options_text
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
   responses:
     VariantList:
       description: 200 Success - Returns an array of `variant` objects.

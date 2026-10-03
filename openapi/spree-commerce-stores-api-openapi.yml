@@ -38,6 +38,20 @@ paths:
           $ref: '#/components/responses/403Forbidden'
 components:
   schemas:
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
     Country:
       title: Country
       description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
@@ -92,34 +106,6 @@ components:
       title: Store Includes
       anyOf:
       - $ref: '#/components/schemas/Country'
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    State:
-      type: object
-      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
-      title: State
-      properties:
-        abbr:
-          type: string
-          example: NY
-          description: State abbreviation
-        name:
-          type: string
-          example: New York
-          description: State name
-      x-internal: false
     Store:
       type: object
       description: Stores are the center of the Spree ecosystem. Each Spree installation can have multiple Stores. Each Store operates on a different domain or subdomain.
@@ -220,6 +206,20 @@ components:
       - type
       - attributes
       - relationships
+    State:
+      type: object
+      description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
+      title: State
+      properties:
+        abbr:
+          type: string
+          example: NY
+          description: State abbreviation
+        name:
+          type: string
+          example: New York
+          description: State name
+      x-internal: false
   responses:
     Store:
       description: 200 Success - Returns the `store` object.
@@ -324,6 +324,13 @@ components:
               value:
                 error: You are not authorized to access this page.
   parameters:
+    SparseFieldsStore:
+      name: fields[store]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,url,supported_locales
     StoreIncludeParam:
       name: include
       in: query
@@ -341,13 +348,6 @@ components:
 
         [More information](https://jsonapi.org/format/#fetching-includes)'
       example: default_country
-    SparseFieldsStore:
-      name: fields[store]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: name,url,supported_locales
   securitySchemes:
     bearerAuth:
       type: http

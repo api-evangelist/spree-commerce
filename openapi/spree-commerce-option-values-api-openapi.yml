@@ -363,6 +363,36 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    update_option_value_params:
+      type: object
+      properties:
+        option_value:
+          type: object
+          properties:
+            name:
+              type: string
+              example: red
+            presentation:
+              type: string
+              example: Red
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - option_value
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -416,24 +446,13 @@ components:
       - meta
       - links
       x-internal: false
-    update_option_value_params:
+    resource:
       type: object
       properties:
-        option_value:
-          type: object
-          properties:
-            name:
-              type: string
-              example: red
-            presentation:
-              type: string
-              example: Red
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - option_value
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -472,25 +491,6 @@ components:
               type: object
       required:
       - option_value
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

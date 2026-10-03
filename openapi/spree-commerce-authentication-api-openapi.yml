@@ -479,43 +479,6 @@ paths:
           default: localhost:3000
 components:
   schemas:
-    AdminUser:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type:
-          - string
-          - 'null'
-        last_name:
-          type:
-          - string
-          - 'null'
-        full_name:
-          type:
-          - string
-          - 'null'
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminUserRoleAssignment'
-      required:
-      - id
-      - email
-      - first_name
-      - last_name
-      - full_name
-      - created_at
-      - updated_at
-      - roles
-      x-typelizer: true
     PermissionRule:
       type: object
       description: A single permission rule (CanCanCan rule). Rules are applied in order, last-matching-wins.
@@ -554,21 +517,6 @@ components:
       required:
       - user
       - permissions
-    AdminUserRoleAssignment:
-      type: object
-      description: A role assignment for the current store on a staff member
-      properties:
-        id:
-          type: string
-          description: Prefixed role ID
-          example: role_abc123
-        name:
-          type: string
-          description: Role name
-          example: admin
-      required:
-      - id
-      - name
     ErrorResponse:
       type: object
       properties:
@@ -606,6 +554,58 @@ components:
             - is too short
             email:
             - is invalid
+    AdminUserRoleAssignment:
+      type: object
+      description: A role assignment for the current store on a staff member
+      properties:
+        id:
+          type: string
+          description: Prefixed role ID
+          example: role_abc123
+        name:
+          type: string
+          description: Role name
+          example: admin
+      required:
+      - id
+      - name
+    AdminUser:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+        full_name:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminUserRoleAssignment'
+      required:
+      - id
+      - email
+      - first_name
+      - last_name
+      - full_name
+      - created_at
+      - updated_at
+      - roles
+      x-typelizer: true
     Address:
       type: object
       properties:
@@ -687,6 +687,21 @@ components:
       - is_default_shipping
       - state_name
       x-typelizer: true
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+        refresh_token:
+          type: string
+          description: Refresh token for obtaining new access tokens
+        user:
+          $ref: '#/components/schemas/Customer'
+      required:
+      - token
+      - refresh_token
+      - user
     Customer:
       type: object
       properties:
@@ -738,21 +753,6 @@ components:
       - default_billing_address
       - default_shipping_address
       x-typelizer: true
-    AuthResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT access token
-        refresh_token:
-          type: string
-          description: Refresh token for obtaining new access tokens
-        user:
-          $ref: '#/components/schemas/Customer'
-      required:
-      - token
-      - refresh_token
-      - user
   securitySchemes:
     api_key:
       type: apiKey

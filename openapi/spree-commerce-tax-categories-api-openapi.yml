@@ -359,6 +359,17 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -412,6 +423,14 @@ components:
       - meta
       - links
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -427,29 +446,6 @@ components:
       - id
       - type
       - attributes
-      x-internal: false
-    update_tax_category_params:
-      type: object
-      properties:
-        tax_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Clothing
-            is_default:
-              type: boolean
-              example: true
-            tax_code:
-              type: string
-              example: 1257L
-            description:
-              type: string
-              example: Men's, women's and children's branded clothing
-      required:
-      - tax_category
       x-internal: false
     create_tax_category_params:
       type: object
@@ -474,24 +470,28 @@ components:
       required:
       - tax_category
       x-internal: false
-    resource:
+    update_tax_category_params:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
+        tax_category:
           type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Clothing
+            is_default:
+              type: boolean
+              example: true
+            tax_code:
+              type: string
+              example: 1257L
+            description:
+              type: string
+              example: Men's, women's and children's branded clothing
       required:
-      - error
-      - errors
+      - tax_category
       x-internal: false
   securitySchemes:
     bearer_auth:

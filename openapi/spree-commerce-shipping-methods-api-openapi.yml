@@ -426,6 +426,17 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -433,22 +444,6 @@ components:
           type: string
       required:
       - error
-      x-internal: false
-    shipping_calculator_params:
-      type: object
-      properties:
-        type:
-          type: string
-          example: Spree::Calculator::Shipping::FlatPercentItemTotal
-          enum:
-          - Spree::Calculator::Shipping::DigitalDelivery
-          - Spree::Calculator::Shipping::FlatPercentItemTotal
-          - Spree::Calculator::Shipping::FlatRate
-          - Spree::Calculator::Shipping::FlexiRate
-          - Spree::Calculator::Shipping::PerItem
-          - Spree::Calculator::Shipping::PriceSack
-      required:
-      - type
       x-internal: false
     resources_list:
       type: object
@@ -494,6 +489,14 @@ components:
       - data
       - meta
       - links
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -558,25 +561,6 @@ components:
       required:
       - shipping_method
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
-      x-internal: false
     update_shipping_method_params:
       type: object
       properties:
@@ -619,6 +603,22 @@ components:
               type: object
       required:
       - shipping_method
+      x-internal: false
+    shipping_calculator_params:
+      type: object
+      properties:
+        type:
+          type: string
+          example: Spree::Calculator::Shipping::FlatPercentItemTotal
+          enum:
+          - Spree::Calculator::Shipping::DigitalDelivery
+          - Spree::Calculator::Shipping::FlatPercentItemTotal
+          - Spree::Calculator::Shipping::FlatRate
+          - Spree::Calculator::Shipping::FlexiRate
+          - Spree::Calculator::Shipping::PerItem
+          - Spree::Calculator::Shipping::PriceSack
+      required:
+      - type
       x-internal: false
   securitySchemes:
     bearer_auth:

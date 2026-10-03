@@ -326,20 +326,6 @@ components:
       x-examples:
         example-1: '2020-02-16T07:14:54.617Z'
   responses:
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
     PolicyList:
       description: 200 Success - Returns an array of `policy` objects.
       content:
@@ -399,6 +385,20 @@ components:
                     updated_at: '2025-08-12T13:27:59.470Z'
                     body: asdrdfas
                     body_html: "<div class=\"trix-content\">\n  <div>asdrdfas</div>\n</div>\n"
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
   securitySchemes:
     api_key:
       type: apiKey

@@ -350,6 +350,17 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -357,32 +368,6 @@ components:
           type: string
       required:
       - error
-      x-internal: false
-    update_digital_params:
-      type: object
-      properties:
-        digital[attachment]:
-          type: string
-          format: binary
-        digital[variant_id]:
-          type: string
-          example: '123'
-      required:
-      - digital[attachment]
-      - digital[variant_id]
-      x-internal: false
-    create_digital_params:
-      type: object
-      properties:
-        digital[attachment]:
-          type: string
-          format: binary
-        digital[variant_id]:
-          type: string
-          example: '123'
-      required:
-      - digital[attachment]
-      - digital[variant_id]
       x-internal: false
     resources_list:
       type: object
@@ -429,6 +414,27 @@ components:
       - meta
       - links
       x-internal: false
+    create_digital_params:
+      type: object
+      properties:
+        digital[attachment]:
+          type: string
+          format: binary
+        digital[variant_id]:
+          type: string
+          example: '123'
+      required:
+      - digital[attachment]
+      - digital[variant_id]
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -445,24 +451,18 @@ components:
       - type
       - attributes
       x-internal: false
-    resource:
+    update_digital_params:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
+        digital[attachment]:
           type: string
-        errors:
-          type: object
+          format: binary
+        digital[variant_id]:
+          type: string
+          example: '123'
       required:
-      - error
-      - errors
+      - digital[attachment]
+      - digital[variant_id]
       x-internal: false
   securitySchemes:
     bearer_auth:

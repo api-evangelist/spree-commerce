@@ -403,6 +403,17 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -456,6 +467,14 @@ components:
       - meta
       - links
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -471,56 +490,6 @@ components:
       - id
       - type
       - attributes
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    create_tax_rate_params:
-      type: object
-      properties:
-        tax_rate:
-          type: object
-          required:
-          - amount
-          - calculator_attributes
-          - tax_category_id
-          properties:
-            amount:
-              type: number
-              example: 0.05
-            zone_id:
-              type: string
-              example: '2'
-            tax_category_id:
-              type: string
-              example: '1'
-            included_in_price:
-              type: boolean
-              example: true
-            name:
-              type: string
-              example: California
-            show_rate_in_label:
-              type: boolean
-              example: false
-            calculator_attributes:
-              type: object
-              properties:
-                type:
-                  type: string
-                  example: Spree::Calculator::FlatRate
-                preferences:
-                  type: object
-                  example:
-                    amount: 0
-                    currency: USD
-      required:
-      - tax_rate
       x-internal: false
     update_tax_rate_params:
       type: object
@@ -564,16 +533,47 @@ components:
       required:
       - tax_rate
       x-internal: false
-    validation_errors:
+    create_tax_rate_params:
       type: object
       properties:
-        error:
-          type: string
-        errors:
+        tax_rate:
           type: object
+          required:
+          - amount
+          - calculator_attributes
+          - tax_category_id
+          properties:
+            amount:
+              type: number
+              example: 0.05
+            zone_id:
+              type: string
+              example: '2'
+            tax_category_id:
+              type: string
+              example: '1'
+            included_in_price:
+              type: boolean
+              example: true
+            name:
+              type: string
+              example: California
+            show_rate_in_label:
+              type: boolean
+              example: false
+            calculator_attributes:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Spree::Calculator::FlatRate
+                preferences:
+                  type: object
+                  example:
+                    amount: 0
+                    currency: USD
       required:
-      - error
-      - errors
+      - tax_rate
       x-internal: false
   securitySchemes:
     bearer_auth:

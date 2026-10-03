@@ -293,6 +293,17 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -301,7 +312,7 @@ components:
       required:
       - error
       x-internal: false
-    create_data_feed_params:
+    update_data_feed_params:
       type: object
       properties:
         data_feed:
@@ -367,6 +378,14 @@ components:
       - meta
       - links
       x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -383,7 +402,7 @@ components:
       - type
       - attributes
       x-internal: false
-    update_data_feed_params:
+    create_data_feed_params:
       type: object
       properties:
         data_feed:
@@ -403,25 +422,6 @@ components:
               example: Spree::DataFeed::Google
             active:
               type: boolean
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

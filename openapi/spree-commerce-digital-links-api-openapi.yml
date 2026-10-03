@@ -386,6 +386,17 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
+      x-internal: false
     error:
       type: object
       properties:
@@ -439,23 +450,13 @@ components:
       - meta
       - links
       x-internal: false
-    update_digital_link_params:
+    resource:
       type: object
       properties:
-        digital_link:
-          type: object
-          properties:
-            access_counter:
-              type: integer
-              example: 0
-            line_item_id:
-              type: string
-              example: '1'
-            digital_id:
-              type: string
-              example: '1'
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - digital_link
+      - data
       x-internal: false
     resource_properties:
       type: object
@@ -494,24 +495,23 @@ components:
       required:
       - digital_link
       x-internal: false
-    resource:
+    update_digital_link_params:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
+        digital_link:
           type: object
+          properties:
+            access_counter:
+              type: integer
+              example: 0
+            line_item_id:
+              type: string
+              example: '1'
+            digital_id:
+              type: string
+              example: '1'
       required:
-      - error
-      - errors
+      - digital_link
       x-internal: false
   securitySchemes:
     bearer_auth:
