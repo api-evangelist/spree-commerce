@@ -288,16 +288,57 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_shipping_category_params:
+      type: object
+      properties:
+        shipping_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Another Category
+      required:
+      - shipping_category
+      x-internal: false
+    update_shipping_category_params:
+      type: object
+      properties:
+        shipping_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Another Category
+      required:
+      - shipping_category
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     error:
       type: object
@@ -352,57 +393,16 @@ components:
       - meta
       - links
       x-internal: false
-    update_shipping_category_params:
+    validation_errors:
       type: object
       properties:
-        shipping_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Another Category
-      required:
-      - shipping_category
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    create_shipping_category_params:
-      type: object
-      properties:
-        shipping_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Another Category
-      required:
-      - shipping_category
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

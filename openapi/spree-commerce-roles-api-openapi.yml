@@ -288,16 +288,41 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_role_params:
+      type: object
+      properties:
+        role:
+          type: object
+          properties:
+            name:
+              type: string
+              example: vendor
+      required:
+      - zone
       x-internal: false
     error:
       type: object
@@ -366,41 +391,16 @@ components:
       required:
       - zone
       x-internal: false
-    resource:
+    validation_errors:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    update_role_params:
-      type: object
-      properties:
-        role:
-          type: object
-          properties:
-            name:
-              type: string
-              example: vendor
-      required:
-      - zone
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

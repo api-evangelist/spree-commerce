@@ -606,6 +606,72 @@ components:
       - updated_at
       - roles
       x-typelizer: true
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+        accepts_email_marketing:
+          type: boolean
+        full_name:
+          type: string
+        available_store_credit_total:
+          type: string
+        display_available_store_credit_total:
+          type: string
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        default_billing_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+        default_shipping_address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+      required:
+      - id
+      - email
+      - first_name
+      - last_name
+      - phone
+      - accepts_email_marketing
+      - full_name
+      - available_store_credit_total
+      - display_available_store_credit_total
+      - addresses
+      - default_billing_address
+      - default_shipping_address
+      x-typelizer: true
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+        refresh_token:
+          type: string
+          description: Refresh token for obtaining new access tokens
+        user:
+          $ref: '#/components/schemas/Customer'
+      required:
+      - token
+      - refresh_token
+      - user
     Address:
       type: object
       properties:
@@ -686,72 +752,6 @@ components:
       - is_default_billing
       - is_default_shipping
       - state_name
-      x-typelizer: true
-    AuthResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT access token
-        refresh_token:
-          type: string
-          description: Refresh token for obtaining new access tokens
-        user:
-          $ref: '#/components/schemas/Customer'
-      required:
-      - token
-      - refresh_token
-      - user
-    Customer:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        first_name:
-          type:
-          - string
-          - 'null'
-        last_name:
-          type:
-          - string
-          - 'null'
-        phone:
-          type:
-          - string
-          - 'null'
-        accepts_email_marketing:
-          type: boolean
-        full_name:
-          type: string
-        available_store_credit_total:
-          type: string
-        display_available_store_credit_total:
-          type: string
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Address'
-        default_billing_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-        default_shipping_address:
-          allOf:
-          - $ref: '#/components/schemas/Address'
-      required:
-      - id
-      - email
-      - first_name
-      - last_name
-      - phone
-      - accepts_email_marketing
-      - full_name
-      - available_store_credit_total
-      - display_available_store_credit_total
-      - addresses
-      - default_billing_address
-      - default_shipping_address
       x-typelizer: true
   securitySchemes:
     api_key:

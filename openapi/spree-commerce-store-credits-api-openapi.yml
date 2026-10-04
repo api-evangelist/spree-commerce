@@ -502,6 +502,30 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
     update_store_credit_params:
       type: object
       properties:
@@ -559,17 +583,6 @@ components:
       required:
       - store_credit
       x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
-          type: string
-        errors:
-          type: object
-      required:
-      - error
-      - errors
-      x-internal: false
     error:
       type: object
       properties:
@@ -577,51 +590,6 @@ components:
           type: string
       required:
       - error
-      x-internal: false
-    resources_list:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            allOf:
-            - $ref: '#/components/schemas/resource_properties'
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-            total_count:
-              type: integer
-            total_pages:
-              type: integer
-          required:
-          - count
-          - total_count
-          - total_pages
-        links:
-          type: object
-          properties:
-            self:
-              type: string
-            next:
-              type: string
-            prev:
-              type: string
-            last:
-              type: string
-            first:
-              type: string
-          required:
-          - self
-          - next
-          - prev
-          - last
-          - first
-      required:
-      - data
-      - meta
-      - links
       x-internal: false
     create_store_credit_params:
       type: object
@@ -680,29 +648,61 @@ components:
       required:
       - store_credit
       x-internal: false
-    resource:
+    resources_list:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/resource_properties'
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/resource_properties'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            total_count:
+              type: integer
+            total_pages:
+              type: integer
+          required:
+          - count
+          - total_count
+          - total_pages
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string
+            last:
+              type: string
+            first:
+              type: string
+          required:
+          - self
+          - next
+          - prev
+          - last
+          - first
       required:
       - data
+      - meta
+      - links
       x-internal: false
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

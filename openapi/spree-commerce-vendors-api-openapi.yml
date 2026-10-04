@@ -491,23 +491,6 @@ components:
       - type
       - attributes
       - relationships
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
     ListLinks:
       x-internal: false
       type: object
@@ -542,37 +525,38 @@ components:
       - type
       x-internal: false
       description: ''
-  parameters:
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
-    VendorSlug:
-      name: vendor_slug
-      in: path
-      required: true
-      description: Look for Vendor by ID or their slug
-      schema:
-        type: string
-      example: acme-co
-    SparseFieldsVendor:
-      name: fields[vendor]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: name,slug,about_us,facebook
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
   responses:
+    404NotFound:
+      description: 404 Not Found - Resource not found.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: The resource you were looking for could not be found.
+                default: The resource you were looking for could not be found.
+          examples:
+            404 Example:
+              value:
+                error: The resource you were looking for could not be found.
     Vendor:
       description: 200 Success - Returns the `vendor` object.
       content:
@@ -644,20 +628,36 @@ components:
                       <p>Follow us on social media.</p>'
                     logo_url: https://assets.com/images/logo_name34553
                     cover_photo_url: https://assets.com/images/coverfn5ig
-    404NotFound:
-      description: 404 Not Found - Resource not found.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: The resource you were looking for could not be found.
-                default: The resource you were looking for could not be found.
-          examples:
-            404 Example:
-              value:
-                error: The resource you were looking for could not be found.
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+    VendorSlug:
+      name: vendor_slug
+      in: path
+      required: true
+      description: Look for Vendor by ID or their slug
+      schema:
+        type: string
+      example: acme-co
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
+    SparseFieldsVendor:
+      name: fields[vendor]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,slug,about_us,facebook
   securitySchemes:
     bearer_auth:
       type: http

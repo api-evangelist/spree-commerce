@@ -385,36 +385,21 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    update_wished_item_params:
+    resource_properties:
       type: object
       properties:
-        wished_item:
-          type: object
-          required:
-          - wishlist_id
-          - variant_id
-          - quantity
-          properties:
-            wishlist_id:
-              type: string
-            variant_id:
-              type: string
-            quantity:
-              type: integer
-              description: Must be an integer greater than 0
-      required:
-      - wished_item
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
       x-internal: false
     create_wished_item_params:
       type: object
@@ -435,6 +420,14 @@ components:
               description: Must be an integer greater than 0
       required:
       - wished_item
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     error:
       type: object
@@ -489,29 +482,36 @@ components:
       - meta
       - links
       x-internal: false
-    resource:
+    update_wished_item_params:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
+        wished_item:
+          type: object
+          required:
+          - wishlist_id
+          - variant_id
+          - quantity
+          properties:
+            wishlist_id:
+              type: string
+            variant_id:
+              type: string
+            quantity:
+              type: integer
+              description: Must be an integer greater than 0
       required:
-      - data
+      - wished_item
       x-internal: false
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

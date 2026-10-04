@@ -137,13 +137,6 @@ paths:
       - bearerAuth: []
 components:
   parameters:
-    AccountIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information
-      example: default_billing_address,default_shipping_address
     SparseFieldsUser:
       name: fields[user]
       in: query
@@ -151,7 +144,157 @@ components:
       schema:
         type: string
       example: email,completed_orders
+    AccountIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Pass `default_billing_address` and/or `default_shipping_address` as value to include selected addresses information
+      example: default_billing_address,default_shipping_address
+  responses:
+    User:
+      description: 200 Success - Returns the `user` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/User'
+              included:
+                type: array
+                items:
+                  allOf:
+                  - $ref: '#/components/schemas/Address'
+            required:
+            - data
+          examples:
+            Standard response:
+              value:
+                data:
+                  id: '1'
+                  type: user
+                  attributes:
+                    email: spree@example.com
+                    first_name: John
+                    last_name: Snow
+                    selected_locale: en
+                    store_credits: 0
+                    completed_orders: 0
+                    tags:
+                    - VIP
+                    - supplier
+                    public_metadata:
+                      user_segment: supplier
+                  relationships:
+                    default_billing_address:
+                      data:
+                        id: '2'
+                        type: address
+                    default_shipping_address:
+                      data:
+                        id: '1'
+                        type: address
+            Including Addresses:
+              value:
+                data:
+                  id: '1'
+                  type: user
+                  attributes:
+                    email: spree@example.com
+                    store_credits: 0
+                    completed_orders: 0
+                  relationships:
+                    default_billing_address:
+                      data:
+                        id: '2'
+                        type: address
+                    default_shipping_address:
+                      data:
+                        id: '1'
+                        type: address
+                included:
+                - id: '2'
+                  type: address
+                  attributes:
+                    firstname: Destiny
+                    lastname: Maggio
+                    address1: 12775 Runolfsdottir Greens
+                    address2: Apt. 704
+                    city: Kochmouth
+                    zipcode: '16804'
+                    phone: 1-257-860-8433
+                    state_name: New York
+                    company: null
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    state_code: NY
+                - id: '1'
+                  type: address
+                  attributes:
+                    firstname: Aimee
+                    lastname: Jast
+                    address1: 56593 Baumbach Meadows
+                    address2: Suite 632
+                    city: Port Michaelafort
+                    zipcode: '16804'
+                    phone: (846)556-4478
+                    state_name: New York
+                    company: null
+                    country_name: United States
+                    country_iso3: USA
+                    country_iso: US
+                    state_code: NY
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
+    422UnprocessableEntity:
+      description: 422 Unprocessable Entity
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            422 Example:
+              value:
+                error: Example is invalid
+                errors:
+                  example:
+                  - Example is invalid
   schemas:
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    Error:
+      x-internal: false
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
     Address:
       type: object
       title: Address
@@ -288,149 +431,6 @@ components:
       - type
       - attributes
       - relationships
-    Error:
-      x-internal: false
-      title: Error
-      type: object
-      properties:
-        error:
-          type: string
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-  responses:
-    User:
-      description: 200 Success - Returns the `user` object.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/User'
-              included:
-                type: array
-                items:
-                  allOf:
-                  - $ref: '#/components/schemas/Address'
-            required:
-            - data
-          examples:
-            Standard response:
-              value:
-                data:
-                  id: '1'
-                  type: user
-                  attributes:
-                    email: spree@example.com
-                    first_name: John
-                    last_name: Snow
-                    selected_locale: en
-                    store_credits: 0
-                    completed_orders: 0
-                    tags:
-                    - VIP
-                    - supplier
-                    public_metadata:
-                      user_segment: supplier
-                  relationships:
-                    default_billing_address:
-                      data:
-                        id: '2'
-                        type: address
-                    default_shipping_address:
-                      data:
-                        id: '1'
-                        type: address
-            Including Addresses:
-              value:
-                data:
-                  id: '1'
-                  type: user
-                  attributes:
-                    email: spree@example.com
-                    store_credits: 0
-                    completed_orders: 0
-                  relationships:
-                    default_billing_address:
-                      data:
-                        id: '2'
-                        type: address
-                    default_shipping_address:
-                      data:
-                        id: '1'
-                        type: address
-                included:
-                - id: '2'
-                  type: address
-                  attributes:
-                    firstname: Destiny
-                    lastname: Maggio
-                    address1: 12775 Runolfsdottir Greens
-                    address2: Apt. 704
-                    city: Kochmouth
-                    zipcode: '16804'
-                    phone: 1-257-860-8433
-                    state_name: New York
-                    company: null
-                    country_name: United States
-                    country_iso3: USA
-                    country_iso: US
-                    state_code: NY
-                - id: '1'
-                  type: address
-                  attributes:
-                    firstname: Aimee
-                    lastname: Jast
-                    address1: 56593 Baumbach Meadows
-                    address2: Suite 632
-                    city: Port Michaelafort
-                    zipcode: '16804'
-                    phone: (846)556-4478
-                    state_name: New York
-                    company: null
-                    country_name: United States
-                    country_iso3: USA
-                    country_iso: US
-                    state_code: NY
-    422UnprocessableEntity:
-      description: 422 Unprocessable Entity
-      content:
-        application/vnd.api+json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            422 Example:
-              value:
-                error: Example is invalid
-                errors:
-                  example:
-                  - Example is invalid
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
   securitySchemes:
     bearerAuth:
       type: http

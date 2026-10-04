@@ -1027,24 +1027,29 @@ paths:
       description: localhost
 components:
   schemas:
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
       x-internal: false
-    error:
+    resource:
       type: object
       properties:
-        error:
-          type: string
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - error
+      - data
       x-internal: false
     create_product_params:
       type: object
@@ -1109,6 +1114,14 @@ components:
       required:
       - product
       x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
     resources_list:
       type: object
       properties:
@@ -1153,30 +1166,6 @@ components:
       - data
       - meta
       - links
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
       x-internal: false
     update_product_params:
       type: object
@@ -1237,17 +1226,21 @@ components:
       required:
       - product
       x-internal: false
-    ProductIncludes:
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
       x-internal: false
-      title: Product Includes
-      anyOf:
-      - $ref: '#/components/schemas/OptionType'
-      - $ref: '#/components/schemas/ProductProperty'
-      - $ref: '#/components/schemas/Variant'
-      - $ref: '#/components/schemas/Image'
-      - $ref: '#/components/schemas/Taxon'
-    OptionType:
-      title: Option Type
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
       type: object
       x-internal: false
       properties:
@@ -1256,23 +1249,94 @@ components:
           example: '1'
         type:
           type: string
-          default: option_type
+          default: variant
         attributes:
           type: object
           properties:
-            name:
+            sku:
               type: string
-              example: color
-            presentation:
+              example: SKU-1001
+            price:
               type: string
-              example: Color
-            position:
-              type: integer
-              example: 1
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            height:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            width:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            depth:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
       required:
       - id
       - type
       - attributes
+      - relationships
     Taxon:
       title: Taxon
       type: object
@@ -1388,155 +1452,85 @@ components:
       - type
       - attributes
       - relationships
-    Variant:
-      title: Variant
-      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
-      x-examples: {}
-      type: object
+    ProductIncludes:
       x-internal: false
+      title: Product Includes
+      anyOf:
+      - $ref: '#/components/schemas/OptionType'
+      - $ref: '#/components/schemas/ProductProperty'
+      - $ref: '#/components/schemas/Variant'
+      - $ref: '#/components/schemas/Image'
+      - $ref: '#/components/schemas/Taxon'
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    Image:
+      type: object
       properties:
         id:
           type: string
           example: '1'
         type:
           type: string
-          default: variant
+          default: image
         attributes:
           type: object
           properties:
-            sku:
-              type: string
-              example: SKU-1001
-            price:
-              type: string
-              example: '15.99'
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $15.99
-            weight:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            height:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            width:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            depth:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            is_master:
-              type: boolean
-              description: Indicates if Variant is the master Variant
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            options:
+            position:
+              type: integer
+              description: Sort order of images set in the Admin Panel
+              example: 0
+              minimum: 0
+            styles:
               type: array
+              description: An array of pre-scaled image styles
               items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  value:
-                    type: string
-                  presentation:
-                    type: string
-            purchasable:
-              type: boolean
-              description: Indicates if Variant is in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if Variant is in stock
-            backorderable:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            product:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_values:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
+                $ref: '#/components/schemas/ImageStyle'
       required:
       - id
       - type
       - attributes
-      - relationships
-    ImageStyle:
+      title: Image
       x-internal: false
-      title: Image Style
-      type: object
-      properties:
-        url:
-          type: string
-          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
-          description: Absolute URL of the uploaded image in selected style (width/height)
-        width:
-          type: integer
-          example: 1920
-          description: Actual width of image
-        height:
-          type: integer
-          example: 1080
-          description: Actual height of image
-    PaymentMethod:
-      title: Payment Method
-      description: ''
+    ListMeta:
       type: object
       x-internal: false
+      title: Pagination Meta
       properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: payment_method
-        attributes:
-          type: object
-          properties:
-            type:
-              type: string
-              example: Spree::Gateway::StripeGateway
-            name:
-              type: string
-              example: Stripe
-            description:
-              type:
-              - string
-              - 'null'
-              example: Stripe Payments
-            preferences:
-              type: object
-      required:
-      - id
-      - type
-      - attributes
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
+    CreditCardIncludes:
+      x-internal: false
+      title: Credit Card Includes
+      allOf:
+      - $ref: '#/components/schemas/PaymentMethod'
     Product:
       type: object
       title: Product
@@ -1689,6 +1683,82 @@ components:
       - type
       - attributes
       - relationships
+    PaymentMethod:
+      title: Payment Method
+      description: ''
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: payment_method
+        attributes:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Spree::Gateway::StripeGateway
+            name:
+              type: string
+              example: Stripe
+            description:
+              type:
+              - string
+              - 'null'
+              example: Stripe Payments
+            preferences:
+              type: object
+      required:
+      - id
+      - type
+      - attributes
+    ImageStyle:
+      x-internal: false
+      title: Image Style
+      type: object
+      properties:
+        url:
+          type: string
+          example: http://localhost:3000/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTltWm1sMmRURlNORFpZWjJaSFpYUkdZMjk2WWsxM1RHWXZNVGs1T1RCak5XVmlNamN4TlRnd1pqVTBabUpqTWpCbFkyVXhZMlZpTTJFd05ERTJZemMzT0dKaE5tSTFNREkyT0dKaFpqa3paV1JtWTJWaE16aGxaQVk2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjRUMTM6NTk6NTguOTY5WiIsInB1ciI6ImJsb2Jfa2V5In19--5e9ff358dc747f73754e332678c5762114ac6f3f/ror_jr_spaghetti.jpeg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22ror_jr_spaghetti.jpeg%22%3B+filename%2A%3DUTF-8%27%27ror_jr_spaghetti.jpeg
+          description: Absolute URL of the uploaded image in selected style (width/height)
+        width:
+          type: integer
+          example: 1920
+          description: Actual width of image
+        height:
+          type: integer
+          example: 1080
+          description: Actual height of image
+    OptionType:
+      title: Option Type
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: option_type
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: color
+            presentation:
+              type: string
+              example: Color
+            position:
+              type: integer
+              example: 1
+      required:
+      - id
+      - type
+      - attributes
     ProductProperty:
       title: Product Property
       type: object
@@ -1719,43 +1789,6 @@ components:
       - type
       - attributes
       x-internal: false
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
     Relation:
       type:
       - object
@@ -1778,40 +1811,21 @@ components:
       title: Time Stamp
       x-examples:
         example-1: '2020-02-16T07:14:54.617Z'
-    CreditCardIncludes:
-      x-internal: false
-      title: Credit Card Includes
-      allOf:
-      - $ref: '#/components/schemas/PaymentMethod'
-    Image:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: image
-        attributes:
-          type: object
-          properties:
-            position:
-              type: integer
-              description: Sort order of images set in the Admin Panel
-              example: 0
-              minimum: 0
-            styles:
-              type: array
-              description: An array of pre-scaled image styles
-              items:
-                $ref: '#/components/schemas/ImageStyle'
-      required:
-      - id
-      - type
-      - attributes
-      title: Image
-      x-internal: false
   parameters:
+    FilterBySKUs:
+      in: query
+      name: filter[skus]
+      schema:
+        type: string
+      example: SKU-123,SKU-345
+      description: Fetch only resources with corresponding SKUs
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
     ProductImageTransformationSizeParam:
       in: query
       name: image_transformation[size]
@@ -1819,14 +1833,20 @@ components:
         type: string
       example: 100x50
       description: Specifies dimensions for included images at transformed_url attribute.
-    ProductSlug:
-      name: product_slug
-      in: path
-      required: true
-      description: Product Slug
+    ProductImageTransformationQualityParam:
+      in: query
+      name: image_transformation[quality]
       schema:
         type: string
-      example: knitted-high-neck-sweater
+      example: '70'
+      description: Specifies quality for included images at transformed_url attribute
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
     ProductIncludeParam:
       name: include
       in: query
@@ -1844,41 +1864,6 @@ components:
 
         [More information](https://jsonapi.org/format/#fetching-includes)'
       example: default_variant,variants,option_types,product_properties,taxons,images,primary_variant
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
-    FilterByIds:
-      in: query
-      name: filter[ids]
-      schema:
-        type: string
-      example: 1,2,3
-      description: Fetch only resources with corresponding IDs
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
-    ProductImageTransformationQualityParam:
-      in: query
-      name: image_transformation[quality]
-      schema:
-        type: string
-      example: '70'
-      description: Specifies quality for included images at transformed_url attribute
-    FilterBySKUs:
-      in: query
-      name: filter[skus]
-      schema:
-        type: string
-      example: SKU-123,SKU-345
-      description: Fetch only resources with corresponding SKUs
     SparseFieldsProduct:
       name: fields[product]
       in: query
@@ -1886,357 +1871,22 @@ components:
       schema:
         type: string
       example: price,description,name
+    FilterByIds:
+      in: query
+      name: filter[ids]
+      schema:
+        type: string
+      example: 1,2,3
+      description: Fetch only resources with corresponding IDs
+    ProductSlug:
+      name: product_slug
+      in: path
+      required: true
+      description: Product Slug
+      schema:
+        type: string
+      example: knitted-high-neck-sweater
   responses:
-    Product:
-      description: 200 Success - Returns the `product` object.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Product'
-              included:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductIncludes'
-            required:
-            - data
-          examples:
-            Single Product:
-              value:
-                data:
-                  id: '96'
-                  type: product
-                  attributes:
-                    name: Bomber Jacket
-                    description: Dolorem nulla odit nostrum placeat soluta non vitae praesentium. Neque asperiores quos necessitatibus sint placeat. Voluptas aliquid atque veniam iste assumenda blanditiis. Excepturi odit recusandae laboriosam sunt temporibus corrupti. Tempore necessitatibus recusandae eligendi occaecati nesciunt sed illum similique.
-                    available_on: '2021-10-02T11:02:29.288Z'
-                    slug: bomber-jacket
-                    meta_description: null
-                    meta_keywords: null
-                    updated_at: '2021-10-02T11:03:14.681Z'
-                    sku: JacketsandCoats_bomberjacket_38.99
-                    purchasable: true
-                    in_stock: true
-                    backorderable: false
-                    available: true
-                    currency: USD
-                    price: '38.99'
-                    display_price: $38.99
-                    compare_at_price: null
-                    display_compare_at_price: null
-                    localized_slugs:
-                      en: bomber-jacket
-                      de: bomberjacke
-                      fr: blouson
-                    tags:
-                    - bomber
-                    - jacket
-                    - winter
-                    labels:
-                    - new
-                    - sale
-                  relationships:
-                    variants:
-                      data:
-                      - id: '212'
-                        type: variant
-                    option_types:
-                      data:
-                      - id: '1'
-                        type: option_type
-                      - id: '3'
-                        type: option_type
-                    product_properties:
-                      data:
-                      - id: '639'
-                        type: product_property
-                      - id: '640'
-                        type: product_property
-                      - id: '641'
-                        type: product_property
-                      - id: '642'
-                        type: product_property
-                      - id: '643'
-                        type: product_property
-                      - id: '644'
-                        type: product_property
-                      - id: '645'
-                        type: product_property
-                      - id: '646'
-                        type: product_property
-                    taxons:
-                      data:
-                      - id: '19'
-                        type: taxon
-                      - id: '14'
-                        type: taxon
-                      - id: '24'
-                        type: taxon
-                      - id: '3'
-                        type: taxon
-                    images:
-                      data: []
-                    default_variant:
-                      data:
-                        id: '212'
-                        type: variant
-                    primary_variant:
-                      data:
-                        id: '96'
-                        type: variant
-            Product with Includes:
-              value:
-                data:
-                  id: '96'
-                  type: product
-                  attributes:
-                    name: Bomber Jacket
-                    description: Dolorem nulla odit nostrum placeat soluta non vitae praesentium. Neque asperiores quos necessitatibus sint placeat. Voluptas aliquid atque veniam iste assumenda blanditiis. Excepturi odit recusandae laboriosam sunt temporibus corrupti. Tempore necessitatibus recusandae eligendi occaecati nesciunt sed illum similique.
-                    available_on: '2021-10-02T11:02:29.288Z'
-                    slug: bomber-jacket
-                    meta_description: null
-                    meta_keywords: null
-                    updated_at: '2021-10-02T11:03:14.681Z'
-                    sku: JacketsandCoats_bomberjacket_38.99
-                    purchasable: true
-                    in_stock: true
-                    backorderable: false
-                    available: true
-                    currency: USD
-                    price: '38.99'
-                    display_price: $38.99
-                    compare_at_price: null
-                    display_compare_at_price: null
-                  relationships:
-                    variants:
-                      data:
-                      - id: '212'
-                        type: variant
-                    option_types:
-                      data:
-                      - id: '1'
-                        type: option_type
-                      - id: '3'
-                        type: option_type
-                    product_properties:
-                      data:
-                      - id: '639'
-                        type: product_property
-                      - id: '640'
-                        type: product_property
-                      - id: '641'
-                        type: product_property
-                      - id: '642'
-                        type: product_property
-                      - id: '643'
-                        type: product_property
-                      - id: '644'
-                        type: product_property
-                      - id: '645'
-                        type: product_property
-                      - id: '646'
-                        type: product_property
-                    taxons:
-                      data:
-                      - id: '19'
-                        type: taxon
-                      - id: '14'
-                        type: taxon
-                      - id: '24'
-                        type: taxon
-                      - id: '3'
-                        type: taxon
-                    images:
-                      data: []
-                    default_variant:
-                      data:
-                        id: '212'
-                        type: variant
-                    primary_variant:
-                      data:
-                        id: '96'
-                        type: variant
-                included:
-                - id: '212'
-                  type: variant
-                  attributes:
-                    sku: JacketsandCoats_bomberjacket_38.99_khaki_xs
-                    weight: '0.0'
-                    height: null
-                    width: null
-                    depth: null
-                    is_master: false
-                    options_text: 'Color: khaki, Size: XS'
-                    options:
-                    - name: color
-                      value: khaki
-                      presentation: Khaki
-                    - name: size
-                      value: XS
-                      presentation: XS
-                    purchasable: true
-                    in_stock: true
-                    backorderable: false
-                    currency: USD
-                    price: '38.99'
-                    display_price: $38.99
-                    compare_at_price: null
-                    display_compare_at_price: null
-                  relationships:
-                    product:
-                      data:
-                        id: '96'
-                        type: product
-                    images:
-                      data: []
-                    option_values:
-                      data:
-                      - id: '14'
-                        type: option_value
-                      - id: '23'
-                        type: option_value
-                - id: '19'
-                  type: taxon
-                  attributes:
-                    name: Bestsellers
-                    pretty_name: Categories -> Bestsellers
-                    permalink: categories/bestsellers
-                    seo_title: Bestsellers
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 36
-                    right: 37
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:15.082Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '14'
-                  type: taxon
-                  attributes:
-                    name: Jackets and Coats
-                    pretty_name: Categories -> Women -> Jackets and Coats
-                    permalink: categories/women/jackets-and-coats
-                    seo_title: Jackets and Coats
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 23
-                    right: 24
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:14.688Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '3'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '24'
-                  type: taxon
-                  attributes:
-                    name: Summer 2021
-                    pretty_name: Categories -> New Collection -> Summer 2021
-                    permalink: categories/new-collection/summer-2021
-                    seo_title: Summer 2021
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 45
-                    right: 46
-                    position: 0
-                    depth: 2
-                    updated_at: '2021-10-02T11:03:15.001Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: true
-                  relationships:
-                    parent:
-                      data:
-                        id: '23'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data: []
-                    image:
-                      data: null
-                - id: '3'
-                  type: taxon
-                  attributes:
-                    name: Women
-                    pretty_name: Categories -> Women
-                    permalink: categories/women
-                    seo_title: Women
-                    description: null
-                    meta_title: null
-                    meta_description: null
-                    meta_keywords: null
-                    left: 12
-                    right: 25
-                    position: 0
-                    depth: 1
-                    updated_at: '2021-10-02T11:03:14.688Z'
-                    is_root: false
-                    is_child: true
-                    is_leaf: false
-                  relationships:
-                    parent:
-                      data:
-                        id: '1'
-                        type: taxon
-                    taxonomy:
-                      data:
-                        id: '1'
-                        type: taxonomy
-                    children:
-                      data:
-                      - id: '9'
-                        type: taxon
-                      - id: '10'
-                        type: taxon
-                      - id: '11'
-                        type: taxon
-                      - id: '12'
-                        type: taxon
-                      - id: '13'
-                        type: taxon
-                      - id: '14'
-                        type: taxon
-                    image:
-                      data: null
     404NotFound:
       description: 404 Not Found - Resource not found.
       content:
@@ -4152,6 +3802,356 @@ components:
                   prev: http://localhost:3000/api/v2/storefront/products?page=1
                   last: http://localhost:3000/api/v2/storefront/products?page=5
                   first: http://localhost:3000/api/v2/storefront/products?page=1
+    Product:
+      description: 200 Success - Returns the `product` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Product'
+              included:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductIncludes'
+            required:
+            - data
+          examples:
+            Single Product:
+              value:
+                data:
+                  id: '96'
+                  type: product
+                  attributes:
+                    name: Bomber Jacket
+                    description: Dolorem nulla odit nostrum placeat soluta non vitae praesentium. Neque asperiores quos necessitatibus sint placeat. Voluptas aliquid atque veniam iste assumenda blanditiis. Excepturi odit recusandae laboriosam sunt temporibus corrupti. Tempore necessitatibus recusandae eligendi occaecati nesciunt sed illum similique.
+                    available_on: '2021-10-02T11:02:29.288Z'
+                    slug: bomber-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.681Z'
+                    sku: JacketsandCoats_bomberjacket_38.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '38.99'
+                    display_price: $38.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                    localized_slugs:
+                      en: bomber-jacket
+                      de: bomberjacke
+                      fr: blouson
+                    tags:
+                    - bomber
+                    - jacket
+                    - winter
+                    labels:
+                    - new
+                    - sale
+                  relationships:
+                    variants:
+                      data:
+                      - id: '212'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '639'
+                        type: product_property
+                      - id: '640'
+                        type: product_property
+                      - id: '641'
+                        type: product_property
+                      - id: '642'
+                        type: product_property
+                      - id: '643'
+                        type: product_property
+                      - id: '644'
+                        type: product_property
+                      - id: '645'
+                        type: product_property
+                      - id: '646'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '212'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '96'
+                        type: variant
+            Product with Includes:
+              value:
+                data:
+                  id: '96'
+                  type: product
+                  attributes:
+                    name: Bomber Jacket
+                    description: Dolorem nulla odit nostrum placeat soluta non vitae praesentium. Neque asperiores quos necessitatibus sint placeat. Voluptas aliquid atque veniam iste assumenda blanditiis. Excepturi odit recusandae laboriosam sunt temporibus corrupti. Tempore necessitatibus recusandae eligendi occaecati nesciunt sed illum similique.
+                    available_on: '2021-10-02T11:02:29.288Z'
+                    slug: bomber-jacket
+                    meta_description: null
+                    meta_keywords: null
+                    updated_at: '2021-10-02T11:03:14.681Z'
+                    sku: JacketsandCoats_bomberjacket_38.99
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    available: true
+                    currency: USD
+                    price: '38.99'
+                    display_price: $38.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    variants:
+                      data:
+                      - id: '212'
+                        type: variant
+                    option_types:
+                      data:
+                      - id: '1'
+                        type: option_type
+                      - id: '3'
+                        type: option_type
+                    product_properties:
+                      data:
+                      - id: '639'
+                        type: product_property
+                      - id: '640'
+                        type: product_property
+                      - id: '641'
+                        type: product_property
+                      - id: '642'
+                        type: product_property
+                      - id: '643'
+                        type: product_property
+                      - id: '644'
+                        type: product_property
+                      - id: '645'
+                        type: product_property
+                      - id: '646'
+                        type: product_property
+                    taxons:
+                      data:
+                      - id: '19'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                      - id: '24'
+                        type: taxon
+                      - id: '3'
+                        type: taxon
+                    images:
+                      data: []
+                    default_variant:
+                      data:
+                        id: '212'
+                        type: variant
+                    primary_variant:
+                      data:
+                        id: '96'
+                        type: variant
+                included:
+                - id: '212'
+                  type: variant
+                  attributes:
+                    sku: JacketsandCoats_bomberjacket_38.99_khaki_xs
+                    weight: '0.0'
+                    height: null
+                    width: null
+                    depth: null
+                    is_master: false
+                    options_text: 'Color: khaki, Size: XS'
+                    options:
+                    - name: color
+                      value: khaki
+                      presentation: Khaki
+                    - name: size
+                      value: XS
+                      presentation: XS
+                    purchasable: true
+                    in_stock: true
+                    backorderable: false
+                    currency: USD
+                    price: '38.99'
+                    display_price: $38.99
+                    compare_at_price: null
+                    display_compare_at_price: null
+                  relationships:
+                    product:
+                      data:
+                        id: '96'
+                        type: product
+                    images:
+                      data: []
+                    option_values:
+                      data:
+                      - id: '14'
+                        type: option_value
+                      - id: '23'
+                        type: option_value
+                - id: '19'
+                  type: taxon
+                  attributes:
+                    name: Bestsellers
+                    pretty_name: Categories -> Bestsellers
+                    permalink: categories/bestsellers
+                    seo_title: Bestsellers
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 36
+                    right: 37
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:15.082Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '14'
+                  type: taxon
+                  attributes:
+                    name: Jackets and Coats
+                    pretty_name: Categories -> Women -> Jackets and Coats
+                    permalink: categories/women/jackets-and-coats
+                    seo_title: Jackets and Coats
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 23
+                    right: 24
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:14.688Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '3'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '24'
+                  type: taxon
+                  attributes:
+                    name: Summer 2021
+                    pretty_name: Categories -> New Collection -> Summer 2021
+                    permalink: categories/new-collection/summer-2021
+                    seo_title: Summer 2021
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 45
+                    right: 46
+                    position: 0
+                    depth: 2
+                    updated_at: '2021-10-02T11:03:15.001Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: true
+                  relationships:
+                    parent:
+                      data:
+                        id: '23'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data: []
+                    image:
+                      data: null
+                - id: '3'
+                  type: taxon
+                  attributes:
+                    name: Women
+                    pretty_name: Categories -> Women
+                    permalink: categories/women
+                    seo_title: Women
+                    description: null
+                    meta_title: null
+                    meta_description: null
+                    meta_keywords: null
+                    left: 12
+                    right: 25
+                    position: 0
+                    depth: 1
+                    updated_at: '2021-10-02T11:03:14.688Z'
+                    is_root: false
+                    is_child: true
+                    is_leaf: false
+                  relationships:
+                    parent:
+                      data:
+                        id: '1'
+                        type: taxon
+                    taxonomy:
+                      data:
+                        id: '1'
+                        type: taxonomy
+                    children:
+                      data:
+                      - id: '9'
+                        type: taxon
+                      - id: '10'
+                        type: taxon
+                      - id: '11'
+                        type: taxon
+                      - id: '12'
+                        type: taxon
+                      - id: '13'
+                        type: taxon
+                      - id: '14'
+                        type: taxon
+                    image:
+                      data: null
   securitySchemes:
     api_key:
       type: apiKey

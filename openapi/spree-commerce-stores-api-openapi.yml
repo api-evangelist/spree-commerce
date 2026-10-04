@@ -37,75 +37,32 @@ paths:
         '403':
           $ref: '#/components/responses/403Forbidden'
 components:
+  parameters:
+    SparseFieldsStore:
+      name: fields[store]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,url,supported_locales
+    StoreIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: 'Specify what related resources (relationships) you would like to receive in the response body. Eg.
+
+
+        ```
+
+        default_country
+
+        ```
+
+
+        [More information](https://jsonapi.org/format/#fetching-includes)'
+      example: default_country
   schemas:
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    Country:
-      title: Country
-      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
-      type: object
-      x-internal: false
-      properties:
-        id:
-          type: string
-          example: '1'
-        type:
-          type: string
-          default: country
-        attributes:
-          type: object
-          properties:
-            iso:
-              type: string
-              example: US
-            iso3:
-              type: string
-              example: USA
-            iso_name:
-              type: string
-              example: UNITED STATES
-            name:
-              type: string
-              example: United States
-            states_required:
-              type: boolean
-            zipcode_required:
-              type: boolean
-            default:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            states:
-              type: object
-              description: States associated with this Country
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/State'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    StoreIncludes:
-      x-internal: false
-      title: Store Includes
-      anyOf:
-      - $ref: '#/components/schemas/Country'
     Store:
       type: object
       description: Stores are the center of the Spree ecosystem. Each Spree installation can have multiple Stores. Each Store operates on a different domain or subdomain.
@@ -206,6 +163,74 @@ components:
       - type
       - attributes
       - relationships
+    Relation:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      required:
+      - id
+      - type
+      x-internal: false
+      description: ''
+    StoreIncludes:
+      x-internal: false
+      title: Store Includes
+      anyOf:
+      - $ref: '#/components/schemas/Country'
+    Country:
+      title: Country
+      description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: country
+        attributes:
+          type: object
+          properties:
+            iso:
+              type: string
+              example: US
+            iso3:
+              type: string
+              example: USA
+            iso_name:
+              type: string
+              example: UNITED STATES
+            name:
+              type: string
+              example: United States
+            states_required:
+              type: boolean
+            zipcode_required:
+              type: boolean
+            default:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            states:
+              type: object
+              description: States associated with this Country
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/State'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
     State:
       type: object
       description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
@@ -221,6 +246,20 @@ components:
           description: State name
       x-internal: false
   responses:
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
     Store:
       description: 200 Success - Returns the `store` object.
       content:
@@ -309,45 +348,6 @@ components:
                   relationships:
                     checkout_zone_applicable_states:
                       data: []
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
-  parameters:
-    SparseFieldsStore:
-      name: fields[store]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: name,url,supported_locales
-    StoreIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: 'Specify what related resources (relationships) you would like to receive in the response body. Eg.
-
-
-        ```
-
-        default_country
-
-        ```
-
-
-        [More information](https://jsonapi.org/format/#fetching-includes)'
-      example: default_country
   securitySchemes:
     bearerAuth:
       type: http

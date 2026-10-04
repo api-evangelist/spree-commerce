@@ -369,16 +369,52 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_menu_params:
+      type: object
+      properties:
+        menu:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Main Menu
+              description: Update this Menu name.
+            location:
+              type: string
+              enum:
+              - header
+              - footer
+              description: Update the location this menu appears in the website.
+            locale:
+              type: string
+              example: en-US
+              description: Change the language of this menu.
+      required:
+      - menu
       x-internal: false
     error:
       type: object
@@ -387,6 +423,33 @@ components:
           type: string
       required:
       - error
+      x-internal: false
+    create_menu_params:
+      type: object
+      properties:
+        menu:
+          type: object
+          required:
+          - name
+          - location
+          - locale
+          properties:
+            name:
+              type: string
+              example: Main Menu
+              description: Give this Menu a name.
+            location:
+              type: string
+              enum:
+              - header
+              - footer
+              description: Set the location this menu appears in the website.
+            locale:
+              type: string
+              example: en-US
+              description: Set the language of this menu.
+      required:
+      - menu
       x-internal: false
     resources_list:
       type: object
@@ -433,79 +496,16 @@ components:
       - meta
       - links
       x-internal: false
-    resource:
+    validation_errors:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    create_menu_params:
-      type: object
-      properties:
-        menu:
-          type: object
-          required:
-          - name
-          - location
-          - locale
-          properties:
-            name:
-              type: string
-              example: Main Menu
-              description: Give this Menu a name.
-            location:
-              type: string
-              enum:
-              - header
-              - footer
-              description: Set the location this menu appears in the website.
-            locale:
-              type: string
-              example: en-US
-              description: Set the language of this menu.
-      required:
-      - menu
-      x-internal: false
-    update_menu_params:
-      type: object
-      properties:
-        menu:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Main Menu
-              description: Update this Menu name.
-            location:
-              type: string
-              enum:
-              - header
-              - footer
-              description: Update the location this menu appears in the website.
-            locale:
-              type: string
-              example: en-US
-              description: Change the language of this menu.
-      required:
-      - menu
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

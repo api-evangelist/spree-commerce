@@ -378,16 +378,55 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    update_stock_item_params:
+      type: object
+      properties:
+        stock_item:
+          type: object
+          required:
+          - variant_id
+          - stock_location_id
+          - count_on_hand
+          properties:
+            variant_id:
+              type: string
+              example: '2'
+            stock_location_id:
+              type: string
+              example: '2'
+            count_on_hand:
+              type: number
+              example: 200
+            backorderable:
+              type: boolean
+              example: true
+              default: false
+      required:
+      - stock_item
       x-internal: false
     error:
       type: object
@@ -442,30 +481,6 @@ components:
       - meta
       - links
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     create_stock_item_params:
       type: object
       properties:
@@ -492,31 +507,16 @@ components:
       required:
       - stock_item
       x-internal: false
-    update_stock_item_params:
+    validation_errors:
       type: object
       properties:
-        stock_item:
+        error:
+          type: string
+        errors:
           type: object
-          required:
-          - variant_id
-          - stock_location_id
-          - count_on_hand
-          properties:
-            variant_id:
-              type: string
-              example: '2'
-            stock_location_id:
-              type: string
-              example: '2'
-            count_on_hand:
-              type: number
-              example: 200
-            backorderable:
-              type: boolean
-              example: true
-              default: false
       required:
-      - stock_item
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

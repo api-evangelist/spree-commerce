@@ -229,22 +229,6 @@ paths:
       description: localhost
 components:
   schemas:
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
     resource_properties:
       type: object
       properties:
@@ -306,11 +290,42 @@ components:
       - meta
       - links
       x-internal: false
-    CountryIncludes:
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
-      title: Country Includes
-      oneOf:
-      - $ref: '#/components/schemas/State'
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
+      x-internal: false
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
     Country:
       title: Country
       description: Countries within Spree are used as a container for states. Countries can be zone members, and also link to an address. The difference between one country and another on an address record can determine which tax rates and shipping methods are used for the order.[Read more about Countries in Spree](/developer/core-concepts/addresses#countries)
@@ -360,6 +375,11 @@ components:
       - type
       - attributes
       - relationships
+    CountryIncludes:
+      x-internal: false
+      title: Country Includes
+      oneOf:
+      - $ref: '#/components/schemas/State'
     ListMeta:
       type: object
       x-internal: false
@@ -377,26 +397,6 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
     State:
       type: object
       description: States within Spree are used to scope address data slightly more than country. States are useful for tax purposes, as different states in a country may impose different tax rates on different products. In addition to this, different states may cause different tax rates and shipping methods to be used for an order, similar to how countries affect it also.
@@ -3733,6 +3733,13 @@ components:
                   last: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
                   first: http://localhost:3000/api/v2/storefront/countries?page=1&per_page=240
   parameters:
+    CountryIncludeParam:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
+      example: states
     IsoOrIso3:
       name: iso
       in: path
@@ -3748,13 +3755,6 @@ components:
       schema:
         type: string
       example: iso_name,name,states_required
-    CountryIncludeParam:
-      name: include
-      in: query
-      schema:
-        type: string
-      description: Specify the related resources you would like to receive in the response body. [More Information](https://jsonapi.org/format/#fetching-includes).
-      example: states
   securitySchemes:
     bearer_auth:
       type: http

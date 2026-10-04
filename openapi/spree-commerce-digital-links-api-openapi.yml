@@ -386,16 +386,50 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
+      x-internal: false
+    create_digital_link_params:
+      type: object
+      properties:
+        digital_link:
+          type: object
+          required:
+          - line_item_id
+          - digital_id
+          properties:
+            access_counter:
+              type: integer
+              example: 0
+            line_item_id:
+              type: string
+              example: '1'
+            digital_id:
+              type: string
+              example: '1'
+      required:
+      - digital_link
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     error:
       type: object
@@ -450,51 +484,6 @@ components:
       - meta
       - links
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    create_digital_link_params:
-      type: object
-      properties:
-        digital_link:
-          type: object
-          required:
-          - line_item_id
-          - digital_id
-          properties:
-            access_counter:
-              type: integer
-              example: 0
-            line_item_id:
-              type: string
-              example: '1'
-            digital_id:
-              type: string
-              example: '1'
-      required:
-      - digital_link
-      x-internal: false
     update_digital_link_params:
       type: object
       properties:
@@ -512,6 +501,17 @@ components:
               example: '1'
       required:
       - digital_link
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
+          type: object
+      required:
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

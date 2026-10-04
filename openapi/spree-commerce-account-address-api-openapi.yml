@@ -288,6 +288,26 @@ components:
                   last: http://localhost:3000/api/v2/storefront/account/addresses?page=1
                   first: http://localhost:3000/api/v2/storefront/account/addresses?page=1
   schemas:
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
     AddressPayload:
       example:
         firstname: John
@@ -432,26 +452,6 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
   parameters:
     SparseFieldsAddress:
       in: query

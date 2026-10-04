@@ -359,6 +359,22 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
     create_classification_params:
       type: object
       properties:
@@ -381,16 +397,31 @@ components:
       required:
       - classification
       x-internal: false
-    validation_errors:
+    update_classification_params:
       type: object
       properties:
-        error:
-          type: string
-        errors:
+        classification:
           type: object
+          properties:
+            product_id:
+              type: string
+              example: '1'
+            taxon_id:
+              type: string
+              example: '1'
+            position:
+              type: integer
+              example: 1
       required:
-      - error
-      - errors
+      - classification
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     error:
       type: object
@@ -445,47 +476,16 @@ components:
       - meta
       - links
       x-internal: false
-    resource:
+    validation_errors:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    update_classification_params:
-      type: object
-      properties:
-        classification:
-          type: object
-          properties:
-            product_id:
-              type: string
-              example: '1'
-            taxon_id:
-              type: string
-              example: '1'
-            position:
-              type: integer
-              example: 1
-      required:
-      - classification
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

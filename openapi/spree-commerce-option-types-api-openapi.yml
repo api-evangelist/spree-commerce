@@ -336,16 +336,48 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_option_type_params:
+      type: object
+      properties:
+        option_type:
+          type: object
+          properties:
+            name:
+              type: string
+              example: color
+            presentation:
+              type: string
+              example: Color
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
+      required:
+      - option_type
+      x-internal: false
+    resource:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/resource_properties'
+      required:
+      - data
       x-internal: false
     error:
       type: object
@@ -400,30 +432,6 @@ components:
       - meta
       - links
       x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
-      x-internal: false
-    resource_properties:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
-          type: object
-      required:
-      - id
-      - type
-      - attributes
-      x-internal: false
     create_option_type_params:
       type: object
       properties:
@@ -446,24 +454,16 @@ components:
       required:
       - option_type
       x-internal: false
-    update_option_type_params:
+    validation_errors:
       type: object
       properties:
-        option_type:
+        error:
+          type: string
+        errors:
           type: object
-          properties:
-            name:
-              type: string
-              example: color
-            presentation:
-              type: string
-              example: Color
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
       required:
-      - option_type
+      - error
+      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:
