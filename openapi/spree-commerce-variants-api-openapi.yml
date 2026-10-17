@@ -509,14 +509,6 @@ components:
       - meta
       - links
       x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
     resource:
       type: object
       properties:
@@ -525,34 +517,59 @@ components:
       required:
       - data
       x-internal: false
-    Timestamp:
-      type: string
-      format: date-time
-      example: '2020-02-16T07:14:54.617Z'
-      x-internal: false
-      title: Time Stamp
-      x-examples:
-        example-1: '2020-02-16T07:14:54.617Z'
-    ListLinks:
-      x-internal: false
+    error:
       type: object
-      title: Pagination Links
       properties:
-        self:
+        error:
           type: string
-          description: URL to the current page of the listing
-        next:
+      required:
+      - error
+      x-internal: false
+    Image:
+      type: object
+      properties:
+        id:
           type: string
-          description: URL to the next page of the listing
-        prev:
+          example: '1'
+        type:
           type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
+          default: image
+        attributes:
+          type: object
+          properties:
+            position:
+              type: integer
+              description: Sort order of images set in the Admin Panel
+              example: 0
+              minimum: 0
+            styles:
+              type: array
+              description: An array of pre-scaled image styles
+              items:
+                $ref: '#/components/schemas/ImageStyle'
+      required:
+      - id
+      - type
+      - attributes
+      title: Image
+      x-internal: false
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
     VariantIncludes:
       x-internal: true
       title: Product Includes
@@ -560,6 +577,151 @@ components:
       - $ref: '#/components/schemas/Product'
       - $ref: '#/components/schemas/Image'
       - $ref: '#/components/schemas/OptionValue'
+    Variant:
+      title: Variant
+      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
+      x-examples: {}
+      type: object
+      x-internal: false
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: variant
+        attributes:
+          type: object
+          properties:
+            sku:
+              type: string
+              example: SKU-1001
+            price:
+              type: string
+              example: '15.99'
+            currency:
+              type: string
+              example: USD
+            display_price:
+              type: string
+              example: $15.99
+            weight:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            height:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            width:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            depth:
+              type:
+              - string
+              - 'null'
+              example: '10'
+            is_master:
+              type: boolean
+              description: Indicates if Variant is the master Variant
+            options_text:
+              type: string
+              example: 'Size: small, Color: red'
+            options:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  value:
+                    type: string
+                  presentation:
+                    type: string
+            purchasable:
+              type: boolean
+              description: Indicates if Variant is in stock or backorderable
+            in_stock:
+              type: boolean
+              description: Indicates if Variant is in stock
+            backorderable:
+              type: boolean
+        relationships:
+          type: object
+          properties:
+            product:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Relation'
+            images:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            option_values:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+    OptionValue:
+      title: Option Value
+      type: object
+      x-internal: true
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          default: option_value
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: color
+            presentation:
+              type: string
+              example: Color
+            position:
+              type: integer
+              example: 1
+        relationships:
+          type: object
+          properties:
+            option_type:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+            filter_value:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Relation'
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
     Product:
       type: object
       title: Product
@@ -712,148 +874,34 @@ components:
       - type
       - attributes
       - relationships
-    Variant:
-      title: Variant
-      description: 'Variant records track the individual variants of a Product. Variants are of two types: master variants and normal variants.'
-      x-examples: {}
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2020-02-16T07:14:54.617Z'
+      x-internal: false
+      title: Time Stamp
+      x-examples:
+        example-1: '2020-02-16T07:14:54.617Z'
+    ListLinks:
+      x-internal: false
       type: object
-      x-internal: false
+      title: Pagination Links
       properties:
-        id:
+        self:
           type: string
-          example: '1'
-        type:
+          description: URL to the current page of the listing
+        next:
           type: string
-          default: variant
-        attributes:
-          type: object
-          properties:
-            sku:
-              type: string
-              example: SKU-1001
-            price:
-              type: string
-              example: '15.99'
-            currency:
-              type: string
-              example: USD
-            display_price:
-              type: string
-              example: $15.99
-            weight:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            height:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            width:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            depth:
-              type:
-              - string
-              - 'null'
-              example: '10'
-            is_master:
-              type: boolean
-              description: Indicates if Variant is the master Variant
-            options_text:
-              type: string
-              example: 'Size: small, Color: red'
-            options:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  value:
-                    type: string
-                  presentation:
-                    type: string
-            purchasable:
-              type: boolean
-              description: Indicates if Variant is in stock or backorderable
-            in_stock:
-              type: boolean
-              description: Indicates if Variant is in stock
-            backorderable:
-              type: boolean
-        relationships:
-          type: object
-          properties:
-            product:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/Relation'
-            images:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            option_values:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-    Relation:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
+          description: URL to the next page of the listing
+        prev:
           type: string
-        type:
+          description: URL to the previous page of the listing
+        last:
           type: string
-      required:
-      - id
-      - type
-      x-internal: false
-      description: ''
-    Image:
-      type: object
-      properties:
-        id:
+          description: URL to the last page of the listing
+        first:
           type: string
-          example: '1'
-        type:
-          type: string
-          default: image
-        attributes:
-          type: object
-          properties:
-            position:
-              type: integer
-              description: Sort order of images set in the Admin Panel
-              example: 0
-              minimum: 0
-            styles:
-              type: array
-              description: An array of pre-scaled image styles
-              items:
-                $ref: '#/components/schemas/ImageStyle'
-      required:
-      - id
-      - type
-      - attributes
-      title: Image
-      x-internal: false
+          description: URL to the first page of the listing
     ImageStyle:
       x-internal: false
       title: Image Style
@@ -871,76 +919,21 @@ components:
           type: integer
           example: 1080
           description: Actual height of image
-    OptionValue:
-      title: Option Value
-      type: object
-      x-internal: true
+    Relation:
+      type:
+      - object
+      - 'null'
       properties:
         id:
           type: string
-          example: '1'
         type:
           type: string
-          default: option_value
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: color
-            presentation:
-              type: string
-              example: Color
-            position:
-              type: integer
-              example: 1
-        relationships:
-          type: object
-          properties:
-            option_type:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
-            filter_value:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Relation'
       required:
       - id
       - type
-      - attributes
-      - relationships
-    ListMeta:
-      type: object
       x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
+      description: ''
   parameters:
-    SparseFieldsVariant:
-      name: fields[variant]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: price,currency,options,options_text
     PerPageParam:
       name: per_page
       in: query
@@ -948,6 +941,21 @@ components:
       schema:
         type: integer
       example: 25
+    ProductSlug:
+      name: product_slug
+      in: path
+      required: true
+      description: Product Slug
+      schema:
+        type: string
+      example: knitted-high-neck-sweater
+    SparseFieldsVariant:
+      name: fields[variant]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: price,currency,options,options_text
     VariantIncludeParam:
       name: include
       in: query
@@ -965,14 +973,6 @@ components:
 
         [More information](https://jsonapi.org/format/#fetching-includes)'
       example: product,option_values,images,filter_values
-    ProductSlug:
-      name: product_slug
-      in: path
-      required: true
-      description: Product Slug
-      schema:
-        type: string
-      example: knitted-high-neck-sweater
     PageParam:
       name: page
       in: query

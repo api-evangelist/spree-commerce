@@ -288,21 +288,30 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
+      x-internal: false
+    create_role_params:
+      type: object
+      properties:
+        role:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: vendor
+      required:
+      - zone
       x-internal: false
     resource:
       type: object
@@ -311,26 +320,6 @@ components:
           $ref: '#/components/schemas/resource_properties'
       required:
       - data
-      x-internal: false
-    update_role_params:
-      type: object
-      properties:
-        role:
-          type: object
-          properties:
-            name:
-              type: string
-              example: vendor
-      required:
-      - zone
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
     resources_list:
       type: object
@@ -377,13 +366,27 @@ components:
       - meta
       - links
       x-internal: false
-    create_role_params:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    update_role_params:
       type: object
       properties:
         role:
           type: object
-          required:
-          - name
           properties:
             name:
               type: string
@@ -391,16 +394,13 @@ components:
       required:
       - zone
       x-internal: false
-    validation_errors:
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

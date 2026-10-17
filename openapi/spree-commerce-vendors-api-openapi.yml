@@ -407,6 +407,9 @@ paths:
       description: localhost
 components:
   schemas:
+    update_vendor_params:
+      $ref: '#/components/schemas/create_vendor_params'
+      x-internal: true
     create_vendor_params:
       type: object
       properties:
@@ -435,9 +438,6 @@ components:
       - kind
       - contact_person_email
       - name
-      x-internal: true
-    update_vendor_params:
-      $ref: '#/components/schemas/create_vendor_params'
       x-internal: true
     Vendor:
       title: Vendor
@@ -491,6 +491,23 @@ components:
       - type
       - attributes
       - relationships
+    ListMeta:
+      type: object
+      x-internal: false
+      title: Pagination Meta
+      properties:
+        count:
+          type: number
+          example: 7
+          description: Number of items on the current listing
+        total_count:
+          type: number
+          example: 145
+          description: Number of all items matching the criteria
+        total_pages:
+          type: number
+          example: 10
+          description: Number of all pages containing items matching the criteria
     ListLinks:
       x-internal: false
       type: object
@@ -525,23 +542,36 @@ components:
       - type
       x-internal: false
       description: ''
-    ListMeta:
-      type: object
-      x-internal: false
-      title: Pagination Meta
-      properties:
-        count:
-          type: number
-          example: 7
-          description: Number of items on the current listing
-        total_count:
-          type: number
-          example: 145
-          description: Number of all items matching the criteria
-        total_pages:
-          type: number
-          example: 10
-          description: Number of all pages containing items matching the criteria
+  parameters:
+    VendorSlug:
+      name: vendor_slug
+      in: path
+      required: true
+      description: Look for Vendor by ID or their slug
+      schema:
+        type: string
+      example: acme-co
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of requested records per page when paginating collection
+      schema:
+        type: integer
+      example: 25
+    SparseFieldsVendor:
+      name: fields[vendor]
+      in: query
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
+      example: name,slug,about_us,facebook
+    PageParam:
+      name: page
+      in: query
+      description: Number of requested page when paginating collection
+      schema:
+        type: integer
+      example: 1
   responses:
     404NotFound:
       description: 404 Not Found - Resource not found.
@@ -557,32 +587,6 @@ components:
             404 Example:
               value:
                 error: The resource you were looking for could not be found.
-    Vendor:
-      description: 200 Success - Returns the `vendor` object.
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Vendor'
-            required:
-            - data
-          examples:
-            Single Vendor:
-              value:
-                data:
-                  id: e1171601-a4ce-47d2-a795-c96fbdf20029
-                  type: vendor
-                  attributes:
-                    name: Best Shoes
-                    email: contact@example.com
-                    slug: best-shoes
-                    about_us: '<p>We are your #1 shoe store.</p>
-
-                      <p>Follow us on social media.</p>'
-                    logo_url: https://assets.com/images/logo_name
-                    cover_photo_url: https://assets.com/images/wide_tree_wzxgak
     VendorList:
       description: 200 Success - Returns an array of `vendor` objects.
       content:
@@ -628,36 +632,32 @@ components:
                       <p>Follow us on social media.</p>'
                     logo_url: https://assets.com/images/logo_name34553
                     cover_photo_url: https://assets.com/images/coverfn5ig
-  parameters:
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of requested records per page when paginating collection
-      schema:
-        type: integer
-      example: 25
-    VendorSlug:
-      name: vendor_slug
-      in: path
-      required: true
-      description: Look for Vendor by ID or their slug
-      schema:
-        type: string
-      example: acme-co
-    PageParam:
-      name: page
-      in: query
-      description: Number of requested page when paginating collection
-      schema:
-        type: integer
-      example: 1
-    SparseFieldsVendor:
-      name: fields[vendor]
-      in: query
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
-      example: name,slug,about_us,facebook
+    Vendor:
+      description: 200 Success - Returns the `vendor` object.
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Vendor'
+            required:
+            - data
+          examples:
+            Single Vendor:
+              value:
+                data:
+                  id: e1171601-a4ce-47d2-a795-c96fbdf20029
+                  type: vendor
+                  attributes:
+                    name: Best Shoes
+                    email: contact@example.com
+                    slug: best-shoes
+                    about_us: '<p>We are your #1 shoe store.</p>
+
+                      <p>Follow us on social media.</p>'
+                    logo_url: https://assets.com/images/logo_name
+                    cover_photo_url: https://assets.com/images/wide_tree_wzxgak
   securitySchemes:
     bearer_auth:
       type: http

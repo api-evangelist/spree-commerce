@@ -526,21 +526,16 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
     create_line_item_params:
       type: object
@@ -591,14 +586,6 @@ components:
       required:
       - data
       x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      x-internal: false
     resources_list:
       type: object
       properties:
@@ -644,16 +631,29 @@ components:
       - meta
       - links
       x-internal: false
-    validation_errors:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

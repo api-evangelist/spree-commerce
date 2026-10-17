@@ -287,21 +287,31 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    update_store_credit_type_params:
       type: object
       properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
+        store_credit_type:
           type: object
-        relationships:
+          properties:
+            name:
+              type: string
+              example: refunded
+            priority:
+              type: integer
+              example: 1
+      required:
+      - store_credit_type
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
     resource:
       type: object
@@ -311,13 +321,22 @@ components:
       required:
       - data
       x-internal: false
-    error:
+    create_store_credit_type_params:
       type: object
       properties:
-        error:
-          type: string
+        store_credit_type:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: refunded
+            priority:
+              type: integer
+              example: 1
       required:
-      - error
+      - store_credit_type
       x-internal: false
     resources_list:
       type: object
@@ -364,48 +383,29 @@ components:
       - meta
       - links
       x-internal: false
-    update_store_credit_type_params:
+    resource_properties:
       type: object
       properties:
-        store_credit_type:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
           type: object
-          properties:
-            name:
-              type: string
-              example: refunded
-            priority:
-              type: integer
-              example: 1
-      required:
-      - store_credit_type
-      x-internal: false
-    create_store_credit_type_params:
-      type: object
-      properties:
-        store_credit_type:
+        relationships:
           type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: refunded
-            priority:
-              type: integer
-              example: 1
       required:
-      - store_credit_type
+      - id
+      - type
+      - attributes
       x-internal: false
-    validation_errors:
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

@@ -338,21 +338,37 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    update_promotion_category_params:
       type: object
       properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
+        promotion_category:
           type: object
-        relationships:
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Promotions Used in 2021
+              description: Update the name of this Promotion Category.
+            code:
+              type:
+              - string
+              - 'null'
+              example: 2021-PROMOS
+              description: Change or remove the code for this Promotion Category.
+      required:
+      - promotion_category
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
     resource:
       type: object
@@ -361,14 +377,6 @@ components:
           $ref: '#/components/schemas/resource_properties'
       required:
       - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
     resources_list:
       type: object
@@ -415,37 +423,21 @@ components:
       - meta
       - links
       x-internal: false
-    update_promotion_category_params:
+    resource_properties:
       type: object
       properties:
-        promotion_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Promotions Used in 2021
-              description: Update the name of this Promotion Category.
-            code:
-              type:
-              - string
-              - 'null'
-              example: 2021-PROMOS
-              description: Change or remove the code for this Promotion Category.
-      required:
-      - promotion_category
-      x-internal: false
-    validation_errors:
-      type: object
-      properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
       x-internal: false
     create_promotion_category_params:
       type: object
@@ -467,6 +459,14 @@ components:
               description: Give this promotion category a code.
       required:
       - promotion_category
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
   securitySchemes:
     bearer_auth:

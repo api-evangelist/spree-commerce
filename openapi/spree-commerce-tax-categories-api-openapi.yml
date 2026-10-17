@@ -359,46 +359,18 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
     update_tax_category_params:
-      type: object
-      properties:
-        tax_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: Clothing
-            is_default:
-              type: boolean
-              example: true
-            tax_code:
-              type: string
-              example: 1257L
-            description:
-              type: string
-              example: Men's, women's and children's branded clothing
-      required:
-      - tax_category
-      x-internal: false
-    create_tax_category_params:
       type: object
       properties:
         tax_category:
@@ -429,13 +401,28 @@ components:
       required:
       - data
       x-internal: false
-    error:
+    create_tax_category_params:
       type: object
       properties:
-        error:
-          type: string
+        tax_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: Clothing
+            is_default:
+              type: boolean
+              example: true
+            tax_code:
+              type: string
+              example: 1257L
+            description:
+              type: string
+              example: Men's, women's and children's branded clothing
       required:
-      - error
+      - tax_category
       x-internal: false
     resources_list:
       type: object
@@ -482,16 +469,29 @@ components:
       - meta
       - links
       x-internal: false
-    validation_errors:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

@@ -369,29 +369,16 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
+      - error
+      - errors
       x-internal: false
     update_menu_params:
       type: object
@@ -416,13 +403,13 @@ components:
       required:
       - menu
       x-internal: false
-    error:
+    resource:
       type: object
       properties:
-        error:
-          type: string
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - error
+      - data
       x-internal: false
     create_menu_params:
       type: object
@@ -496,16 +483,29 @@ components:
       - meta
       - links
       x-internal: false
-    validation_errors:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

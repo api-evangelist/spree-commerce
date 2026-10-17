@@ -378,29 +378,16 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
-      x-internal: false
-    resource:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/resource_properties'
-      required:
-      - data
+      - error
+      - errors
       x-internal: false
     update_stock_item_params:
       type: object
@@ -428,13 +415,39 @@ components:
       required:
       - stock_item
       x-internal: false
-    error:
+    resource:
       type: object
       properties:
-        error:
-          type: string
+        data:
+          $ref: '#/components/schemas/resource_properties'
       required:
-      - error
+      - data
+      x-internal: false
+    create_stock_item_params:
+      type: object
+      properties:
+        stock_item:
+          type: object
+          required:
+          - variant_id
+          - stock_location_id
+          - count_on_hand
+          properties:
+            variant_id:
+              type: string
+              example: '2'
+            stock_location_id:
+              type: string
+              example: '2'
+            count_on_hand:
+              type: number
+              example: 200
+            backorderable:
+              type: boolean
+              example: true
+              default: false
+      required:
+      - stock_item
       x-internal: false
     resources_list:
       type: object
@@ -481,42 +494,29 @@ components:
       - meta
       - links
       x-internal: false
-    create_stock_item_params:
+    resource_properties:
       type: object
       properties:
-        stock_item:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
           type: object
-          required:
-          - variant_id
-          - stock_location_id
-          - count_on_hand
-          properties:
-            variant_id:
-              type: string
-              example: '2'
-            stock_location_id:
-              type: string
-              example: '2'
-            count_on_hand:
-              type: number
-              example: 200
-            backorderable:
-              type: boolean
-              example: true
-              default: false
+        relationships:
+          type: object
       required:
-      - stock_item
+      - id
+      - type
+      - attributes
       x-internal: false
-    validation_errors:
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

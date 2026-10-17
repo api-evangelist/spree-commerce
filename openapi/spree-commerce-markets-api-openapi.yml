@@ -611,38 +611,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Market:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        currency:
-          type: string
-        default_locale:
-          type: string
-        tax_inclusive:
-          type: boolean
-        default:
-          type: boolean
-        supported_locales:
-          type: array
-          items:
-            type: string
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Country'
-      required:
-      - id
-      - name
-      - currency
-      - default_locale
-      - tax_inclusive
-      - default
-      - supported_locales
-      x-typelizer: true
     ErrorResponse:
       type: object
       properties:
@@ -707,17 +675,6 @@ components:
       - states_required
       - zipcode_required
       x-typelizer: true
-    Locale:
-      type: object
-      properties:
-        code:
-          type: string
-        name:
-          type: string
-      required:
-      - code
-      - name
-      x-typelizer: true
     Currency:
       type: object
       properties:
@@ -732,6 +689,17 @@ components:
       - name
       - symbol
       x-typelizer: true
+    Locale:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+      required:
+      - code
+      - name
+      x-typelizer: true
     State:
       type: object
       properties:
@@ -742,6 +710,38 @@ components:
       required:
       - abbr
       - name
+      x-typelizer: true
+    Market:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        currency:
+          type: string
+        default_locale:
+          type: string
+        tax_inclusive:
+          type: boolean
+        default:
+          type: boolean
+        supported_locales:
+          type: array
+          items:
+            type: string
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+      required:
+      - id
+      - name
+      - currency
+      - default_locale
+      - tax_inclusive
+      - default
+      - supported_locales
       x-typelizer: true
   securitySchemes:
     api_key:

@@ -288,21 +288,16 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
     resource:
       type: object
@@ -312,15 +307,21 @@ components:
       required:
       - data
       x-internal: false
-    error:
+    update_store_credit_category_params:
       type: object
       properties:
-        error:
-          type: string
+        store_credit_category:
+          type: object
+          required:
+          - name
+          properties:
+            name:
+              type: string
+              example: refunded
       required:
-      - error
+      - store_credit_category
       x-internal: false
-    update_store_credit_category_params:
+    create_store_credit_category_params:
       type: object
       properties:
         store_credit_category:
@@ -379,30 +380,29 @@ components:
       - meta
       - links
       x-internal: false
-    validation_errors:
+    resource_properties:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
+          type: object
+      required:
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
-      x-internal: false
-    create_store_credit_category_params:
-      type: object
-      properties:
-        store_credit_category:
-          type: object
-          required:
-          - name
-          properties:
-            name:
-              type: string
-              example: refunded
-      required:
-      - store_credit_category
       x-internal: false
   securitySchemes:
     bearer_auth:

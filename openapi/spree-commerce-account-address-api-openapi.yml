@@ -144,7 +144,29 @@ paths:
       tags:
       - Account / Address
 components:
+  parameters:
+    SparseFieldsAddress:
+      in: query
+      name: fields[address]
+      example: firstname,lastname,country_name
+      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
+      schema:
+        type: string
   responses:
+    403Forbidden:
+      description: 403 Forbidden - You are not authorized to access this page.
+      content:
+        application/vnd.api+json:
+          schema:
+            properties:
+              error:
+                type: string
+                example: You are not authorized to access this page.
+                default: You are not authorized to access this page.
+          examples:
+            403 Example:
+              value:
+                error: You are not authorized to access this page.
     404NotFound:
       description: 404 Not Found - Resource not found.
       content:
@@ -189,20 +211,6 @@ components:
                     country_iso: US
                     label: Work
                     state_code: CA
-    403Forbidden:
-      description: 403 Forbidden - You are not authorized to access this page.
-      content:
-        application/vnd.api+json:
-          schema:
-            properties:
-              error:
-                type: string
-                example: You are not authorized to access this page.
-                default: You are not authorized to access this page.
-          examples:
-            403 Example:
-              value:
-                error: You are not authorized to access this page.
     AddressList:
       description: 200 Success - Returns an array of `address` objects.
       content:
@@ -288,81 +296,6 @@ components:
                   last: http://localhost:3000/api/v2/storefront/account/addresses?page=1
                   first: http://localhost:3000/api/v2/storefront/account/addresses?page=1
   schemas:
-    ListLinks:
-      x-internal: false
-      type: object
-      title: Pagination Links
-      properties:
-        self:
-          type: string
-          description: URL to the current page of the listing
-        next:
-          type: string
-          description: URL to the next page of the listing
-        prev:
-          type: string
-          description: URL to the previous page of the listing
-        last:
-          type: string
-          description: URL to the last page of the listing
-        first:
-          type: string
-          description: URL to the first page of the listing
-    AddressPayload:
-      example:
-        firstname: John
-        lastname: Snow
-        address1: 7735 Old Georgetown Road
-        address2: 2nd Floor
-        city: Bethesda
-        phone: '3014445002'
-        zipcode: '20814'
-        state_name: MD
-        country_iso: US
-      type: object
-      x-internal: false
-      title: ''
-      x-examples: {}
-      description: ''
-      properties:
-        firstname:
-          type: string
-        lastname:
-          type: string
-        address1:
-          type: string
-          description: Street address
-        address2:
-          type: string
-          description: Additional address information, floor no etc
-        city:
-          type: string
-          description: City, town
-        phone:
-          type: string
-        zipcode:
-          type: string
-          description: Valid zipcode, will be validated against the selected Country
-        state_name:
-          type: string
-          description: State/region/province 2 letter abbreviation
-        country_iso:
-          type: string
-          description: Country ISO (2-chars) or ISO3 (3-chars) code. [List of all codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes)
-        company:
-          type: string
-          example: Paper Street Soap Co.
-          description: Company name
-        label:
-          type: string
-          example: Work
-          description: The internal name for this address (Work, Home)
-      required:
-      - firstname
-      - lastname
-      - address1
-      - city
-      - country_iso
     Address:
       type: object
       title: Address
@@ -452,14 +385,81 @@ components:
           type: number
           example: 10
           description: Number of all pages containing items matching the criteria
-  parameters:
-    SparseFieldsAddress:
-      in: query
-      name: fields[address]
-      example: firstname,lastname,country_name
-      description: Specify the fields you would like returned in the response body. [More information](https://jsonapi.org/format/#fetching-sparse-fieldsets).
-      schema:
-        type: string
+    ListLinks:
+      x-internal: false
+      type: object
+      title: Pagination Links
+      properties:
+        self:
+          type: string
+          description: URL to the current page of the listing
+        next:
+          type: string
+          description: URL to the next page of the listing
+        prev:
+          type: string
+          description: URL to the previous page of the listing
+        last:
+          type: string
+          description: URL to the last page of the listing
+        first:
+          type: string
+          description: URL to the first page of the listing
+    AddressPayload:
+      example:
+        firstname: John
+        lastname: Snow
+        address1: 7735 Old Georgetown Road
+        address2: 2nd Floor
+        city: Bethesda
+        phone: '3014445002'
+        zipcode: '20814'
+        state_name: MD
+        country_iso: US
+      type: object
+      x-internal: false
+      title: ''
+      x-examples: {}
+      description: ''
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        address1:
+          type: string
+          description: Street address
+        address2:
+          type: string
+          description: Additional address information, floor no etc
+        city:
+          type: string
+          description: City, town
+        phone:
+          type: string
+        zipcode:
+          type: string
+          description: Valid zipcode, will be validated against the selected Country
+        state_name:
+          type: string
+          description: State/region/province 2 letter abbreviation
+        country_iso:
+          type: string
+          description: Country ISO (2-chars) or ISO3 (3-chars) code. [List of all codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes)
+        company:
+          type: string
+          example: Paper Street Soap Co.
+          description: Company name
+        label:
+          type: string
+          example: Work
+          description: The internal name for this address (Work, Home)
+      required:
+      - firstname
+      - lastname
+      - address1
+      - city
+      - country_iso
   securitySchemes:
     bearerAuth:
       type: http

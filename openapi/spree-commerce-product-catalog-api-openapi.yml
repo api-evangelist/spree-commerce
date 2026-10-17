@@ -2880,201 +2880,77 @@ paths:
           default: localhost:3000
 components:
   schemas:
-    Category:
+    ErrorResponse:
       type: object
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        permalink:
-          type: string
-        position:
-          type: number
-        depth:
-          type: number
-        meta_title:
-          type:
-          - string
-          - 'null'
-        meta_description:
-          type:
-          - string
-          - 'null'
-        meta_keywords:
-          type:
-          - string
-          - 'null'
-        children_count:
-          type: number
-        parent_id:
-          type:
-          - string
-          - 'null'
-        description:
-          type: string
-        description_html:
-          type: string
-        image_url:
-          type:
-          - string
-          - 'null'
-        square_image_url:
-          type:
-          - string
-          - 'null'
-        is_root:
-          type: boolean
-        is_child:
-          type: boolean
-        is_leaf:
-          type: boolean
-        parent:
-          $ref: '#/components/schemas/Category'
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        ancestors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        custom_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomField'
-        metadata:
+        error:
           type: object
-        pretty_name:
-          type: string
-        lft:
-          type: number
-        rgt:
-          type: number
-        created_at:
-          type: string
-        updated_at:
-          type: string
+          properties:
+            code:
+              type: string
+              example: record_not_found
+            message:
+              type: string
+              example: Record not found
+            details:
+              type:
+              - object
+              - 'null'
+              description: Field-specific validation errors
+              example:
+                name:
+                - is too short
+                - is required
+                email:
+                - is invalid
+          required:
+          - code
+          - message
       required:
-      - id
-      - name
-      - permalink
-      - position
-      - depth
-      - meta_title
-      - meta_description
-      - meta_keywords
-      - children_count
-      - parent_id
-      - description
-      - description_html
-      - image_url
-      - square_image_url
-      - is_root
-      - is_child
-      - is_leaf
-      - metadata
-      - pretty_name
-      - lft
-      - rgt
-      - created_at
-      - updated_at
-      x-typelizer: true
-    OptionType:
+      - error
+      example:
+        error:
+          code: validation_error
+          message: Validation failed
+          details:
+            name:
+            - is too short
+            email:
+            - is invalid
+    Price:
       type: object
       properties:
         id:
           type: string
-        name:
-          type: string
-        label:
-          type: string
-        position:
-          type: number
-        kind:
-          type: string
-        metadata:
-          type: object
-        filterable:
-          type: boolean
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        option_values:
-          type: array
-          items:
-            $ref: '#/components/schemas/OptionValue'
-      required:
-      - id
-      - name
-      - label
-      - position
-      - kind
-      - metadata
-      - filterable
-      - created_at
-      - updated_at
-      x-typelizer: true
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-          example: 1
-        limit:
-          type: integer
-          example: 25
-        count:
-          type: integer
-          example: 100
-          description: Total number of records
-        pages:
-          type: integer
-          example: 4
-          description: Total number of pages
-        from:
-          type: integer
-          example: 1
-          description: Index of first record on this page
-        to:
-          type: integer
-          example: 25
-          description: Index of last record on this page
-        in:
-          type: integer
-          example: 25
-          description: Number of records on this page
-        previous:
+        amount:
           type:
-          - integer
+          - string
           - 'null'
-          example: null
-          description: Previous page number
-        next:
+        amount_in_cents:
           type:
-          - integer
+          - number
           - 'null'
-          example: 2
-          description: Next page number
-      required:
-      - page
-      - limit
-      - count
-      - pages
-      - from
-      - to
-      - in
-    StockItem:
-      type: object
-      properties:
-        id:
-          type: string
-        count_on_hand:
-          type: number
-        backorderable:
-          type: boolean
-        stock_location_id:
+        compare_at_amount:
+          type:
+          - string
+          - 'null'
+        compare_at_amount_in_cents:
+          type:
+          - number
+          - 'null'
+        currency:
+          type:
+          - string
+          - 'null'
+        display_amount:
+          type:
+          - string
+          - 'null'
+        display_compare_at_amount:
+          type:
+          - string
+          - 'null'
+        price_list_id:
           type:
           - string
           - 'null'
@@ -3082,31 +2958,25 @@ components:
           type:
           - string
           - 'null'
-        metadata:
-          type: object
         created_at:
           type: string
         updated_at:
           type: string
-        allocated_count:
-          type: number
-        available_count:
-          type: number
-        stock_location:
-          $ref: '#/components/schemas/StockLocation'
         variant:
           $ref: '#/components/schemas/Variant'
       required:
       - id
-      - count_on_hand
-      - backorderable
-      - stock_location_id
+      - amount
+      - amount_in_cents
+      - compare_at_amount
+      - compare_at_amount_in_cents
+      - currency
+      - display_amount
+      - display_compare_at_amount
+      - price_list_id
       - variant_id
-      - metadata
       - created_at
       - updated_at
-      - allocated_count
-      - available_count
       x-typelizer: true
     CustomField:
       type: object
@@ -3150,6 +3020,181 @@ components:
       - updated_at
       - storefront_visible
       - custom_field_definition_id
+      x-typelizer: true
+    OptionType:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        kind:
+          type: string
+        metadata:
+          type: object
+        filterable:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue'
+      required:
+      - id
+      - name
+      - label
+      - position
+      - kind
+      - metadata
+      - filterable
+      - created_at
+      - updated_at
+      x-typelizer: true
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        meta_title:
+          type:
+          - string
+          - 'null'
+        meta_description:
+          type:
+          - string
+          - 'null'
+        meta_keywords:
+          type:
+          - string
+          - 'null'
+        variant_count:
+          type: number
+        available_on:
+          type:
+          - string
+          - 'null'
+        purchasable:
+          type: boolean
+        in_stock:
+          type: boolean
+        backorderable:
+          type: boolean
+        available:
+          type: boolean
+        description:
+          type:
+          - string
+          - 'null'
+        description_html:
+          type:
+          - string
+          - 'null'
+        default_variant_id:
+          type: string
+        thumbnail_url:
+          type:
+          - string
+          - 'null'
+        tags:
+          type: array
+          items:
+            type: string
+        price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+        original_price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+        primary_media:
+          $ref: '#/components/schemas/Media'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media'
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+        default_variant:
+          $ref: '#/components/schemas/Variant'
+        option_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionType'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        prior_price:
+          allOf:
+          - $ref: '#/components/schemas/PriceHistory'
+        status:
+          type: string
+        make_active_at:
+          type:
+          - string
+          - 'null'
+        discontinue_on:
+          type:
+          - string
+          - 'null'
+        metadata:
+          type: object
+        deleted_at:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        tax_category_id:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - name
+      - slug
+      - meta_title
+      - meta_description
+      - meta_keywords
+      - variant_count
+      - available_on
+      - purchasable
+      - in_stock
+      - backorderable
+      - available
+      - description
+      - description_html
+      - default_variant_id
+      - thumbnail_url
+      - tags
+      - price
+      - original_price
+      - status
+      - make_active_at
+      - discontinue_on
+      - metadata
+      - deleted_at
+      - created_at
+      - updated_at
+      - tax_category_id
       x-typelizer: true
     StockLocation:
       type: object
@@ -3414,266 +3459,6 @@ components:
       - total_on_hand
       - product_name
       x-typelizer: true
-    Product:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        meta_title:
-          type:
-          - string
-          - 'null'
-        meta_description:
-          type:
-          - string
-          - 'null'
-        meta_keywords:
-          type:
-          - string
-          - 'null'
-        variant_count:
-          type: number
-        available_on:
-          type:
-          - string
-          - 'null'
-        purchasable:
-          type: boolean
-        in_stock:
-          type: boolean
-        backorderable:
-          type: boolean
-        available:
-          type: boolean
-        description:
-          type:
-          - string
-          - 'null'
-        description_html:
-          type:
-          - string
-          - 'null'
-        default_variant_id:
-          type: string
-        thumbnail_url:
-          type:
-          - string
-          - 'null'
-        tags:
-          type: array
-          items:
-            type: string
-        price:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-        original_price:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-        primary_media:
-          $ref: '#/components/schemas/Media'
-        media:
-          type: array
-          items:
-            $ref: '#/components/schemas/Media'
-        variants:
-          type: array
-          items:
-            $ref: '#/components/schemas/Variant'
-        default_variant:
-          $ref: '#/components/schemas/Variant'
-        option_types:
-          type: array
-          items:
-            $ref: '#/components/schemas/OptionType'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        custom_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomField'
-        prior_price:
-          allOf:
-          - $ref: '#/components/schemas/PriceHistory'
-        status:
-          type: string
-        make_active_at:
-          type:
-          - string
-          - 'null'
-        discontinue_on:
-          type:
-          - string
-          - 'null'
-        metadata:
-          type: object
-        deleted_at:
-          type:
-          - string
-          - 'null'
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        tax_category_id:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - name
-      - slug
-      - meta_title
-      - meta_description
-      - meta_keywords
-      - variant_count
-      - available_on
-      - purchasable
-      - in_stock
-      - backorderable
-      - available
-      - description
-      - description_html
-      - default_variant_id
-      - thumbnail_url
-      - tags
-      - price
-      - original_price
-      - status
-      - make_active_at
-      - discontinue_on
-      - metadata
-      - deleted_at
-      - created_at
-      - updated_at
-      - tax_category_id
-      x-typelizer: true
-    PriceHistory:
-      type: object
-      properties:
-        id:
-          type: string
-        amount:
-          type: string
-        amount_in_cents:
-          type: number
-        currency:
-          type: string
-        display_amount:
-          type: string
-        recorded_at:
-          type: string
-        variant_id:
-          type: string
-        price_id:
-          type: string
-        compare_at_amount:
-          type:
-          - string
-          - 'null'
-        created_at:
-          type: string
-      required:
-      - id
-      - amount
-      - amount_in_cents
-      - currency
-      - display_amount
-      - recorded_at
-      - variant_id
-      - price_id
-      - compare_at_amount
-      - created_at
-      x-typelizer: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              example: record_not_found
-            message:
-              type: string
-              example: Record not found
-            details:
-              type:
-              - object
-              - 'null'
-              description: Field-specific validation errors
-              example:
-                name:
-                - is too short
-                - is required
-                email:
-                - is invalid
-          required:
-          - code
-          - message
-      required:
-      - error
-      example:
-        error:
-          code: validation_error
-          message: Validation failed
-          details:
-            name:
-            - is too short
-            email:
-            - is invalid
-    OptionValue:
-      type: object
-      properties:
-        id:
-          type: string
-        option_type_id:
-          type: string
-        name:
-          type: string
-        label:
-          type: string
-        position:
-          type: number
-        color_code:
-          type:
-          - string
-          - 'null'
-        option_type_name:
-          type: string
-        option_type_label:
-          type: string
-        image_url:
-          type:
-          - string
-          - 'null'
-        metadata:
-          type: object
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        option_type:
-          $ref: '#/components/schemas/OptionType'
-      required:
-      - id
-      - option_type_id
-      - name
-      - label
-      - position
-      - color_code
-      - option_type_name
-      - option_type_label
-      - image_url
-      - metadata
-      - created_at
-      - updated_at
-      x-typelizer: true
     Media:
       type: object
       properties:
@@ -3773,40 +3558,65 @@ components:
       - metadata
       - viewable_type
       x-typelizer: true
-    Price:
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 25
+        count:
+          type: integer
+          example: 100
+          description: Total number of records
+        pages:
+          type: integer
+          example: 4
+          description: Total number of pages
+        from:
+          type: integer
+          example: 1
+          description: Index of first record on this page
+        to:
+          type: integer
+          example: 25
+          description: Index of last record on this page
+        in:
+          type: integer
+          example: 25
+          description: Number of records on this page
+        previous:
+          type:
+          - integer
+          - 'null'
+          example: null
+          description: Previous page number
+        next:
+          type:
+          - integer
+          - 'null'
+          example: 2
+          description: Next page number
+      required:
+      - page
+      - limit
+      - count
+      - pages
+      - from
+      - to
+      - in
+    StockItem:
       type: object
       properties:
         id:
           type: string
-        amount:
-          type:
-          - string
-          - 'null'
-        amount_in_cents:
-          type:
-          - number
-          - 'null'
-        compare_at_amount:
-          type:
-          - string
-          - 'null'
-        compare_at_amount_in_cents:
-          type:
-          - number
-          - 'null'
-        currency:
-          type:
-          - string
-          - 'null'
-        display_amount:
-          type:
-          - string
-          - 'null'
-        display_compare_at_amount:
-          type:
-          - string
-          - 'null'
-        price_list_id:
+        count_on_hand:
+          type: number
+        backorderable:
+          type: boolean
+        stock_location_id:
           type:
           - string
           - 'null'
@@ -3814,27 +3624,117 @@ components:
           type:
           - string
           - 'null'
+        metadata:
+          type: object
         created_at:
           type: string
         updated_at:
           type: string
+        allocated_count:
+          type: number
+        available_count:
+          type: number
+        stock_location:
+          $ref: '#/components/schemas/StockLocation'
         variant:
           $ref: '#/components/schemas/Variant'
       required:
       - id
+      - count_on_hand
+      - backorderable
+      - stock_location_id
+      - variant_id
+      - metadata
+      - created_at
+      - updated_at
+      - allocated_count
+      - available_count
+      x-typelizer: true
+    PriceHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: string
+        amount_in_cents:
+          type: number
+        currency:
+          type: string
+        display_amount:
+          type: string
+        recorded_at:
+          type: string
+        variant_id:
+          type: string
+        price_id:
+          type: string
+        compare_at_amount:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+      required:
+      - id
       - amount
       - amount_in_cents
-      - compare_at_amount
-      - compare_at_amount_in_cents
       - currency
       - display_amount
-      - display_compare_at_amount
-      - price_list_id
+      - recorded_at
       - variant_id
+      - price_id
+      - compare_at_amount
+      - created_at
+      x-typelizer: true
+    OptionValue:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
+          type:
+          - string
+          - 'null'
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
+          type:
+          - string
+          - 'null'
+        metadata:
+          type: object
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        option_type:
+          $ref: '#/components/schemas/OptionType'
+      required:
+      - id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
+      - metadata
       - created_at
       - updated_at
       x-typelizer: true
-    Category_2:
+    Category:
       type: object
       properties:
         id:
@@ -3884,19 +3784,31 @@ components:
         is_leaf:
           type: boolean
         parent:
-          $ref: '#/components/schemas/Category_2'
+          $ref: '#/components/schemas/Category'
         children:
           type: array
           items:
-            $ref: '#/components/schemas/Category_2'
+            $ref: '#/components/schemas/Category'
         ancestors:
           type: array
           items:
-            $ref: '#/components/schemas/Category_2'
+            $ref: '#/components/schemas/Category'
         custom_fields:
           type: array
           items:
-            $ref: '#/components/schemas/CustomField_2'
+            $ref: '#/components/schemas/CustomField'
+        metadata:
+          type: object
+        pretty_name:
+          type: string
+        lft:
+          type: number
+        rgt:
+          type: number
+        created_at:
+          type: string
+        updated_at:
+          type: string
       required:
       - id
       - name
@@ -3915,26 +3827,60 @@ components:
       - is_root
       - is_child
       - is_leaf
+      - metadata
+      - pretty_name
+      - lft
+      - rgt
+      - created_at
+      - updated_at
       x-typelizer: true
-    OptionType_2:
+    Price_2:
       type: object
       properties:
         id:
           type: string
-        name:
-          type: string
-        label:
-          type: string
-        position:
-          type: number
-        kind:
-          type: string
+        amount:
+          type:
+          - string
+          - 'null'
+        amount_in_cents:
+          type:
+          - number
+          - 'null'
+        compare_at_amount:
+          type:
+          - string
+          - 'null'
+        compare_at_amount_in_cents:
+          type:
+          - number
+          - 'null'
+        currency:
+          type:
+          - string
+          - 'null'
+        display_amount:
+          type:
+          - string
+          - 'null'
+        display_compare_at_amount:
+          type:
+          - string
+          - 'null'
+        price_list_id:
+          type:
+          - string
+          - 'null'
       required:
       - id
-      - name
-      - label
-      - position
-      - kind
+      - amount
+      - amount_in_cents
+      - compare_at_amount
+      - compare_at_amount_in_cents
+      - currency
+      - display_amount
+      - display_compare_at_amount
+      - price_list_id
       x-typelizer: true
     CustomField_2:
       type: object
@@ -3967,89 +3913,25 @@ components:
       - key
       - value
       x-typelizer: true
-    Variant_2:
+    OptionType_2:
       type: object
       properties:
         id:
           type: string
-        product_id:
+        name:
           type: string
-        sku:
-          type:
-          - string
-          - 'null'
-        options_text:
+        label:
           type: string
-        track_inventory:
-          type: boolean
-        media_count:
+        position:
           type: number
-        thumbnail_url:
-          type:
-          - string
-          - 'null'
-        purchasable:
-          type: boolean
-        in_stock:
-          type: boolean
-        backorderable:
-          type: boolean
-        weight:
-          type:
-          - number
-          - 'null'
-        height:
-          type:
-          - number
-          - 'null'
-        width:
-          type:
-          - number
-          - 'null'
-        depth:
-          type:
-          - number
-          - 'null'
-        price:
-          $ref: '#/components/schemas/Price_2'
-        original_price:
-          allOf:
-          - $ref: '#/components/schemas/Price_2'
-        primary_media:
-          $ref: '#/components/schemas/Media_2'
-        media:
-          type: array
-          items:
-            $ref: '#/components/schemas/Media_2'
-        option_values:
-          type: array
-          items:
-            $ref: '#/components/schemas/OptionValue_2'
-        custom_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomField_2'
-        prior_price:
-          allOf:
-          - $ref: '#/components/schemas/PriceHistory_2'
+        kind:
+          type: string
       required:
       - id
-      - product_id
-      - sku
-      - options_text
-      - track_inventory
-      - media_count
-      - thumbnail_url
-      - purchasable
-      - in_stock
-      - backorderable
-      - weight
-      - height
-      - width
-      - depth
-      - price
-      - original_price
-      - option_values
+      - name
+      - label
+      - position
+      - kind
       x-typelizer: true
     Product_2:
       type: object
@@ -4157,65 +4039,6 @@ components:
       - price
       - original_price
       x-typelizer: true
-    PriceHistory_2:
-      type: object
-      properties:
-        id:
-          type: string
-        amount:
-          type: string
-        amount_in_cents:
-          type: number
-        currency:
-          type: string
-        display_amount:
-          type: string
-        recorded_at:
-          type: string
-      required:
-      - id
-      - amount
-      - amount_in_cents
-      - currency
-      - display_amount
-      - recorded_at
-      x-typelizer: true
-    OptionValue_2:
-      type: object
-      properties:
-        id:
-          type: string
-        option_type_id:
-          type: string
-        name:
-          type: string
-        label:
-          type: string
-        position:
-          type: number
-        color_code:
-          type:
-          - string
-          - 'null'
-        option_type_name:
-          type: string
-        option_type_label:
-          type: string
-        image_url:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - option_type_id
-      - name
-      - label
-      - position
-      - color_code
-      - option_type_name
-      - option_type_label
-      - image_url
-      x-typelizer: true
     Media_2:
       type: object
       properties:
@@ -4295,53 +4118,230 @@ components:
       - xlarge_url
       - og_image_url
       x-typelizer: true
-    Price_2:
+    Variant_2:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        sku:
+          type:
+          - string
+          - 'null'
+        options_text:
+          type: string
+        track_inventory:
+          type: boolean
+        media_count:
+          type: number
+        thumbnail_url:
+          type:
+          - string
+          - 'null'
+        purchasable:
+          type: boolean
+        in_stock:
+          type: boolean
+        backorderable:
+          type: boolean
+        weight:
+          type:
+          - number
+          - 'null'
+        height:
+          type:
+          - number
+          - 'null'
+        width:
+          type:
+          - number
+          - 'null'
+        depth:
+          type:
+          - number
+          - 'null'
+        price:
+          $ref: '#/components/schemas/Price_2'
+        original_price:
+          allOf:
+          - $ref: '#/components/schemas/Price_2'
+        primary_media:
+          $ref: '#/components/schemas/Media_2'
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Media_2'
+        option_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionValue_2'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField_2'
+        prior_price:
+          allOf:
+          - $ref: '#/components/schemas/PriceHistory_2'
+      required:
+      - id
+      - product_id
+      - sku
+      - options_text
+      - track_inventory
+      - media_count
+      - thumbnail_url
+      - purchasable
+      - in_stock
+      - backorderable
+      - weight
+      - height
+      - width
+      - depth
+      - price
+      - original_price
+      - option_values
+      x-typelizer: true
+    PriceHistory_2:
       type: object
       properties:
         id:
           type: string
         amount:
-          type:
-          - string
-          - 'null'
+          type: string
         amount_in_cents:
-          type:
-          - number
-          - 'null'
-        compare_at_amount:
-          type:
-          - string
-          - 'null'
-        compare_at_amount_in_cents:
-          type:
-          - number
-          - 'null'
+          type: number
         currency:
-          type:
-          - string
-          - 'null'
+          type: string
         display_amount:
+          type: string
+        recorded_at:
+          type: string
+      required:
+      - id
+      - amount
+      - amount_in_cents
+      - currency
+      - display_amount
+      - recorded_at
+      x-typelizer: true
+    OptionValue_2:
+      type: object
+      properties:
+        id:
+          type: string
+        option_type_id:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        position:
+          type: number
+        color_code:
           type:
           - string
           - 'null'
-        display_compare_at_amount:
-          type:
-          - string
-          - 'null'
-        price_list_id:
+        option_type_name:
+          type: string
+        option_type_label:
+          type: string
+        image_url:
           type:
           - string
           - 'null'
       required:
       - id
-      - amount
-      - amount_in_cents
-      - compare_at_amount
-      - compare_at_amount_in_cents
-      - currency
-      - display_amount
-      - display_compare_at_amount
-      - price_list_id
+      - option_type_id
+      - name
+      - label
+      - position
+      - color_code
+      - option_type_name
+      - option_type_label
+      - image_url
+      x-typelizer: true
+    Category_2:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        permalink:
+          type: string
+        position:
+          type: number
+        depth:
+          type: number
+        meta_title:
+          type:
+          - string
+          - 'null'
+        meta_description:
+          type:
+          - string
+          - 'null'
+        meta_keywords:
+          type:
+          - string
+          - 'null'
+        children_count:
+          type: number
+        parent_id:
+          type:
+          - string
+          - 'null'
+        description:
+          type: string
+        description_html:
+          type: string
+        image_url:
+          type:
+          - string
+          - 'null'
+        square_image_url:
+          type:
+          - string
+          - 'null'
+        is_root:
+          type: boolean
+        is_child:
+          type: boolean
+        is_leaf:
+          type: boolean
+        parent:
+          $ref: '#/components/schemas/Category_2'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category_2'
+        ancestors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category_2'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField_2'
+      required:
+      - id
+      - name
+      - permalink
+      - position
+      - depth
+      - meta_title
+      - meta_description
+      - meta_keywords
+      - children_count
+      - parent_id
+      - description
+      - description_html
+      - image_url
+      - square_image_url
+      - is_root
+      - is_child
+      - is_leaf
       x-typelizer: true
   securitySchemes:
     api_key:

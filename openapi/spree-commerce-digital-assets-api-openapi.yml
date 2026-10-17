@@ -350,21 +350,29 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
+      x-internal: false
+    update_digital_params:
+      type: object
+      properties:
+        digital[attachment]:
+          type: string
+          format: binary
+        digital[variant_id]:
+          type: string
+          example: '123'
+      required:
+      - digital[attachment]
+      - digital[variant_id]
       x-internal: false
     resource:
       type: object
@@ -374,13 +382,18 @@ components:
       required:
       - data
       x-internal: false
-    error:
+    create_digital_params:
       type: object
       properties:
-        error:
+        digital[attachment]:
           type: string
+          format: binary
+        digital[variant_id]:
+          type: string
+          example: '123'
       required:
-      - error
+      - digital[attachment]
+      - digital[variant_id]
       x-internal: false
     resources_list:
       type: object
@@ -427,42 +440,29 @@ components:
       - meta
       - links
       x-internal: false
-    update_digital_params:
+    resource_properties:
       type: object
       properties:
-        digital[attachment]:
+        id:
           type: string
-          format: binary
-        digital[variant_id]:
+        type:
           type: string
-          example: '123'
+        attributes:
+          type: object
+        relationships:
+          type: object
       required:
-      - digital[attachment]
-      - digital[variant_id]
+      - id
+      - type
+      - attributes
       x-internal: false
-    create_digital_params:
-      type: object
-      properties:
-        digital[attachment]:
-          type: string
-          format: binary
-        digital[variant_id]:
-          type: string
-          example: '123'
-      required:
-      - digital[attachment]
-      - digital[variant_id]
-      x-internal: false
-    validation_errors:
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

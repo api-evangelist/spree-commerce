@@ -347,21 +347,39 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    update_zone_params:
       type: object
       properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
+        address:
           type: object
-        relationships:
+          properties:
+            name:
+              type: string
+              example: EU
+            description:
+              type: string
+              example: All countries in the EU
+            default_tax:
+              type: boolean
+            kind:
+              type: string
+              example: state
+              enum:
+              - state
+              - country
+      required:
+      - zone
+      x-internal: false
+    validation_errors:
+      type: object
+      properties:
+        error:
+          type: string
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
     resource:
       type: object
@@ -395,14 +413,6 @@ components:
               - country
       required:
       - zone
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
     resources_list:
       type: object
@@ -449,39 +459,29 @@ components:
       - meta
       - links
       x-internal: false
-    update_zone_params:
+    resource_properties:
       type: object
       properties:
-        address:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
           type: object
-          properties:
-            name:
-              type: string
-              example: EU
-            description:
-              type: string
-              example: All countries in the EU
-            default_tax:
-              type: boolean
-            kind:
-              type: string
-              example: state
-              enum:
-              - state
-              - country
+        relationships:
+          type: object
       required:
-      - zone
+      - id
+      - type
+      - attributes
       x-internal: false
-    validation_errors:
+    error:
       type: object
       properties:
         error:
           type: string
-        errors:
-          type: object
       required:
       - error
-      - errors
       x-internal: false
   securitySchemes:
     bearer_auth:

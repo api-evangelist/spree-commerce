@@ -321,21 +321,31 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    create_promotion_action_params:
       type: object
       properties:
-        id:
-          type: string
-        type:
-          type: string
-        attributes:
+        promotion_action:
           type: object
-        relationships:
-          type: object
+          required:
+          - type
+          - promotion_id
+          properties:
+            type:
+              type: string
+              example: Spree::Promotion::Actions::CreateAdjustment
+              enum:
+              - Spree::Promotion::Actions::CreateAdjustment
+              - Spree::Promotion::Actions::CreateItemAdjustments
+              - Spree::Promotion::Actions::CreateLineItems
+              - Spree::Promotion::Actions::FreeShipping
+              description: Set the Type of Promotion Action you wish to use.
+            promotion_id:
+              type: string
+              example: '22'
+              description: Set the ID of the promotion this action belongs to.
       required:
-      - id
-      - type
-      - attributes
+      - promotion_action
+      title: Create a Promotion Action
       x-internal: false
     resource:
       type: object
@@ -363,14 +373,6 @@ components:
       required:
       - promotion_action
       title: Create a Promotion Action
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
     resources_list:
       type: object
@@ -417,31 +419,29 @@ components:
       - meta
       - links
       x-internal: false
-    create_promotion_action_params:
+    resource_properties:
       type: object
       properties:
-        promotion_action:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
           type: object
-          required:
-          - type
-          - promotion_id
-          properties:
-            type:
-              type: string
-              example: Spree::Promotion::Actions::CreateAdjustment
-              enum:
-              - Spree::Promotion::Actions::CreateAdjustment
-              - Spree::Promotion::Actions::CreateItemAdjustments
-              - Spree::Promotion::Actions::CreateLineItems
-              - Spree::Promotion::Actions::FreeShipping
-              description: Set the Type of Promotion Action you wish to use.
-            promotion_id:
-              type: string
-              example: '22'
-              description: Set the ID of the promotion this action belongs to.
+        relationships:
+          type: object
       required:
-      - promotion_action
-      title: Create a Promotion Action
+      - id
+      - type
+      - attributes
+      x-internal: false
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
       x-internal: false
   securitySchemes:
     bearer_auth:

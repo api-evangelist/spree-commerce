@@ -469,65 +469,35 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resource_properties:
+    validation_errors:
       type: object
       properties:
-        id:
+        error:
           type: string
-        type:
-          type: string
-        attributes:
-          type: object
-        relationships:
+        errors:
           type: object
       required:
-      - id
-      - type
-      - attributes
+      - error
+      - errors
       x-internal: false
-    update_payment_method_params:
+    update_payment_method_params_bogus_gateway:
       type: object
       properties:
         payment_method:
           type: object
           properties:
-            name:
+            preferred_dummy_key:
               type: string
-              example: Test Payment Method
-            active:
+              example: UPDATED-DUMMY-KEY-123
+            preferred_server:
+              type: string
+              example: production
+            preferred_test_mode:
               type: boolean
-            auto_capture:
-              type: boolean
-            description:
-              type: string
-              example: This is a test payment method
-            type:
-              type: string
-              example: Spree::Gateway::Bogus
-              enum:
-              - Spree::Gateway::Bogus
-              - Spree::PaymentMethod::Check
-            display_on:
-              type: string
-              example: both
-              enum:
-              - both
-              - back_end
-              - front_end
-            store_ids:
-              type: array
-              items:
-                allOf:
-                - type: string
-                  example: '2'
-            public_metadata:
-              type: object
-            private_metadata:
-              type: object
       required:
       - payment_method
       x-internal: false
-      title: Update Payment Method
+      title: Update Bogus Gateway
     resource:
       type: object
       properties:
@@ -535,14 +505,6 @@ components:
           $ref: '#/components/schemas/resource_properties'
       required:
       - data
-      x-internal: false
-    error:
-      type: object
-      properties:
-        error:
-          type: string
-      required:
-      - error
       x-internal: false
     resources_list:
       type: object
@@ -633,35 +595,73 @@ components:
       required:
       - payment_method
       x-internal: false
-    validation_errors:
+    resource_properties:
       type: object
       properties:
-        error:
+        id:
           type: string
-        errors:
+        type:
+          type: string
+        attributes:
+          type: object
+        relationships:
           type: object
       required:
-      - error
-      - errors
+      - id
+      - type
+      - attributes
       x-internal: false
-    update_payment_method_params_bogus_gateway:
+    update_payment_method_params:
       type: object
       properties:
         payment_method:
           type: object
           properties:
-            preferred_dummy_key:
+            name:
               type: string
-              example: UPDATED-DUMMY-KEY-123
-            preferred_server:
-              type: string
-              example: production
-            preferred_test_mode:
+              example: Test Payment Method
+            active:
               type: boolean
+            auto_capture:
+              type: boolean
+            description:
+              type: string
+              example: This is a test payment method
+            type:
+              type: string
+              example: Spree::Gateway::Bogus
+              enum:
+              - Spree::Gateway::Bogus
+              - Spree::PaymentMethod::Check
+            display_on:
+              type: string
+              example: both
+              enum:
+              - both
+              - back_end
+              - front_end
+            store_ids:
+              type: array
+              items:
+                allOf:
+                - type: string
+                  example: '2'
+            public_metadata:
+              type: object
+            private_metadata:
+              type: object
       required:
       - payment_method
       x-internal: false
-      title: Update Bogus Gateway
+      title: Update Payment Method
+    error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      x-internal: false
   securitySchemes:
     bearer_auth:
       type: http
